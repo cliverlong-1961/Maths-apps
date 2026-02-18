@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Sliding Down a Hemisphere</title>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-xl p-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2 text-center">
+                    Object Sliding Down a Hemisphere
+                </h1>
+                <p class="text-gray-600 text-center mb-8">
+                    A Classical Mechanics Analysis
+                </p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                    <p class="text-gray-700">
+                        Let the hemisphere have radius <span class="math-inline">r</span>. The particle starts from rest at the very top and slides down the smooth surface. 
+                        Let <span class="math-inline">\theta</span> be the angle between the vertical axis (through the centre of the hemisphere) and the line from the centre to the particle. 
+                        So <span class="math-inline">\theta = 0</span> at the top and increases as it slides down.
+                    </p>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>
+                        Forces acting on the particle
+                    </h2>
+                    <p class="text-gray-700 mb-3">
+                        At any position on the sphere, the forces are:
+                    </p>
+                    <ul class="list-disc list-inside ml-4 mb-4 text-gray-700 space-y-2">
+                        <li>Weight <span class="math-inline">mg</span> acting vertically downward</li>
+                        <li>Normal contact force <span class="math-inline">N</span> acting radially outward from the surface</li>
+                    </ul>
+                    <p class="text-gray-700 mb-3">
+                        While the object is sliding along the surface of the sphere, we can initially think of its motion as due to a centripetal force where the radial direction is toward the centre of the sphere. 
+                        The particle requires a centripetal acceleration
+                    </p>
+                    <div class="math-display">a_r = \frac{v^2}{r}</div>
+                    <p class="text-gray-700 mb-3">directed towards the centre.</p>
+                    <p class="text-gray-700 mb-3">
+                        However, this centrifugal force, and resulting acceleration, is due to two forces acting on the object: the weight always vertically down and the normal contact force 'pushing' on the object. The maths is easier if we consider the direction we resolve the forces to be along a line from the centre of the base of the hemisphere to the point of contact with the object. As a result the component of the weight along this axis varies with <span class="math-inline">\theta</span> as the object slides. The Normal contact force is always in line with this radial axis but its size is varying as the object slides, see below.
+                    </p>
+                    <p class="text-gray-700 mb-3 font-semibold">
+                        Resolving forces in the radial (towards centre) direction:
+                    </p>
+                    <p class="text-gray-700 mb-2">
+                        The component of weight towards the centre is:
+                    </p>
+                    <div class="math-display">mg\cos\theta</div>
+                    <p class="text-gray-700 mb-2">
+                        The normal force <span class="math-inline">N</span> acts away from the centre, so the radial equation of motion is:
+                    </p>
+                    <div class="math-display">mg\cos\theta - N = \frac{mv^2}{r}</div>
+                    
+                    <!-- Force Diagram -->
+                    <div class="my-6 flex justify-center">
+                        <svg width="500" height="350" viewBox="0 0 500 350" class="border border-gray-300 rounded-lg bg-white">
+                            <!-- Semicircle -->
+                            <path d="M 100 250 A 150 150 0 0 1 400 250" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                            
+                            <!-- Diameter (base) -->
+                            <line x1="100" y1="250" x2="400" y2="250" stroke="#374151" stroke-width="2"/>
+                            
+                            <!-- Center point -->
+                            <circle cx="250" cy="250" r="3" fill="#374151"/>
+                            
+                            <!-- Calculate point at 15 degrees from vertical -->
+                            <!-- x = 250 + 150*sin(15°) = 250 + 38.82 ≈ 288.82 -->
+                            <!-- y = 250 - 150*cos(15°) = 250 - 144.89 ≈ 105.11 -->
+                            
+                            <!-- Radial line from center to point -->
+                            <line x1="250" y1="250" x2="288.82" y2="105.11" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,5"/>
+                            
+                            <!-- Vertical reference line (dashed) -->
+                            <line x1="250" y1="250" x2="250" y2="80" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
+                            
+                            <!-- Angle arc for theta -->
+                            <path d="M 250 150 A 100 100 0 0 1 276.4 133.6" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+                            
+                            <!-- Theta label -->
+                            <text x="260" y="135" font-size="16" fill="#8b5cf6" font-style="italic">θ</text>
+                            
+                            <!-- Point on the semicircle -->
+                            <circle cx="288.82" cy="105.11" r="5" fill="#ef4444"/>
+                            
+                            <!-- Arrow: mg (vertical down, dotted) -->
+                            <defs>
+                                <marker id="arrowhead-mg" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#059669"/>
+                                </marker>
+                                <marker id="arrowhead-mgcos" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#dc2626"/>
+                                </marker>
+                                <marker id="arrowhead-N" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#2563eb"/>
+                                </marker>
+                                <marker id="arrowhead-mgsin" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#f59e0b"/>
+                                </marker>
+                            </defs>
+                            
+                            <!-- mg arrow (vertical, dotted) -->
+                            <line x1="288.82" y1="105.11" x2="288.82" y2="185.11" stroke="#059669" stroke-width="2.5" stroke-dasharray="5,5" marker-end="url(#arrowhead-mg)"/>
+                            <text x="295" y="150" font-size="14" fill="#059669" font-weight="bold">mg</text>
+                            
+                            <!-- mg cos theta arrow (toward center) -->
+                            <line x1="288.82" y1="105.11" x2="268.82" y2="179.74" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowhead-mgcos)"/>
+                            <text x="248" y="195" font-size="14" fill="#dc2626" font-weight="bold">
+                                <tspan>mg cos </tspan>
+                                <tspan font-style="italic">θ</tspan>
+                            </text>
+                            
+                            <!-- N arrow (radially outward, away from center) -->
+                            <line x1="288.82" y1="105.11" x2="318.82" y2="12.11" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowhead-N)"/>
+                            <text x="323" y="50" font-size="14" fill="#2563eb" font-weight="bold">N</text>
+                            
+                            <!-- mg sin theta arrow (tangent to circle, direction of motion) -->
+                            <line x1="288.82" y1="105.11" x2="308.82" y2="110.47" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrowhead-mgsin)"/>
+                            <text x="310" y="105" font-size="14" fill="#f59e0b" font-weight="bold">
+                                <tspan>mg sin </tspan>
+                                <tspan font-style="italic">θ</tspan>
+                            </text>
+                            
+                            <!-- Labels -->
+                            <text x="245" y="270" font-size="12" fill="#6b7280">Centre</text>
+                            <text x="150" y="290" font-size="12" fill="#6b7280">Horizontal diameter (base)</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="mb-8 bg-amber-50 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-amber-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">2</span>
+                        Condition for leaving the surface of sphere
+                    </h2>
+                    <p class="text-gray-700 mb-3">
+                        The particle leaves the surface when the contact force becomes zero:
+                    </p>
+                    <div class="math-display">N = 0</div>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 p-4 my-4">
+                        <p class="text-gray-700 italic">
+                            Subtly important: the surface cannot "pull" the particle. It can only push. 
+                            Once <span class="math-inline">N=0</span>, the sphere loses contact and the particle follows projectile motion.
+                        </p>
+                    </div>
+                    <p class="text-gray-700 mb-2">
+                        So at the leaving point:
+                    </p>
+                    <div class="math-display">mg\cos\theta = \frac{mv^2}{r}</div>
+                    <div class="math-display">\Rightarrow v^2 = gr\cos\theta \quad \text{(1)}</div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">3</span>
+                        Finding the speed using energy
+                    </h2>
+                    <p class="text-gray-700 mb-3">
+                        Because the surface is smooth, mechanical energy is conserved.
+                    </p>
+                    <p class="text-gray-700 mb-2 font-semibold">
+                        Loss in gravitational potential energy = gain in kinetic energy.
+                    </p>
+                    <p class="text-gray-700 mb-2">
+                        Vertical drop from the top to angle <span class="math-inline">\theta</span> is:
+                    </p>
+                    <div class="math-display">h = r(1 - \cos\theta)</div>
+                    <p class="text-gray-700 mb-2">So,</p>
+                    <div class="math-display">\frac{1}{2}mv^2 = mg r(1 - \cos\theta)</div>
+                    <div class="math-display">\Rightarrow v^2 = 2gr(1 - \cos\theta) \quad \text{(2)}</div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="mb-8 bg-purple-50 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">4</span>
+                        Determining the angle where the particle leaves the sphere
+                    </h2>
+                    <p class="text-gray-700 mb-3">
+                        Now combine the force result (1) and the energy result (2):
+                    </p>
+                    <div class="math-display">gr\cos\theta = 2gr(1 - \cos\theta)</div>
+                    <p class="text-gray-700 mb-2">Cancel <span class="math-inline">gr</span>:</p>
+                    <div class="math-display">\cos\theta = 2(1 - \cos\theta)</div>
+                    <div class="math-display">\cos\theta = 2 - 2\cos\theta</div>
+                    <div class="math-display">3\cos\theta = 2</div>
+                    <div class="math-display">\cos\theta = \frac{2}{3}</div>
+                    <div class="bg-purple-100 border-2 border-purple-500 rounded-lg p-4 my-4">
+                        <div class="math-display">\boxed{\theta = \cos^{-1}\left(\frac{2}{3}\right) \approx 48.2^\circ}</div>
+                    </div>
+                    <p class="text-gray-700 font-semibold text-center">
+                        This is the angle (from the vertical centre line) at which the object loses contact with the hemisphere.
+                    </p>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">5</span>
+                        Speed as the particle leaves the surface
+                    </h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3">(a) Using the force argument</h3>
+                        <p class="text-gray-700 mb-2">
+                            At separation, <span class="math-inline">N=0</span>, so:
+                        </p>
+                        <div class="math-display">mg\cos\theta = \frac{mv^2}{r}</div>
+                        <p class="text-gray-700 mb-2">
+                            Substitute <span class="math-inline">\cos\theta = \frac{2}{3}</span>:
+                        </p>
+                        <div class="math-display">v^2 = gr\left(\frac{2}{3}\right)</div>
+                        <div class="bg-red-50 border-2 border-red-500 rounded-lg p-4 my-4">
+                            <div class="math-display">\boxed{v = \sqrt{\frac{2gr}{3}}}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3">(b) Using the energy argument</h3>
+                        <p class="text-gray-700 mb-2">From energy:</p>
+                        <div class="math-display">v^2 = 2gr(1 - \cos\theta)</div>
+                        <p class="text-gray-700 mb-2">
+                            Substitute <span class="math-inline">\cos\theta = \frac{2}{3}</span>:
+                        </p>
+                        <div class="math-display">v^2 = 2gr\left(1 - \frac{2}{3}\right) = 2gr\left(\frac{1}{3}\right)</div>
+                        <div class="math-display">v^2 = \frac{2gr}{3}</div>
+                        <div class="bg-red-50 border-2 border-red-500 rounded-lg p-4 my-4">
+                            <div class="math-display">\boxed{v = \sqrt{\frac{2gr}{3}}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6 -->
+                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">6</span>
+                        Key physical interpretation (exam insight)
+                    </h2>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-2 mt-1">•</span>
+                            <span>While the particle is in contact, the normal force provides part of the centripetal force.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-2 mt-1">•</span>
+                            <span>
+                                As it slides down, speed increases, so required centripetal force <span class="math-inline">\frac{mv^2}{r}</span> increases.
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-2 mt-1">•</span>
+                            <span>
+                                Meanwhile, the radial component of weight <span class="math-inline">mg\cos\theta</span> decreases.
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-2 mt-1">•</span>
+                            <span>
+                                The particle leaves the surface exactly when the sphere can no longer supply any normal reaction, i.e. <span class="math-inline">N = 0</span>.
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-2 mt-1">•</span>
+                            <span>
+                                After this point, gravity alone cannot provide enough centripetal force to keep the particle on the curved surface, 
+                                so it detaches and follows projectile motion.
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-8 text-center text-gray-500 text-sm">
+                    <p>Space reserved for animations and diagrams</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KaTeX JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render all inline math
+            const inlineMath = document.querySelectorAll('.math-inline');
+            inlineMath.forEach(function(element) {
+                const tex = element.textContent;
+                katex.render(tex, element, {
+                    throwOnError: false,
+                    displayMode: false
+                });
+            });
+
+            // Render all display math
+            const displayMath = document.querySelectorAll('.math-display');
+            displayMath.forEach(function(element) {
+                const tex = element.textContent;
+                katex.render(tex, element, {
+                    throwOnError: false,
+                    displayMode: true
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus and Particle Motion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .content {
+            line-height: 1.8;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        .highlight-box h2 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .highlight-box li {
+            margin-bottom: 10px;
+        }
+
+        .equation {
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            margin: 20px 0;
+            color: #764ba2;
+        }
+
+        .equation-large {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.4em;
+            margin: 25px 0;
+            color: #764ba2;
+        }
+
+        .frac {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .frac > span {
+            display: block;
+            padding: 0.1em;
+        }
+
+        .frac .top {
+            border-bottom: 2px solid #764ba2;
+            padding-bottom: 0.2em;
+        }
+
+        .frac .bottom {
+            padding-top: 0.2em;
+        }
+
+        .var {
+            font-style: italic;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .btn-navigate {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1em;
+            margin-top: 30px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-navigate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Animation page styles */
+        .animation-container {
+            width: 100%;
+            height: 300px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            position: relative;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .wall {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .sphere {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            animation: bounce-motion 6.5s infinite;
+        }
+
+        @keyframes bounce-motion {
+            0% {
+                left: 20px;
+            }
+            46.15% {
+                left: calc(100% - 70px);
+            }
+            92.31% {
+                left: 20px;
+            }
+            100% {
+                left: 20px;
+            }
+        }
+
+        /* Spring animation styles */
+        .spring-container {
+            width: 100%;
+            height: 300px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            position: relative;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #667eea;
+            opacity: 0.3;
+        }
+
+        .spring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 4px;
+            background: #764ba2;
+            transform-origin: left center;
+        }
+
+        .spring-sphere {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #4ecdc4, #1a7b76);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes spring-motion {
+            0% {
+                left: 50%;
+            }
+            25% {
+                left: 10%;
+            }
+            50% {
+                left: 50%;
+            }
+            75% {
+                left: 90%;
+            }
+            100% {
+                left: 50%;
+            }
+        }
+
+        /* Vertical spring animation styles */
+        .vertical-spring-container {
+            width: 100%;
+            height: 400px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            position: relative;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .spring-anchor {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 10px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        .vertical-spring {
+            position: absolute;
+            left: 50%;
+            top: 30px;
+            transform: translateX(-50%);
+            width: 20px;
+        }
+
+        .spring-coil {
+            fill: none;
+            stroke: #764ba2;
+            stroke-width: 3;
+        }
+
+        .vertical-sphere {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #f39c12, #d68910);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .equilibrium-line {
+            position: absolute;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            background: #667eea;
+            opacity: 0.4;
+            border-style: dashed;
+        }
+
+        /* Circular motion styles */
+        .circular-motion-container {
+            width: 100%;
+            height: 400px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            position: relative;
+            margin: 30px 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .disk-scene {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .rotation-axis {
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 40%;
+            background: linear-gradient(to bottom, #333 0%, #666 100%);
+            z-index: 1;
+        }
+
+        .disk {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.3) 0%, rgba(102, 126, 234, 0.1) 70%, transparent 100%);
+            border: 3px solid rgba(102, 126, 234, 0.5);
+            z-index: 2;
+        }
+
+        .red-spot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+            z-index: 3;
+        }
+
+        /* Off-axis circular motion styles */
+        .offaxis-container {
+            width: 100%;
+            height: 450px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            position: relative;
+            margin: 30px 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .offaxis-scene {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .offaxis-rotation-axis {
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 40%;
+            background: linear-gradient(to bottom, #333 0%, #666 100%);
+            z-index: 3;
+        }
+
+        .rotating-ellipse-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+        }
+
+        .rotating-ellipse {
+            display: none;
+        }
+
+        .orbit-path {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .orbit-trace {
+            fill: none;
+            stroke: #2ecc71;
+            stroke-width: 3;
+        }
+
+        .offaxis-dot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+            transform: translate(-8px, -8px);
+            z-index: 4;
+        }
+        /* Unit vector hat notation */
+        .uvec {
+            display: inline-block;
+            position: relative;
+            padding-top: 0.55em;
+            line-height: 1;
+            vertical-align: baseline;
+        }
+        .uhat {
+            position: absolute;
+            top: 0.05em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.72em;
+            line-height: 1;
+            font-style: normal;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page 1: Home -->
+        <div class="page active" id="page-home">
+            <h1>Calculus & Particle Motion</h1>
+            <p class="subtitle">Understanding When Mathematics Meets Movement</p>
+            
+            <div class="content">
+                <p>
+                    Calculus becomes essential for describing particle motion whenever the acceleration 
+                    changes continuously over time. While simple algebra is sufficient for constant velocity motion, 
+                    and constant acceleration problems can be solved with the 'suvat' equations, more complicated 
+                    scenarios require calculus.
+                </p>
+
+                <div class="highlight-box">
+                    <h2>When Do You Need Calculus?</h2>
+                    <ul>
+                        <li><strong>Constant speed but changing direction:</strong> calculus can be used to find instantaneous velocity as a function of time or position</li>
+                        <li><strong>Varying force:</strong> Any changing force causes changing acceleration, requiring calculus to link position, velocity, and acceleration</li>
+                        <li><strong>Complex paths:</strong> Curved trajectories, circular motion, or oscillations demand differential equations</li>
+                        <li><strong>Time-varying forces:</strong> When forces change with time or position (like springs or gravity wells)</li>
+                    </ul>
+                </div>
+
+                <p>
+                    The fundamental relationship in particle kinematics connects position <span class="var">x</span>(<span class="var">t</span>), 
+                    velocity <span class="var">v</span>(<span class="var">t</span>), and acceleration <span class="var">a</span>(<span class="var">t</span>) through derivatives:
+                </p>
+
+                <div class="equation-large">
+                    <span class="var">v</span>(<span class="var">t</span>) = <span class="frac"><span class="top">d<span class="var">x</span></span><span class="bottom">d<span class="var">t</span></span></span> 
+                    &nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp; 
+                    <span class="var">a</span>(<span class="var">t</span>) = <span class="frac"><span class="top">d<span class="var">v</span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="frac"><span class="top">d²<span class="var">x</span></span><span class="bottom">d<span class="var">t</span>²</span></span>
+                </div>
+
+                <p>
+                    Conversely, if you know acceleration, integration lets you work backward to find velocity 
+                    and position. This is crucial in physics where Newton's second law gives you acceleration 
+                    from forces, and you need to determine where the particle actually goes.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-spring')">See Spring Oscillation →</button>
+                <button class="btn-navigate" onclick="showPage('page-vertical-spring')">See Vertical Spring →</button>
+                <button class="btn-navigate" onclick="showPage('page-circular')">See Horizontal Circular Motion →</button>
+                <button class="btn-navigate" onclick="showPage('page-offaxis')">See Elliptical Orbit →</button>
+                <button class="btn-navigate" onclick="showPage('page-resistance')">Vertical Motion with Resistance →</button>
+                <button class="btn-navigate" onclick="showPage('page-bounce')">Where Calculus Doesn't Help →</button>
+            </div>
+
+            <footer>
+                Mathematical descriptions of nature through calculus
+            </footer>
+        </div>
+
+        <!-- Page 2: Spring Oscillation -->
+        <div class="page" id="page-spring">
+            <h1>Horizontal Motion Attached to Perfect Spring</h1>
+            <p class="subtitle">Simple Harmonic Motion Demonstration</p>
+            
+            <div class="content">
+                <p>
+                    Watch as a sphere oscillates horizontally under the influence of a perfect spring 
+                    attached at the center. This demonstrates simple harmonic motion where the restoring 
+                    force is proportional to displacement from equilibrium.
+                </p>
+
+                <div class="spring-container">
+                    <div class="center-line"></div>
+                    <div class="spring-sphere"></div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Animation Details</h2>
+                    <ul>
+                        <li><strong>Starting Position:</strong> The sphere begins at the center (equilibrium)</li>
+                        <li><strong>Left Motion:</strong> Moves to the left, slowing down as the spring extends (2 seconds)</li>
+                        <li><strong>Reversal:</strong> Stops at maximum displacement, then accelerates back</li>
+                        <li><strong>Through Center:</strong> Passes through equilibrium at maximum speed</li>
+                        <li><strong>Right Motion:</strong> Continues to the right, stops at maximum displacement</li>
+                        <li><strong>Return:</strong> Springs back to center, completing one full cycle (8 seconds total)</li>
+                    </ul>
+                </div>
+
+                <p>
+                    The motion follows Hooke's Law: <em>F = -kx</em>, where the restoring force is proportional 
+                    to the displacement. This results in sinusoidal motion with the sphere's position varying as 
+                    <em>x(t) = A sin(ωt)</em>, where <em>A</em> is the amplitude and <em>ω</em> is the angular frequency.
+                </p>
+
+                <div class="equation">
+                    a = -ω²x &nbsp;&nbsp;&nbsp; (acceleration proportional to displacement)
+                </div>
+
+                <p>
+                    This is a perfect example of where calculus is essential—the acceleration continuously 
+                    changes as a function of position, requiring differential equations to solve.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Simple harmonic motion with elastic restoring force
+            </footer>
+        </div>
+
+        <!-- Page 3: Vertical Spring with Gravity -->
+        <div class="page" id="page-vertical-spring">
+            <h1>Vertical Motion on a Perfect Spring</h1>
+            <p class="subtitle">Simple Harmonic Motion with Gravity</p>
+            
+            <div class="content">
+                <p>
+                    Watch as a sphere oscillates vertically under the combined influence of a spring force 
+                    and gravity. The equilibrium position occurs where the spring force balances the weight, 
+                    and the motion about this point exhibits simple harmonic motion.
+                </p>
+
+                <div class="vertical-spring-container">
+                    <div class="spring-anchor"></div>
+                    <svg class="vertical-spring" id="vertical-spring-svg" width="20" height="200">
+                        <path class="spring-coil" id="spring-path" d="M10,0 L10,200"/>
+                    </svg>
+                    <div class="equilibrium-line" id="eq-line"></div>
+                    <div class="vertical-sphere" id="vertical-sphere"></div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Physics of Vertical SHM</h2>
+                    <ul>
+                        <li><strong>Forces:</strong> Spring force (<em>F = -kx</em>) and gravitational force (<em>F = -mg</em>)</li>
+                        <li><strong>Equilibrium:</strong> At equilibrium, the spring force balances gravity: <em>kx<sub>eq</sub> = mg</em></li>
+                        <li><strong>SHM about equilibrium:</strong> When displaced from equilibrium, the net restoring force is proportional to displacement</li>
+                        <li><strong>Period:</strong> The period of oscillation <em>T = 2π√(m/k)</em> is the same as horizontal SHM</li>
+                    </ul>
+                </div>
+
+                <p>
+                    The equation of motion from the natural spring length is:
+                </p>
+
+                <div class="equation">
+                    y(t) = y<sub>eq</sub> + A sin(ωt)
+                </div>
+
+                <p>
+                    where <em>y<sub>eq</sub></em> is the equilibrium position (spring stretched by <em>mg/k</em>), 
+                    and the sphere oscillates harmonically about this point. Gravity shifts the equilibrium but 
+                    doesn't affect the frequency of oscillation.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Vertical SHM with gravitational and elastic forces
+            </footer>
+        </div>
+
+        <!-- Page 4: Horizontal Circular Motion -->
+        <div class="page" id="page-circular">
+            <h1>Horizontal Circular Motion</h1>
+            <p class="subtitle">Uniform Circular Motion Viewed at an Angle</p>
+            
+            <div class="content">
+                <p>
+                    Watch a disk rotating in a horizontal plane, viewed from 30 degrees above. The red spot 
+                    on the circumference traces an elliptical path (eccentricity = 0.5). The disk completes 
+                    one full rotation every 3 seconds.
+                </p>
+
+                <div class="circular-motion-container">
+                    <div class="disk-scene">
+                        <div class="rotation-axis"></div>
+                        <div class="disk"></div>
+                        <div class="red-spot" id="circular-spot"></div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Basics of Circular Motion</h2>
+                    <p>
+                        If a force acts in the direction the particle is already moving, only the speed will 
+                        increase or decrease, the direction of motion will not change as a result of the force. 
+                        If a (resultant) force acts at a non-zero angle to the direction of motion of the particle, 
+                        both speed and direction of motion will change. If the force remains perpendicular (at right 
+                        angles) to direction of motion at any moment, toward the centre of motion, then the speed 
+                        does not change, but the object will move in a circle.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Circular Motion Kinematics</h2>
+                    <ul>
+                        <li><strong>Constant speed:</strong> The spot moves at constant speed around the circle</li>
+                        <li><strong>Changing velocity:</strong> Although speed is constant, velocity direction continuously changes</li>
+                        <li><strong>Centripetal acceleration:</strong> Acceleration always points toward the center: <em>a = v²/r</em></li>
+                        <li><strong>Angular velocity:</strong> The disk rotates with constant angular velocity <em>ω = 2π/T</em></li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Angular Velocity</h2>
+                    <p>
+                        Angular velocity (<span class="var">ω</span>) measures how quickly the angle changes with time. 
+                        It is defined as the derivative of the angle with respect to time:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">ω</span> = <span class="frac"><span class="top">d<span class="var">θ</span></span><span class="bottom">d<span class="var">t</span></span></span>
+                    </div>
+                    <p style="text-align: center; margin-top: 20px;">
+                        <svg width="300" height="300" viewBox="-150 -150 300 300">
+                            <!-- Circle -->
+                            <circle cx="0" cy="0" r="100" fill="none" stroke="#667eea" stroke-width="2"/>
+                            
+                            <!-- Center point -->
+                            <circle cx="0" cy="0" r="3" fill="#333"/>
+                            
+                            <!-- Reference line (horizontal) -->
+                            <line x1="0" y1="0" x2="120" y2="0" stroke="#999" stroke-width="1" stroke-dasharray="5,5"/>
+                            
+                            <!-- Radius vector to red spot -->
+                            <line x1="0" y1="0" x2="70.7" y2="-70.7" stroke="#764ba2" stroke-width="3"/>
+                            
+                            <!-- Red spot -->
+                            <circle cx="70.7" cy="-70.7" r="6" fill="#ff4444"/>
+                            
+                            <!-- Angle arc -->
+                            <path d="M 40 0 A 40 40 0 0 0 28.28 -28.28" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                            
+                            <!-- Angle label theta -->
+                            <text x="50" y="-10" fill="#2ecc71" font-size="20" font-style="italic">θ</text>
+                            
+                            <!-- Radius label -->
+                            <text x="30" y="-40" fill="#764ba2" font-size="16" font-style="italic">r</text>
+                            
+                            <!-- Angular velocity arrow (curved) -->
+                            <path d="M 0 -115 A 115 115 0 0 1 40 -108" fill="none" stroke="#ff6b6b" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <text x="15" y="-125" fill="#ff6b6b" font-size="18" font-style="italic">ω</text>
+                            
+                            <!-- Arrow marker definition -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#ff6b6b"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </p>
+                    <p style="text-align: center; font-size: 0.9em; color: #666; margin-top: 10px;">
+                        The angle <span class="var">θ</span> increases as the object rotates. Angular velocity <span class="var">ω</span> 
+                        indicates the rate of rotation.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Linear Velocity and Angular Velocity Relationship</h2>
+                    <p>
+                        For a particle moving in a circle at constant distance <span class="var">r</span> from the center 
+                        with constant angular velocity <span class="var">ω</span>, we can derive the linear (tangential) 
+                        velocity <span class="var">v</span> using calculus.
+                    </p>
+                    <p>
+                        The arc length traveled by the particle is given by <span class="var">s</span> = <span class="var">r</span><span class="var">θ</span>, 
+                        where <span class="var">θ</span> is the angle in radians. The linear velocity is the rate of change of arc length:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">v</span> = <span class="frac"><span class="top">d<span class="var">s</span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="frac"><span class="top">d(<span class="var">r</span><span class="var">θ</span>)</span><span class="bottom">d<span class="var">t</span></span></span>
+                    </div>
+                    <p>
+                        Since <span class="var">r</span> is constant (the distance from the center doesn't change), we can take it outside the derivative:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">v</span> = <span class="var">r</span> <span class="frac"><span class="top">d<span class="var">θ</span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="var">r</span><span class="var">ω</span>
+                    </div>
+                    <p>
+                        This shows that the linear speed equals the radius times the angular velocity. Objects farther 
+                        from the center move faster linearly, even though they have the same angular velocity.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Radial Acceleration Using Small Changes</h2>
+                    <p>
+                        We can derive the centripetal acceleration by examining the change in velocity as the object 
+                        moves through a small angle d<span class="var">θ</span>.
+                    </p>
+                    <p style="text-align: center; margin-top: 20px;">
+                        <svg width="500" height="450" viewBox="-50 -50 500 450">
+                            <!-- Circle centered at O -->
+                            <circle cx="200" cy="200" r="120" fill="none" stroke="#667eea" stroke-width="2"/>
+                            
+                            <!-- Center point O -->
+                            <circle cx="200" cy="200" r="3" fill="#333"/>
+                            <text x="185" y="195" fill="#333" font-size="18" font-weight="bold">O</text>
+                            
+                            <!-- Point P at bottom of circle -->
+                            <circle cx="200" cy="320" r="4" fill="#764ba2"/>
+                            <text x="205" y="340" fill="#764ba2" font-size="18" font-weight="bold">P</text>
+                            
+                            <!-- Radius OP -->
+                            <line x1="200" y1="200" x2="200" y2="320" stroke="#764ba2" stroke-width="2"/>
+                            <text x="175" y="265" fill="#764ba2" font-size="16" font-style="italic">r</text>
+                            
+                            <!-- Tangent at P (horizontal) -->
+                            <line x1="140" y1="320" x2="260" y2="320" stroke="#999" stroke-width="1.5" stroke-dasharray="5,5"/>
+                            
+                            <!-- Point Q at 20 degrees anticlockwise from P -->
+                            <!-- In standard coords: P is at 90° (down in SVG), Q at 110° -->
+                            <!-- Q: x = 200 + 120*cos(110°), y = 200 + 120*sin(110°) -->
+                            <!-- cos(110°) ≈ -0.342, sin(110°) ≈ 0.940 -->
+                            <circle cx="159" cy="313" r="4" fill="#764ba2"/>
+                            <text x="140" y="335" fill="#764ba2" font-size="18" font-weight="bold">Q</text>
+                            
+                            <!-- Radius OQ -->
+                            <line x1="200" y1="200" x2="159" y2="313" stroke="#764ba2" stroke-width="2"/>
+                            <text x="170" y="260" fill="#764ba2" font-size="16" font-style="italic">r</text>
+                            
+                            <!-- Angle arc dθ -->
+                            <path d="M 200 280 A 40 40 0 0 1 186.32 285.76" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                            <text x="182" y="280" fill="#2ecc71" font-size="16" font-style="italic">dθ</text>
+                            
+                            <!-- Arc label r dθ -->
+                            <text x="170" y="335" fill="#ff6b6b" font-size="15" font-style="italic">r dθ</text>
+                            
+                            <!-- Right-angled triangle at Q -->
+                            <!-- Velocity at Q is tangent to circle, perpendicular to radius OQ -->
+                            <!-- Velocity vector increased by 50% (1.5x length) -->
+                            
+                            <!-- Base endpoint: horizontal from Q -->
+                            <line x1="159" y1="313" x2="84" y2="313" stroke="#333" stroke-width="2"/>
+                            
+                            <!-- End point of velocity vector: Q + 1.5*50*tangent = (159, 313) + (-75, -25.5) = (84, 287.5) -->
+                            <line x1="84" y1="313" x2="84" y2="287.5" stroke="#333" stroke-width="2"/>
+                            <text x="30" y="302" fill="#333" font-size="14" font-style="italic">v sin dθ</text>
+                            
+                            <!-- Hypotenuse (velocity vector v) -->
+                            <defs>
+                                <marker id="arrowhead-v" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#e74c3c"/>
+                                </marker>
+                            </defs>
+                            <line x1="159" y1="313" x2="84" y2="287.5" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arrowhead-v)"/>
+                            <text x="75" y="283" fill="#e74c3c" font-size="16" font-weight="bold" font-style="italic">v</text>
+                            
+                            <!-- Angle at Q in triangle (between horizontal base and hypotenuse) -->
+                            <path d="M 144 313 A 15 15 0 0 0 150 304" fill="none" stroke="#2ecc71" stroke-width="1.5"/>
+                            <text x="146" y="298" fill="#2ecc71" font-size="13" font-style="italic">dθ</text>
+                            
+                            <!-- Right angle marker -->
+                            <path d="M 89 313 L 89 308 L 84 308" fill="none" stroke="#333" stroke-width="1"/>
+                        </svg>
+                    </p>
+                    <p style="text-align: center; font-size: 0.9em; color: #666; margin-top: 10px;">
+                        As the particle moves from P to Q through angle d<span class="var">θ</span>, the velocity vector 
+                        rotates by the same angle. The triangle shows the component of velocity perpendicular to the 
+                        original direction.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Radial Acceleration Detailed Explanation</h2>
+                    <p>
+                        The derivation of the equation for radial acceleration of an object travelling at constant 
+                        (tangential) speed around a horizontal circle follows.
+                    </p>
+                    <p style="color:#764ba2; font-style:italic; margin: 10px 0;">
+                        Although the diagram is of a vertical circle, always remember this derivation is only for 
+                        an object travelling in a horizontal circular path.
+                    </p>
+                    <p>
+                        A result derived earlier, to be used later — the relationship between the tangential velocity 
+                        <span class="var">v</span>, the angular velocity <span class="var">ω</span> = 
+                        <span class="frac"><span class="top">d<span class="var">θ</span></span><span class="bottom">d<span class="var">t</span></span></span>, 
+                        and the radius of the path <span class="var">r</span>:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">v</span> = <span class="var">r</span><span class="var">ω</span> = <span class="var">r</span> <span class="frac"><span class="top">d<span class="var">θ</span></span><span class="bottom">d<span class="var">t</span></span></span> &nbsp;&nbsp;&nbsp; (*)
+                    </div>
+                    <p>
+                        Start with (from the diagram) the object on the circumference of the circle at point P. 
+                        Here the "horizontal" tangential velocity is <span class="var">v</span>; there is no radial 
+                        velocity towards the centre of the circle at this point. As the object moves around the 
+                        circular path the radius traces out a small angle d<span class="var">θ</span> of a sector, 
+                        and the object is now at point Q. The tangential velocity is still <span class="var">v</span>, 
+                        but we can decompose it into a "horizontal" component and a "vertical" component. The vertical 
+                        component of the tangential velocity (using the geometry of the triangle drawn at Q) is 
+                        <span class="var">v</span> sin δ<span class="var">θ</span>.
+                    </p>
+                    <p>
+                        However, this "vertical" component of the tangential velocity at Q is parallel to the radial 
+                        velocity at P, which was zero. So the velocity has changed by 
+                        <span class="var">v</span> sin δ<span class="var">θ</span>. Notice the object has moved in a 
+                        "vertical" direction parallel to the direction from P to O, so it has accelerated in the direction 
+                        P to centre — inwards along the radius to the centre.<sup>†</sup>
+                    </p>
+                    <p>
+                        Since this change in velocity has happened over a short time interval δ<span class="var">t</span>, 
+                        the average acceleration along the radius OP is:
+                    </p>
+                    <div class="equation-large">
+                        acceleration = <span class="frac"><span class="top">change in velocity</span><span class="bottom">time</span></span> = <span class="frac"><span class="top"><span class="var">v</span> sin δ<span class="var">θ</span></span><span class="bottom">δ<span class="var">t</span></span></span>
+                    </div>
+                    <p>
+                        Since this change in velocity has happened over a small time interval we can replace 
+                        <span class="var">v</span> sin δ<span class="var">θ</span> by 
+                        <span class="var">v</span> δ<span class="var">θ</span> (for small angles, sin δ<span class="var">θ</span> ≈ δ<span class="var">θ</span>).
+                        So the average acceleration in the radial direction PO is:
+                    </p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top"><span class="var">v</span> δ<span class="var">θ</span></span><span class="bottom">δ<span class="var">t</span></span></span> = <span class="var">v</span> <span class="frac"><span class="top">δ<span class="var">θ</span></span><span class="bottom">δ<span class="var">t</span></span></span>
+                    </div>
+                    <p>
+                        Since <span class="frac"><span class="top">δ<span class="var">θ</span></span><span class="bottom">δ<span class="var">t</span></span></span> = <span class="var">ω</span>, 
+                        or replacing <span class="var">v</span> by <span class="var">r</span><span class="var">ω</span> from (*), we have 
+                        alternate expressions for radial acceleration:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">v</span><span class="var">ω</span> = <span class="var">r</span><span class="var">ω</span>² &nbsp;&nbsp;&nbsp; or &nbsp;&nbsp;&nbsp; <span class="frac"><span class="top"><span class="var">v</span>²</span><span class="bottom"><span class="var">r</span></span></span>
+                    </div>
+                    <p>directed from the circumference towards the centre of the circle.</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                        <sup>†</sup> The "horizontal" component of velocity when the object is at P is <span class="var">v</span>; at Q 
+                        it is <span class="var">v</span> cos δ<span class="var">θ</span>, which is approximately 
+                        <span class="var">v</span>(1) = <span class="var">v</span> when δ<span class="var">θ</span> is small. 
+                        So the "horizontal" velocity has not changed from P to Q — the object is not accelerating along 
+                        the tangential direction, only along the radial direction, towards the centre of the circle.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Radial Acceleration Using Polar Coordinate Vectors</h2>
+                    <p>
+                        To find the acceleration of an object moving in a circle at constant radius <span class="var">r</span> 
+                        with constant angular velocity <span class="var">ω</span>, we use polar coordinates with unit vectors: 
+                        <span class="var">r̂</span> (pointing radially outward) and <span class="var">θ̂</span> (pointing tangentially).
+                    </p>
+                    <p>
+                        The position vector is simply:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var"><strong>r</strong></span> = <span class="var">r</span> <span class="var">r̂</span>
+                    </div>
+                    <p>
+                        As the object rotates, the unit vectors themselves rotate. The key insight from calculus is that 
+                        these rotating unit vectors have time derivatives:
+                    </p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d<span class="var">r̂</span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="var">ω</span> <span class="var">θ̂</span> 
+                        &nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp; 
+                        <span class="frac"><span class="top">d<span class="var">θ̂</span></span><span class="bottom">d<span class="var">t</span></span></span> = −<span class="var">ω</span> <span class="var">r̂</span>
+                    </div>
+                    <p>
+                        The velocity is found by differentiating the position vector (noting that <span class="var">r</span> is constant):
+                    </p>
+                    <div class="equation-large">
+                        <span class="var"><strong>v</strong></span> = <span class="frac"><span class="top">d<span class="var"><strong>r</strong></span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="var">r</span> <span class="frac"><span class="top">d<span class="var">r̂</span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="var">r</span><span class="var">ω</span> <span class="var">θ̂</span>
+                    </div>
+                    <p>
+                        This shows the velocity is purely tangential with magnitude <span class="var">v</span> = <span class="var">rω</span>.
+                    </p>
+                    <p>
+                        The acceleration is found by differentiating the velocity:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var"><strong>a</strong></span> = <span class="frac"><span class="top">d<span class="var"><strong>v</strong></span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="var">r</span><span class="var">ω</span> <span class="frac"><span class="top">d<span class="var">θ̂</span></span><span class="bottom">d<span class="var">t</span></span></span> = <span class="var">r</span><span class="var">ω</span> (−<span class="var">ω</span> <span class="var">r̂</span>) = −<span class="var">rω</span>² <span class="var">r̂</span>
+                    </div>
+                    <p>
+                        The negative sign shows the acceleration points radially inward (toward the center), opposite to <span class="var">r̂</span>. 
+                        The magnitude of this centripetal acceleration is:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">a</span> = <span class="var">rω</span>² = <span class="frac"><span class="top"><span class="var">v</span>²</span><span class="bottom"><span class="var">r</span></span></span>
+                    </div>
+                    <p>
+                        This centripetal (center-seeking) acceleration is essential for circular motion. The beauty of using 
+                        polar coordinates is that it clearly shows the acceleration is purely radial, with no tangential component 
+                        when speed is constant.
+                    </p>
+                </div>
+
+                <div class="btn-container" style="margin-bottom: 30px;">
+                    <button class="btn-navigate" onclick="showPage('page-polar-vectors')">See Differentiation of Radial &amp; Tangential Vectors →</button>
+                </div>
+
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">Cartesian Coordinates of Position of Spot</h3>
+
+                <p>
+                    The position of the red spot can be described using parametric equations:
+                </p>
+
+                <div class="equation">
+                    x(t) = r cos(ωt) &nbsp;&nbsp;&nbsp; y(t) = r sin(ωt)
+                </div>
+
+                <p>
+                    Taking derivatives gives the velocity components, which are perpendicular to the position 
+                    vector and tangent to the circle. This is a perfect example where calculus reveals that 
+                    constant speed combined with changing direction produces acceleration toward the center.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Uniform circular motion with centripetal acceleration
+            </footer>
+        </div>
+
+        <!-- Page 5: Off-Axis Horizontal Circular Motion -->
+        <div class="page" id="page-offaxis">
+            <h1>Elliptical Orbit</h1>
+            <p class="subtitle">Motion Around an Ellipse with Axis at Focus</p>
+            
+            <div class="content">
+                <p>
+                    Watch a red dot moving around the perimeter of an ellipse (eccentricity = 0.5). The vertical 
+                    axis is positioned at one focal point of the ellipse. As the dot traces the elliptical path, 
+                    its distance from the focus varies continuously.
+                </p>
+
+                <div class="offaxis-container">
+                    <div class="offaxis-scene">
+                        <div class="offaxis-rotation-axis"></div>
+                        <div class="rotating-ellipse-container" id="rotating-container">
+                            <svg class="orbit-path" id="orbit-svg" width="400" height="400" viewBox="-200 -200 400 400">
+                                <path class="orbit-trace" id="orbit-path" d=""/>
+                            </svg>
+                            <div class="rotating-ellipse"></div>
+                            <div class="offaxis-dot" id="offaxis-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Elliptical Motion About a Focus</h2>
+                    <ul>
+                        <li><strong>Fixed ellipse:</strong> The ellipse remains stationary with one focus at the vertical axis</li>
+                        <li><strong>Variable radius:</strong> The dot's distance from the focus varies between <em>a(1-e)</em> and <em>a(1+e)</em></li>
+                        <li><strong>Focal property:</strong> At periapsis (closest point): r = 50px; at apoapsis (farthest): r = 150px</li>
+                        <li><strong>Kepler's 2nd Law:</strong> The dot sweeps out equal areas in equal times, moving faster near periapsis and slower near apoapsis</li>
+                    </ul>
+                </div>
+
+                <p>
+                    The position of the red dot relative to the focus can be described using polar coordinates:
+                </p>
+
+                <div class="equation">
+                    r(θ) = a(1-e²)/(1 + e cos θ)
+                </div>
+
+                <p>
+                    where <em>a</em> = 100px is the semi-major axis and <em>e</em> = 0.5 is the eccentricity. 
+                    This animation uses Kepler's equation to solve for the true orbital position at each moment, 
+                    demonstrating actual Keplerian motion. The dot moves fastest at periapsis and slowest at apoapsis, 
+                    exactly as planets orbit the sun. This non-uniform motion requires calculus and differential 
+                    equations to describe accurately.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Elliptical motion with focus at rotation axis
+            </footer>
+        </div>
+
+        <!-- Page 6: Vertical Motion with Resistance -->
+        <div class="page" id="page-resistance">
+            <h1>Vertical Motion with Resistance</h1>
+            <p class="subtitle">Air Resistance Proportional to Velocity</p>
+            
+            <div class="content">
+                <p>
+                    In order to calculate the motion of an object that is subject to a resistance proportional 
+                    to the velocity of the object at any moment, one needs to use calculus. The equation of 
+                    motion is based on the standard Newtonian equation <em>F</em> = <em>ma</em>. Write acceleration as 
+                    <span class="frac"><span class="top">d<span class="var">v</span></span><span class="bottom">d<span class="var">t</span></span></span>. 
+                    For an object thrown vertically upwards, take upwards the initial direction of motion as 
+                    the positive direction for our reference.
+                </p>
+
+                <p>
+                    The standard mass multiplied by acceleration, <em>ma</em>, is written as 
+                    <span class="var">m</span><span class="frac"><span class="top">d<span class="var">v</span></span><span class="bottom">d<span class="var">t</span></span></span>. 
+                    This is equal to the sum of the forces acting on the object: 1) the weight acting downwards −<span class="var">mg</span>, and 
+                    2) the resistance proportional to velocity as −<span class="var">mKv</span> (to make later algebra easier since <span class="var">m</span> 
+                    and <span class="var">K</span> are constants. <span class="var">K</span> has dimensions s⁻¹).
+                </p>
+
+                <div class="equation-large">
+                    <span class="var">m</span><span class="frac"><span class="top">d<span class="var">v</span></span><span class="bottom">d<span class="var">t</span></span></span> = −<span class="var">mg</span> − <span class="var">mKv</span>
+                </div>
+
+                <p>
+                    Cancelling <span class="var">m</span> throughout and separating the variables we get the following integral:
+                </p>
+
+                <div class="equation-large">
+                    ∫ <span class="frac"><span class="top">d<span class="var">v</span></span><span class="bottom"><span class="var">g</span> + <span class="var">Kv</span></span></span> = −∫ d<span class="var">t</span>
+                </div>
+
+                <p>
+                    Using <span class="var">u</span> for the initial velocity, when <span class="var">t</span> = 0, we can rearrange and integrate this equation:
+                </p>
+
+                <div class="equation-large">
+                    <span class="frac"><span class="top">1</span><span class="bottom"><span class="var">K</span></span></span> ln(<span class="var">g</span> + <span class="var">Kv</span>) = −<span class="var">t</span> + <span class="var">C</span>
+                </div>
+
+                <p>
+                    where <span class="var">C</span> is the constant of integration. Making the initial velocity represented by the 
+                    letter <span class="var">u</span>, when <span class="var">t</span> = 0, the integrated expression becomes the equation:
+                </p>
+
+                <div class="equation-large">
+                    <span class="var">t</span> = <span class="frac"><span class="top">1</span><span class="bottom"><span class="var">K</span></span></span> ln<span style="font-size: 1.2em;">{</span><span class="frac"><span class="top"><span class="var">g</span> + <span class="var">Ku</span></span><span class="bottom"><span class="var">g</span> + <span class="var">Kv</span></span></span><span style="font-size: 1.2em;">}</span>
+                </div>
+
+                <p>
+                    So if we have a value for <span class="var">K</span> and the initial velocity, we can calculate how long it takes 
+                    for the object to reach a certain velocity, <span class="var">v</span>.
+                </p>
+
+                <div class="highlight-box">
+                    <h2>Maximum Height</h2>
+                    <p>
+                        As usual with objects moving under gravity, the object reaches its maximum height when 
+                        <span class="var">v</span> = 0. Writing time to reach maximum height as <span class="var">t</span><sub>hmax</sub>:
+                    </p>
+                    <div class="equation-large">
+                        <span class="var">t</span><sub>hmax</sub> = <span class="frac"><span class="top">1</span><span class="bottom"><span class="var">K</span></span></span> ln<span style="font-size: 1.2em;">{</span><span class="frac"><span class="top"><span class="var">g</span> + <span class="var">Ku</span></span><span class="bottom"><span class="var">g</span></span></span><span style="font-size: 1.2em;">}</span> = <span class="frac"><span class="top">1</span><span class="bottom"><span class="var">K</span></span></span> ln<span style="font-size: 1.2em;">{</span>1 + <span class="frac"><span class="top"><span class="var">Ku</span></span><span class="bottom"><span class="var">g</span></span></span><span style="font-size: 1.2em;">}</span>
+                    </div>
+                </div>
+
+                <p>
+                    Rearranging the equation to make <span class="var">v</span>, the upward velocity at any time, the subject:
+                </p>
+
+                <div class="equation-large">
+                    <span class="var">v</span> = <span class="var">u</span>e<sup>−<span class="var">Kt</span></sup> + <span class="frac"><span class="top"><span class="var">g</span></span><span class="bottom"><span class="var">K</span></span></span>(e<sup>−<span class="var">Kt</span></sup> − 1)
+                </div>
+
+                <p>
+                    As <span class="var">t</span> increases (the object is travelling for a long time), e<sup>−<span class="var">Kt</span></sup> gets close to 
+                    zero, and the velocity becomes −<span class="frac"><span class="top"><span class="var">g</span></span><span class="bottom"><span class="var">K</span></span></span>, as the object is moving downwards after reaching its 
+                    maximum height. The object is slowing on the journey upwards, so maximum velocity must 
+                    occur when the object is moving down.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Differential equations for motion with air resistance
+            </footer>
+        </div>
+
+        <!-- Page 7: Bouncing Ball Animation -->
+        <div class="page" id="page-bounce">
+            <h1>Where Calculus Doesn't Help</h1>
+            <p class="subtitle">Ball Travelling Horizontally and Bouncing Off Vertical Wall</p>
+            
+            <div class="content">
+                <p>
+                    When the ball is travelling horizontally with constant speed it is not subject to a 
+                    horizontal force or acceleration. When the object hits the wall the forces are complicated 
+                    to model and depend on the material properties of the object and wall. In this situation 
+                    conservation of linear momentum is the preferred technique to analyze the change in motion.
+                </p>
+
+                <p>
+                    Watch as a ball travels horizontally at constant velocity, collides with a vertical wall, 
+                    and bounces back with the same speed in the opposite direction. This demonstrates an 
+                    elastic collision where kinetic energy is conserved.
+                </p>
+
+                <div class="animation-container">
+                    <div class="wall"></div>
+                    <div class="sphere"></div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Animation Details</h2>
+                    <ul>
+                        <li><strong>Left to Right:</strong> The ball travels from left to right in 3 seconds</li>
+                        <li><strong>Collision:</strong> At the wall, the ball immediately reverses direction</li>
+                        <li><strong>Right to Left:</strong> The ball returns at the same speed, taking 3 seconds</li>
+                        <li><strong>Pause & Repeat:</strong> A brief 0.5-second pause before the cycle repeats</li>
+                    </ul>
+                </div>
+
+                <p>
+                    In this idealized scenario, we assume a perfectly elastic collision where the ball's 
+                    velocity changes from <em>+v</em> to <em>-v</em> instantaneously. In reality, the collision 
+                    would take a finite time and involve deformation of both the ball and wall.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Horizontal motion with elastic collision
+            </footer>
+        </div>
+    </div>
+
+        <!-- Page 8: Differentiation of Radial and Tangential Vectors -->
+        <div class="page" id="page-polar-vectors">
+            <h1>Differentiation of Radial and Tangential Vectors</h1>
+            <p class="subtitle">Why the derivatives of unit vectors point where they do</p>
+
+            <div class="content">
+
+                <div class="highlight-box">
+                    <h2>Setting up the Unit Vectors</h2>
+                    <p>
+                        In polar coordinates, at any instant there are two perpendicular unit vectors that travel with the object:
+                    </p>
+                    <ul>
+                        <li><strong>r̂</strong> — points outward from the centre along the radius</li>
+                        <li><strong>θ̂</strong> — points tangentially, perpendicular to r̂, in the direction of increasing θ</li>
+                    </ul>
+                    <p>In Cartesian components these are:</p>
+                    <div class="equation">
+                        r̂ = (cos θ,  sin θ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; θ̂ = (−sin θ,  cos θ)
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Why does dθ̂/dt point inward?</h2>
+                    <p>
+                        Differentiating <strong>θ̂</strong> with respect to time (using the chain rule, since θ changes with time):
+                    </p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d<strong>θ̂</strong></span><span class="bottom">d<span class="var">t</span></span></span>
+                        = (−cos θ, −sin θ) · <span class="frac"><span class="top">d<span class="var">θ</span></span><span class="bottom">d<span class="var">t</span></span></span>
+                        = −<span class="var">ω</span> (cos θ,  sin θ) = −<span class="var">ω</span> <strong>r̂</strong>
+                    </div>
+                    <p>
+                        The result −<span class="var">ω</span><strong>r̂</strong> points in the opposite direction to <strong>r̂</strong>, 
+                        which is directly <em>inward</em> toward the centre. The negative sign is the mathematical 
+                        statement of that inward direction.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>The Geometric Picture</h2>
+                    <p>
+                        Here is the intuition without algebra. Both <strong>r̂</strong> and <strong>θ̂</strong> are unit vectors — 
+                        their tips always sit on a unit circle centred at the origin. As the object moves around its 
+                        circular path, θ increases, and <strong>θ̂</strong> rotates steadily. The tip of <strong>θ̂</strong> is 
+                        therefore itself moving around a circle, and the rate of change of any vector whose tip moves 
+                        on a circle always points toward the <em>centre of that circle</em> — which here is the origin, 
+                        i.e. the inward radial direction.
+                    </p>
+                    <p>You can see this concretely at a few key positions:</p>
+                    <table style="width:100%; border-collapse:collapse; margin: 20px 0; font-size:1em;">
+                        <thead>
+                            <tr style="background:#667eea; color:white;">
+                                <th style="padding:10px; border:1px solid #ccc; font-style:italic;">θ</th>
+                                <th style="padding:10px; border:1px solid #ccc;"><strong>r̂</strong> (outward)</th>
+                                <th style="padding:10px; border:1px solid #ccc;"><strong>θ̂</strong> (tangential)</th>
+                                <th style="padding:10px; border:1px solid #ccc;">d<strong>θ̂</strong>/dt direction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background:#f9f9f9;">
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">0°</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">→ (right)</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">↑ (up)</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">← (left = inward)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">90°</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">↑ (up)</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">← (left)</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">↓ (down = inward)</td>
+                            </tr>
+                            <tr style="background:#f9f9f9;">
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">180°</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">← (left)</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">↓ (down)</td>
+                                <td style="padding:10px; border:1px solid #ccc; text-align:center;">→ (right = inward)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        In every case, the change in <strong>θ̂</strong> points back toward the centre — always opposite to <strong>r̂</strong>.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>Why this Matters for Acceleration</h2>
+                    <p>
+                        When you differentiate the velocity <strong>v</strong> = <span class="var">r</span><span class="var">ω</span> <strong>θ̂</strong> 
+                        to get acceleration, you use the product rule and the result 
+                        d<strong>θ̂</strong>/d<span class="var">t</span> = −<span class="var">ω</span> <strong>r̂</strong> appears. 
+                        This is precisely what produces the centripetal (inward) acceleration −<span class="var">r</span><span class="var">ω</span>² <strong>r̂</strong>. 
+                        So the inward direction of the acceleration is not imposed by hand — it emerges naturally from 
+                        the geometry of how the tangential unit vector rotates as the object moves round the circle.
+                    </p>
+                </div>
+
+            </div>
+
+                <div class="highlight-box">
+                    <h2>Geometric Derivation (No Cartesian Coordinates)</h2>
+
+                    <h3 style="color:#764ba2; margin: 15px 0 10px;">Step 1: dθ̂/dt must lie along r̂</h3>
+                    <p>
+                        <strong>θ̂</strong> is a unit vector, so its magnitude is always 1. That means it can only 
+                        change <em>direction</em>, never length. The rate of change of any unit vector must therefore 
+                        be <em>perpendicular</em> to that unit vector itself (if it had a component along itself, the 
+                        magnitude would change).
+                    </p>
+                    <p>
+                        In two dimensions, <strong>r̂</strong> and <strong>θ̂</strong> form a complete set of perpendicular 
+                        directions. Since d<strong>θ̂</strong>/d<span class="var">t</span> is perpendicular to <strong>θ̂</strong>, 
+                        it must lie entirely along <strong>r̂</strong> — either inward (−<strong>r̂</strong>) or outward (+<strong>r̂</strong>).
+                    </p>
+
+                    <h3 style="color:#764ba2; margin: 20px 0 10px;">Step 2: The direction must be inward (−r̂)</h3>
+                    <p>
+                        <strong>r̂</strong> and <strong>θ̂</strong> are locked together at a fixed right angle — they rotate 
+                        as a rigid pair. Now, <strong>θ̂</strong> is defined as pointing in the direction of increasing θ, 
+                        so as θ increases, <strong>r̂</strong> rotates toward <strong>θ̂</strong>.
+                    </p>
+                    <p>
+                        By the rigid pairing, when <strong>r̂</strong> rotates toward <strong>θ̂</strong>, <strong>θ̂</strong> 
+                        rotates by the same amount in the same sense. But rotating <strong>θ̂</strong> in that same sense 
+                        carries it toward −<strong>r̂</strong> — that is, the tip of <strong>θ̂</strong> moves in the 
+                        inward radial direction.
+                    </p>
+                    <p>You can see this at a glance in the figure below:</p>
+
+                    <div style="text-align:center; margin: 25px 0;">
+                        <svg width="320" height="280" viewBox="-20 -20 320 280">
+                            <!-- Origin O -->
+                            <circle cx="120" cy="160" r="4" fill="#333"/>
+                            <text x="105" y="178" fill="#333" font-size="16" font-weight="bold">O</text>
+
+                            <!-- r̂ (old) — pointing right -->
+                            <line x1="120" y1="160" x2="230" y2="160" stroke="#667eea" stroke-width="2.5" marker-end="url(#arr-blue)"/>
+                            <text x="235" y="165" fill="#667eea" font-size="14" font-weight="bold">r̂ (old)</text>
+
+                            <!-- r̂ (new) — rotated down by δθ ≈ 25° -->
+                            <line x1="120" y1="160" x2="219" y2="207" stroke="#667eea" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arr-blue-dash)"/>
+                            <text x="222" y="220" fill="#667eea" font-size="14" font-weight="bold">r̂ (new)</text>
+
+                            <!-- θ̂ (old) — pointing up -->
+                            <line x1="120" y1="160" x2="120" y2="50" stroke="#764ba2" stroke-width="2.5" marker-end="url(#arr-purple)"/>
+                            <text x="125" y="44" fill="#764ba2" font-size="14" font-weight="bold">θ̂ (old)</text>
+
+                            <!-- θ̂ (new) — rotated by same δθ, pointing up-left -->
+                            <line x1="120" y1="160" x2="73" y2="55" stroke="#764ba2" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arr-purple-dash)"/>
+                            <text x="0" y="48" fill="#764ba2" font-size="14" font-weight="bold">θ̂ (new)</text>
+
+                            <!-- dθ̂ arrow: from tip of old θ̂ to tip of new θ̂ -->
+                            <line x1="120" y1="50" x2="73" y2="55" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr-red)"/>
+                            <text x="72" y="38" fill="#e74c3c" font-size="13" font-weight="bold">dθ̂ (= −r̂ direction)</text>
+
+                            <!-- δθ arc on r̂ side -->
+                            <path d="M 158 160 A 38 38 0 0 1 154 179" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                            <text x="163" y="177" fill="#2ecc71" font-size="13" font-style="italic">δθ</text>
+
+                            <!-- δθ arc on θ̂ side -->
+                            <path d="M 120 122 A 38 38 0 0 1 102 118" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                            <text x="82" y="118" fill="#2ecc71" font-size="13" font-style="italic">δθ</text>
+
+                            <!-- Right-angle marker between r̂ and θ̂ -->
+                            <path d="M 120 142 L 138 142 L 138 160" fill="none" stroke="#999" stroke-width="1.5"/>
+
+                            <!-- Arrow markers -->
+                            <defs>
+                                <marker id="arr-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0,10 3,0 6" fill="#667eea"/>
+                                </marker>
+                                <marker id="arr-blue-dash" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0,10 3,0 6" fill="#667eea"/>
+                                </marker>
+                                <marker id="arr-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0,10 3,0 6" fill="#764ba2"/>
+                                </marker>
+                                <marker id="arr-purple-dash" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0,10 3,0 6" fill="#764ba2"/>
+                                </marker>
+                                <marker id="arr-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0,10 3,0 6" fill="#e74c3c"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                        <p style="font-size:0.9em; color:#666; margin-top:8px;">
+                            The solid vectors are old positions; dashed are new (after rotation by δθ). 
+                            The red arrow d<strong>θ̂</strong> points from the old tip of <strong>θ̂</strong> to the new tip — 
+                            clearly in the −<strong>r̂</strong> (inward) direction.
+                        </p>
+                    </div>
+
+                    <p>
+                        The new <strong>θ̂</strong> has tipped to the left relative to the old <strong>θ̂</strong>, meaning 
+                        the change d<strong>θ̂</strong> points to the left — in the −<strong>r̂</strong> direction, 
+                        i.e. inward toward the centre.
+                    </p>
+
+                    <h3 style="color:#764ba2; margin: 20px 0 10px;">The Result</h3>
+                    <p>Combining both steps:</p>
+                    <ul>
+                        <li>d<strong>θ̂</strong>/d<span class="var">t</span> has magnitude <span class="var">ω</span> (the rate of rotation) and points along −<strong>r̂</strong></li>
+                    </ul>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d<strong>θ̂</strong></span><span class="bottom">d<span class="var">t</span></span></span> = −<span class="var">ω</span> <strong>r̂</strong>
+                    </div>
+                    <p>
+                        No Cartesian coordinates are needed — the inward direction follows entirely from the geometry 
+                        of two perpendicular unit vectors rotating rigidly together.
+                    </p>
+                </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-circular')">← Back to Horizontal Circular Motion</button>
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Geometry of rotating unit vectors in polar coordinates
+            </footer>
+        </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // White background for polar vectors page, gradient for all others
+            document.body.style.background = pageId === 'page-polar-vectors'
+                ? '#ffffff'
+                : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            
+            // Start appropriate animation
+            if (pageId === 'page-spring') {
+                animateSpring();
+            } else if (pageId === 'page-vertical-spring') {
+                animateVerticalSpring();
+            } else if (pageId === 'page-circular') {
+                animateCircular();
+            } else if (pageId === 'page-offaxis') {
+                animateOffAxis();
+            }
+        }
+
+        // Horizontal Simple Harmonic Motion animation
+        function animateSpring() {
+            const sphere = document.querySelector('.spring-sphere');
+            if (!sphere) return;
+            
+            const period = 8000; // 8 seconds for complete cycle
+            const amplitude = 0.4; // 40% of container width (from center)
+            const centerPosition = 50; // 50% (center)
+            
+            let startTime = null;
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const elapsed = currentTime - startTime;
+                
+                // Calculate position using SHM equation: x(t) = -A*sin(ωt)
+                // This starts at center (x=0) and moves left first
+                const omega = (2 * Math.PI) / period;
+                const displacement = -amplitude * Math.sin(omega * elapsed);
+                const position = centerPosition + (displacement * 100); // Convert to percentage
+                
+                sphere.style.left = position + '%';
+                
+                // Continue animation
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Vertical Simple Harmonic Motion animation with gravity
+        function animateVerticalSpring() {
+            const sphere = document.getElementById('vertical-sphere');
+            const springPath = document.getElementById('spring-path');
+            const eqLine = document.getElementById('eq-line');
+            const springSvg = document.getElementById('vertical-spring-svg');
+            
+            if (!sphere || !springPath) return;
+            
+            const period = 6000; // 6 seconds for complete cycle
+            const equilibriumY = 200; // Equilibrium position from top (spring stretched by gravity)
+            const amplitude = 60; // Oscillation amplitude in pixels
+            const springCoils = 15; // Number of coils in spring
+            const coilWidth = 10; // Width of spring coil
+            
+            // Set equilibrium line position
+            eqLine.style.top = (30 + equilibriumY) + 'px';
+            
+            let startTime = null;
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const elapsed = currentTime - startTime;
+                
+                // Calculate position using SHM: y(t) = y_eq + A*sin(ωt)
+                const omega = (2 * Math.PI) / period;
+                const displacement = amplitude * Math.sin(omega * elapsed);
+                const position = equilibriumY + displacement;
+                
+                // Update sphere position
+                sphere.style.top = (30 + position) + 'px';
+                
+                // Update spring visual (create coil path)
+                const springLength = position;
+                let path = `M10,0 `;
+                
+                for (let i = 0; i <= springCoils; i++) {
+                    const y = (i / springCoils) * springLength;
+                    const x = 10 + (i % 2 === 0 ? -coilWidth : coilWidth);
+                    path += `L${x},${y} `;
+                }
+                
+                springPath.setAttribute('d', path);
+                springSvg.setAttribute('height', springLength);
+                
+                // Continue animation
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Horizontal Circular Motion animation
+        function animateCircular() {
+            const spot = document.getElementById('circular-spot');
+            if (!spot) return;
+            
+            const period = 3000; // 3 seconds for one rotation
+            const radiusX = 100; // Semi-major axis in pixels
+            const radiusY = 86.6; // Semi-minor axis (eccentricity = 0.5: b/a = √(1-e²) = √0.75 ≈ 0.866)
+            const centerX = 150; // Center x coordinate of disk-scene
+            const centerY = 150; // Center y coordinate of disk-scene
+            const viewAngle = 30 * Math.PI / 180; // 30 degrees in radians
+            const foreshorten = Math.cos(viewAngle); // Vertical foreshortening factor
+            
+            let startTime = null;
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const elapsed = currentTime - startTime;
+                
+                // Calculate angle: θ(t) = ωt
+                const omega = (2 * Math.PI) / period;
+                const theta = omega * elapsed;
+                
+                // 3D elliptical motion in horizontal plane
+                const x3d = radiusX * Math.cos(theta);
+                const y3d = radiusY * Math.sin(theta);
+                
+                // Project to 2D view (30 degrees from horizontal)
+                // x stays the same, y is foreshortened
+                const x2d = centerX + x3d;
+                const y2d = centerY + (y3d * foreshorten);
+                
+                // Update spot position (subtract half spot size for centering)
+                spot.style.left = (x2d - 8) + 'px';
+                spot.style.top = (y2d - 8) + 'px';
+                
+                // Continue animation
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Off-Axis Rotation Animation - Now with proper orbital mechanics
+        function animateOffAxis() {
+            const container = document.getElementById('rotating-container');
+            const dot = document.getElementById('offaxis-dot');
+            const orbitPath = document.getElementById('orbit-path');
+            if (!container || !dot || !orbitPath) return;
+            
+            const period = 4000; // 4 seconds for one orbit
+            const a = 100; // Semi-major axis in pixels
+            const e = 0.5; // Eccentricity
+            const b = a * Math.sqrt(1 - e * e); // Semi-minor axis
+            const c = a * e; // Focal distance
+            
+            // Draw the orbital path once
+            let pathData = '';
+            const numPoints = 200;
+            
+            for (let i = 0; i <= numPoints; i++) {
+                const theta = (i / numPoints) * 2 * Math.PI;
+                const r = a * (1 - e * e) / (1 + e * Math.cos(theta));
+                const x = r * Math.cos(theta);
+                const y = r * Math.sin(theta);
+                
+                if (i === 0) {
+                    pathData += `M ${x} ${y} `;
+                } else {
+                    pathData += `L ${x} ${y} `;
+                }
+            }
+            pathData += 'Z'; // Close the path
+            orbitPath.setAttribute('d', pathData);
+            
+            let startTime = null;
+            
+            // Solve Kepler's equation iteratively to find eccentric anomaly
+            function solveKeplersEquation(M, e, tolerance = 1e-6) {
+                let E = M; // Initial guess
+                let delta = 1;
+                let iterations = 0;
+                const maxIterations = 20;
+                
+                while (Math.abs(delta) > tolerance && iterations < maxIterations) {
+                    delta = (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+                    E = E - delta;
+                    iterations++;
+                }
+                
+                return E;
+            }
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const elapsed = currentTime - startTime;
+                
+                // Mean anomaly (increases uniformly with time)
+                const n = (2 * Math.PI) / period; // Mean motion
+                const M = n * elapsed; // Mean anomaly
+                
+                // Solve Kepler's equation for eccentric anomaly
+                const E = solveKeplersEquation(M, e);
+                
+                // Convert eccentric anomaly to true anomaly
+                const trueAnomaly = 2 * Math.atan2(
+                    Math.sqrt(1 + e) * Math.sin(E / 2),
+                    Math.sqrt(1 - e) * Math.cos(E / 2)
+                );
+                
+                // Calculate position using ellipse equation in polar form
+                // r(θ) = a(1-e²)/(1 + e cos(θ))
+                const r = a * (1 - e * e) / (1 + e * Math.cos(trueAnomaly));
+                
+                // Convert to Cartesian coordinates with focus at origin
+                const x = r * Math.cos(trueAnomaly);
+                const y = r * Math.sin(trueAnomaly);
+                
+                // Position the dot
+                dot.style.left = x + 'px';
+                dot.style.top = y + 'px';
+                
+                // Continue animation
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Fix hat notation on all unit vectors throughout the document
+        function fixHats() {
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+            const nodes = [];
+            let n;
+            while (n = walker.nextNode()) {
+                if (n.textContent.includes('r̂') || n.textContent.includes('θ̂')) nodes.push(n);
+            }
+            nodes.forEach(textNode => {
+                const wrap = document.createElement('span');
+                wrap.innerHTML = textNode.textContent
+                    .replace(/r̂/g, '<span class="uvec"><span class="uhat">^</span>r</span>')
+                    .replace(/θ̂/g, '<span class="uvec"><span class="uhat">^</span>θ</span>');
+                textNode.parentNode.replaceChild(wrap, textNode);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', fixHats);
+        if (document.getElementById('page-spring').classList.contains('active')) {
+            animateSpring();
+        }
+        if (document.getElementById('page-vertical-spring').classList.contains('active')) {
+            animateVerticalSpring();
+        }
+        if (document.getElementById('page-circular').classList.contains('active')) {
+            animateCircular();
+        }
+        if (document.getElementById('page-offaxis').classList.contains('active')) {
+            animateOffAxis();
+        }
+    </script>
+</body>
+</html>

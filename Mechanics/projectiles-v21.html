@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectiles - Interactive mechanics guide</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Computer Modern Serif', 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #fafafa;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #34495e;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-breadcrumb button {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            font-size: 0.95em;
+            padding: 5px 10px;
+            text-decoration: underline;
+        }
+
+        .nav-breadcrumb button:hover {
+            color: #2980b9;
+        }
+
+        /* Main Content */
+        main {
+            padding-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 30px 0 20px;
+            font-weight: normal;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #34495e;
+            margin: 20px 0 15px;
+            font-weight: normal;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Intro Content */
+        .intro-content {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .intro-content p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .step-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+
+        .code-inline {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .definition-box {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .definition-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .action-box {
+            background: #fff9e6;
+            border: 1px solid #f39c12;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .action-box h4 {
+            margin-top: 0;
+            color: #e67e22;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .cta-text {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 14px 32px;
+            font-size: 1.1em;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+            cursor: pointer;
+            border: none;
+            margin: 0 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Topic Grid */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .topic-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .topic-card:hover:not(.disabled) {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .topic-card .formula {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .topic-card .description {
+            font-size: 0.95em;
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+
+        .topic-link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .topic-link:hover {
+            text-decoration: underline;
+        }
+
+        .disabled {
+            opacity: 0.5;
+        }
+
+        .derivation {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+
+        .derivation.show {
+            display: block;
+        }
+
+        .derivation h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .derivation p {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+
+        .derivation-step {
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .disabled .topic-link {
+            cursor: not-allowed;
+            color: #95a5a6;
+        }
+
+        /* Definitions Section */
+        .definitions-section {
+            background: white;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .definitions-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .definitions-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .footnote {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        
+        .example-list {
+            font-family: 'Courier New', monospace;
+            color: #34495e;
+            margin: 0 5px;
+        }
+        
+        .definition-highlight {
+            background-color: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #f39c12;
+            margin: 20px 0;
+        }
+
+        .intro p {
+            font-size: 1.05em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Step List Styles */
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-list li::before {
+            content: "Step " counter(step-counter) ": ";
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1em;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro-content {
+                padding: 25px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update header based on section
+            const header = document.querySelector('header h1');
+            const subtitle = document.querySelector('.subtitle');
+            
+            if (sectionId === 'intro') {
+                header.textContent = 'Important actions when tackling a projectiles question';
+                subtitle.textContent = '';
+            } else if (sectionId === 'reading-question') {
+                header.textContent = 'Reading the question';
+                subtitle.textContent = 'Identifying projectile motion problems';
+            } else if (sectionId === 'drawing-diagrams') {
+                header.textContent = 'Drawing diagrams';
+                subtitle.textContent = 'Visualizing projectile motion problems';
+            } else if (sectionId === 'basic-concepts') {
+                header.textContent = 'Basic concepts and notation';
+                subtitle.textContent = 'Fundamental principles of projectile motion';
+            } else if (sectionId === 'solution-method') {
+                header.textContent = 'Solution method';
+                subtitle.textContent = 'Systematic approach to solving projectile problems';
+            } else if (sectionId === 'kinematics') {
+                header.textContent = 'Kinematic equations';
+                subtitle.textContent = 'Mathematical framework for projectile motion';
+            } else if (sectionId === 'examples') {
+                header.textContent = 'Worked examples';
+                subtitle.textContent = 'Step-by-step solutions to common problems';
+            } else if (sectionId === 'standard-results') {
+                header.textContent = 'Standard results';
+                subtitle.textContent = 'Key formulas for projectile motion';
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Re-render math after showing new section
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        function toggleDerivation(id) {
+            const derivation = document.getElementById(id);
+            derivation.classList.toggle('show');
+            
+            // Re-render math after showing derivation
+            setTimeout(() => {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }, 50);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Important actions when tackling a projectiles question</h1>
+            <p class="subtitle"></p>
+        </header>
+
+        <nav class="nav-breadcrumb" id="navigation" style="display: none;">
+            <button onclick="showSection('intro'); document.getElementById('navigation').style.display='none';">← Back to Introduction</button>
+        </nav>
+
+        <main>
+            <!-- Introduction Section -->
+            <section id="intro" class="section active">
+                <div class="intro-content">
+                    <div class="definition-box">
+                        <h3>Before you study this app ...</h3>
+                        <p>
+                            Ensure you understand the content in <a href="https://claude.ai/public/artifacts/538ca9bf-2e84-4ce6-8500-744293e1fe02" target="_blank" style="color: #3498db; text-decoration: none; font-weight: bold;">Basic kinematics</a>.
+                        </p>
+                    </div>
+
+                    <div class="definition-box">
+                        <h3>What is projectile motion?</h3>
+                        <p>
+                            <strong>Projectile motion</strong> is the motion of an object that is launched into the air and moves under the influence of gravity alone (neglecting air resistance). The path followed by a projectile is called a trajectory.
+                        </p>
+                    </div>
+
+                    <div class="cta-section">
+                        <p class="cta-text">Ready to explore projectile motion in detail?</p>
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn-primary" onclick="showSection('reading-question'); document.getElementById('navigation').style.display='block';">Reading the Question →</button>
+                            <button class="btn-primary" onclick="showSection('basic-concepts'); document.getElementById('navigation').style.display='block';">Basic Concepts and Notation →</button>
+                            <button class="btn-primary" onclick="showSection('drawing-diagrams'); document.getElementById('navigation').style.display='block';">Drawing Diagrams →</button>
+                            <button class="btn-primary" onclick="showSection('solution-method'); document.getElementById('navigation').style.display='block';">Solution Method →</button>
+                            <button class="btn-primary" onclick="showSection('kinematics'); document.getElementById('navigation').style.display='block';">Kinematic Equations →</button>
+                            <button class="btn-primary" onclick="showSection('standard-results'); document.getElementById('navigation').style.display='block';">Standard Results →</button>
+                            <button class="btn-primary" onclick="showSection('examples'); document.getElementById('navigation').style.display='block';">Worked Examples →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reading the Question Section -->
+            <section id="reading-question" class="section">
+                <div class="definitions-section">
+                    <h3>Indicators of a projectile question</h3>
+                    
+                    <p>
+                        Recognizing when a problem involves projectile motion is the crucial first step in solving it. Here are the key indicators to look for:
+                    </p>
+                    
+                    <p>
+                        <span class="term">Keywords:</span> Look for words like "projectile", "trajectory", "range", "maximum height", "time of flight", "horizontal distance", or "angle of projection".
+                    </p>
+                    
+                    <p>
+                        <span class="term">Motion through the air:</span> The problem involves an object moving through the air under the influence of gravity alone.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Initial velocity:</span> The object is launched, thrown, kicked, or projected with some initial velocity.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Launch angle:</span> The problem mentions an angle of projection or launch. The angle is expressed relative to some direction such as the horizontal or the vertical or some flat slope.
+                    </p>
+
+                    <div class="footnote">
+                        <p><strong>Note:</strong> Problems may not explicitly state "projectile motion" but the context will indicate it (e.g., a ball being kicked, an arrow being shot, or water from a fountain).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Drawing Diagrams Section -->
+            <section id="drawing-diagrams" class="section">
+                <div class="definitions-section">
+                    <h3>Why diagrams are essential</h3>
+                    
+                    <p>
+                        Drawing a clear diagram is one of the most important steps in solving projectile motion problems. A good diagram helps you visualize the problem, identify what you know, and determine what you need to find.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Coordinate system:</span> Always establish a clear coordinate system. Typically, the x-axis is horizontal and the y-axis is vertical, with the origin at a convenient location (often the launch point).
+                    </p>
+                    
+                    <p>
+                        <span class="term">Initial position:</span> Mark the starting position of the projectile clearly on your diagram.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Velocity components:</span> Draw and label the initial velocity vector and its horizontal and vertical components \(v_{0x}\) and \(v_{0y}\).
+                    </p>
+                    
+                    <p>
+                        <span class="term">Trajectory path:</span> Sketch the parabolic path the projectile will follow.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Key points:</span> Mark important points such as the maximum height, landing position, or any target locations mentioned in the problem.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Known and unknown quantities:</span> Label all known values and indicate what you need to find.
+                    </p>
+
+                    <div class="footnote">
+                        <p><strong>Tip:</strong> A well-drawn diagram can often reveal the solution method before you even write an equation!</p>
+                    </div>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Building a projectile diagram step-by-step</h3>
+                    
+                    <p>
+                        Watch how a complete projectile motion diagram is constructed, starting with the reference frame and ending with the parabolic trajectory. The animation shows the proper sequence: establish the ground level and origin, add coordinate axes, then visualize the motion path.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg id="projectile-animation" width="800" height="350" viewBox="0 0 800 350" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Definitions for arrowheads -->
+                            <defs>
+                                <marker id="arrowhead-x-anim" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#3498db" />
+                                </marker>
+                                <marker id="arrowhead-y-anim" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#3498db" />
+                                </marker>
+                            </defs>
+                            
+                            <!-- Ground line (always visible) -->
+                            <line x1="25" y1="300" x2="775" y2="300" stroke="#8B4513" stroke-width="4" id="ground-line"/>
+                            
+                            <!-- Origin dot (always visible) -->
+                            <circle cx="50" cy="300" r="5" fill="#000" id="origin-dot"/>
+                            
+                            <!-- X-axis (hidden initially) -->
+                            <g id="x-axis" opacity="0">
+                                <line x1="50" y1="300" x2="760" y2="300" stroke="#3498db" stroke-width="3" marker-end="url(#arrowhead-x-anim)"/>
+                                <text x="765" y="305" fill="#3498db" font-size="20" font-weight="bold">x</text>
+                            </g>
+                            
+                            <!-- Y-axis (hidden initially) -->
+                            <g id="y-axis" opacity="0">
+                                <line x1="50" y1="300" x2="50" y2="40" stroke="#3498db" stroke-width="3" marker-end="url(#arrowhead-y-anim)"/>
+                                <text x="55" y="35" fill="#3498db" font-size="20" font-weight="bold">y</text>
+                            </g>
+                            
+                            <!-- Projectile (hidden initially) -->
+                            <circle id="projectile" cx="50" cy="300" r="8" fill="#e74c3c" opacity="0"/>
+                            
+                            <!-- Trail path (hidden initially) -->
+                            <path id="trail" d="" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0" stroke-dasharray="5,5"/>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">Animated construction of a projectile motion diagram</p>
+                    </div>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Assigning values to motion</h3>
+                    
+                    <p>
+                        As the object moves along its path/trajectory, its displacement both horizontally and vertically, \(s_x\) and \(s_y\), and its vertical velocity component \(v_y\) are changing over time. However, its horizontal velocity, \(v_x\), remains constant through the motion of the object.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg id="projectile-animation-2" width="800" height="350" viewBox="0 0 800 350" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Definitions for arrowheads -->
+                            <defs>
+                                <marker id="arrowhead-x-anim-2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#3498db" />
+                                </marker>
+                                <marker id="arrowhead-y-anim-2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#3498db" />
+                                </marker>
+                                <marker id="arrowhead-vx" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#27ae60" />
+                                </marker>
+                                <marker id="arrowhead-vy" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#9b59b6" />
+                                </marker>
+                            </defs>
+                            
+                            <!-- Ground line (always visible) -->
+                            <line x1="25" y1="300" x2="775" y2="300" stroke="#8B4513" stroke-width="4" id="ground-line-2"/>
+                            
+                            <!-- Origin dot (always visible) -->
+                            <circle cx="50" cy="300" r="5" fill="#000" id="origin-dot-2"/>
+                            
+                            <!-- X-axis (hidden initially) -->
+                            <g id="x-axis-2" opacity="0">
+                                <line x1="50" y1="300" x2="760" y2="300" stroke="#3498db" stroke-width="3" marker-end="url(#arrowhead-x-anim-2)"/>
+                                <text x="765" y="305" fill="#3498db" font-size="20" font-weight="bold">x</text>
+                            </g>
+                            
+                            <!-- Y-axis (hidden initially) -->
+                            <g id="y-axis-2" opacity="0">
+                                <line x1="50" y1="300" x2="50" y2="40" stroke="#3498db" stroke-width="3" marker-end="url(#arrowhead-y-anim-2)"/>
+                                <text x="55" y="35" fill="#3498db" font-size="20" font-weight="bold">y</text>
+                            </g>
+                            
+                            <!-- Velocity vectors (hidden initially) -->
+                            <g id="velocity-vectors-2" opacity="0">
+                                <!-- Horizontal velocity vector -->
+                                <line id="vx-vector-2" x1="50" y1="300" x2="50" y2="300" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arrowhead-vx)"/>
+                                <text id="vx-label-2" x="50" y="300" fill="#27ae60" font-size="16" font-weight="bold">v_x</text>
+                                
+                                <!-- Vertical velocity vector -->
+                                <line id="vy-vector-2" x1="50" y1="300" x2="50" y2="300" stroke="#9b59b6" stroke-width="2.5" marker-end="url(#arrowhead-vy)"/>
+                                <text id="vy-label-2" x="50" y="300" fill="#9b59b6" font-size="16" font-weight="bold">v_y</text>
+                            </g>
+                            
+                            <!-- Projectile (hidden initially) -->
+                            <circle id="projectile-2" cx="50" cy="300" r="8" fill="#e74c3c" opacity="0"/>
+                            
+                            <!-- Trail path (hidden initially) -->
+                            <path id="trail-2" d="" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0" stroke-dasharray="5,5"/>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">Animated construction of a projectile motion diagram with velocity vectors</p>
+                    </div>
+                </div>
+                
+                <script>
+                    (function() {
+                        const xAxis = document.getElementById('x-axis');
+                        const yAxis = document.getElementById('y-axis');
+                        const projectile = document.getElementById('projectile');
+                        const trail = document.getElementById('trail');
+                        
+                        const startX = 50;
+                        const startY = 300;
+                        const endX = 750;
+                        const flightTime = 3; // seconds for projectile flight
+                        const angle = 30 * Math.PI / 180; // 30 degrees in radians
+                        
+                        // Calculate physics parameters
+                        const range = endX - startX; // 700 px
+                        const v0x = range / flightTime; // horizontal velocity
+                        const v0 = v0x / Math.cos(angle); // initial velocity magnitude
+                        const v0y = v0 * Math.sin(angle); // vertical velocity
+                        const g = (2 * v0y) / flightTime; // gravity to make it land at t=3s
+                        
+                        let animationStartTime = null;
+                        let currentPhase = 0;
+                        
+                        function animate(timestamp) {
+                            if (!animationStartTime) animationStartTime = timestamp;
+                            const elapsed = (timestamp - animationStartTime) / 1000; // convert to seconds
+                            
+                            // Phase 0: Initial 1 second pause (0-1s)
+                            if (elapsed < 1) {
+                                currentPhase = 0;
+                            }
+                            // Phase 1: X-axis appears (1-2s)
+                            else if (elapsed < 2) {
+                                if (currentPhase !== 1) {
+                                    currentPhase = 1;
+                                    xAxis.style.opacity = '1';
+                                }
+                            }
+                            // Phase 2: Y-axis appears (2-3s)
+                            else if (elapsed < 3) {
+                                if (currentPhase !== 2) {
+                                    currentPhase = 2;
+                                    yAxis.style.opacity = '1';
+                                }
+                            }
+                            // Phase 3: Projectile motion (3-6s)
+                            else if (elapsed < 6) {
+                                const flightElapsed = elapsed - 3;
+                                
+                                if (currentPhase !== 3) {
+                                    currentPhase = 3;
+                                    projectile.style.opacity = '1';
+                                    trail.style.opacity = '1';
+                                }
+                                
+                                // Calculate projectile position
+                                const x = startX + v0x * flightElapsed;
+                                const y = startY - (v0y * flightElapsed - 0.5 * g * flightElapsed * flightElapsed);
+                                
+                                projectile.setAttribute('cx', x);
+                                projectile.setAttribute('cy', y);
+                                
+                                // Build trail path
+                                let pathData = `M ${startX} ${startY}`;
+                                const steps = 50;
+                                for (let i = 0; i <= steps; i++) {
+                                    const t = (flightElapsed * i) / steps;
+                                    if (t > flightElapsed) break;
+                                    const trailX = startX + v0x * t;
+                                    const trailY = startY - (v0y * t - 0.5 * g * t * t);
+                                    pathData += ` L ${trailX} ${trailY}`;
+                                }
+                                trail.setAttribute('d', pathData);
+                            }
+                            // Phase 4: Pause at end (6-7s)
+                            else if (elapsed < 7) {
+                                // Keep everything visible, projectile at end position
+                                if (currentPhase !== 4) {
+                                    currentPhase = 4;
+                                }
+                            }
+                            // Reset and restart (after 7s)
+                            else {
+                                xAxis.style.opacity = '0';
+                                yAxis.style.opacity = '0';
+                                projectile.style.opacity = '0';
+                                trail.style.opacity = '0';
+                                projectile.setAttribute('cx', startX);
+                                projectile.setAttribute('cy', startY);
+                                trail.setAttribute('d', '');
+                                animationStartTime = timestamp;
+                                currentPhase = 0;
+                            }
+                            
+                            requestAnimationFrame(animate);
+                        }
+                        
+                        // Start animation when the drawing-diagrams section is visible
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    requestAnimationFrame(animate);
+                                    observer.disconnect();
+                                }
+                            });
+                        });
+                        
+                        const section = document.getElementById('drawing-diagrams');
+                        if (section) {
+                            observer.observe(section);
+                        }
+                    })();
+
+                    // Second animation
+                    (function() {
+                        const xAxis = document.getElementById('x-axis-2');
+                        const yAxis = document.getElementById('y-axis-2');
+                        const projectile = document.getElementById('projectile-2');
+                        const trail = document.getElementById('trail-2');
+                        const velocityVectors = document.getElementById('velocity-vectors-2');
+                        const vxVector = document.getElementById('vx-vector-2');
+                        const vyVector = document.getElementById('vy-vector-2');
+                        const vxLabel = document.getElementById('vx-label-2');
+                        const vyLabel = document.getElementById('vy-label-2');
+                        
+                        const startX = 50;
+                        const startY = 300;
+                        const endX = 750;
+                        const flightTime = 3; // seconds for projectile flight
+                        const angle = 30 * Math.PI / 180; // 30 degrees in radians
+                        
+                        // Calculate physics parameters
+                        const range = endX - startX; // 700 px
+                        const v0x = range / flightTime; // horizontal velocity
+                        const v0 = v0x / Math.cos(angle); // initial velocity magnitude
+                        const v0y = v0 * Math.sin(angle); // vertical velocity
+                        const g = (2 * v0y) / flightTime; // gravity to make it land at t=3s
+                        
+                        const velocityScale = 0.3; // Scale factor for velocity vectors
+                        
+                        let animationStartTime = null;
+                        let currentPhase = 0;
+                        
+                        function animate(timestamp) {
+                            if (!animationStartTime) animationStartTime = timestamp;
+                            const elapsed = (timestamp - animationStartTime) / 1000; // convert to seconds
+                            
+                            // Phase 0: Initial 1 second pause (0-1s)
+                            if (elapsed < 1) {
+                                currentPhase = 0;
+                            }
+                            // Phase 1: X-axis appears (1-2s)
+                            else if (elapsed < 2) {
+                                if (currentPhase !== 1) {
+                                    currentPhase = 1;
+                                    xAxis.style.opacity = '1';
+                                }
+                            }
+                            // Phase 2: Y-axis appears (2-3s)
+                            else if (elapsed < 3) {
+                                if (currentPhase !== 2) {
+                                    currentPhase = 2;
+                                    yAxis.style.opacity = '1';
+                                }
+                            }
+                            // Phase 3: Projectile motion (3-6s)
+                            else if (elapsed < 6) {
+                                const flightElapsed = elapsed - 3;
+                                
+                                if (currentPhase !== 3) {
+                                    currentPhase = 3;
+                                    projectile.style.opacity = '1';
+                                    trail.style.opacity = '1';
+                                    velocityVectors.style.opacity = '1';
+                                }
+                                
+                                // Calculate projectile position
+                                const x = startX + v0x * flightElapsed;
+                                const y = startY - (v0y * flightElapsed - 0.5 * g * flightElapsed * flightElapsed);
+                                
+                                projectile.setAttribute('cx', x);
+                                projectile.setAttribute('cy', y);
+                                
+                                // Calculate velocity components
+                                const vx = v0x; // constant horizontal velocity
+                                const vy = v0y - g * flightElapsed; // vertical velocity changes with time
+                                
+                                // Update horizontal velocity vector (always pointing right)
+                                const vxLength = vx * velocityScale;
+                                vxVector.setAttribute('x1', x);
+                                vxVector.setAttribute('y1', y);
+                                vxVector.setAttribute('x2', x + vxLength);
+                                vxVector.setAttribute('y2', y);
+                                
+                                // Position vx label
+                                vxLabel.setAttribute('x', x + vxLength + 5);
+                                vxLabel.setAttribute('y', y + 5);
+                                
+                                // Update vertical velocity vector (pointing up initially, then down)
+                                const vyLength = Math.abs(vy) * velocityScale;
+                                vxVector.setAttribute('x1', x);
+                                vyVector.setAttribute('x1', x);
+                                vyVector.setAttribute('y1', y);
+                                
+                                if (vy > 0) {
+                                    // Positive velocity (upward)
+                                    vyVector.setAttribute('x2', x);
+                                    vyVector.setAttribute('y2', y - vyLength);
+                                    vyLabel.setAttribute('x', x + 5);
+                                    vyLabel.setAttribute('y', y - vyLength - 5);
+                                } else {
+                                    // Negative velocity (downward)
+                                    vyVector.setAttribute('x2', x);
+                                    vyVector.setAttribute('y2', y + vyLength);
+                                    vyLabel.setAttribute('x', x + 5);
+                                    vyLabel.setAttribute('y', y + vyLength + 15);
+                                }
+                                
+                                // Build trail path
+                                let pathData = `M ${startX} ${startY}`;
+                                const steps = 50;
+                                for (let i = 0; i <= steps; i++) {
+                                    const t = (flightElapsed * i) / steps;
+                                    if (t > flightElapsed) break;
+                                    const trailX = startX + v0x * t;
+                                    const trailY = startY - (v0y * t - 0.5 * g * t * t);
+                                    pathData += ` L ${trailX} ${trailY}`;
+                                }
+                                trail.setAttribute('d', pathData);
+                            }
+                            // Phase 4: Pause at end (6-7s)
+                            else if (elapsed < 7) {
+                                // Keep everything visible, projectile at end position
+                                if (currentPhase !== 4) {
+                                    currentPhase = 4;
+                                }
+                            }
+                            // Reset and restart (after 7s)
+                            else {
+                                xAxis.style.opacity = '0';
+                                yAxis.style.opacity = '0';
+                                projectile.style.opacity = '0';
+                                trail.style.opacity = '0';
+                                velocityVectors.style.opacity = '0';
+                                projectile.setAttribute('cx', startX);
+                                projectile.setAttribute('cy', startY);
+                                trail.setAttribute('d', '');
+                                animationStartTime = timestamp;
+                                currentPhase = 0;
+                            }
+                            
+                            requestAnimationFrame(animate);
+                        }
+                        
+                        // Start animation when the drawing-diagrams section is visible
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    requestAnimationFrame(animate);
+                                    observer.disconnect();
+                                }
+                            });
+                        });
+                        
+                        const section = document.getElementById('drawing-diagrams');
+                        if (section) {
+                            observer.observe(section);
+                        }
+                    })();
+                </script>
+                
+                <div class="definitions-section">
+                    <h3>Specific values</h3>
+                    
+                    <p style="margin: 20px 0; line-height: 1.8;">
+                        At every moment along its path or trajectory, the object will have moved relative to the origin (where we are measuring from). The object will have: horizontal displacement (from origin): \(s_x\), vertical displacement: \(s_y\), horizontal velocity: \(v_x\), vertical velocity: \(v_y\). Vertical acceleration, \(a_y\), is constant, horizontal acceleration, \(a_x\), is zero.
+                    </p>
+                    
+                    <p style="text-align: center; margin: 20px 0; font-weight: bold;">
+                        Example: a projectile in motion showing displacement and velocity components
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg width="800" height="350" viewBox="0 0 800 350" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Definitions for arrowheads -->
+                            <defs>
+                                <marker id="arrowhead-x-freeze" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#3498db" />
+                                </marker>
+                                <marker id="arrowhead-y-freeze" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#3498db" />
+                                </marker>
+                                <marker id="arrowhead-vx-freeze" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#27ae60" />
+                                </marker>
+                                <marker id="arrowhead-vy-freeze" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#9b59b6" />
+                                </marker>
+                                <marker id="arrowhead-disp-freeze" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#e67e22" />
+                                </marker>
+                            </defs>
+                            
+                            <!-- Ground line -->
+                            <line x1="25" y1="300" x2="775" y2="300" stroke="#8B4513" stroke-width="4"/>
+                            
+                            <!-- X-axis -->
+                            <line x1="50" y1="300" x2="760" y2="300" stroke="#3498db" stroke-width="3" marker-end="url(#arrowhead-x-freeze)"/>
+                            <text x="765" y="305" fill="#3498db" font-size="20" font-weight="bold">x</text>
+                            
+                            <!-- Y-axis -->
+                            <line x1="50" y1="300" x2="50" y2="40" stroke="#3498db" stroke-width="3" marker-end="url(#arrowhead-y-freeze)"/>
+                            <text x="55" y="35" fill="#3498db" font-size="20" font-weight="bold">y</text>
+                            
+                            <!-- Origin dot and labels -->
+                            <circle cx="50" cy="300" r="5" fill="#000"/>
+                            <text x="20" y="295" fill="#000" font-size="14" font-weight="bold">s=0</text>
+                            <text x="20" y="310" fill="#000" font-size="14" font-weight="bold">t=0</text>
+                            
+                            <!-- Projectile position at t=1s (1/3 of trajectory) -->
+                            <!-- x = 50 + (700/3) * 1 ≈ 283 -->
+                            <!-- y = 300 - (134.7 - 44.9) ≈ 210 -->
+                            <circle cx="283" cy="210" r="8" fill="#e74c3c"/>
+                            
+                            <!-- Trail path (full parabola shown faintly) -->
+                            <path d="M 50 300 Q 400 120, 750 300" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0.3" stroke-dasharray="5,5"/>
+                            
+                            <!-- Displacement indicators -->
+                            <!-- Horizontal displacement s_x -->
+                            <line x1="50" y1="315" x2="283" y2="315" stroke="#e67e22" stroke-width="2" stroke-dasharray="3,3"/>
+                            <line x1="50" y1="310" x2="50" y2="320" stroke="#e67e22" stroke-width="2"/>
+                            <line x1="283" y1="310" x2="283" y2="320" stroke="#e67e22" stroke-width="2"/>
+                            <text x="150" y="335" fill="#e67e22" font-size="16" font-weight="bold">s_x</text>
+                            
+                            <!-- Vertical displacement s_y (underneath the object) -->
+                            <line x1="283" y1="300" x2="283" y2="210" stroke="#e67e22" stroke-width="2" stroke-dasharray="3,3"/>
+                            <line x1="278" y1="300" x2="288" y2="300" stroke="#e67e22" stroke-width="2"/>
+                            <line x1="278" y1="210" x2="288" y2="210" stroke="#e67e22" stroke-width="2"/>
+                            <text x="290" y="260" fill="#e67e22" font-size="16" font-weight="bold">s_y</text>
+                            
+                            <!-- Horizontal velocity vector v_x -->
+                            <line x1="283" y1="210" x2="353" y2="210" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arrowhead-vx-freeze)"/>
+                            <text x="358" y="215" fill="#27ae60" font-size="16" font-weight="bold">v_x</text>
+                            
+                            <!-- Vertical velocity vector v_y (pointing upward at t=1s) -->
+                            <line x1="283" y1="210" x2="283" y2="170" stroke="#9b59b6" stroke-width="2.5" marker-end="url(#arrowhead-vy-freeze)"/>
+                            <text x="288" y="165" fill="#9b59b6" font-size="16" font-weight="bold">v_y</text>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">Freeze-frame showing projectile at one-third of trajectory with displacement and velocity components labeled</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Basic Concepts Section -->
+            <section id="basic-concepts" class="section">
+                <div class="definitions-section">
+                    <h3>Directed motion</h3>
+                    
+                    <p>
+                        In mechanics or kinematic questions most quantities are 'directed' - or have a direction. When you move a certain distance, you also move in a direction: up, down, left, right, North, South etc. The effect of your movement results from both how far you move from your start point and in which direction you moved. In order to determine your direction of movement you need some axes - more on that later.
+                    </p>
+                    
+                    <p>
+                        Movement expressed as distance plus direction is called <strong>displacement</strong>. Speed plus direction is called <strong>velocity</strong>. Acceleration plus direction is, well, <strong>acceleration</strong>. Time does not have a direction in the sense of up, down, left, right but we can think of a positive time as being something happening in the future and a negative time as being something happening in the past.
+                    </p>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Fundamental principles</h3>
+                    
+                    <p>
+                        <span class="term">Independence of motion:</span> The horizontal and vertical components of projectile motion are completely independent of each other. When solving a projectile problem there will be two sets of equations, one for horizontal motion and one for vertical motion. Each equation will be solved as if there was only horizontal or only vertical motion.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Horizontal motion:</span> The horizontal velocity is usually taken as constant because we consider (unless told otherwise) there is no acceleration or deceleration horizontally. Later we will see the effect of horizontal resistance.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Vertical motion:</span> Constant downward acceleration due to gravity of size 9.81 \(\text{ms}^{-2}\). The sign of the acceleration depends on whether the positive vertical direction is up or down.
+                    </p>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Notation</h3>
+                    
+                    <p>
+                        If a problem is about motion in a straight line (it is one-dimensional), then we can use the following variables to express and solve our problem:
+                    </p>
+                    
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li>\(s\) is displacement from origin</li>
+                        <li>\(u\) is initial velocity</li>
+                        <li>\(v\) is final velocity</li>
+                        <li>\(a\) is (constant) acceleration</li>
+                    </ul>
+                    
+                    <p style="margin-top: 20px;">
+                        If a problem is about (uniform acceleration) motion in a plane or about a projectile moving both horizontally and vertically (it is two-dimensional motion), then based on the coordinate axes we have chosen, we can use the following variables to express and solve our problem:
+                    </p>
+                    
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li>\(s_x\) and \(s_y\) are displacement in the x and y direction</li>
+                        <li>\(u_x\) and \(u_y\) are initial velocity in the x and y direction</li>
+                        <li>\(v_x\) and \(v_y\) are final velocity in the x and y direction</li>
+                        <li>\(a_x\) and \(a_y\) are acceleration in the x and y direction</li>
+                    </ul>
+                    
+                    <p style="margin-top: 20px;">
+                        For a projectile where the y-axis is vertical and the x-axis is horizontal, because an object has no horizontal acceleration, \(a_x = 0\) and \(u_x = v_x\), and simpler equations can be used horizontally: \(u_x = v_x = \frac{s_x}{t}\).
+                    </p>
+                </div>
+            </section>
+
+            <!-- Solution Method Section -->
+            <section id="solution-method" class="section">
+                <div class="definitions-section">
+                    <h3>Systematic approach to solving projectile problems</h3>
+                    
+                    <p>
+                        Following a structured method ensures you don't miss important steps and helps you solve projectile motion problems efficiently and accurately.
+                    </p>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Essential steps for solving projectile problems:</h3>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Recognise the question is about projectiles.</strong> 
+                            The question will give indications like "An object / ball is thrown ..." and "horizontally from a cliff / tower ..." or "... at an angle X degrees above the horizontal".
+                        </li>
+                        
+                        <li>
+                            <strong>Draw a clear diagram.</strong> Label the point from where the object is thrown or projected as the origin of the coordinate axes.
+                            The axes are usually horizontal and vertical.
+                        </li>
+                        
+                        <li>
+                            <strong>Resolve the initial velocity into its horizontal and vertical components.</strong> 
+                            Identify the positive directions along the axes, usually the direction of the initial velocity components. Mark vertical acceleration due to gravity and assign correct sign to its values.
+                        </li>
+                        
+                        <li>
+                            <strong>Add any other information about positions of objects or final positions or final velocities given in the question.</strong>
+                        </li>
+                        
+                        <li>
+                            <strong>Choose appropriate kinematic equations:</strong> 
+                            Horizontal and vertical motions are independent, they do not affect each other and must be analyzed separately. Vertical motion requires suvat equation where the acceleration value 'a' is due to gravity. Horizontal motion experiences no acceleration, so the horizontal motion is constant and simpler equations such as speed = distance / time can be used in this direction.
+                        </li>
+                        
+                        <li>
+                            <strong>Often solving horizontal motion for time gives a value that can be substituted into the vertical suvat equation.</strong>
+                            Exactly what needs to be calculated depends on the information given in the question and the unknown value to be calculated.
+                        </li>
+                    </ol>
+
+                    <div class="action-box">
+                        <h4>⚠️ Common mistakes to avoid:</h4>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Forgetting that horizontal velocity remains constant (no horizontal acceleration)</li>
+                            <li>Using wrong sign conventions for vertical motion</li>
+                            <li>Mixing up initial and final conditions</li>
+                            <li>Not checking if the answer is physically reasonable</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Standard Results Section -->
+            <section id="standard-results" class="section">
+                <h2>Standard results</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Velocity components</h3>
+                        <div class="formula">
+                            \[v_x = v_0 \cos\theta\] \[v_y = v_0 \sin\theta - gt\]
+                        </div>
+                        <p class="description">Horizontal and vertical velocity components at any time t.</p>
+                        <span class="topic-link" onclick="toggleDerivation('velocity-derivation')">Learn More →</span>
+                        
+                        <div id="velocity-derivation" class="derivation">
+                            <h4>Derivation of Velocity Components</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Resolve initial velocity into components</strong></p>
+                                <p>Consider a projectile launched with initial velocity \(v_0\) at angle \(\theta\) above the horizontal.</p>
+                                <p>Horizontal component: \(v_{0x} = v_0 \cos\theta\)</p>
+                                <p>Vertical component: \(v_{0y} = v_0 \sin\theta\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Horizontal velocity (no horizontal acceleration)</strong></p>
+                                <p>Since there is no horizontal acceleration (\(a_x = 0\)), the horizontal velocity remains constant throughout the flight:</p>
+                                <p>\[v_x = v_{0x} = v_0 \cos\theta\]</p>
+                                <p>This remains the same at all times \(t\).</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Vertical velocity (constant downward acceleration)</strong></p>
+                                <p>The vertical motion experiences constant downward acceleration due to gravity (\(a_y = -g\)).</p>
+                                <p>Using the equation: \(v = u + at\)</p>
+                                <p>\[v_y = v_{0y} + a_y t\]</p>
+                                <p>\[v_y = v_0 \sin\theta + (-g)t\]</p>
+                                <p>\[v_y = v_0 \sin\theta - gt\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> The horizontal velocity is constant (independent of time), while the vertical velocity decreases linearly with time due to gravity. At maximum height, \(v_y = 0\).</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Range</h3>
+                        <div class="formula">
+                            \[R = \frac{v_0^2 \sin(2\theta)}{g}\]
+                        </div>
+                        <p class="description">Horizontal distance traveled by a projectile launched and landing at the same height.</p>
+                        <span class="topic-link" onclick="toggleDerivation('range-derivation')">Learn More →</span>
+                        
+                        <div id="range-derivation" class="derivation">
+                            <h4>Derivation of the Range Formula</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Set up the problem</strong></p>
+                                <p>Consider a projectile launched from the origin with initial velocity \(v_0\) at angle \(\theta\) above the horizontal. The projectile lands at the same height from which it was launched.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Resolve initial velocity into components</strong></p>
+                                <p>Horizontal component: \(v_{0x} = v_0 \cos\theta\)</p>
+                                <p>Vertical component: \(v_{0y} = v_0 \sin\theta\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Find the time of flight</strong></p>
+                                <p>Using the vertical motion equation with \(s_y = 0\) (returns to same height):</p>
+                                <p>\[s_y = v_{0y}t - \frac{1}{2}gt^2\]</p>
+                                <p>\[0 = v_0 \sin\theta \cdot t - \frac{1}{2}gt^2\]</p>
+                                <p>\[0 = t(v_0 \sin\theta - \frac{1}{2}gt)\]</p>
+                                <p>This gives \(t = 0\) (launch) or \(t = \frac{2v_0 \sin\theta}{g}\) (landing)</p>
+                                <p>Therefore, time of flight: \(t = \frac{2v_0 \sin\theta}{g}\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Calculate the horizontal range</strong></p>
+                                <p>Since horizontal velocity is constant:</p>
+                                <p>\[R = v_{0x} \times t\]</p>
+                                <p>\[R = v_0 \cos\theta \times \frac{2v_0 \sin\theta}{g}\]</p>
+                                <p>\[R = \frac{2v_0^2 \cos\theta \sin\theta}{g}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 5: Simplify using trigonometric identity</strong></p>
+                                <p>Using the double angle formula: \(\sin(2\theta) = 2\sin\theta\cos\theta\)</p>
+                                <p>\[R = \frac{v_0^2 \times 2\sin\theta\cos\theta}{g}\]</p>
+                                <p>\[R = \frac{v_0^2 \sin(2\theta)}{g}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> The range is maximum when \(\sin(2\theta) = 1\), which occurs at \(\theta = 45°\).</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Maximum height</h3>
+                        <div class="formula">
+                            \[H = \frac{v_0^2 \sin^2\theta}{2g}\]
+                        </div>
+                        <p class="description">The highest point reached by a projectile during its flight.</p>
+                        <span class="topic-link" onclick="toggleDerivation('maxheight-derivation')">Learn More →</span>
+                        
+                        <div id="maxheight-derivation" class="derivation">
+                            <h4>Derivation of the Maximum Height Formula</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Set up the problem</strong></p>
+                                <p>Consider a projectile launched with initial velocity \(v_0\) at angle \(\theta\) above the horizontal. We need to find the maximum vertical displacement.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Resolve initial velocity into components</strong></p>
+                                <p>Horizontal component: \(v_{0x} = v_0 \cos\theta\)</p>
+                                <p>Vertical component: \(v_{0y} = v_0 \sin\theta\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Key observation at maximum height</strong></p>
+                                <p>At maximum height, the vertical velocity is zero: \(v_y = 0\)</p>
+                                <p>The projectile momentarily stops moving vertically before falling back down.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Apply the vertical motion equation</strong></p>
+                                <p>Using \(v_y^2 = v_{0y}^2 - 2g s_y\) where \(s_y = H\) (maximum height):</p>
+                                <p>\[0^2 = (v_0 \sin\theta)^2 - 2gH\]</p>
+                                <p>\[0 = v_0^2 \sin^2\theta - 2gH\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 5: Solve for H</strong></p>
+                                <p>\[2gH = v_0^2 \sin^2\theta\]</p>
+                                <p>\[H = \frac{v_0^2 \sin^2\theta}{2g}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> Maximum height is achieved when \(\sin^2\theta = 1\), which occurs at \(\theta = 90°\) (vertical launch).</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Time of flight</h3>
+                        <div class="formula">
+                            \[t = \frac{2v_0 \sin\theta}{g}\]
+                        </div>
+                        <p class="description">Total time the projectile spends in the air (for same launch and landing height).</p>
+                        <span class="topic-link" onclick="toggleDerivation('timeofflight-derivation')">Learn More →</span>
+                        
+                        <div id="timeofflight-derivation" class="derivation">
+                            <h4>Derivation of the Time of Flight Formula</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Set up the problem</strong></p>
+                                <p>Consider a projectile launched with initial velocity \(v_0\) at angle \(\theta\) above the horizontal. The projectile lands at the same height from which it was launched.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Resolve initial velocity into components</strong></p>
+                                <p>Horizontal component: \(v_{0x} = v_0 \cos\theta\)</p>
+                                <p>Vertical component: \(v_{0y} = v_0 \sin\theta\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Key observation for time of flight</strong></p>
+                                <p>When the projectile returns to its launch height, the vertical displacement \(s_y = 0\).</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Apply the vertical motion equation</strong></p>
+                                <p>Using \(s_y = v_{0y}t - \frac{1}{2}gt^2\) with \(s_y = 0\):</p>
+                                <p>\[0 = v_{0y}t - \frac{1}{2}gt^2\]</p>
+                                <p>\[0 = v_0 \sin\theta \cdot t - \frac{1}{2}gt^2\]</p>
+                                <p>\[0 = t(v_0 \sin\theta - \frac{1}{2}gt)\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 5: Solve for t</strong></p>
+                                <p>This equation gives two solutions:</p>
+                                <p>\(t = 0\) (the launch time)</p>
+                                <p>or</p>
+                                <p>\[v_0 \sin\theta - \frac{1}{2}gt = 0\]</p>
+                                <p>\[v_0 \sin\theta = \frac{1}{2}gt\]</p>
+                                <p>\[t = \frac{2v_0 \sin\theta}{g}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> Time of flight is maximum when \(\sin\theta = 1\), which occurs at \(\theta = 90°\) (vertical launch). Note that the time of flight is twice the time to reach maximum height.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Trajectory equation relating x and y</h3>
+                        <div class="formula">
+                            \[y = x\tan\theta - \frac{gx^2}{2v_0^2\cos^2\theta}\]
+                        </div>
+                        <p class="description">The equation of the parabolic path expressing vertical position y in terms of horizontal position x.</p>
+                        <span class="topic-link" onclick="toggleDerivation('trajectory-derivation')">Learn More →</span>
+                        
+                        <div id="trajectory-derivation" class="derivation">
+                            <h4>Derivation of the Trajectory Equation</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Write parametric equations</strong></p>
+                                <p>The horizontal and vertical positions are given by:</p>
+                                <p>\[x = v_0 \cos\theta \cdot t\]</p>
+                                <p>\[y = v_0 \sin\theta \cdot t - \frac{1}{2}gt^2\]</p>
+                                <p>These give position as a function of time \(t\).</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Eliminate time from the equations</strong></p>
+                                <p>From the horizontal equation, solve for \(t\):</p>
+                                <p>\[t = \frac{x}{v_0 \cos\theta}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Substitute into vertical equation</strong></p>
+                                <p>Replace \(t\) in the vertical equation:</p>
+                                <p>\[y = v_0 \sin\theta \left(\frac{x}{v_0 \cos\theta}\right) - \frac{1}{2}g\left(\frac{x}{v_0 \cos\theta}\right)^2\]</p>
+                                <p>\[y = x \frac{\sin\theta}{\cos\theta} - \frac{gx^2}{2v_0^2\cos^2\theta}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Simplify using trigonometry</strong></p>
+                                <p>Using \(\tan\theta = \frac{\sin\theta}{\cos\theta}\):</p>
+                                <p>\[y = x\tan\theta - \frac{gx^2}{2v_0^2\cos^2\theta}\]</p>
+                                <p>This is the trajectory equation in standard form.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Alternative form:</strong></p>
+                                <p>Using \(\sec^2\theta = 1 + \tan^2\theta\) and \(\cos^2\theta = \frac{1}{\sec^2\theta}\):</p>
+                                <p>\[y = x\tan\theta - \frac{gx^2}{2v_0^2}(1 + \tan^2\theta)\]</p>
+                                <p>This form is useful for solving problems involving specific targets.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> This equation is in the form \(y = ax + bx^2\), which is a parabola. The trajectory of any projectile is parabolic. The equation relates vertical and horizontal positions without needing to know the time.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Kinematic Equations Section -->
+            <section id="kinematics" class="section">
+                <div class="definitions-section">
+                    <h3>The kinematic equations for projectile motion</h3>
+                    
+                    <p>
+                        Since projectile motion can be separated into horizontal and vertical components, we apply kinematic equations to each direction independently.
+                    </p>
+                    
+                    <div class="definition-highlight">
+                        <p>
+                            <strong>Horizontal direction (x-axis):</strong>
+                        </p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>\(x = x_0 + v_{0x}t\)</li>
+                            <li>\(v_x = v_{0x} = \text{constant}\)</li>
+                        </ul>
+                    </div>
+
+                    <div class="definition-highlight">
+                        <p>
+                            <strong>Vertical direction (y-axis):</strong>
+                        </p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>\(y = y_0 + v_{0y}t - \frac{1}{2}gt^2\)</li>
+                            <li>\(v_y = v_{0y} - gt\)</li>
+                            <li>\(v_y^2 = v_{0y}^2 - 2g(y - y_0)\)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Worked Examples Section -->
+            <section id="examples" class="section">
+                <div class="definitions-section">
+                    <h3>Problem-solving approach</h3>
+                    
+                    <p>
+                        Each worked example follows the systematic approach outlined in the introduction. Pay attention to how each step is applied in different scenarios.
+                    </p>
+                </div>
+
+                <h2>Example problems</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Horizontal projectile</h3>
+                        <div class="formula">
+                            \[\text{Object thrown from height } h\]
+                        </div>
+                        <p class="description">A ball is thrown horizontally from a cliff. Find where it lands and its velocity on impact.</p>
+                        <span class="topic-link" onclick="toggleDerivation('horizontal-projectile-solution')">Solve Step-by-Step →</span>
+                        
+                        <div id="horizontal-projectile-solution" class="derivation">
+                            <h4>Solution: Horizontal Projectile from Height h</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Problem statement:</strong></p>
+                                <p>A ball is thrown horizontally with initial velocity \(v_0\) from a cliff of height \(h\). Find:</p>
+                                <p>(a) The time it takes to reach the ground</p>
+                                <p>(b) The horizontal distance traveled (range)</p>
+                                <p>(c) The velocity when it hits the ground</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Set up coordinate system and initial conditions</strong></p>
+                                <p>Place origin at the base of the cliff, with x-axis horizontal and y-axis vertical (upward positive).</p>
+                                <p>Initial position: \((0, h)\)</p>
+                                <p>Initial velocity components: \(v_{0x} = v_0\), \(v_{0y} = 0\) (thrown horizontally)</p>
+                                <p>Acceleration: \(a_x = 0\), \(a_y = -g\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Find time to reach the ground (part a)</strong></p>
+                                <p>Using vertical motion equation: \(y = y_0 + v_{0y}t + \frac{1}{2}a_y t^2\)</p>
+                                <p>When the ball hits the ground, \(y = 0\):</p>
+                                <p>\[0 = h + 0 \cdot t + \frac{1}{2}(-g)t^2\]</p>
+                                <p>\[0 = h - \frac{1}{2}gt^2\]</p>
+                                <p>\[\frac{1}{2}gt^2 = h\]</p>
+                                <p>\[t = \sqrt{\frac{2h}{g}}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Find horizontal distance (range) (part b)</strong></p>
+                                <p>Since horizontal velocity is constant:</p>
+                                <p>\[x = v_{0x} \times t\]</p>
+                                <p>\[x = v_0 \times \sqrt{\frac{2h}{g}}\]</p>
+                                <p>\[x = v_0\sqrt{\frac{2h}{g}}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Find velocity on impact (part c)</strong></p>
+                                <p>Horizontal velocity component (constant): \(v_x = v_0\)</p>
+                                <p>Vertical velocity component using \(v = u + at\):</p>
+                                <p>\[v_y = 0 + (-g)t = -g\sqrt{\frac{2h}{g}} = -\sqrt{2gh}\]</p>
+                                <p>Magnitude of velocity: \[v = \sqrt{v_x^2 + v_y^2} = \sqrt{v_0^2 + 2gh}\]</p>
+                                <p>Direction below horizontal: \[\tan\phi = \frac{|v_y|}{v_x} = \frac{\sqrt{2gh}}{v_0}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> For horizontal projectiles, the time of flight depends only on the height (not the horizontal velocity), while the range depends on both height and initial velocity.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Angled projectile</h3>
+                        <div class="formula">
+                            \[\text{Launch angle } \theta = 30°\]
+                        </div>
+                        <p class="description">A projectile is launched at an angle. Find the range, maximum height, and time of flight.</p>
+                        <span class="topic-link" onclick="toggleDerivation('angled-projectile-solution')">Solve Step-by-Step →</span>
+                        
+                        <div id="angled-projectile-solution" class="derivation">
+                            <h4>Solution: Projectile Launched at 30°</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Problem statement:</strong></p>
+                                <p>A projectile is launched from ground level with initial velocity \(v_0 = 20\) m/s at an angle \(\theta = 30°\) above the horizontal. Find:</p>
+                                <p>(a) The maximum height reached</p>
+                                <p>(b) The total time of flight</p>
+                                <p>(c) The horizontal range</p>
+                                <p>(Take \(g = 10\) m/s²)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Resolve initial velocity into components</strong></p>
+                                <p>Horizontal component: \(v_{0x} = v_0 \cos\theta = 20 \cos 30° = 20 \times 0.866 = 17.32\) m/s</p>
+                                <p>Vertical component: \(v_{0y} = v_0 \sin\theta = 20 \sin 30° = 20 \times 0.5 = 10\) m/s</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Find maximum height (part a)</strong></p>
+                                <p>At maximum height, \(v_y = 0\). Using \(v_y^2 = v_{0y}^2 - 2gh_{max}\):</p>
+                                <p>\[0 = (10)^2 - 2(10)h_{max}\]</p>
+                                <p>\[20h_{max} = 100\]</p>
+                                <p>\[h_{max} = 5\text{ m}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Find time of flight (part b)</strong></p>
+                                <p>Using vertical motion: \(s_y = v_{0y}t - \frac{1}{2}gt^2\)</p>
+                                <p>When projectile returns to ground, \(s_y = 0\):</p>
+                                <p>\[0 = 10t - \frac{1}{2}(10)t^2\]</p>
+                                <p>\[0 = 10t - 5t^2\]</p>
+                                <p>\[0 = t(10 - 5t)\]</p>
+                                <p>\(t = 0\) (launch) or \(t = 2\) s (landing)</p>
+                                <p>Total time of flight: \(t = 2\) s</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Find horizontal range (part c)</strong></p>
+                                <p>Horizontal distance: \(R = v_{0x} \times t\)</p>
+                                <p>\[R = 17.32 \times 2 = 34.64\text{ m}\]</p>
+                                <p>Alternative using formula: \(R = \frac{v_0^2 \sin 2\theta}{g} = \frac{400 \times \sin 60°}{10} = \frac{400 \times 0.866}{10} = 34.64\) m</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Summary of results:</strong></p>
+                                <p>Maximum height: 5 m</p>
+                                <p>Time of flight: 2 s</p>
+                                <p>Range: 34.64 m</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Target hitting</h3>
+                        <div class="formula">
+                            \[\text{Hit target at specific coordinates}\]
+                        </div>
+                        <p class="description">Determine the launch angle and velocity needed to hit a target at given coordinates.</p>
+                        <span class="topic-link" onclick="toggleDerivation('target-hitting-solution')">Solve Step-by-Step →</span>
+                        
+                        <div id="target-hitting-solution" class="derivation">
+                            <h4>Solution: Hitting a Target</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Problem statement:</strong></p>
+                                <p>A projectile is launched from the origin with initial velocity \(v_0 = 25\) m/s. A target is located at horizontal distance \(x = 50\) m and height \(y = 10\) m. Find the launch angle \(\theta\) required to hit the target.</p>
+                                <p>(Take \(g = 10\) m/s²)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Write the trajectory equation</strong></p>
+                                <p>The general trajectory equation is:</p>
+                                <p>\[y = x\tan\theta - \frac{gx^2}{2v_0^2\cos^2\theta}\]</p>
+                                <p>Using the identity \(\sec^2\theta = 1 + \tan^2\theta\):</p>
+                                <p>\[y = x\tan\theta - \frac{gx^2}{2v_0^2}(1 + \tan^2\theta)\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Substitute known values</strong></p>
+                                <p>Let \(T = \tan\theta\). Substituting \(x = 50\), \(y = 10\), \(v_0 = 25\), \(g = 10\):</p>
+                                <p>\[10 = 50T - \frac{10 \times 50^2}{2 \times 625}(1 + T^2)\]</p>
+                                <p>\[10 = 50T - \frac{25000}{1250}(1 + T^2)\]</p>
+                                <p>\[10 = 50T - 20(1 + T^2)\]</p>
+                                <p>\[10 = 50T - 20 - 20T^2\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Solve the quadratic equation</strong></p>
+                                <p>Rearranging:</p>
+                                <p>\[20T^2 - 50T + 30 = 0\]</p>
+                                <p>\[2T^2 - 5T + 3 = 0\]</p>
+                                <p>Using quadratic formula: \(T = \frac{5 \pm \sqrt{25 - 24}}{4} = \frac{5 \pm 1}{4}\)</p>
+                                <p>\(T = 1.5\) or \(T = 1\)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Find the launch angles</strong></p>
+                                <p>For \(T = \tan\theta = 1.5\): \(\theta = \arctan(1.5) = 56.3°\)</p>
+                                <p>For \(T = \tan\theta = 1\): \(\theta = \arctan(1) = 45°\)</p>
+                                <p>Both angles will hit the target! The smaller angle (45°) gives a flatter trajectory, while the larger angle (56.3°) gives a higher, more arched trajectory.</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> For most targets within range, there are typically two possible launch angles: one lower and flatter, one higher and more arched.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Projectile motion relative to an inclined plane</h3>
+                        <div class="formula">
+                            \[\text{Motion on or from a slope}\]
+                        </div>
+                        <p class="description">Analyze projectile motion when launched from or landing on an inclined surface.</p>
+                        <span class="topic-link" onclick="toggleDerivation('inclined-plane-solution')">Solve Step-by-Step →</span>
+                        
+                        <div id="inclined-plane-solution" class="derivation">
+                            <h4>Solution: Projectile on an Inclined Plane</h4>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Problem statement:</strong></p>
+                                <p>A projectile is launched up a slope that makes an angle \(\alpha = 30°\) with the horizontal. The projectile is launched with speed \(v_0 = 20\) m/s at angle \(\beta = 45°\) to the horizontal. Find the range along the slope.</p>
+                                <p>(Take \(g = 10\) m/s²)</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 1: Set up coordinate system</strong></p>
+                                <p>Use standard horizontal-vertical coordinates with origin at launch point.</p>
+                                <p>Initial velocity components:</p>
+                                <p>\(v_{0x} = v_0 \cos\beta = 20 \cos 45° = 14.14\) m/s</p>
+                                <p>\(v_{0y} = v_0 \sin\beta = 20 \sin 45° = 14.14\) m/s</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 2: Equation of the slope</strong></p>
+                                <p>The slope passes through the origin with angle \(\alpha\):</p>
+                                <p>\[y = x\tan\alpha = x\tan 30° = \frac{x}{\sqrt{3}}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 3: Trajectory equation of projectile</strong></p>
+                                <p>\[y = x\tan\beta - \frac{gx^2}{2v_0^2\cos^2\beta}\]</p>
+                                <p>\[y = x(1) - \frac{10x^2}{2(400)(0.5)}\]</p>
+                                <p>\[y = x - \frac{x^2}{40}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 4: Find intersection point</strong></p>
+                                <p>Where trajectory meets slope:</p>
+                                <p>\[\frac{x}{\sqrt{3}} = x - \frac{x^2}{40}\]</p>
+                                <p>\[\frac{x^2}{40} = x - \frac{x}{\sqrt{3}}\]</p>
+                                <p>\[\frac{x^2}{40} = x\left(1 - \frac{1}{\sqrt{3}}\right)\]</p>
+                                <p>For \(x \neq 0\):</p>
+                                <p>\[\frac{x}{40} = 1 - \frac{1}{\sqrt{3}} = \frac{\sqrt{3} - 1}{\sqrt{3}}\]</p>
+                                <p>\[x = 40 \times \frac{\sqrt{3} - 1}{\sqrt{3}} = 40 \times 0.423 = 16.9\text{ m}\]</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Step 5: Find range along slope</strong></p>
+                                <p>Range along slope \(R = \frac{x}{\cos\alpha} = \frac{16.9}{\cos 30°} = \frac{16.9}{0.866} = 19.5\) m</p>
+                            </div>
+                            
+                            <div class="derivation-step">
+                                <p><strong>Key insight:</strong> When dealing with inclined planes, it's often easier to work in standard horizontal-vertical coordinates and then convert the final answer to slope coordinates.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Multiple projectiles</h3>
+                        <div class="formula">
+                            \[\text{Collision and interaction}\]
+                        </div>
+                        <p class="description">Problems involving multiple projectiles or moving targets.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Applications Section -->
+            <section id="applications" class="section">
+                <div class="definitions-section">
+                    <h3>Real-world applications</h3>
+                    
+                    <p>
+                        Projectile motion principles apply to many real-world situations. Understanding these applications helps reinforce the concepts and demonstrates their practical importance.
+                    </p>
+                </div>
+
+                <h2>Applications in different fields</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Sports ballistics</h3>
+                        <div class="formula">
+                            \[\text{Basketball, football, golf}\]
+                        </div>
+                        <p class="description">Optimal angles for shooting basketballs, kicking field goals, and driving golf balls.</p>
+                        <span class="topic-link">Explore →</span>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Military applications</h3>
+                        <div class="formula">
+                            \[\text{Artillery and ballistics}\]
+                        </div>
+                        <p class="description">Calculating trajectories for artillery shells and determining firing solutions.</p>
+                        <span class="topic-link">Explore →</span>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Space missions</h3>
+                        <div class="formula">
+                            \[\text{Orbital mechanics basics}\]
+                        </div>
+                        <p class="description">How projectile motion principles extend to satellite launches and orbital mechanics.</p>
+                        <span class="topic-link">Explore →</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Engineering design</h3>
+                        <div class="formula">
+                            \[\text{Fountains, ramps, safety}\]
+                        </div>
+                        <p class="description">Designing water fountains, ski jumps, and safety systems using projectile motion.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Projectiles - Interactive mechanics guide</p>
+        </footer>
+    </div>
+</body>
+</html>

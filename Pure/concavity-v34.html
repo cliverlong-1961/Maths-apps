@@ -1,0 +1,2978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concavity Explorer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --concave-primary: #1e40af;
+            --concave-accent: #2563eb;
+            --convex-primary: #991b1b;
+            --convex-accent: #dc2626;
+            --bg-main: #f5f5f5;
+            --bg-paper: #ffffff;
+            --text-dark: #1f2937;
+            --text-medium: #4b5563;
+            --text-light: #6b7280;
+            --border-color: #d1d5db;
+            --accent: #374151;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 3rem 2rem;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Home Page */
+        .home-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 300;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .nav-card {
+            background: var(--bg-paper);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+        
+        .nav-card.concave {
+            border-left: 4px solid var(--concave-primary);
+        }
+        
+        .nav-card.convex {
+            border-left: 4px solid var(--convex-primary);
+        }
+        
+        .nav-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .nav-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-medium);
+        }
+        
+        .nav-card h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        .nav-card p {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Animation Canvas */
+        .animation-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .animation-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .animation-header h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.25rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .animation-header p {
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+        
+        .canvas-wrapper {
+            background: var(--bg-paper);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 500px;
+            background: #fafafa;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn {
+            font-family: 'Source Sans Pro', sans-serif;
+            padding: 0.75rem 2rem;
+            font-size: 0.95rem;
+            border: 1px solid;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            font-weight: 400;
+            margin: 0 0.5rem;
+        }
+        
+        .btn-primary {
+            color: white;
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+        
+        .btn-primary:hover {
+            background: var(--text-dark);
+            border-color: var(--text-dark);
+        }
+        
+        .btn-secondary {
+            color: var(--text-medium);
+            border-color: var(--border-color);
+            background: white;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--text-dark);
+        }
+        
+        /* Math Content */
+        .math-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .math-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .math-header h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .math-header p {
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+        
+        .content-section {
+            background: var(--bg-paper);
+            border-left: 3px solid;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .content-section.concave {
+            border-color: var(--concave-primary);
+        }
+        
+        .content-section.convex {
+            border-color: var(--convex-primary);
+        }
+        
+        .content-section h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .content-section p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .math-formula {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        
+        .key-point {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-point strong {
+            color: var(--text-dark);
+        }
+        
+        .example-box {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .example-box h4 {
+            color: var(--accent);
+            font-family: 'Source Sans Pro', sans-serif;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .example-box p {
+            color: var(--text-dark);
+        }
+        
+        .back-home {
+            text-align: center;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="home-container">
+            <h1>Concavity Explorer</h1>
+            <p class="subtitle">Understanding the Shape of Functions</p>
+            
+            <div class="nav-grid">
+                <div class="nav-card concave" onclick="showPage('concave-animation')">
+                    <div class="nav-icon">∪</div>
+                    <h3>Concave Up</h3>
+                    <p>Watch a sphere settle into a concave bowl, just like a parabola curving upward</p>
+                </div>
+                
+                <div class="nav-card convex" onclick="showPage('convex-animation')">
+                    <div class="nav-icon">∩</div>
+                    <h3>Concave down (convex)</h3>
+                    <p>See a sphere roll off a convex surface, mirroring a downward-curving function</p>
+                </div>
+                
+                <div class="nav-card concave" onclick="showPage('tangent-concave')">
+                    <div class="nav-icon">y = 1+x²</div>
+                    <h3>Tangents to Concave Up</h3>
+                    <p>Visualize tangent lines sweeping across a concave upward curve</p>
+                </div>
+                
+                <div class="nav-card convex" onclick="showPage('tangent-convex')">
+                    <div class="nav-icon">y = 1-x²</div>
+                    <h3>Tangents to Convex</h3>
+                    <p>See tangent lines moving across a concave down (convex) curve</p>
+                </div>
+                
+                <div class="nav-card concave" onclick="showPage('concave-math')">
+                    <div class="nav-icon">f''(x) > 0</div>
+                    <h3>Concave Mathematics</h3>
+                    <p>Explore the mathematical theory behind concave upward functions</p>
+                </div>
+                
+                <div class="nav-card convex" onclick="showPage('convex-math')">
+                    <div class="nav-icon">f''(x) < 0</div>
+                    <h3>Convex Mathematics</h3>
+                    <p>Understand the mathematics of concave down (convex) surfaces</p>
+                </div>
+                
+                <div class="nav-card full-width" style="border-left: 4px solid #8b5cf6;" onclick="showPage('summary-curvature')">
+                    <div class="nav-icon">📊</div>
+                    <h3>Summary of f''(x) and curvature</h3>
+                    <p>A comprehensive overview of second derivatives, concavity, and inflection points</p>
+                </div>
+                
+                <div class="nav-card" style="border-left: 4px solid #7c3aed;" onclick="showPage('tricky-points')">
+                    <div class="nav-icon">f''(x) = 0</div>
+                    <h3>Tricky Stationary Points</h3>
+                    <p>When the second derivative test fails and higher-order analysis is needed</p>
+                </div>
+                
+                <div class="nav-card" style="border-left: 4px solid #059669;" onclick="showPage('alternative-tests')">
+                    <div class="nav-icon">f'(x) sign</div>
+                    <h3>Alternative Tests</h3>
+                    <p>Other methods when f'(a) = 0 and f''(a) = 0</p>
+                </div>
+                
+                <div class="nav-card" style="border-left: 4px solid #d97706;" onclick="showPage('inflection-nonstationary')">
+                    <div class="nav-icon">f''(x) = 0</div>
+                    <h3>f''(x) = 0, again</h3>
+                    <p>But it's not a stationary point</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Concave Animation Page -->
+    <div id="concave-animation" class="page">
+        <div class="animation-container">
+            <div class="animation-header">
+                <h2>Concave Up Animation</h2>
+                <p>A sphere rolling in a concave bowl settles at the minimum point</p>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" onclick="restartConcave()">Restart Animation</button>
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="concaveCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Convex Animation Page -->
+    <div id="convex-animation" class="page">
+        <div class="animation-container">
+            <div class="animation-header">
+                <h2>Concave down (convex) Animation</h2>
+                <p>A sphere rolling off a convex surface demonstrates instability at the maximum</p>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" onclick="restartConvex()">Restart Animation</button>
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="convexCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tangent to Concave Up Page -->
+    <div id="tangent-concave" class="page">
+        <div class="animation-container">
+            <div class="animation-header">
+                <h2>Tangents to Concave Up Curve</h2>
+                <p>The tangent always lies below the curve. The slope of the tangents increase from negative, through zero, to positive.</p>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" onclick="restartTangentConcave()">Restart Animation</button>
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="tangentConcaveCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tangent to Convex Page -->
+    <div id="tangent-convex" class="page">
+        <div class="animation-container">
+            <div class="animation-header">
+                <h2>Tangents to Convex Curve</h2>
+                <p>The tangent always lies above the curve. The slope of the tangents decrease from positive, through zero, to negative.</p>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" onclick="restartTangentConvex()">Restart Animation</button>
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="tangentConvexCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Concave Mathematics Page -->
+    <div id="concave-math" class="page">
+        <div class="math-container">
+            <div class="math-header concave">
+                <h2>Mathematics of Concave Up Functions</h2>
+                <p>When the graph curves upward like a smile</p>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="concaveMathGraph" width="800" height="150"></canvas>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Definition</h3>
+                <p>A function y = f(x) is <strong>concave up</strong> (or concave upward) on an interval if the graph of the function lies above all of its tangent lines on that interval. Visually, the graph curves upward, resembling the shape of a bowl or the letter "U".</p>
+                
+                <div class="key-point">
+                    <strong>Key Insight:</strong> For a concave up function, the rate of change is increasing. As you move from left to right, the slope of the tangent line becomes steeper (more positive or less negative).
+                </div>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Graph and second derivative</h3>
+                <p>For a concave up region of a curve the gradient of the curve/tangent changes from negative to positive. For this region the graph of the gradient (derivative) is increasing (from negative to positive). Hence the gradient curve has itself a positive gradient, that is, the second derivative is positive.</p>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Second Derivative Test</h3>
+                <p>The primary mathematical test for concavity uses the second derivative:</p>
+                
+                <div class="math-formula">
+                    If f''(x) > 0 for all x in an interval, then f is concave up on that interval
+                </div>
+                
+                <p>The second derivative f''(x) measures the rate of change of the first derivative f'(x). When f''(x) is positive, the slope is increasing, creating the upward curve.</p>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x²</h4>
+                    <p>First derivative: f'(x) = 2x</p>
+                    <p>Second derivative: f''(x) = 2</p>
+                    <p>Since f''(x) = 2 > 0 for all x, the parabola y = x² is concave up everywhere. The vertex at (0,0) represents a minimum point.</p>
+                </div>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Physical Interpretation</h3>
+                <p>Think of the concave up bowl in the animation. When the sphere is placed anywhere in the bowl, gravity pulls it toward the lowest point. This represents a <strong>stable equilibrium</strong>—any small displacement results in a force that returns the object to the minimum.</p>
+                
+                <p>In calculus terms, at a critical point where f'(x) = 0, if f''(x) > 0, then that point is a <strong>local minimum</strong>. The concave up shape ensures that nearby points have higher function values.</p>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Inflection Points</h3>
+                <p>A function changes from concave up to concave down (convex) (or vice versa) at an <strong>inflection point</strong>. At these points:</p>
+                
+                <div class="math-formula">
+                    f''(x) = 0 and f''(x) changes sign
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x³</h4>
+                    <p>First derivative: f'(x) = 3x²</p>
+                    <p>Second derivative: f''(x) = 6x</p>
+                    <p>• When x < 0: f''(x) < 0 (concave down (convex))</p>
+                    <p>• When x > 0: f''(x) > 0 (concave up)</p>
+                    <p>The point (0,0) is an inflection point where concavity changes.</p>
+                </div>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Applications</h3>
+                <p><strong>Optimization:</strong> In economics, a concave up cost function indicates increasing marginal costs—each additional unit becomes more expensive to produce.</p>
+                
+                <p><strong>Motion:</strong> If position s(t) has s''(t) > 0, the object is speeding up in the positive direction (or slowing down less quickly in the negative direction).</p>
+                
+                <p><strong>Data Analysis:</strong> Concave up curves in data suggest accelerating growth, such as exponential population growth or compound interest effects.</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Convex Mathematics Page -->
+    <div id="convex-math" class="page">
+        <div class="math-container">
+            <div class="math-header convex">
+                <h2>Mathematics of Concave down (convex) Functions</h2>
+                <p>When the graph curves downward like a frown</p>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="convexMathGraph" width="800" height="150"></canvas>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Definition</h3>
+                <p>A function y = f(x) is <strong>concave down (convex)</strong> on an interval if the graph of the function lies below all of its tangent lines on that interval. Visually, the graph curves downward, resembling an upside-down bowl or the letter "∩".</p>
+                
+                <div class="key-point">
+                    <strong>Key Insight:</strong> For a concave down (convex) function, the rate of change is decreasing. As you move from left to right, the slope of the tangent line becomes less steep (less positive or more negative).
+                </div>
+                
+                <p><em>Note on terminology:</em> In some contexts, especially in economics and optimization theory, "concave" without a modifier refers to what we call "concave down (convex)." A function that is concave down (convex) is also called "convex" in the sense of having a convex upper boundary. However, in calculus, we typically use "concave up" and "concave down (convex)" to avoid confusion.</p>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Graph and second derivative</h3>
+                <p>For a concave down (convex) region of a curve the gradient of the curve/tangent changes from positive to negative. For this region the graph of the gradient (derivative) is decreasing (from positive to negative). Hence the gradient curve has itself a negative gradient, that is, the second derivative is negative.</p>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Second Derivative Test</h3>
+                <p>The mathematical test for concave down (convex) behavior uses the second derivative:</p>
+                
+                <div class="math-formula">
+                    If f''(x) < 0 for all x in an interval, then f is concave down (convex) on that interval
+                </div>
+                
+                <p>When f''(x) is negative, the first derivative f'(x) is decreasing. This means the slope of the function is getting smaller (less steep), creating the downward curve.</p>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = -x²</h4>
+                    <p>First derivative: f'(x) = -2x</p>
+                    <p>Second derivative: f''(x) = -2</p>
+                    <p>Since f''(x) = -2 < 0 for all x, the inverted parabola y = -x² is concave down (convex) everywhere. The vertex at (0,0) represents a maximum point.</p>
+                </div>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Physical Interpretation</h3>
+                <p>Consider the convex bowl in the animation (opening downward). When the sphere is placed on top, any slight disturbance causes it to roll away. This represents an <strong>unstable equilibrium</strong>—the sphere cannot remain at the peak and will naturally move toward lower positions.</p>
+                
+                <p>In calculus, at a critical point where f'(x) = 0, if f''(x) < 0, then that point is a <strong>local maximum</strong>. The concave down (convex) shape ensures that nearby points have lower function values, making the critical point a peak rather than a valley.</p>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Comparison with Concave Up</h3>
+                <p>The key differences between concave up and concave down (convex) functions:</p>
+                
+                <div class="example-box">
+                    <h4>CONCAVE UP (f''(x) > 0)</h4>
+                    <p>• Graph curves upward (∪ shape)</p>
+                    <p>• Slope is increasing</p>
+                    <p>• Critical points are local minima</p>
+                    <p>• Stable equilibrium in physical systems</p>
+                    <p>• Graph lies above tangent lines</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>CONCAVE DOWN (CONVEX) (f''(x) < 0)</h4>
+                    <p>• Graph curves downward (∩ shape)</p>
+                    <p>• Slope is decreasing</p>
+                    <p>• Critical points are local maxima</p>
+                    <p>• Unstable equilibrium in physical systems</p>
+                    <p>• Graph lies below tangent lines</p>
+                </div>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Practical Examples</h3>
+                <p><strong>Projectile Motion:</strong> The height of a thrown ball follows a concave down (convex) parabola. After reaching maximum height, the ball descends. The concave down (convex) shape reflects constant downward acceleration due to gravity.</p>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: h(t) = -4.9t² + 20t + 2</h4>
+                    <p>This represents height (in meters) as a function of time (in seconds).</p>
+                    <p>h'(t) = -9.8t + 20 (velocity)</p>
+                    <p>h''(t) = -9.8 < 0 (acceleration due to gravity)</p>
+                    <p>The negative second derivative confirms the concave down (convex) parabola, with maximum height occurring when h'(t) = 0.</p>
+                </div>
+                
+                <p><strong>Diminishing Returns:</strong> In economics, a concave down (convex) production function indicates diminishing marginal returns—each additional input produces less additional output than the previous input.</p>
+                
+                <p><strong>Learning Curves:</strong> Skill acquisition often follows a concave down (convex) curve initially—rapid improvement at first, then slower progress as one approaches mastery.</p>
+            </div>
+            
+            <div class="content-section convex">
+                <h3>The Second Derivative Test for Extrema</h3>
+                <p>Concavity is essential for classifying critical points:</p>
+                
+                <div class="math-formula">
+                    Given a critical point c where f'(c) = 0:<br><br>
+                    If f''(c) > 0: concave up → local minimum at x = c<br>
+                    If f''(c) < 0: concave down (convex) → local maximum at x = c<br>
+                    If f''(c) = 0: test is inconclusive
+                </div>
+                
+                <p>This test provides a quick way to classify extrema without analyzing the first derivative on both sides of the critical point.</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary of f''(x) and curvature Page -->
+    <div id="summary-curvature" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #8b5cf6;">
+                <h2>Summary of f''(x) and curvature</h2>
+                <p>A comprehensive overview of second derivatives, concavity, and inflection points</p>
+            </div>
+            
+            <div class="content-section" style="border-color: #8b5cf6;">
+                <h3>The Big Picture</h3>
+                <p>The second derivative f''(x) tells us about the <strong>curvature</strong> or <strong>concavity</strong> of a function. It measures how the rate of change (first derivative) is itself changing.</p>
+                
+                <div class="key-point">
+                    <strong>Core Concept:</strong> While f'(x) tells us if a function is increasing or decreasing, f''(x) tells us if that rate of increase/decrease is itself speeding up or slowing down.
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #8b5cf6;">
+                <h3>Sign of f''(x) and Concavity</h3>
+                
+                <div class="math-formula">
+                    <strong>f''(x) > 0 → CONCAVE UP (∪ shape)</strong><br>
+                    • The curve bends upward<br>
+                    • The slope f'(x) is increasing<br>
+                    • The graph lies above its tangent lines<br>
+                    • Examples: y = x², y = eˣ, y = x⁴<br>
+                </div>
+                
+                <div class="canvas-wrapper" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                    <canvas id="concaveUpExample" width="800" height="200"></canvas>
+                </div>
+                
+                <div class="math-formula">
+                    
+                    <strong>f''(x) < 0 → CONCAVE DOWN (∩ shape)</strong><br>
+                    • The curve bends downward<br>
+                    • The slope f'(x) is decreasing<br>
+                    • The graph lies below its tangent lines<br>
+                    • Examples: y = -x², y = ln(x), y = -x⁴<br>
+                </div>
+                
+                <div class="canvas-wrapper" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                    <canvas id="concaveDownExample" width="800" height="200"></canvas>
+                </div>
+                
+                <div class="math-formula">
+                    
+                    <strong>f''(x) = 0 → POSSIBLE INFLECTION POINT</strong><br>
+                    • Concavity may change at this point<br>
+                    • Must verify that f''(x) changes sign<br>
+                    • Could also be a "flat spot" in curvature without changing
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #8b5cf6;">
+                <h3>Inflection Points: When Concavity Changes</h3>
+                <p>An inflection point occurs where the curve changes from concave up to concave down (or vice versa).</p>
+                
+                <div class="math-formula">
+                    <strong>Requirements for Inflection Point at x = a:</strong><br><br>
+                    
+                    1. Function is continuous at x = a<br>
+                    2. f''(a) = 0 (or f'' is undefined)<br>
+                    3. f''(x) <strong>changes sign</strong> at x = a<br><br>
+                    
+                    <strong>Two Types:</strong><br><br>
+                    
+                    • <strong>Horizontal inflection:</strong> f'(a) = 0 and f''(a) = 0<br>
+                    &nbsp;&nbsp;Example: f(x) = x³ at x = 0<br><br>
+                    
+                    • <strong>Non-horizontal inflection:</strong> f'(a) ≠ 0 and f''(a) = 0<br>
+                    &nbsp;&nbsp;Example: f(x) = x³ - 3x at x = 0
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #8b5cf6;">
+                <h3>Quick Reference Table</h3>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                    <tr style="background: #f3f4f6; font-weight: bold;">
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Condition</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">f'(a)</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">f''(a)</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Classification</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Standard minimum</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">> 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Local minimum</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Standard maximum</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">< 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Local maximum</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Flat minimum (x⁴)</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Local minimum (check f⁽⁴⁾ > 0)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Flat maximum (-x⁴)</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Local maximum (check f⁽⁴⁾ < 0)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Horizontal inflection (x³)</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Inflection point (f'' changes sign)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Sloped inflection</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">≠ 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">= 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Inflection point (f'' changes sign)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Concave up region</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">any</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">> 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Curve bends upward</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Concave down region</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">any</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">< 0</td>
+                        <td style="padding: 0.75rem; border: 1px solid #d1d5db;">Curve bends downward</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="content-section" style="border-color: #8b5cf6;">
+                <h3>Key Takeaways</h3>
+                
+                <div class="key-point">
+                    <strong>Remember:</strong><br>
+                    • f' tells you direction (increasing/decreasing)<br>
+                    • f'' tells you curvature (how direction is changing)<br>
+                    • f''(x) > 0 means curving up (∪), f''(x) < 0 means curving down (∩)<br>
+                    • f''(a) = 0 is a <em>candidate</em> for inflection, but must verify sign change<br>
+                    • Not all inflection points have horizontal tangents<br>
+                    • When second derivative test fails (f'' = 0), use alternatives
+                </div>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tricky Stationary Points Page -->
+    <div id="tricky-points" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #7c3aed;">
+                <h2>f''(x) = 0</h2>
+                <p>Tricky Stationary Points</p>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="trickyPointsGraph" width="800" height="300"></canvas>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>When the Second Derivative Test Fails</h3>
+                <p>We've seen that when f'(c) = 0 at a critical point c:</p>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">If f''(c) > 0, then c is a local minimum (concave up)</li>
+                    <li style="margin-bottom: 0.5rem;">If f''(c) < 0, then c is a local maximum (concave down)</li>
+                    <li style="margin-bottom: 0.5rem;">But what if <strong>f''(c) = 0</strong>?</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>The Test is Inconclusive:</strong> When both f'(c) = 0 AND f''(c) = 0, the second derivative test gives us no information. The point could be a maximum, a minimum, or neither (an inflection point)!
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Three Classic Examples</h3>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 1: f(x) = x³ — INFLECTION POINT</h4>
+                    <p>First derivative: f'(x) = 3x²</p>
+                    <p>Second derivative: f''(x) = 6x</p>
+                    <p>Third derivative: f'''(x) = 6</p>
+                    <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
+                    <p><strong>Result:</strong> x = 0 is an <em>inflection point</em>, not a maximum or minimum. The function changes from concave down (x < 0) to concave up (x > 0), and continues increasing throughout.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 2: f(x) = x⁴ — LOCAL MINIMUM</h4>
+                    <p>First derivative: f'(x) = 4x³</p>
+                    <p>Second derivative: f''(x) = 12x²</p>
+                    <p>Third derivative: f'''(x) = 24x</p>
+                    <p>Fourth derivative: f⁽⁴⁾(x) = 24</p>
+                    <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
+                    <p><strong>Result:</strong> x = 0 is a <em>local minimum</em>. The function is concave up everywhere (except right at x = 0), creating a flatter, gentler bowl shape than x².</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 3: f(x) = -x⁴ — LOCAL MAXIMUM</h4>
+                    <p>First derivative: f'(x) = -4x³</p>
+                    <p>Second derivative: f''(x) = -12x²</p>
+                    <p>Third derivative: f'''(x) = -24x</p>
+                    <p>Fourth derivative: f⁽⁴⁾(x) = -24</p>
+                    <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
+                    <p><strong>Result:</strong> x = 0 is a <em>local maximum</em>. The function is concave down everywhere (except right at x = 0), forming an inverted bowl that's flatter at the top than -x².</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>The Higher-Order Derivative Test</h3>
+                <p>When f''(c) = 0, we need to check higher derivatives. Here's the general pattern:</p>
+                
+                <div class="math-formula">
+                    At a critical point c where f'(c) = 0:<br><br>
+                    • If the first non-zero derivative is f⁽ⁿ⁾(c) where n is ODD:<br>
+                    &nbsp;&nbsp;→ c is an inflection point (neither max nor min)<br><br>
+                    • If the first non-zero derivative is f⁽ⁿ⁾(c) where n is EVEN:<br>
+                    &nbsp;&nbsp;→ c is a maximum if f⁽ⁿ⁾(c) < 0<br>
+                    &nbsp;&nbsp;→ c is a minimum if f⁽ⁿ⁾(c) > 0
+                </div>
+                
+                <div class="key-point">
+                    <strong>Quick Rule:</strong> For f(x) = ±xⁿ at x = 0:<br>
+                    • Odd powers (x³, x⁵, x⁷, ...) → inflection points<br>
+                    • Even powers (x⁴, x⁶, x⁸, ...) → extrema (max or min depending on sign)
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Applying the Test</h3>
+                
+                <div class="example-box">
+                    <h4>WORKED EXAMPLE: f(x) = x³</h4>
+                    <p>f'(0) = 0 ✓ (critical point)</p>
+                    <p>f''(0) = 0 (second derivative test fails)</p>
+                    <p>f'''(0) = 6 ≠ 0 (third derivative is first non-zero)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> Since the first non-zero derivative is the <em>third</em> (odd), x = 0 is an inflection point.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>WORKED EXAMPLE: f(x) = x⁴</h4>
+                    <p>f'(0) = 0 ✓ (critical point)</p>
+                    <p>f''(0) = 0 (second derivative test fails)</p>
+                    <p>f'''(0) = 0 (third derivative also zero)</p>
+                    <p>f⁽⁴⁾(0) = 24 > 0 (fourth derivative is first non-zero)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> Since the first non-zero derivative is the <em>fourth</em> (even) and positive, x = 0 is a local minimum.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Why This Matters</h3>
+                <p><strong>Flatter Curves:</strong> When f''(c) = 0 at an extremum, the curve is flatter near that point. Compare the sharper minimum of y = x² with the gentler minimum of y = x⁴—both have minima at x = 0, but x⁴ approaches the minimum more gradually.</p>
+                
+                <p><strong>Inflection Points with Horizontal Tangents:</strong> The point (0,0) on y = x³ is special: it's an inflection point where the tangent is horizontal. The curve doesn't change direction (it keeps increasing), but it does change its curvature from concave down to concave up.</p>
+                
+                <p><strong>Real-World Applications:</strong> In optimization problems, these flatter extrema can represent more stable equilibrium points in physical systems, or regions where small changes in input produce very small changes in output.</p>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>The First Derivative Test Alternative</h3>
+                <p>When f''(c) = 0, you can always fall back to the first derivative test:</p>
+                
+                <div class="math-formula">
+                    Examine the sign of f'(x) on both sides of c:<br><br>
+                    • If f' changes from negative to positive → local minimum<br>
+                    • If f' changes from positive to negative → local maximum<br>
+                    • If f' doesn't change sign → inflection point
+                </div>
+                
+                <p>This method always works and doesn't require computing higher derivatives, though it may require more analysis.</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alternative Tests Page -->
+    <div id="alternative-tests" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #059669;">
+                <h2>Alternatives to the Second Derivative Test</h2>
+                <p>f'(a) = 0 and f''(a) = 0</p>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>The Challenge</h3>
+                <p>When you find a critical point at x = a where f'(a) = 0, your first instinct is to use the second derivative test. But what happens when f''(a) = 0 as well? The second derivative test becomes <strong>inconclusive</strong>.</p>
+                
+                <div class="key-point">
+                    <strong>Don't Panic!</strong> There are several reliable alternative methods to determine whether x = a is a maximum, minimum, or neither. You don't always need higher derivatives.
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 1: The First Derivative Test</h3>
+                <p>This is often the most practical and intuitive method. Instead of looking at f''(a), we examine the <strong>sign of f'(x)</strong> on both sides of x = a.</p>
+                
+                <div class="math-formula">
+                    <strong>First Derivative Test Algorithm:</strong><br><br>
+                    1. Find f'(x) and verify f'(a) = 0<br>
+                    2. Choose a test point just left of a (call it a - h, where h is small)<br>
+                    3. Choose a test point just right of a (call it a + h)<br>
+                    4. Evaluate f'(a - h) and f'(a + h)<br><br>
+                    
+                    <strong>Decision Rules:</strong><br>
+                    • If f' changes from NEGATIVE to POSITIVE → LOCAL MINIMUM<br>
+                    • If f' changes from POSITIVE to NEGATIVE → LOCAL MAXIMUM<br>
+                    • If f' has the SAME SIGN on both sides → INFLECTION POINT
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x⁴ at x = 0</h4>
+                    <p><strong>Step 1:</strong> f'(x) = 4x³, so f'(0) = 0 ✓</p>
+                    <p><strong>Step 2:</strong> f''(x) = 12x², so f''(0) = 0 (inconclusive!)</p>
+                    <p><strong>Step 3:</strong> Use the first derivative test:</p>
+                    <p style="margin-left: 1.5rem;">• Test x = -0.1: f'(-0.1) = 4(-0.1)³ = -0.004 &lt; 0 (negative)</p>
+                    <p style="margin-left: 1.5rem;">• Test x = +0.1: f'(+0.1) = 4(+0.1)³ = +0.004 &gt; 0 (positive)</p>
+                    <p><strong>Conclusion:</strong> f' changes from negative to positive, so x = 0 is a <strong>local minimum</strong>.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x³ at x = 0</h4>
+                    <p><strong>Step 1:</strong> f'(x) = 3x², so f'(0) = 0 ✓</p>
+                    <p><strong>Step 2:</strong> f''(x) = 6x, so f''(0) = 0 (inconclusive!)</p>
+                    <p><strong>Step 3:</strong> Use the first derivative test:</p>
+                    <p style="margin-left: 1.5rem;">• Test x = -0.1: f'(-0.1) = 3(-0.1)² = +0.03 &gt; 0 (positive)</p>
+                    <p style="margin-left: 1.5rem;">• Test x = +0.1: f'(+0.1) = 3(+0.1)² = +0.03 &gt; 0 (positive)</p>
+                    <p><strong>Conclusion:</strong> f' stays positive on both sides, so x = 0 is an <strong>inflection point</strong> (not an extremum).</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 2: Behaviour of f''(x) near f''(x) = 0</h3>
+                <p>If f'(a) = 0 and f''(a) = 0 then</p>
+                
+                <div class="math-formula">
+                    Once you have determined f''(a) = 0, examine values around a.<br><br>
+                    • If f''(x) > 0 on both sides of x = a → concave up (minimum)<br>
+                    • If f''(x) < 0 on both sides of x = a → concave down (maximum)<br>
+                    • If f''(x) changes sign on either side of x = a → point of inflection
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x⁴ at x = 0</h4>
+                    <p>f'(x) = 4x³, so f'(0) = 0 ✓</p>
+                    <p>f''(x) = 12x², so f''(0) = 0</p>
+                    <p style="margin-top: 1rem;"><strong>Check f''(x) near x = 0:</strong></p>
+                    <p style="margin-left: 1.5rem;">• At x = -0.1: f''(-0.1) = 12(-0.1)² = 0.12 > 0</p>
+                    <p style="margin-left: 1.5rem;">• At x = +0.1: f''(+0.1) = 12(+0.1)² = 0.12 > 0</p>
+                    <p><strong>Conclusion:</strong> f''(x) > 0 on both sides, so the curve is <strong>concave up</strong> near x = 0, making it a <strong>local minimum</strong>.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x³ at x = 0</h4>
+                    <p>f'(x) = 3x², so f'(0) = 0 ✓</p>
+                    <p>f''(x) = 6x, so f''(0) = 0</p>
+                    <p style="margin-top: 1rem;"><strong>Check f''(x) near x = 0:</strong></p>
+                    <p style="margin-left: 1.5rem;">• At x = -0.1: f''(-0.1) = 6(-0.1) = -0.6 < 0</p>
+                    <p style="margin-left: 1.5rem;">• At x = +0.1: f''(+0.1) = 6(+0.1) = +0.6 > 0</p>
+                    <p><strong>Conclusion:</strong> f''(x) <strong>changes sign</strong> from negative to positive, so x = 0 is a <strong>point of inflection</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 3: Function value around f'(a) = 0</h3>
+                <p>For some value of the function at x = a, f(a), and function values close to, and around this stationary point (small h > 0):</p>
+                <p>If f(a - h) > f(a) and f(a + h) > f(a), then points around x = a are 'above' f(a) so we have a <strong>local minimum</strong> at x = a.</p>
+                <p>Similarly, if f(a - h) < f(a) and f(a + h) < f(a), then points around x = a are 'below' f(a) so we have a <strong>local maximum</strong> at x = a.</p>
+                <p>Finally, if the sign of f(a - h) and f(a + h) are different, then we have a (horizontal) <strong>point of inflection</strong> at x = a.</p>
+                
+                <p>When in doubt, evaluate the function itself at points near the critical point. This direct approach shows whether nearby values are higher or lower.</p>
+                
+                <div class="example-box">
+                    <h4>VALUES TABLE: f(x) = -x⁴</h4>
+                    <p>Critical point at x = 0 with f'(0) = 0 and f''(0) = 0</p>
+                    <table style="margin: 1rem auto; border-collapse: collapse; text-align: center;">
+                        <tr style="border-bottom: 2px solid #000;">
+                            <td style="padding: 0.5rem 1rem; font-weight: bold;">x</td>
+                            <td style="padding: 0.5rem 1rem;">-0.5</td>
+                            <td style="padding: 0.5rem 1rem;">-0.2</td>
+                            <td style="padding: 0.5rem 1rem;">-0.1</td>
+                            <td style="padding: 0.5rem 1rem; font-weight: bold;">0</td>
+                            <td style="padding: 0.5rem 1rem;">0.1</td>
+                            <td style="padding: 0.5rem 1rem;">0.2</td>
+                            <td style="padding: 0.5rem 1rem;">0.5</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem 1rem; font-weight: bold;">f(x)</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0625</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0016</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0001</td>
+                            <td style="padding: 0.5rem 1rem; font-weight: bold; background: #fef3c7;">0</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0001</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0016</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0625</td>
+                        </tr>
+                    </table>
+                    <p><strong>Conclusion:</strong> All nearby values are less than f(0) = 0, so x = 0 is a <strong>local maximum</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 4: using technology to sketch graph</h3>
+                <p>Sometimes the best approach is simply to sketch the function or use graphing technology. Visual inspection can quickly reveal the nature of a critical point.</p>
+                
+                <div class="canvas-wrapper">
+                    <canvas id="alternativeTestGraph" width="800" height="300"></canvas>
+                </div>
+                
+                <p style="margin-top: 1.5rem;"><strong>Visual Clues:</strong></p>
+                <ul style="margin-left: 2rem;">
+                    <li style="margin-bottom: 0.5rem;">Does the graph have a valley at x = a? → Minimum</li>
+                    <li style="margin-bottom: 0.5rem;">Does the graph have a peak at x = a? → Maximum</li>
+                    <li style="margin-bottom: 0.5rem;">Does the graph pass through x = a without turning? → Inflection point</li>
+                </ul>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 5: Shortcuts from form of function</h3>
+                <p>For polynomial functions of the form f(x) = ±xⁿ, you can deduce the behavior at x = 0 from the power and sign:</p>
+                
+                <div class="math-formula">
+                    <strong>Power Function Rules:</strong><br><br>
+                    <strong>Even Powers (x², x⁴, x⁶, ...):</strong><br>
+                    • Positive coefficient (+xⁿ) → Minimum at x = 0<br>
+                    • Negative coefficient (-xⁿ) → Maximum at x = 0<br>
+                    • Reason: Even powers are always ≥ 0<br><br>
+                    
+                    <strong>Odd Powers (x³, x⁵, x⁷, ...):</strong><br>
+                    • Any coefficient → Inflection point at x = 0<br>
+                    • Reason: Odd powers change sign (negative for x < 0, positive for x > 0)
+                </div>
+                
+                <div class="example-box">
+                    <h4>QUICK ANALYSIS EXAMPLES</h4>
+                    <p>• f(x) = 7x⁶: Even power, positive → <strong>Minimum</strong> at x = 0</p>
+                    <p>• f(x) = -3x⁸: Even power, negative → <strong>Maximum</strong> at x = 0</p>
+                    <p>• f(x) = 2x⁵: Odd power → <strong>Inflection point</strong> at x = 0</p>
+                    <p>• f(x) = -x⁷: Odd power → <strong>Inflection point</strong> at x = 0</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Comparison of Methods</h3>
+                
+                <div class="example-box">
+                    <h4>WHEN TO USE EACH METHOD</h4>
+                    <p><strong>First Derivative Test:</strong> Best general-purpose method. Works for all functions and gives clear results. Choose this when derivatives are easy to evaluate.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Sign Chart:</strong> Best for systematic analysis and when you want to understand the complete behavior of f' around the critical point. Great for exam solutions.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Table of Values:</strong> Best when derivatives are complicated or when you want numerical confirmation. Also useful for approximate/numerical analysis.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Graphical Analysis:</strong> Best for intuition and quick checks. Use technology to visualize complex functions.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Function Form Analysis:</strong> Best for simple power functions where the pattern is obvious. Fastest method when applicable.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Complete Worked Example</h3>
+                
+                <div class="example-box">
+                    <h4>PROBLEM: Classify the critical point of f(x) = x⁵ - 5x⁴ at x = 0</h4>
+                    
+                    <p style="margin-top: 1rem;"><strong>Verify it's a critical point:</strong></p>
+                    <p>f'(x) = 5x⁴ - 20x³ = 5x³(x - 4)</p>
+                    <p>f'(0) = 0 ✓</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Try second derivative test:</strong></p>
+                    <p>f''(x) = 20x³ - 60x²</p>
+                    <p>f''(0) = 0 (inconclusive!)</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Solution using First Derivative Test:</strong></p>
+                    <p>f'(x) = 5x³(x - 4)</p>
+                    <p style="margin-left: 1.5rem;">• At x = -0.1: f'(-0.1) = 5(-0.1)³(-0.1 - 4) = 5(-0.001)(-4.1) ≈ 0.02 > 0</p>
+                    <p style="margin-left: 1.5rem;">• At x = +0.1: f'(+0.1) = 5(+0.1)³(+0.1 - 4) = 5(+0.001)(-3.9) ≈ -0.02 < 0</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> f' changes from positive to negative, so <strong>x = 0 is a local maximum</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inflection Points (Non-stationary) Page -->
+    <div id="inflection-nonstationary" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #d97706;">
+                <h2>f''(x) = 0, again</h2>
+                <p>But it's not a stationary point</p>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>A Different Kind of Inflection Point</h3>
+                <p>We've explored what happens when <strong>both</strong> f'(a) = 0 and f''(a) = 0 at a point x = a. But what if only f''(a) = 0 while f'(a) ≠ 0?</p>
+                
+                <div class="key-point">
+                    <strong>Key Distinction:</strong> When f''(a) = 0 but f'(a) ≠ 0, we still have a <strong>point of inflection</strong> where concavity changes, but the tangent line is NOT horizontal. The function continues increasing or decreasing through the inflection point.
+                </div>
+                
+                <p>This is actually the <em>typical</em> case for inflection points! Points where the tangent is horizontal (f'(a) = 0) are special exceptions.</p>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Definition</h3>
+                <p>A <strong>point of inflection</strong> occurs at x = a if:</p>
+                
+                <div class="math-formula">
+                    1. The function is continuous at x = a<br>
+                    2. The concavity changes at x = a<br><br>
+                    
+                    This typically means f''(a) = 0 AND f''(x) changes sign at x = a<br><br>
+                    
+                    Note: f'(a) can be ANY value (zero or non-zero)
+                </div>
+                
+                <p>The condition f'(a) = 0 is NOT required for an inflection point. When f'(a) ≠ 0, the inflection point has a sloped tangent line.</p>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="inflectionNonStationaryGraph" width="800" height="350"></canvas>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Classic Examples</h3>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 1: f(x) = x³ - 3x</h4>
+                    <p>First derivative: f'(x) = 3x² - 3</p>
+                    <p>Second derivative: f''(x) = 6x</p>
+                    <p style="margin-top: 1rem;">At x = 0:</p>
+                    <p style="margin-left: 1.5rem;">• f'(0) = 3(0)² - 3 = -3 ≠ 0 (NOT a stationary point)</p>
+                    <p style="margin-left: 1.5rem;">• f''(0) = 6(0) = 0 ✓</p>
+                    <p style="margin-left: 1.5rem;">• For x < 0: f''(x) < 0 (concave down)</p>
+                    <p style="margin-left: 1.5rem;">• For x > 0: f''(x) > 0 (concave up)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> x = 0 is an inflection point where the curve changes from concave down to concave up, while continuing to decrease (since f'(0) = -3 < 0).</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 2: f(x) = sin(x) at x = 0, π, 2π, ...</h4>
+                    <p>First derivative: f'(x) = cos(x)</p>
+                    <p>Second derivative: f''(x) = -sin(x)</p>
+                    <p style="margin-top: 1rem;">At x = π:</p>
+                    <p style="margin-left: 1.5rem;">• f'(π) = cos(π) = -1 ≠ 0 (NOT a stationary point)</p>
+                    <p style="margin-left: 1.5rem;">• f''(π) = -sin(π) = 0 ✓</p>
+                    <p style="margin-left: 1.5rem;">• For x slightly less than π: f''(x) > 0 (concave up)</p>
+                    <p style="margin-left: 1.5rem;">• For x slightly more than π: f''(x) < 0 (concave down)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> x = π is an inflection point where concavity changes, and the function is decreasing throughout (f'(π) < 0).</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 3: f(x) = (x - 2)³ + 5</h4>
+                    <p>First derivative: f'(x) = 3(x - 2)²</p>
+                    <p>Second derivative: f''(x) = 6(x - 2)</p>
+                    <p style="margin-top: 1rem;">At x = 2:</p>
+                    <p style="margin-left: 1.5rem;">• f'(2) = 3(2 - 2)² = 0 (This IS a stationary point!)</p>
+                    <p style="margin-left: 1.5rem;">• f''(2) = 6(2 - 2) = 0 ✓</p>
+                    <p style="margin-top: 1rem;"><strong>Note:</strong> This is the special case where f'(a) = 0 AND f''(a) = 0 (horizontal inflection point, like x³ shifted right and up).</p>
+                    <p style="margin-top: 1rem;">But consider x = 3:</p>
+                    <p style="margin-left: 1.5rem;">• f'(3) = 3(3 - 2)² = 3 ≠ 0</p>
+                    <p style="margin-left: 1.5rem;">• f''(3) = 6(3 - 2) = 6 ≠ 0 (no inflection here)</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Visual Characteristics</h3>
+                <p>At an inflection point where f'(a) ≠ 0, you'll observe:</p>
+                
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li style="margin-bottom: 0.5rem;"><strong>The curve "straightens out"</strong> momentarily as it passes through the point</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The tangent line crosses the curve</strong> (rather than just touching it)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The curve changes from bending one way to bending the other</strong></li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The function continues in the same direction</strong> (keeps increasing or keeps decreasing)</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>Contrast with f'(a) = 0:</strong> When f'(a) = 0 at an inflection point, the tangent is horizontal and the curve has a local "flat spot." When f'(a) ≠ 0, there's no flat spot—the curve just smoothly changes its curvature while maintaining its direction.
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Finding All Inflection Points</h3>
+                <p>To find ALL inflection points of a function (both types):</p>
+                
+                <div class="math-formula">
+                    <strong>Step-by-Step Procedure:</strong><br><br>
+                    1. Find f''(x)<br>
+                    2. Solve f''(x) = 0 to find <em>candidates</em><br>
+                    3. For each candidate x = a, check if f''(x) changes sign:<br>
+                    &nbsp;&nbsp;&nbsp;• Test f''(x) at points just left and right of a<br>
+                    &nbsp;&nbsp;&nbsp;• If signs differ → inflection point ✓<br>
+                    &nbsp;&nbsp;&nbsp;• If signs same → NOT an inflection point ✗<br>
+                    4. Also check points where f''(x) is undefined (if any)<br><br>
+                    
+                    Note: You do NOT need to check f'(a) unless you specifically want to know if the tangent is horizontal
+                </div>
+                
+                <div class="example-box">
+                    <h4>COMPLETE ANALYSIS: f(x) = x⁴ - 4x³</h4>
+                    <p><strong>Step 1:</strong> f'(x) = 4x³ - 12x² = 4x²(x - 3)</p>
+                    <p><strong>Step 2:</strong> f''(x) = 12x² - 24x = 12x(x - 2)</p>
+                    <p><strong>Step 3:</strong> Solve f''(x) = 0: 12x(x - 2) = 0 → x = 0 or x = 2</p>
+                    <p style="margin-top: 1rem;"><strong>Test x = 0:</strong></p>
+                    <p style="margin-left: 1.5rem;">• f''(-0.1) = 12(-0.1)(-0.1 - 2) = 12(-0.1)(-2.1) = 2.52 > 0</p>
+                    <p style="margin-left: 1.5rem;">• f''(+0.1) = 12(+0.1)(+0.1 - 2) = 12(+0.1)(-1.9) = -2.28 < 0</p>
+                    <p style="margin-left: 1.5rem;">• Signs change! x = 0 IS an inflection point ✓</p>
+                    <p style="margin-left: 1.5rem;">• Check: f'(0) = 0 (horizontal tangent at inflection point)</p>
+                    <p style="margin-top: 1rem;"><strong>Test x = 2:</strong></p>
+                    <p style="margin-left: 1.5rem;">• f''(1.9) = 12(1.9)(1.9 - 2) = 12(1.9)(-0.1) = -2.28 < 0</p>
+                    <p style="margin-left: 1.5rem;">• f''(2.1) = 12(2.1)(2.1 - 2) = 12(2.1)(+0.1) = 2.52 > 0</p>
+                    <p style="margin-left: 1.5rem;">• Signs change! x = 2 IS an inflection point ✓</p>
+                    <p style="margin-left: 1.5rem;">• Check: f'(2) = 4(2)²(2 - 3) = 16(-1) = -16 ≠ 0 (sloped tangent!)</p>
+                    <p style="margin-top: 1rem;"><strong>Summary:</strong> Two inflection points—one with horizontal tangent (x = 0), one with sloped tangent (x = 2).</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Common Mistakes to Avoid</h3>
+                
+                <div class="example-box">
+                    <h4>MISTAKE 1: Assuming all points where f''(x) = 0 are inflection points</h4>
+                    <p><strong>Counterexample:</strong> f(x) = x⁴ has f''(0) = 0, but x = 0 is a minimum, not an inflection point. You must verify that f''(x) changes sign.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>MISTAKE 2: Thinking inflection points must have f'(x) = 0</h4>
+                    <p><strong>Reality:</strong> Most inflection points have f'(x) ≠ 0. The horizontal tangent case is the exception, not the rule.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>MISTAKE 3: Confusing "change in direction" with "change in concavity"</h4>
+                    <p><strong>Clarification:</strong> At an inflection point, the <em>concavity</em> changes (the curve bends differently), but the <em>direction</em> may continue unchanged (function keeps increasing or decreasing).</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Real-World Applications</h3>
+                <p><strong>Economics - Marginal Cost:</strong> An inflection point in a cost function indicates where the rate of change of marginal cost switches from increasing to decreasing (or vice versa), signaling a transition in production efficiency.</p>
+                
+                <p><strong>Population Growth:</strong> In logistic growth models, the inflection point marks where population growth rate is maximum—the transition from accelerating to decelerating growth.</p>
+                
+                <p><strong>Chemistry - Titration Curves:</strong> The inflection point of a pH curve during titration indicates the equivalence point, even though pH continues to change throughout.</p>
+                
+                <p><strong>Physics - Position vs. Time:</strong> An inflection point in a position graph shows where acceleration changes sign, even if velocity remains in the same direction.</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            // Start animations when showing animation pages
+            if (pageId === 'concave-animation') {
+                setTimeout(() => initConcaveAnimation(), 100);
+            } else if (pageId === 'convex-animation') {
+                setTimeout(() => initConvexAnimation(), 100);
+            } else if (pageId === 'tangent-concave') {
+                setTimeout(() => initTangentConcaveAnimation(), 100);
+            } else if (pageId === 'tangent-convex') {
+                setTimeout(() => initTangentConvexAnimation(), 100);
+            } else if (pageId === 'concave-math') {
+                setTimeout(() => drawConcaveMathGraph(), 100);
+            } else if (pageId === 'convex-math') {
+                setTimeout(() => drawConvexMathGraph(), 100);
+            } else if (pageId === 'summary-curvature') {
+                setTimeout(() => {
+                    drawConcaveUpExample();
+                    drawConcaveDownExample();
+                }, 100);
+            } else if (pageId === 'tricky-points') {
+                setTimeout(() => drawTrickyPointsGraph(), 100);
+            } else if (pageId === 'alternative-tests') {
+                setTimeout(() => drawAlternativeTestGraph(), 100);
+            } else if (pageId === 'inflection-nonstationary') {
+                setTimeout(() => drawInflectionNonStationaryGraph(), 100);
+            }
+        }
+        
+        // Draw graph for Tricky Stationary Points page
+        function drawTrickyPointsGraph() {
+            const canvas = document.getElementById('trickyPointsGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 40;
+            const xMin = -2.5;
+            const xMax = 2.5;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw y = x³ (purple - inflection point)
+            ctx.strokeStyle = '#7c3aed';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (Math.abs(canvasY - centerY) < height) {
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Draw y = x⁴ (blue - minimum)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            
+            firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw y = -x⁴ (red - maximum)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            
+            firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = -(x * x * x * x);
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Mark the critical point (0,0) on all three curves
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add labels for the functions
+            ctx.fillStyle = '#7c3aed';
+            ctx.font = '16px Arial';
+            ctx.fillText('y = x³ (inflection)', 20, 30);
+            
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('y = x⁴ (minimum)', 20, 55);
+            
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('y = -x⁴ (maximum)', 20, 80);
+        }
+        
+        // Draw graph for Alternative Tests page
+        function drawAlternativeTestGraph() {
+            const canvas = document.getElementById('alternativeTestGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const xMin = -2.5;
+            const xMax = 2.5;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw grid for derivative signs
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 0.5;
+            ctx.setLineDash([2, 2]);
+            
+            // Vertical lines at test points
+            const testPoints = [-1, -0.5, 0.5, 1];
+            testPoints.forEach(x => {
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(x), 0);
+                ctx.lineTo(toCanvasX(x), height);
+                ctx.stroke();
+            });
+            
+            ctx.setLineDash([]);
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            
+            // Draw f(x) = x⁴ with annotations
+            ctx.strokeStyle = '#059669';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Mark the critical point
+            ctx.fillStyle = '#059669';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add derivative sign indicators
+            ctx.font = 'bold 20px Arial';
+            
+            // Left side (negative derivative)
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('f\' < 0', toCanvasX(-1.5), centerY + 30);
+            ctx.fillText('↘', toCanvasX(-1.5) + 10, centerY + 55);
+            
+            // Right side (positive derivative)
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('f\' > 0', toCanvasX(1.2), centerY + 30);
+            ctx.fillText('↗', toCanvasX(1.2) + 10, centerY + 55);
+            
+            // Label the critical point
+            ctx.fillStyle = '#059669';
+            ctx.font = '16px Arial';
+            ctx.fillText('f\'(0) = 0', centerX + 10, centerY - 10);
+            ctx.fillText('MINIMUM', centerX - 45, centerY - 25);
+            
+            // Add function label
+            ctx.fillStyle = '#059669';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('f(x) = x⁴', 20, 30);
+            ctx.font = '14px Arial';
+            ctx.fillText('Sign of f\'(x) changes from - to +', 20, 55);
+        }
+        
+        // Draw graph for Inflection Points (Non-stationary) page
+        function drawInflectionNonStationaryGraph() {
+            const canvas = document.getElementById('inflectionNonStationaryGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const xMin = -3;
+            const xMax = 3;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw f(x) = x³ - 3x (inflection at x = 0, f'(0) ≠ 0)
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x - 3 * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (Math.abs(canvasY - centerY) < height) {
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Mark the inflection point at (0, 0)
+            ctx.fillStyle = '#d97706';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw tangent line at x = 0 (slope = -3)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            
+            const x0 = 0;
+            const y0 = 0;
+            const slope = -3; // f'(0) = 3(0)² - 3 = -3
+            
+            const xLeft = -1.5;
+            const xRight = 1.5;
+            const yLeft = y0 + slope * (xLeft - x0);
+            const yRight = y0 + slope * (xRight - x0);
+            
+            ctx.moveTo(toCanvasX(xLeft), toCanvasY(yLeft));
+            ctx.lineTo(toCanvasX(xRight), toCanvasY(yRight));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Add concavity labels
+            ctx.font = 'bold 16px Arial';
+            
+            // Left side (concave down)
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('Concave ∩', toCanvasX(-2), toCanvasY(2));
+            ctx.fillText('down', toCanvasX(-2), toCanvasY(2) + 20);
+            ctx.fillText('f\'\'(x) < 0', toCanvasX(-2), toCanvasY(2) + 40);
+            
+            // Right side (concave up)
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('Concave ∪', toCanvasX(1.3), toCanvasY(-2));
+            ctx.fillText('up', toCanvasX(1.3), toCanvasY(-2) + 20);
+            ctx.fillText('f\'\'(x) > 0', toCanvasX(1.3), toCanvasY(-2) + 40);
+            
+            // Label the inflection point
+            ctx.fillStyle = '#d97706';
+            ctx.font = '16px Arial';
+            ctx.fillText('Inflection point', centerX + 15, centerY - 15);
+            ctx.fillText('f\'\'(0) = 0', centerX + 15, centerY + 5);
+            ctx.fillText('f\'(0) = -3 ≠ 0', centerX + 15, centerY + 25);
+            
+            // Add function label
+            ctx.fillStyle = '#d97706';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('f(x) = x³ - 3x', 20, 30);
+            
+            ctx.fillStyle = '#dc2626';
+            ctx.font = '16px Arial';
+            ctx.fillText('Tangent: y = -3x (dashed)', 20, 55);
+        }
+        
+        // Draw static graph for Concave Mathematics page
+        function drawConcaveMathGraph() {
+            const canvas = document.getElementById('concaveMathGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const xMin = -3;
+            const xMax = 3;
+            const yMin = 0;
+            const yMax = 10;
+            
+            // Calculate scale and center to fit y range from 0 to +10
+            const yRange = yMax - yMin; // 10 units
+            const margin = 15;
+            const scale = (height - 2 * margin) / yRange; // pixels per unit
+            
+            // Center Y so that y=0 is positioned correctly
+            const centerY = height - margin; // y=0 at bottom
+            const centerX = width / 2;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis (at y=0)
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(width, toCanvasY(0));
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, toCanvasY(0) + 15);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw parabola y = 1 + x² (dotted line)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]); // Dotted line
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = 1 + x * x;
+                // Only draw if y is in visible range
+                if (y >= yMin && y <= yMax) {
+                    const canvasX = toCanvasX(x);
+                    const canvasY = toCanvasY(y);
+                    
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Draw straight line y = 2x (solid line)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]); // Solid line
+            ctx.beginPath();
+            
+            // Calculate where line intersects with visible region
+            const xStart = xMin;
+            const xEnd = xMax;
+            const yStart = 2 * xStart;
+            const yEnd = 2 * xEnd;
+            
+            // Clip to visible range
+            if (yStart >= yMin && yStart <= yMax) {
+                ctx.moveTo(toCanvasX(xStart), toCanvasY(yStart));
+            } else if (yStart < yMin) {
+                const xClip = yMin / 2;
+                ctx.moveTo(toCanvasX(xClip), toCanvasY(yMin));
+            }
+            
+            if (yEnd >= yMin && yEnd <= yMax) {
+                ctx.lineTo(toCanvasX(xEnd), toCanvasY(yEnd));
+            } else if (yEnd > yMax) {
+                const xClip = yMax / 2;
+                ctx.lineTo(toCanvasX(xClip), toCanvasY(yMax));
+            }
+            
+            ctx.stroke();
+            
+            // Add labels for the functions
+            ctx.fillStyle = '#2563eb';
+            ctx.font = '16px Arial';
+            ctx.fillText('y = 1 + x² (dotted)', 20, 30);
+            
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('y = 2x (solid)', 20, 55);
+        }
+        
+        // Draw static graph for Convex Mathematics page
+        function drawConvexMathGraph() {
+            const canvas = document.getElementById('convexMathGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const xMin = -3;
+            const xMax = 3;
+            const yMin = -4;
+            const yMax = 2;
+            
+            // Calculate scale and center to fit y range from -4 to +2
+            const yRange = yMax - yMin; // 6 units
+            const margin = 15;
+            const scale = (height - 2 * margin) / yRange; // pixels per unit
+            
+            // Center Y so that y=0 is positioned correctly
+            const centerY = margin + (yMax * scale);
+            const centerX = width / 2;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis (at y=0)
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(width, toCanvasY(0));
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, toCanvasY(0) - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw parabola y = 1 - x² (dotted line)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]); // Dotted line
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = 1 - x * x;
+                // Only draw if y is in visible range
+                if (y >= yMin && y <= yMax) {
+                    const canvasX = toCanvasX(x);
+                    const canvasY = toCanvasY(y);
+                    
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Draw straight line y = -2x (solid line)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]); // Solid line
+            ctx.beginPath();
+            
+            // Calculate where line intersects with visible region
+            const xStart = xMin;
+            const xEnd = xMax;
+            const yStart = -2 * xStart;
+            const yEnd = -2 * xEnd;
+            
+            ctx.moveTo(toCanvasX(xStart), toCanvasY(yStart));
+            ctx.lineTo(toCanvasX(xEnd), toCanvasY(yEnd));
+            ctx.stroke();
+            
+            // Add labels for the functions
+            ctx.fillStyle = '#dc2626';
+            ctx.font = '16px Arial';
+            ctx.fillText('y = 1 - x² (dotted)', 20, 30);
+            
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('y = -2x (solid)', 20, 55);
+        }
+        
+        // Draw concave up example for summary page
+        function drawConcaveUpExample() {
+            const canvas = document.getElementById('concaveUpExample');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = 150;
+            const centerY = height - 30;
+            const scale = 80;
+            const xMin = 0;
+            const xMax = 3;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1.5;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX - 20, centerY);
+            ctx.lineTo(width - 20, centerY);
+            ctx.stroke();
+            
+            // Arrow for x-axis
+            ctx.beginPath();
+            ctx.moveTo(width - 20, centerY);
+            ctx.lineTo(width - 30, centerY - 5);
+            ctx.moveTo(width - 20, centerY);
+            ctx.lineTo(width - 30, centerY + 5);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY + 10);
+            ctx.lineTo(centerX, 20);
+            ctx.stroke();
+            
+            // Arrow for y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 20);
+            ctx.lineTo(centerX - 5, 30);
+            ctx.moveTo(centerX, 20);
+            ctx.lineTo(centerX + 5, 30);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '16px Arial';
+            ctx.fillText('x', width - 25, centerY + 25);
+            ctx.fillText('y', centerX + 15, 25);
+            
+            // Draw concave up curve (exponential-like)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = 0.3 * Math.exp(0.8 * x);
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Add labels and annotations
+            ctx.fillStyle = '#2563eb';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('f\'(x) > 0 (increasing)', toCanvasX(1.5), toCanvasY(2.8) - 10);
+            ctx.fillText('f\'\'(x) > 0 (concave up)', toCanvasX(1.5), toCanvasY(2.8) + 10);
+            
+            // Draw some tangent indicators
+            const tangentPoints = [0.5, 1.5, 2.5];
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 3]);
+            
+            tangentPoints.forEach(x0 => {
+                const y0 = 0.3 * Math.exp(0.8 * x0);
+                const slope = 0.3 * 0.8 * Math.exp(0.8 * x0); // derivative
+                
+                const xLeft = x0 - 0.3;
+                const xRight = x0 + 0.3;
+                const yLeft = y0 + slope * (xLeft - x0);
+                const yRight = y0 + slope * (xRight - x0);
+                
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(xLeft), toCanvasY(yLeft));
+                ctx.lineTo(toCanvasX(xRight), toCanvasY(yRight));
+                ctx.stroke();
+            });
+            
+            ctx.setLineDash([]);
+            
+            // Add note about tangent slopes
+            ctx.fillStyle = '#dc2626';
+            ctx.font = '14px Arial';
+            ctx.fillText('Tangent slopes increasing →', 420, 30);
+        }
+        
+        // Draw concave down example for summary page
+        function drawConcaveDownExample() {
+            const canvas = document.getElementById('concaveDownExample');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = 150;
+            const centerY = 30;
+            const scale = 80;
+            const xMin = 0;
+            const xMax = 3;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY + y * scale; // Note: positive y goes down for this graph
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1.5;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX - 20, centerY);
+            ctx.lineTo(width - 20, centerY);
+            ctx.stroke();
+            
+            // Arrow for x-axis
+            ctx.beginPath();
+            ctx.moveTo(width - 20, centerY);
+            ctx.lineTo(width - 30, centerY - 5);
+            ctx.moveTo(width - 20, centerY);
+            ctx.lineTo(width - 30, centerY + 5);
+            ctx.stroke();
+            
+            // Y-axis (pointing down in this orientation)
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - 10);
+            ctx.lineTo(centerX, height - 20);
+            ctx.stroke();
+            
+            // Arrow for y-axis (downward)
+            ctx.beginPath();
+            ctx.moveTo(centerX, height - 20);
+            ctx.lineTo(centerX - 5, height - 30);
+            ctx.moveTo(centerX, height - 20);
+            ctx.lineTo(centerX + 5, height - 30);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '16px Arial';
+            ctx.fillText('x', width - 25, centerY + 25);
+            ctx.fillText('y', centerX + 15, height - 15);
+            
+            // Draw concave down curve (negative exponential-like, decreasing)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = 0.3 * Math.exp(0.8 * x); // Same as concave up but we'll flip visual
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Add labels and annotations
+            ctx.fillStyle = '#dc2626';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('f\'(x) < 0 (decreasing)', toCanvasX(1.5), toCanvasY(2.8) + 10);
+            ctx.fillText('f\'\'(x) < 0 (concave down)', toCanvasX(1.5), toCanvasY(2.8) + 30);
+            
+            // Draw some tangent indicators
+            const tangentPoints = [0.5, 1.5, 2.5];
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 3]);
+            
+            tangentPoints.forEach(x0 => {
+                const y0 = 0.3 * Math.exp(0.8 * x0);
+                const slope = 0.3 * 0.8 * Math.exp(0.8 * x0); // derivative (positive value but represents negative slope in our orientation)
+                
+                const xLeft = x0 - 0.3;
+                const xRight = x0 + 0.3;
+                const yLeft = y0 - slope * (xRight - x0); // Flipped to show decreasing
+                const yRight = y0 - slope * (xLeft - x0);
+                
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(xLeft), toCanvasY(yLeft));
+                ctx.lineTo(toCanvasX(xRight), toCanvasY(yRight));
+                ctx.stroke();
+            });
+            
+            ctx.setLineDash([]);
+            
+            // Add note about tangent slopes
+            ctx.fillStyle = '#2563eb';
+            ctx.font = '14px Arial';
+            ctx.fillText('Tangent slopes decreasing →', 420, height - 30);
+            ctx.fillText('(getting more negative)', 420, height - 12);
+        }
+        
+        // Draw static graph for Concave Mathematics page
+        function drawConcaveMathGraph() {
+            const canvas = document.getElementById('concaveMathGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 60;
+            const xMin = -3;
+            const xMax = 3;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw parabola y = 1 + x² (dotted line)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]); // Dotted line
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = 1 + x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw straight line y = 2x (solid line)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]); // Solid line
+            ctx.beginPath();
+            
+            const xStart = xMin;
+            const xEnd = xMax;
+            const yStart = 2 * xStart;
+            const yEnd = 2 * xEnd;
+            
+            ctx.moveTo(toCanvasX(xStart), toCanvasY(yStart));
+            ctx.lineTo(toCanvasX(xEnd), toCanvasY(yEnd));
+            ctx.stroke();
+            
+            // Add labels for the functions
+            ctx.fillStyle = '#2563eb';
+            ctx.font = '16px Arial';
+            ctx.fillText('y = 1 + x² (dotted)', 20, 30);
+            
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('y = 2x (solid)', 20, 55);
+        }
+        
+        // Draw static graph for Convex Mathematics page
+        function drawConvexMathGraph() {
+            const canvas = document.getElementById('convexMathGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const xMin = -3;
+            const xMax = 3;
+            const yMin = -4;
+            const yMax = 2;
+            
+            // Calculate scale and center to fit y range from -4 to +2
+            const yRange = yMax - yMin; // 6 units
+            const margin = 15;
+            const scale = (height - 2 * margin) / yRange; // ~20 pixels per unit
+            
+            // Center Y so that y=0 is positioned correctly
+            const centerY = margin + (yMax * scale);
+            const centerX = width / 2;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis (only if y=0 is in range)
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(width, toCanvasY(0));
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, toCanvasY(0) - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw parabola y = 1 - x² (dotted line)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]); // Dotted line
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = 1 - x * x;
+                // Only draw if y is in visible range
+                if (y >= yMin && y <= yMax) {
+                    const canvasX = toCanvasX(x);
+                    const canvasY = toCanvasY(y);
+                    
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Draw straight line y = -2x (solid line)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]); // Solid line
+            ctx.beginPath();
+            
+            // Calculate where line intersects with visible region
+            const xStart = xMin;
+            const xEnd = xMax;
+            const yStart = -2 * xStart;
+            const yEnd = -2 * xEnd;
+            
+            ctx.moveTo(toCanvasX(xStart), toCanvasY(yStart));
+            ctx.lineTo(toCanvasX(xEnd), toCanvasY(yEnd));
+            ctx.stroke();
+            
+            // Add labels for the functions
+            ctx.fillStyle = '#dc2626';
+            ctx.font = '16px Arial';
+            ctx.fillText('y = 1 - x² (dotted)', 20, 30);
+            
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('y = -2x (solid)', 20, 55);
+        }
+        
+        // Concave Animation (U-shaped bowl with rolling sphere)
+        let concaveAnimationId;
+        
+        function initConcaveAnimation() {
+            const canvas = document.getElementById('concaveCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 500;
+            
+            const centerX = canvas.width / 2;
+            const bottomY = 380;
+            const bowlWidth = 400;
+            const bowlDepth = 150;
+            
+            // Ball properties - start 2/3 up on left side
+            const startRelX = -bowlWidth/2 * 0.67;
+            let ballX = centerX + startRelX;
+            let ballVelX = 0;
+            const ballRadius = 15;
+            
+            // Physics constants for smooth oscillation
+            const springConstant = 0.002; // Controls oscillation frequency
+            const damping = 0.995; // Energy loss per frame
+            
+            let startTime = Date.now();
+            let isSettled = false;
+            let settleTime = 0;
+            
+            function drawBowl() {
+                // Draw U-shaped bowl opening upward
+                ctx.strokeStyle = '#2563eb';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                for (let x = -bowlWidth/2; x <= bowlWidth/2; x += 2) {
+                    const parabola = (x * x) / (bowlWidth / 2) * (bowlDepth / (bowlWidth / 2));
+                    ctx.lineTo(centerX + x, bottomY - parabola);
+                }
+                ctx.stroke();
+                
+                // Draw horizontal line below minimum
+                ctx.strokeStyle = '#6b7280';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX - bowlWidth/2 - 50, bottomY + 35);
+                ctx.lineTo(centerX + bowlWidth/2 + 50, bottomY + 35);
+                ctx.stroke();
+            }
+            
+            function getBowlY(x) {
+                const relX = x - centerX;
+                const parabola = (relX * relX) / (bowlWidth / 2) * (bowlDepth / (bowlWidth / 2));
+                return bottomY - parabola;
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBowl();
+                
+                const elapsed = (Date.now() - startTime) / 1000;
+                
+                if (!isSettled && elapsed < 4) {
+                    // Distance from center creates restoring force (like a pendulum/spring)
+                    const displacement = ballX - centerX;
+                    const acceleration = -springConstant * displacement;
+                    
+                    // Update velocity with acceleration and damping
+                    ballVelX += acceleration;
+                    ballVelX *= damping;
+                    
+                    // Update position
+                    ballX += ballVelX;
+                    
+                    // Keep within bowl bounds
+                    const maxX = centerX + bowlWidth/2 - ballRadius;
+                    const minX = centerX - bowlWidth/2 + ballRadius;
+                    
+                    if (ballX > maxX) {
+                        ballX = maxX;
+                        ballVelX = -Math.abs(ballVelX) * 0.7;
+                    }
+                    if (ballX < minX) {
+                        ballX = minX;
+                        ballVelX = Math.abs(ballVelX) * 0.7;
+                    }
+                    
+                } else if (!isSettled) {
+                    // Settle at minimum
+                    isSettled = true;
+                    settleTime = Date.now();
+                    ballX = centerX;
+                    ballVelX = 0;
+                } else {
+                    // Check if pause is over
+                    const pauseElapsed = (Date.now() - settleTime) / 1000;
+                    if (pauseElapsed > 0.25) {
+                        // Restart animation
+                        startTime = Date.now();
+                        isSettled = false;
+                        ballX = centerX + startRelX;
+                        ballVelX = 0;
+                    }
+                }
+                
+                // Ball stays on bowl surface
+                const ballY = getBowlY(ballX) - ballRadius;
+                
+                // Draw ball
+                const gradient = ctx.createRadialGradient(
+                    ballX - 5, ballY - 5, 0,
+                    ballX, ballY, ballRadius
+                );
+                gradient.addColorStop(0, '#3b82f6');
+                gradient.addColorStop(1, '#2563eb');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Shine
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(ballX - 5, ballY - 5, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                concaveAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        function restartConcave() {
+            if (concaveAnimationId) {
+                cancelAnimationFrame(concaveAnimationId);
+            }
+            initConcaveAnimation();
+        }
+        
+        // Convex Animation (Inverted bowl - concave down (convex))
+        let convexAnimationId;
+        
+        function initConvexAnimation() {
+            const canvas = document.getElementById('convexCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 500;
+            
+            const centerX = canvas.width / 2;
+            const peakY = 100; // Top of the inverted bowl
+            const bowlWidth = 400;
+            const bowlDepth = 150;
+            const groundY = peakY + bowlDepth + 50; // Ground below the bowl
+            
+            // Ball starts at top center
+            let ballX = centerX;
+            let ballY = peakY - 15; // Just above the peak
+            let ballVelX = 2; // Small nudge to start rolling
+            let ballVelY = 0;
+            const ballRadius = 15;
+            const gravity = 0.5;
+            
+            let startTime = Date.now();
+            let hasRolledOff = false;
+            
+            function drawBowl() {
+                // Draw inverted bowl (∩ shape - opening downward)
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                for (let x = -bowlWidth/2; x <= bowlWidth/2; x += 2) {
+                    // Parabola opening downward: y = -x²
+                    const parabola = (x * x) / (bowlWidth / 2) * (bowlDepth / (bowlWidth / 2));
+                    ctx.lineTo(centerX + x, peakY + parabola);
+                }
+                ctx.stroke();
+                
+                // Draw ground line
+                ctx.strokeStyle = '#6b7280';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(0, groundY);
+                ctx.lineTo(canvas.width, groundY);
+                ctx.stroke();
+            }
+            
+            function getBowlY(x) {
+                const relX = x - centerX;
+                // Parabola opening downward
+                const parabola = (relX * relX) / (bowlWidth / 2) * (bowlDepth / (bowlWidth / 2));
+                return peakY + parabola;
+            }
+            
+            function getBowlSlope(x) {
+                const relX = x - centerX;
+                // Derivative of downward-opening parabola
+                return 2 * relX / (bowlWidth / 2) * (bowlDepth / (bowlWidth / 2));
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBowl();
+                
+                const elapsed = (Date.now() - startTime) / 1000;
+                
+                // Check if ball is still on the bowl surface
+                const onBowl = Math.abs(ballX - centerX) <= bowlWidth/2;
+                
+                if (!hasRolledOff && onBowl && elapsed < 2) {
+                    // Ball is on the bowl - calculate position on surface
+                    const surfaceY = getBowlY(ballX);
+                    ballY = surfaceY - ballRadius;
+                    
+                    // Calculate acceleration down the slope
+                    const slope = getBowlSlope(ballX);
+                    const angle = Math.atan(slope);
+                    const accelX = gravity * Math.sin(angle);
+                    
+                    ballVelX += accelX;
+                    ballX += ballVelX;
+                    
+                } else {
+                    // Ball has rolled off or time is up - free fall
+                    hasRolledOff = true;
+                    ballVelY += gravity;
+                    ballX += ballVelX;
+                    ballY += ballVelY;
+                    
+                    // Stop at ground
+                    if (ballY + ballRadius >= groundY) {
+                        ballY = groundY - ballRadius;
+                        ballVelY = 0;
+                        ballVelX *= 0.95;
+                        
+                        // Check if should restart (after 3 seconds total)
+                        if (elapsed > 3) {
+                            // Reset for next cycle
+                            startTime = Date.now();
+                            hasRolledOff = false;
+                            ballX = centerX;
+                            ballY = peakY - ballRadius;
+                            ballVelX = 2;
+                            ballVelY = 0;
+                        }
+                    }
+                }
+                
+                // Draw ball
+                const gradient = ctx.createRadialGradient(
+                    ballX - 5, ballY - 5, 0,
+                    ballX, ballY, ballRadius
+                );
+                gradient.addColorStop(0, '#ef4444');
+                gradient.addColorStop(1, '#dc2626');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Shine
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(ballX - 5, ballY - 5, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                convexAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        function restartConvex() {
+            if (convexAnimationId) {
+                cancelAnimationFrame(convexAnimationId);
+            }
+            initConvexAnimation();
+        }
+        
+        // Tangent to Concave Up Animation (y = 1 + x²)
+        let tangentConcaveAnimationId;
+        
+        function initTangentConcaveAnimation() {
+            const canvas = document.getElementById('tangentConcaveCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 500;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 60; // pixels per unit
+            const xMin = -3;
+            const xMax = 3;
+            
+            let startTime = Date.now();
+            let isPaused = false;
+            let pauseStartTime = 0;
+            
+            function f(x) {
+                return 1 + x * x;
+            }
+            
+            function fPrime(x) {
+                return 2 * x;
+            }
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            function drawAxes() {
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                
+                // X-axis
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(canvas.width, centerY);
+                ctx.stroke();
+                
+                // Y-axis
+                ctx.beginPath();
+                ctx.moveTo(centerX, 0);
+                ctx.lineTo(centerX, canvas.height);
+                ctx.stroke();
+            }
+            
+            function drawCurve() {
+                ctx.strokeStyle = '#2563eb';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                let firstPoint = true;
+                for (let x = xMin; x <= xMax; x += 0.05) {
+                    const y = f(x);
+                    const canvasX = toCanvasX(x);
+                    const canvasY = toCanvasY(y);
+                    
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+                ctx.stroke();
+                
+                // Draw equation label
+                ctx.fillStyle = '#2563eb';
+                ctx.font = '18px Arial';
+                ctx.fillText('y = 1 + x²', 20, 30);
+            }
+            
+            function drawTangent(x0) {
+                const y0 = f(x0);
+                const slope = fPrime(x0);
+                
+                // Draw point of tangency
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(toCanvasX(x0), toCanvasY(y0), 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw tangent line
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                const xLeft = xMin - 1;
+                const xRight = xMax + 1;
+                const yLeft = y0 + slope * (xLeft - x0);
+                const yRight = y0 + slope * (xRight - x0);
+                
+                ctx.moveTo(toCanvasX(xLeft), toCanvasY(yLeft));
+                ctx.lineTo(toCanvasX(xRight), toCanvasY(yRight));
+                ctx.stroke();
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                drawAxes();
+                drawCurve();
+                
+                const currentTime = Date.now();
+                
+                if (!isPaused) {
+                    const elapsed = (currentTime - startTime) / 1000;
+                    
+                    if (elapsed >= 2) {
+                        // Start pause
+                        isPaused = true;
+                        pauseStartTime = currentTime;
+                    } else {
+                        // Calculate current x position (moves from xMin to xMax over 2 seconds)
+                        const progress = elapsed / 2;
+                        const x0 = xMin + progress * (xMax - xMin);
+                        drawTangent(x0);
+                    }
+                } else {
+                    // In pause phase
+                    const pauseElapsed = (currentTime - pauseStartTime) / 1000;
+                    
+                    // Draw tangent at final position during pause
+                    drawTangent(xMax);
+                    
+                    if (pauseElapsed >= 1/3) {
+                        // Restart animation
+                        isPaused = false;
+                        startTime = Date.now();
+                    }
+                }
+                
+                tangentConcaveAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        function restartTangentConcave() {
+            if (tangentConcaveAnimationId) {
+                cancelAnimationFrame(tangentConcaveAnimationId);
+            }
+            initTangentConcaveAnimation();
+        }
+        
+        // Tangent to Convex Animation (y = 1 - x²)
+        let tangentConvexAnimationId;
+        
+        function initTangentConvexAnimation() {
+            const canvas = document.getElementById('tangentConvexCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 500;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 60; // pixels per unit
+            const xMin = -3;
+            const xMax = 3;
+            
+            let startTime = Date.now();
+            let isPaused = false;
+            let pauseStartTime = 0;
+            
+            function f(x) {
+                return 1 - x * x;
+            }
+            
+            function fPrime(x) {
+                return -2 * x;
+            }
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            function drawAxes() {
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 1;
+                
+                // X-axis
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(canvas.width, centerY);
+                ctx.stroke();
+                
+                // Y-axis
+                ctx.beginPath();
+                ctx.moveTo(centerX, 0);
+                ctx.lineTo(centerX, canvas.height);
+                ctx.stroke();
+            }
+            
+            function drawCurve() {
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                let firstPoint = true;
+                for (let x = xMin; x <= xMax; x += 0.05) {
+                    const y = f(x);
+                    const canvasX = toCanvasX(x);
+                    const canvasY = toCanvasY(y);
+                    
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+                ctx.stroke();
+                
+                // Draw equation label
+                ctx.fillStyle = '#dc2626';
+                ctx.font = '18px Arial';
+                ctx.fillText('y = 1 - x²', 20, 30);
+            }
+            
+            function drawTangent(x0) {
+                const y0 = f(x0);
+                const slope = fPrime(x0);
+                
+                // Draw point of tangency
+                ctx.fillStyle = '#3b82f6';
+                ctx.beginPath();
+                ctx.arc(toCanvasX(x0), toCanvasY(y0), 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw tangent line
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                const xLeft = xMin - 1;
+                const xRight = xMax + 1;
+                const yLeft = y0 + slope * (xLeft - x0);
+                const yRight = y0 + slope * (xRight - x0);
+                
+                ctx.moveTo(toCanvasX(xLeft), toCanvasY(yLeft));
+                ctx.lineTo(toCanvasX(xRight), toCanvasY(yRight));
+                ctx.stroke();
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                drawAxes();
+                drawCurve();
+                
+                const currentTime = Date.now();
+                
+                if (!isPaused) {
+                    const elapsed = (currentTime - startTime) / 1000;
+                    
+                    if (elapsed >= 2) {
+                        // Start pause
+                        isPaused = true;
+                        pauseStartTime = currentTime;
+                    } else {
+                        // Calculate current x position (moves from xMin to xMax over 2 seconds)
+                        const progress = elapsed / 2;
+                        const x0 = xMin + progress * (xMax - xMin);
+                        drawTangent(x0);
+                    }
+                } else {
+                    // In pause phase
+                    const pauseElapsed = (currentTime - pauseStartTime) / 1000;
+                    
+                    // Draw tangent at final position during pause
+                    drawTangent(xMax);
+                    
+                    if (pauseElapsed >= 1/3) {
+                        // Restart animation
+                        isPaused = false;
+                        startTime = Date.now();
+                    }
+                }
+                
+                tangentConvexAnimationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        function restartTangentConvex() {
+            if (tangentConvexAnimationId) {
+                cancelAnimationFrame(tangentConvexAnimationId);
+            }
+            initTangentConvexAnimation();
+        }
+    </script>
+</body>
+</html>
