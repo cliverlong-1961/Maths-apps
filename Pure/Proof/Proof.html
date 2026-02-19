@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive mathematical proof collection</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Computer Modern Serif', 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #fafafa;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #34495e;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-breadcrumb button {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            font-size: 0.95em;
+            padding: 5px 10px;
+            text-decoration: underline;
+        }
+
+        .nav-breadcrumb button:hover {
+            color: #2980b9;
+        }
+
+        /* Main Content */
+        main {
+            padding-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 30px 0 20px;
+            font-weight: normal;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #34495e;
+            margin: 20px 0 15px;
+            font-weight: normal;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Intro Content */
+        .intro-content {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .intro-content p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .statement-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+
+        .code-inline {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .definition-box {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .definition-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .cta-text {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 14px 32px;
+            font-size: 1.1em;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+            cursor: pointer;
+            border: none;
+            margin: 0 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Topic Grid */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .topic-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .topic-card:hover:not(.disabled) {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .topic-card .formula {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .topic-card .description {
+            font-size: 0.95em;
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+
+        .topic-link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .topic-link:hover {
+            text-decoration: underline;
+        }
+
+        .disabled {
+            opacity: 0.5;
+        }
+
+        .disabled .topic-link {
+            cursor: not-allowed;
+            color: #95a5a6;
+        }
+
+        /* Definitions Section */
+        .definitions-section {
+            background: white;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .definitions-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .definitions-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .footnote {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        
+        .example-list {
+            font-family: 'Courier New', monospace;
+            color: #34495e;
+            margin: 0 5px;
+        }
+        
+        .definition-highlight {
+            background-color: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #f39c12;
+            margin: 20px 0;
+        }
+
+        .intro p {
+            font-size: 1.05em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Expandable Proof Styles */
+        .proof-container {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #3498db;
+        }
+
+        .proof-container.expanded {
+            display: block;
+        }
+
+        .proof-header {
+            font-weight: bold;
+            font-style: italic;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .proof-step {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-left: 3px solid #95a5a6;
+            border-radius: 4px;
+        }
+
+        .step-number {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+
+        .step-content {
+            margin: 10px 0;
+        }
+
+        .step-justification {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #bdc3c7;
+        }
+
+        .proof-conclusion {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f6f3;
+            border-left: 4px solid #16a085;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro-content {
+                padding: 25px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update header based on section
+            const header = document.querySelector('header h1');
+            const subtitle = document.querySelector('.subtitle');
+            
+            if (sectionId === 'intro') {
+                header.textContent = 'Basic proof terminology and concepts';
+                subtitle.textContent = '';
+            } else if (sectionId === 'algebraic') {
+                header.textContent = 'Algebraic proofs';
+                subtitle.textContent = 'Fundamental algebraic identities and their proofs';
+            } else if (sectionId === 'algebraic-basic') {
+                header.textContent = 'Basic algebra';
+                subtitle.textContent = 'Fundamental algebraic identities';
+            } else if (sectionId === 'algebraic-inequalities') {
+                header.textContent = 'Algebraic inequalities';
+                subtitle.textContent = 'Fundamental inequality proofs';
+            } else if (sectionId === 'number-theory') {
+                header.textContent = 'Basic number theory';
+                subtitle.textContent = 'Fundamental definitions and proofs in number theory';
+            } else if (sectionId === 'real-numbers') {
+                header.textContent = 'Proofs involving real numbers';
+                subtitle.textContent = 'Fundamental theorems and proofs about real numbers';
+            } else if (sectionId === 'geometric') {
+                header.textContent = 'Basic geometric proofs';
+                subtitle.textContent = 'Fundamental theorems and proofs in geometry';
+            } else if (sectionId === 'contradiction') {
+                header.textContent = 'Proof by contradiction';
+                subtitle.textContent = 'Proofs using reductio ad absurdum';
+            } else if (sectionId === 'resources') {
+                header.textContent = 'Good proof resources';
+                subtitle.textContent = 'Helpful books, websites, and tools for learning mathematical proof';
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Re-render math after showing new section
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        function toggleProof(proofId) {
+            const proofContainer = document.getElementById(proofId);
+            const linkText = document.getElementById(proofId + '-link');
+            
+            if (proofContainer.classList.contains('expanded')) {
+                proofContainer.classList.remove('expanded');
+                linkText.textContent = 'View Proof →';
+            } else {
+                proofContainer.classList.add('expanded');
+                linkText.textContent = 'Hide Proof ↑';
+                
+                // Re-render math in the newly expanded proof
+                renderMathInElement(proofContainer, {
+                    delimiters: [
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Basic proof terminology and concepts</h1>
+            <p class="subtitle"></p>
+        </header>
+
+        <nav class="nav-breadcrumb" id="navigation" style="display: none;">
+            <button onclick="showSection('intro'); document.getElementById('navigation').style.display='none';">← Back to Introduction</button>
+        </nav>
+
+        <main>
+            <!-- Introduction Section -->
+            <section id="intro" class="section active">
+                <div class="intro-content">
+                    <p>
+                        This collection of pages gives a basic introduction to mathematical proof. First there are some definitions followed by some basic examples.
+                    </p>
+
+                    <div class="definition-box">
+                        <h3>Definition: Mathematical Statement</h3>
+                        <p>
+                            A statement in proof is a collection of words or symbols that is either <strong>TRUE</strong> or <strong>FALSE</strong>. A statement cannot be BOTH True and False and it must be one of them.
+                        </p>
+                    </div>
+
+                    <p>
+                        So the statement <span class="statement-label">(P1)</span> <span class="code-inline">'I am currently wearing a pair of blue shoes'</span> is either True or False. If I am wearing one red shoe and one blue shoe then P1 is False.
+                    </p>
+
+                    <p>
+                        The expression <span class="code-inline">'x = 3'</span> is not a statement, it is an expression. <span class="code-inline">'x = 3'</span> becomes a statement once we know what the value of x is.
+                    </p>
+
+                    <p>
+                        Another statement is <span class="code-inline">'I was born in Adelaide'</span>, is not about mathematical objects but is a statement because it is either True or False.
+                    </p>
+
+                    <p>
+                        Statements can be about many different subjects, not just mathematics. For our purposes we are interested in <strong>mathematical statements</strong>, these are (true or false) statements about mathematical objects such as algebra, geometric shapes, matrices, vectors, numbers etc.
+                    </p>
+
+                    <div class="cta-section">
+                        <p class="cta-text">Ready to explore mathematical proofs?</p>
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn-primary" onclick="showSection('algebraic'); document.getElementById('navigation').style.display='block';">Algebraic Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('number-theory'); document.getElementById('navigation').style.display='block';">Number Theory →</button>
+                            <button class="btn-primary" onclick="showSection('real-numbers'); document.getElementById('navigation').style.display='block';">Real Number Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('geometric'); document.getElementById('navigation').style.display='block';">Geometric Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('contradiction'); document.getElementById('navigation').style.display='block';">Proof by Contradiction →</button>
+                            <button class="btn-primary" onclick="showSection('resources'); document.getElementById('navigation').style.display='block';">Useful Resources →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Algebraic Proofs Section -->
+            <section id="algebraic" class="section">
+                <div class="intro">
+                    <p>This collection presents rigorous proofs of fundamental algebraic expressions and identities. Each proof is presented with clear steps and mathematical justification.</p>
+                </div>
+
+                <div class="cta-section" style="margin-top: 30px;">
+                    <p class="cta-text">Choose a category to explore:</p>
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="showSection('algebraic-basic');">Basic algebra →</button>
+                        <button class="btn-primary" onclick="showSection('algebraic-inequalities');">Inequalities →</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Basic Algebra Sub-section -->
+            <section id="algebraic-basic" class="section">
+                <div class="intro">
+                    <p>A good place to start proof is considering basic algebraic identities. Those studying proof will have a good background in basic algebra techniques so they will be able to follow the working while learning how to present a proof.</p>
+                </div>
+
+                <nav class="nav-breadcrumb" style="text-align: center; margin-bottom: 30px;">
+                    <button onclick="showSection('algebraic');">← Back to Algebraic proofs</button>
+                </nav>
+
+                <h2>Basic algebra proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Square of a Sum</h3>
+                        <div class="formula">
+                            \[(a + b)^2 \equiv a^2 + 2ab + b^2\]
+                        </div>
+                        <p class="description">Proof of the expansion of a binomial square using distributive property.</p>
+                        <span class="topic-link" id="proof-square-sum-link" onclick="toggleProof('proof-square-sum')">View Proof →</span>
+                        
+                        <div id="proof-square-sum" class="proof-container">
+                            <div class="proof-header">Proof: Square of a Sum</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1</div>
+                                <div class="step-content">
+                                    Begin with the left-hand side:
+                                    \[(a + b)^2 \equiv (a + b)(a + b)\]
+                                </div>
+                                <div class="step-justification">By definition of squaring</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2</div>
+                                <div class="step-content">
+                                    Apply the distributive property (FOIL method):
+                                    \[(a + b)(a + b) \equiv a \cdot a + a \cdot b + b \cdot a + b \cdot b\]
+                                    \[\equiv a^2 + ab + ba + b^2\]
+                                </div>
+                                <div class="step-justification">Each term in the first factor multiplies each term in the second</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3</div>
+                                <div class="step-content">
+                                    Use the commutative property:
+                                    \[ab \equiv ba\]
+                                    Therefore:
+                                    \[a^2 + ab + ba + b^2 \equiv a^2 + ab + ab + b^2 \equiv a^2 + 2ab + b^2\]
+                                </div>
+                                <div class="step-justification">Combining like terms</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Therefore, \((a + b)^2 \equiv a^2 + 2ab + b^2\) ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Difference of Squares</h3>
+                        <div class="formula">
+                            \[a^2 - b^2 \equiv (a + b)(a - b)\]
+                        </div>
+                        <p class="description">Factorization of the difference between two perfect squares.</p>
+                        <span class="topic-link" id="proof-diff-squares-link" onclick="toggleProof('proof-diff-squares')">View Proof →</span>
+                        
+                        <div id="proof-diff-squares" class="proof-container">
+                            <div class="proof-header">Proof: Difference of Squares</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1</div>
+                                <div class="step-content">
+                                    Start with the right-hand side and expand:
+                                    \[(a + b)(a - b)\]
+                                </div>
+                                <div class="step-justification">We will show this is identically equal to \(a^2 - b^2\)</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2</div>
+                                <div class="step-content">
+                                    Apply the distributive property:
+                                    \[(a + b)(a - b) \equiv a \cdot a + a \cdot (-b) + b \cdot a + b \cdot (-b)\]
+                                    \[\equiv a^2 - ab + ba - b^2\]
+                                </div>
+                                <div class="step-justification">FOIL method</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3</div>
+                                <div class="step-content">
+                                    Observe that the middle terms cancel:
+                                    \[a^2 - ab + ab - b^2 \equiv a^2 + 0 - b^2 \equiv a^2 - b^2\]
+                                </div>
+                                <div class="step-justification">Since \(ba \equiv ab\) and \(-ab + ab \equiv 0\)</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Therefore, \(a^2 - b^2 \equiv (a + b)(a - b)\) ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Sum of Cubes</h3>
+                        <div class="formula">
+                            \[a^3 + b^3 \equiv (a + b)(a^2 - ab + b^2)\]
+                        </div>
+                        <p class="description">Factorization of the sum of two perfect cubes.</p>
+                        <span class="topic-link">View Proof →</span>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Square of a Difference</h3>
+                        <div class="formula">
+                            \[(a - b)^2 \equiv a^2 - 2ab + b^2\]
+                        </div>
+                        <p class="description">Expansion of the square of a binomial difference.</p>
+                        <span class="topic-link">View Proof →</span>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Difference of Cubes</h3>
+                        <div class="formula">
+                            \[a^3 - b^3 \equiv (a - b)(a^2 + ab + b^2)\]
+                        </div>
+                        <p class="description">Factorization of the difference between two perfect cubes.</p>
+                        <span class="topic-link">View Proof →</span>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Binomial Theorem (n=3)</h3>
+                        <div class="formula">
+                            \[(a + b)^3 \equiv a^3 + 3a^2b + 3ab^2 + b^3\]
+                        </div>
+                        <p class="description">Cubic expansion using the binomial theorem.</p>
+                        <span class="topic-link">View Proof →</span>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Inequalities Sub-section -->
+            <section id="algebraic-inequalities" class="section">
+                <div class="intro">
+                    <p>Proofs of fundamental inequalities and their applications in mathematics.</p>
+                </div>
+
+                <nav class="nav-breadcrumb" style="text-align: center; margin-bottom: 30px;">
+                    <button onclick="showSection('algebraic');">← Back to Algebraic proofs</button>
+                </nav>
+
+                <h2>Inequality proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Sum and reciprocal inequality</h3>
+                        <div class="formula">
+                            \[a + \frac{1}{a} \geq 2 \text{ for } a > 0\]
+                        </div>
+                        <p class="description">Given a is a positive real number, prove that a + 1/a ≥ 2.</p>
+                        <span class="topic-link" id="proof-sum-reciprocal-link" onclick="toggleProof('proof-sum-reciprocal')">View Proof →</span>
+                        
+                        <div id="proof-sum-reciprocal" class="proof-container">
+                            <div class="proof-header">Proof: Sum and Reciprocal Inequality</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Method 1: Algebraic Manipulation</div>
+                                <div class="step-content">
+                                    Start with the inequality we want to prove:
+                                    \[a + \frac{1}{a} \geq 2\]
+                                    
+                                    Multiply both sides by \(a\) (which is positive):
+                                    \[a^2 + 1 \geq 2a\]
+                                </div>
+                                <div class="step-justification">Since \(a > 0\), multiplying preserves the inequality</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2</div>
+                                <div class="step-content">
+                                    Rearrange the terms:
+                                    \[a^2 - 2a + 1 \geq 0\]
+                                    
+                                    Factor the left side:
+                                    \[(a - 1)^2 \geq 0\]
+                                </div>
+                                <div class="step-justification">Completing the square</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3</div>
+                                <div class="step-content">
+                                    Since the square of any real number is non-negative:
+                                    \[(a - 1)^2 \geq 0\] is always true.
+                                    
+                                    Equality holds when \((a - 1)^2 = 0\), which occurs when \(a = 1\).
+                                </div>
+                                <div class="step-justification">Fundamental property of real numbers</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Method 2: AM-GM Inequality</div>
+                                <div class="step-content">
+                                    Apply the AM-GM inequality to \(a\) and \(\frac{1}{a}\):
+                                    \[\frac{a + \frac{1}{a}}{2} \geq \sqrt{a \cdot \frac{1}{a}} = \sqrt{1} = 1\]
+                                    
+                                    Therefore:
+                                    \[a + \frac{1}{a} \geq 2\]
+                                </div>
+                                <div class="step-justification">The arithmetic mean is at least the geometric mean</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Therefore, for all positive real numbers \(a\), we have \(a + \frac{1}{a} \geq 2\), with equality when \(a = 1\). ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>AM-GM Inequality</h3>
+                        <div class="formula">
+                            \[\frac{a + b}{2} \geq \sqrt{ab}\]
+                        </div>
+                        <p class="description">The arithmetic mean is greater than or equal to the geometric mean.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Cauchy-Schwarz Inequality</h3>
+                        <div class="formula">
+                            \[(ac + bd)^2 \leq (a^2 + b^2)(c^2 + d^2)\]
+                        </div>
+                        <p class="description">Fundamental inequality with applications in many areas of mathematics.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Triangle Inequality</h3>
+                        <div class="formula">
+                            \[|a + b| \leq |a| + |b|\]
+                        </div>
+                        <p class="description">The absolute value of a sum is at most the sum of absolute values.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Bernoulli's Inequality</h3>
+                        <div class="formula">
+                            \[(1 + x)^n \geq 1 + nx\]
+                        </div>
+                        <p class="description">For x ≥ -1 and n a positive integer.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="color: #7f8c8d; font-style: italic;">More inequality proofs will be added to this collection over time.</p>
+                </div>
+            </section>
+
+            <!-- Number Theory Section -->
+            <section id="number-theory" class="section">
+                <div class="definitions-section">
+                    <h3>Definitions</h3>
+                    
+                    <p>
+                        <span class="term">Positive Integers</span> (or natural numbers<sup>*1</sup>) are basic counting numbers such as 
+                        <span class="example-list">1, 2, 3, ... , 37, ... , 256, ...</span>
+                    </p>
+                    
+                    <p>
+                        <span class="term">Integers</span> are positive and negative counting numbers including zero: 
+                        <span class="example-list">..., -3, -2, -1, 0, +1, +2, +3, ...</span>
+                    </p>
+                    
+                    <p>
+                        <span class="term">Rational numbers</span> (or fractions) are created when you divide one integer by another 
+                        (excluding division by zero) for example: <span class="example-list">1/2, -8/13</span><sup>*2</sup>
+                    </p>
+                    
+                    <p>
+                        <span class="term">Real numbers</span> we can think of as any point on the number line. 
+                        I will introduce irrational and complex numbers later.
+                    </p>
+
+                    <div class="footnote">
+                        <p><sup>*1</sup> Some mathematicians include 0 in the natural numbers, others do not.</p>
+                        <p><sup>*2</sup> Note that every integer is also a rational number (e.g., 5 = 5/1).</p>
+                    </div>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Building Complex Definitions</h3>
+                    
+                    <p>
+                        We can use simpler definitions to build more complex definitions. We have to assume we understand 
+                        what we mean by basic arithmetic operations such as add, subtract, multiply and divide.
+                    </p>
+                    
+                    <div class="definition-highlight">
+                        <p>
+                            <strong>Definition:</strong> An <span class="term">even number</span> is 2 multiplied by an integer.
+                        </p>
+                        <p style="margin-top: 10px; color: #666;">
+                            In mathematical notation: A number \(n\) is even if \(n = 2k\) for some integer \(k\).
+                        </p>
+                    </div>
+                    
+                    <p style="margin-top: 20px;">
+                        In the example above, an even number is defined in terms of more basic objects and operations such as integer and multiplication—implicitly in "2k".
+                    </p>
+                </div>
+
+                <h2>Available Proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Even Expression</h3>
+                        <div class="formula">
+                            \[n^2 - n \text{ is even for all integers } n\]
+                        </div>
+                        <p class="description">Prove that \(n^2 - n\) is an even number for all integers.</p>
+                        <span class="topic-link" id="proof-even-expr-link" onclick="toggleProof('proof-even-expr')">View Proof →</span>
+                        
+                        <div id="proof-even-expr" class="proof-container">
+                            <div class="proof-header">Proof: n² - n is Even</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Method 1: Factorization</div>
+                                <div class="step-content">
+                                    Factor the expression:
+                                    \[n^2 - n = n(n - 1)\]
+                                </div>
+                                <div class="step-justification">Factor out common factor \(n\)</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2</div>
+                                <div class="step-content">
+                                    Observe that \(n\) and \((n-1)\) are consecutive integers.
+                                    
+                                    For any integer \(n\), exactly one of the following is true:
+                                    <ul style="margin-left: 20px;">
+                                        <li>\(n\) is even and \((n-1)\) is odd</li>
+                                        <li>\(n\) is odd and \((n-1)\) is even</li>
+                                    </ul>
+                                </div>
+                                <div class="step-justification">Consecutive integers have opposite parity</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3</div>
+                                <div class="step-content">
+                                    Since one of the two factors is even, the product \(n(n-1)\) must be even.
+                                    
+                                    If either factor is even (say \(= 2m\) for some integer \(m\)), then:
+                                    \[n(n-1) = 2m \cdot \text{(other factor)} = 2k\]
+                                    where \(k\) is an integer.
+                                </div>
+                                <div class="step-justification">A product is even if at least one factor is even</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Therefore, \(n^2 - n = n(n-1)\) is even for all integers \(n\). ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Cube numbers modulo 9</h3>
+                        <div class="formula">
+                            \[n^3 \equiv 0, 1, \text{ or } 8 \pmod{9}\]
+                        </div>
+                        <p class="description">Prove that all cube numbers are either a multiple of 9 or one more or one less than a multiple of 9.</p>
+                        <span class="topic-link" id="proof-cube-mod9-link" onclick="toggleProof('proof-cube-mod9')">View Proof →</span>
+                        
+                        <div id="proof-cube-mod9" class="proof-container">
+                            <div class="proof-header">Proof: Cube Numbers Modulo 9</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1</div>
+                                <div class="step-content">
+                                    Any integer \(n\) can be written in one of the forms:
+                                    \[n \equiv 0, 1, 2, 3, 4, 5, 6, 7, \text{ or } 8 \pmod{9}\]
+                                </div>
+                                <div class="step-justification">Complete residue system modulo 9</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2</div>
+                                <div class="step-content">
+                                    Calculate \(n^3 \pmod{9}\) for each case:
+                                    <ul style="margin-left: 20px;">
+                                        <li>If \(n \equiv 0 \pmod{9}\): \(n^3 \equiv 0^3 \equiv 0 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 1 \pmod{9}\): \(n^3 \equiv 1^3 \equiv 1 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 2 \pmod{9}\): \(n^3 \equiv 2^3 \equiv 8 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 3 \pmod{9}\): \(n^3 \equiv 3^3 \equiv 27 \equiv 0 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 4 \pmod{9}\): \(n^3 \equiv 4^3 \equiv 64 \equiv 1 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 5 \pmod{9}\): \(n^3 \equiv 5^3 \equiv 125 \equiv 8 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 6 \pmod{9}\): \(n^3 \equiv 6^3 \equiv 216 \equiv 0 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 7 \pmod{9}\): \(n^3 \equiv 7^3 \equiv 343 \equiv 1 \pmod{9}\)</li>
+                                        <li>If \(n \equiv 8 \pmod{9}\): \(n^3 \equiv 8^3 \equiv 512 \equiv 8 \pmod{9}\)</li>
+                                    </ul>
+                                </div>
+                                <div class="step-justification">Direct computation</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3</div>
+                                <div class="step-content">
+                                    From the calculations above, we see that:
+                                    \[n^3 \equiv 0, 1, \text{ or } 8 \pmod{9}\]
+                                    
+                                    This means:
+                                    <ul style="margin-left: 20px;">
+                                        <li>\(n^3 \equiv 0 \pmod{9}\): cube is a multiple of 9</li>
+                                        <li>\(n^3 \equiv 1 \pmod{9}\): cube is one more than a multiple of 9</li>
+                                        <li>\(n^3 \equiv 8 \pmod{9}\): cube is one less than a multiple of 9 (since \(8 \equiv -1 \pmod{9}\))</li>
+                                    </ul>
+                                </div>
+                                <div class="step-justification">Interpretation of residues</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> All cube numbers are either a multiple of 9, one more than a multiple of 9, or one less than a multiple of 9. ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Integer problems and Proof by cases</h3>
+                        <p class="description">'Number theory' is normally applied to questions about the properties of integers. Often the proof can be splitting the working into two cases: considering what happens when we start 'n is a general even numbers (n = 2k, k an integer)' and follow with the case 'n is a general odd numbers (n = 2k+1, k an integer)'</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Real number problems and Proof by cases</h3>
+                        <p class="description">In questions about the properties of real numbers, often the proof can split the working into three cases: When x is a real number, case 1: considering what happens when we start 'x is a positive real number' and follow with case 2: 'x is a negative real number' and case 3: 'x = 0'</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Proofs Involving Real Numbers Section -->
+            <section id="real-numbers" class="section">
+                <div class="definitions-section">
+                    <h3>Introduction to Real Number Proofs</h3>
+                    
+                    <p>
+                        Real numbers include all rational and irrational numbers. Proofs involving real numbers often require 
+                        careful consideration of properties such as ordering, absolute values, and the completeness of the real number system.
+                    </p>
+                    
+                    <p>
+                        Common proof techniques for real numbers include using the trichotomy property (every real number is either 
+                        positive, negative, or zero), properties of absolute values, and inequalities.
+                    </p>
+                </div>
+
+                <h2>Available Proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card disabled">
+                        <h3>Coming Soon</h3>
+                        <p class="description">Real number proofs will be added here.</p>
+                        <span class="topic-link">In Development</span>
+                    </article>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="color: #7f8c8d; font-style: italic;">More real number proofs will be added to this collection over time.</p>
+                </div>
+            </section>
+
+            <!-- Geometric Proofs Section -->
+            <section id="geometric" class="section">
+                <div class="definitions-section">
+                    <h3>Introduction to Geometric Proofs</h3>
+                    
+                    <p>
+                        Geometry is the branch of mathematics concerned with questions of shape, size, relative position of figures, 
+                        and the properties of space. Geometric proofs use logical reasoning to establish the truth of geometric statements.
+                    </p>
+                    
+                    <p>
+                        In this section, we explore fundamental geometric theorems and their proofs, building from basic axioms 
+                        and definitions to more complex results. These proofs demonstrate the deductive nature of mathematics 
+                        and the power of logical reasoning in establishing mathematical truths.
+                    </p>
+                </div>
+
+                <h2>Available Proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card disabled">
+                        <h3>Pythagorean Theorem</h3>
+                        <div class="formula">
+                            \[a^2 + b^2 = c^2\]
+                        </div>
+                        <p class="description">In a right triangle, the square of the hypotenuse equals the sum of squares of the other two sides.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Sum of Triangle Angles</h3>
+                        <div class="formula">
+                            \[\alpha + \beta + \gamma = 180°\]
+                        </div>
+                        <p class="description">The sum of the interior angles of any triangle equals 180 degrees.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Vertical Angles Theorem</h3>
+                        <div class="formula">
+                            \[\angle AOC = \angle BOD\]
+                        </div>
+                        <p class="description">Vertical angles formed by two intersecting lines are congruent.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Parallel Lines and Transversals</h3>
+                        <div class="formula">
+                            \[\text{Alternate interior angles are equal}\]
+                        </div>
+                        <p class="description">When parallel lines are cut by a transversal, alternate interior angles are congruent.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <!-- Additional placeholder cards that can be replaced with real proofs later -->
+                    <article class="topic-card disabled" style="display: none;">
+                        <h3>Future Proof 5</h3>
+                        <div class="formula">
+                            \[\text{Theorem}\]
+                        </div>
+                        <p class="description">Description of the theorem.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled" style="display: none;">
+                        <h3>Future Proof 6</h3>
+                        <div class="formula">
+                            \[\text{Theorem}\]
+                        </div>
+                        <p class="description">Description of the theorem.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="color: #7f8c8d; font-style: italic;">More geometric proofs will be added to this collection over time.</p>
+                </div>
+            </section>
+
+            <!-- Proof by Contradiction Section -->
+            <section id="contradiction" class="section">
+                <div class="definitions-section">
+                    <h3>Introduction to proof by contradiction</h3>
+                    
+                    <p>
+                        Proof by contradiction (p.b.c.) is often useful when the statement to be proved, often called a theorem or proposition, is one of two forms. If "P" and "Q" are both expressions then p.b.c. might be used if the proposition is:
+                    </p>
+                    
+                    <ul style="margin-left: 30px; margin-top: 15px; margin-bottom: 20px;">
+                        <li style="margin-bottom: 8px;">'(Prove) Not P'</li>
+                        <li>'If P then not Q'</li>
+                    </ul>
+                    
+                    <p>Examples include:</p>
+                    
+                    <ul style="margin-left: 30px; margin-top: 15px; margin-bottom: 20px;">
+                        <li style="margin-bottom: 8px;">(Prove) there is no largest positive integer</li>
+                        <li style="margin-bottom: 8px;">(Prove) there is no smallest positive rational number</li>
+                        <li style="margin-bottom: 8px;">(Prove) The sum of a rational number and an irrational number is irrational</li>
+                        <li>(Prove) if \(a, b > 0\), then \(\sqrt{a + b} \neq \sqrt{a} + \sqrt{b}\)</li>
+                    </ul>
+                    
+                    <p>
+                        The approaches are in general: for 'not P' assume 'P' is true then try to deduce a contradiction, for 'If P then not Q', assume 'P AND Q' are true at the same time, then work from either P or Q to a contradiction (this takes a bit of getting used to but the vital first step is converting 'If P then not Q', and 'P AND Q'). So 'Prove there is no largest integer' becomes 'Assume there is a largest integer'. 'Prove if we add a rational number to an irrational number then the result is irrational' becomes 'Assume adding rational number to an irrational number the result is a rational (not irrational) number'. All of these examples are worked through in detail below.
+                    </p>
+                </div>
+
+                <h2>Available proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>No largest positive integer</h3>
+                        <div class="formula">
+                            \[\nexists \max \mathbb{Z}^+\]
+                        </div>
+                        <p class="description">There does not exist a largest positive integer.</p>
+                        <span class="topic-link" id="proof-no-max-int-link" onclick="toggleProof('proof-no-max-int')">View Proof →</span>
+                        
+                        <div id="proof-no-max-int" class="proof-container">
+                            <div class="proof-header">Proof by Contradiction: There is no largest positive integer</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assumption</div>
+                                <div class="step-content">
+                                    Assume for the sake of contradiction that there exists a largest positive integer.
+                                    
+                                    Let's call this largest positive integer \(N\).
+                                    
+                                    So \(N\) is a positive integer and \(N \geq n\) for all positive integers \(n\).
+                                </div>
+                                <div class="step-justification">Setting up the contradiction</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Construct a larger integer</div>
+                                <div class="step-content">
+                                    Consider the number \(N + 1\).
+                                    
+                                    Since \(N\) is a positive integer, and 1 is a positive integer:
+                                    \[N + 1 \text{ is also a positive integer}\]
+                                    
+                                    Furthermore:
+                                    \[N + 1 > N\]
+                                </div>
+                                <div class="step-justification">The integers are closed under addition, and adding 1 increases the value</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Derive Contradiction</div>
+                                <div class="step-content">
+                                    We have found that \(N + 1\) is a positive integer and \(N + 1 > N\).
+                                    
+                                    But we assumed \(N\) was the largest positive integer, meaning \(N \geq n\) for all positive integers \(n\).
+                                    
+                                    Since \(N + 1\) is a positive integer, we must have \(N \geq N + 1\).
+                                    
+                                    But we also showed \(N + 1 > N\), which means \(N < N + 1\).
+                                    
+                                    We cannot have both \(N \geq N + 1\) and \(N < N + 1\). This is a contradiction!
+                                </div>
+                                <div class="step-justification">A number cannot be both greater than or equal to and less than another number</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Our assumption that there exists a largest positive integer must be false. Therefore, there is no largest positive integer. ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>No smallest positive rational</h3>
+                        <div class="formula">
+                            \[\nexists \min\{r \in \mathbb{Q} : r > 0\}\]
+                        </div>
+                        <p class="description">There does not exist a smallest positive rational number.</p>
+                        <span class="topic-link" id="proof-no-min-rational-link" onclick="toggleProof('proof-no-min-rational')">View Proof →</span>
+                        
+                        <div id="proof-no-min-rational" class="proof-container">
+                            <div class="proof-header">Proof by Contradiction: There is no smallest positive rational number</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assumption</div>
+                                <div class="step-content">
+                                    Assume for the sake of contradiction that there exists a smallest positive rational number.
+                                    
+                                    Let's call this smallest positive rational number \(r\).
+                                    
+                                    So \(r > 0\) and \(r \leq s\) for all positive rational numbers \(s\).
+                                </div>
+                                <div class="step-justification">Setting up the contradiction</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Construct a smaller positive rational</div>
+                                <div class="step-content">
+                                    Consider the number \(\frac{r}{2}\).
+                                    
+                                    Since \(r\) is a positive rational number:
+                                    <ul style="margin-left: 20px;">
+                                        <li>\(r > 0\), so \(\frac{r}{2} > 0\) (positive number divided by 2 is positive)</li>
+                                        <li>\(r\) is rational, so \(\frac{r}{2}\) is rational (rationals are closed under division by non-zero rationals)</li>
+                                        <li>\(\frac{r}{2} < r\) (since \(\frac{r}{2} = \frac{1}{2} \cdot r\) and \(\frac{1}{2} < 1\))</li>
+                                    </ul>
+                                    
+                                    Therefore, \(\frac{r}{2}\) is a positive rational number and \(\frac{r}{2} < r\).
+                                </div>
+                                <div class="step-justification">Division by 2 preserves rationality and positivity while decreasing the value</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Derive Contradiction</div>
+                                <div class="step-content">
+                                    We have found that \(\frac{r}{2}\) is a positive rational number and \(\frac{r}{2} < r\).
+                                    
+                                    But we assumed \(r\) was the smallest positive rational number, meaning \(r \leq s\) for all positive rational numbers \(s\).
+                                    
+                                    Since \(\frac{r}{2}\) is a positive rational number, we must have \(r \leq \frac{r}{2}\).
+                                    
+                                    But we also showed \(\frac{r}{2} < r\), which means \(r > \frac{r}{2}\).
+                                    
+                                    We cannot have both \(r \leq \frac{r}{2}\) and \(r > \frac{r}{2}\). This is a contradiction!
+                                </div>
+                                <div class="step-justification">A number cannot be both less than or equal to and greater than another number</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Alternative Construction</div>
+                                <div class="step-content">
+                                    Note: We could also have used \(\frac{r}{10}\) or \(\frac{r}{n}\) for any integer \(n > 1\).
+                                    
+                                    This shows that between 0 and any positive rational number, we can always find infinitely many other positive rational numbers.
+                                </div>
+                                <div class="step-justification">The rational numbers are dense in the real numbers</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Our assumption that there exists a smallest positive rational number must be false. Therefore, there is no smallest positive rational number. ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Cube implies even</h3>
+                        <div class="formula">
+                            \[n^3 \text{ even} \Rightarrow n \text{ even}\]
+                        </div>
+                        <p class="description">If n³ is even then n is even.</p>
+                        <span class="topic-link" id="proof-cube-even-link" onclick="toggleProof('proof-cube-even')">View Proof →</span>
+                        
+                        <div id="proof-cube-even" class="proof-container">
+                            <div class="proof-header">Proof by Contradiction: If n³ is even then n is even</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assumption</div>
+                                <div class="step-content">
+                                    Assume for the sake of contradiction that \(n^3\) is even but \(n\) is odd.
+                                    
+                                    If \(n\) is odd, then \(n = 2k + 1\) for some integer \(k\).
+                                </div>
+                                <div class="step-justification">Setting up the contradiction</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Calculate n³</div>
+                                <div class="step-content">
+                                    Cube the expression for \(n\):
+                                    \[n^3 = (2k + 1)^3\]
+                                    \[= (2k + 1)(2k + 1)(2k + 1)\]
+                                    \[= (2k + 1)(4k^2 + 4k + 1)\]
+                                    \[= 8k^3 + 12k^2 + 6k + 1\]
+                                    \[= 2(4k^3 + 6k^2 + 3k) + 1\]
+                                </div>
+                                <div class="step-justification">Expanding using binomial theorem or direct multiplication</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Derive Contradiction</div>
+                                <div class="step-content">
+                                    From Step 2, we have:
+                                    \[n^3 = 2(4k^3 + 6k^2 + 3k) + 1 = 2m + 1\]
+                                    where \(m = 4k^3 + 6k^2 + 3k\) is an integer.
+                                    
+                                    This shows that \(n^3\) is odd (of the form \(2m + 1\)).
+                                    
+                                    But we assumed \(n^3\) is even. This is a contradiction!
+                                </div>
+                                <div class="step-justification">An odd number cannot be even</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Our assumption that \(n\) is odd must be false. Therefore, if \(n^3\) is even, then \(n\) must be even. ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Sum odd implies component odd</h3>
+                        <div class="formula">
+                            \[p + q \text{ odd} \Rightarrow p \text{ odd or } q \text{ odd}\]
+                        </div>
+                        <p class="description">If p + q is odd then at least one of p or q is odd.</p>
+                        <span class="topic-link" id="proof-sum-odd-link" onclick="toggleProof('proof-sum-odd')">View Proof →</span>
+                        
+                        <div id="proof-sum-odd" class="proof-container">
+                            <div class="proof-header">Proof by Contradiction: If p + q is odd then at least one of p or q is odd</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assumption</div>
+                                <div class="step-content">
+                                    Assume for the sake of contradiction that \(p + q\) is odd but both \(p\) and \(q\) are even.
+                                    
+                                    If \(p\) is even and \(q\) is even, then:
+                                    \[p = 2m \text{ for some integer } m\]
+                                    \[q = 2n \text{ for some integer } n\]
+                                </div>
+                                <div class="step-justification">Setting up the contradiction by assuming the negation</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Calculate p + q</div>
+                                <div class="step-content">
+                                    Add \(p\) and \(q\):
+                                    \[p + q = 2m + 2n = 2(m + n)\]
+                                    
+                                    Since \(m + n\) is an integer, \(p + q = 2(m + n)\) is even.
+                                </div>
+                                <div class="step-justification">Sum of two even numbers is even</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Derive Contradiction</div>
+                                <div class="step-content">
+                                    We have shown that \(p + q\) is even.
+                                    
+                                    But we assumed that \(p + q\) is odd.
+                                    
+                                    This is a contradiction, as a number cannot be both even and odd.
+                                </div>
+                                <div class="step-justification">A number has unique parity</div>
+                            </div>
+                            
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Our assumption that both \(p\) and \(q\) are even must be false. Therefore, if \(p + q\) is odd, then at least one of \(p\) or \(q\) must be odd. ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>√2 is irrational</h3>
+                        <div class="formula">
+                            \[\sqrt{2} \notin \mathbb{Q}\]
+                        </div>
+                        <p class="description">Classic proof that the square root of 2 cannot be expressed as a ratio of integers.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled">
+                        <h3>Infinitude of primes</h3>
+                        <div class="formula">
+                            \[\text{There are infinitely many primes}\]
+                        </div>
+                        <p class="description">Euclid's proof that the set of prime numbers is infinite.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <!-- Hidden placeholders for future proofs -->
+                    <article class="topic-card disabled" style="display: none;">
+                        <h3>Future Proof 5</h3>
+                        <div class="formula">
+                            \[\text{Theorem}\]
+                        </div>
+                        <p class="description">Description of the theorem.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+
+                    <article class="topic-card disabled" style="display: none;">
+                        <h3>Future Proof 6</h3>
+                        <div class="formula">
+                            \[\text{Theorem}\]
+                        </div>
+                        <p class="description">Description of the theorem.</p>
+                        <span class="topic-link">Coming Soon</span>
+                    </article>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="color: #7f8c8d; font-style: italic;">More proof by contradiction examples will be added to this collection over time.</p>
+                </div>
+            </section>
+
+            <!-- Good Proof Resources Section -->
+            <section id="resources" class="section">
+                <div class="definitions-section">
+                    <h3>Learning Resources</h3>
+                    
+                    <p>
+                        This page provides a curated collection of resources to help you develop your mathematical proof skills. 
+                        Whether you're just starting out or looking to deepen your understanding, these materials offer 
+                        various approaches to learning proof techniques.
+                    </p>
+                </div>
+
+                <h2>Recommended Resources</h2>
+                
+                <div class="intro">
+                    <p>Below are some excellent resources for learning mathematical proof. These materials cover fundamental concepts 
+                    and provide practical guidance for developing your proof-writing skills.</p>
+                </div>
+
+                <div class="definitions-section" style="margin-top: 30px;">
+                    <h3>Online Learning Materials</h3>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <p style="margin-bottom: 8px;"><strong>Long Form Math - Free Online Proofs Book</strong></p>
+                        <p style="margin-bottom: 10px;">A comprehensive free resource covering proof techniques and mathematical reasoning.</p>
+                        <a href="https://longformmath.com/proofs-book/" target="_blank" style="color: #3498db; text-decoration: none;">https://longformmath.com/proofs-book/</a>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <p style="margin-bottom: 8px;"><strong>Long Form Math YouTube Channel</strong></p>
+                        <p style="margin-bottom: 10px;">Video tutorials and explanations of mathematical proofs and concepts.</p>
+                        <a href="https://www.youtube.com/@LongFormMath" target="_blank" style="color: #3498db; text-decoration: none;">https://www.youtube.com/@LongFormMath</a>
+                    </div>
+                </div>
+
+                <div class="definitions-section" style="margin-top: 30px;">
+                    <h3>Recommended Textbooks</h3>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <p style="margin-bottom: 8px;"><strong>How to Read and Do Proofs by Daniel Solow</strong></p>
+                        <p style="margin-bottom: 10px;">An excellent introduction to mathematical proof techniques. <em>Consider finding a second-hand copy to save money.</em></p>
+                        <a href="https://www.amazon.co.uk/How-Read-Proofs-Introduction-Mathematical-dp-1118164024/dp/1118164024/ref=dp_ob_title_bk" target="_blank" style="color: #3498db; text-decoration: none;">Amazon UK Link</a>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <p style="margin-bottom: 8px;"><strong>Daniel Solow - Video Presentation</strong></p>
+                        <p style="margin-bottom: 10px;">Watch the author present key concepts from his book on proof techniques.</p>
+                        <a href="https://youtu.be/lOnsQUFFUEE?si=5r6ejWxULhcDgbUo" target="_blank" style="color: #3498db; text-decoration: none;">YouTube Video</a>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="color: #7f8c8d; font-style: italic;">More resource recommendations will be added to this page over time.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Mathematical proof collection</p>
+        </footer>
+    </div>
+</body>
+</html>
