@@ -1,2 +1,2 @@
 # Maths-apps
-Downloaded versions of HTML apps created suing Claude AI
+Downloaded versions of HTML apps created using Claude AI
