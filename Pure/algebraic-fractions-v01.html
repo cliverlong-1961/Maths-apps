@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebraic Fractions Tutor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eff6ff, #e0e7ff);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    width: 100%; max-width: 640px;
+    min-height: 600px;
+    display: flex; flex-direction: column;
+  }
+  .header {
+    background: linear-gradient(90deg, #2563eb, #4f46e5);
+    color: #fff;
+    padding: 24px;
+    border-radius: 16px 16px 0 0;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.8rem; font-weight: 700; }
+  .header p { color: #bfdbfe; margin-top: 6px; font-size: 0.9rem; }
+  .content {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+  }
+  .page { display: none; }
+  .page.active { display: block; }
+  h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+  .blue { color: #2563eb; }
+  .yellow { color: #d97706; }
+  .red { color: #dc2626; }
+  p { font-size: 1rem; line-height: 1.6; margin-bottom: 12px; }
+  .problem-box {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 32px 16px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .problem-box.blue-border { border: 2px solid #bfdbfe; }
+  .problem-box.yellow-border { border: 2px solid #fde68a; }
+  .problem-box.red-border { border: 2px solid #fecaca; }
+  .fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: monospace;
+    font-size: 1.05rem;
+    vertical-align: middle;
+  }
+  .fraction .num { padding: 4px 12px; }
+  .fraction .bar { width: 100%; border-top: 2px solid #111; }
+  .fraction .den { padding: 4px 12px; }
+  .expr { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .op { font-size: 1.2rem; font-weight: bold; }
+  .answer-box {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .answer-box h3 { color: #16a34a; font-size: 1.1rem; margin-bottom: 12px; }
+  .btn-row { display: flex; justify-content: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  button {
+    display: flex; align-items: center; gap: 6px;
+    border: none; cursor: pointer;
+    font-weight: 600; font-size: 0.9rem;
+    padding: 10px 20px; border-radius: 8px;
+    transition: filter 0.2s;
+  }
+  button:hover { filter: brightness(90%); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; filter: none; }
+  .btn-purple { background: #a855f7; color: #fff; }
+  .btn-green  { background: #22c55e; color: #fff; }
+  .btn-blue   { background: #2563eb; color: #fff; }
+  .btn-yellow { background: #f59e0b; color: #fff; }
+  .btn-red    { background: #ef4444; color: #fff; }
+  .hint { color: #6b7280; font-size: 0.85rem; margin-top: 10px; }
+  .footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 0 0 16px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dot {
+    height: 10px; border-radius: 999px;
+    background: #d1d5db;
+    cursor: pointer; transition: all 0.2s;
+    border: none; padding: 0;
+  }
+  .dot.active { background: #2563eb; width: 28px; }
+  .dot:not(.active) { width: 10px; }
+  .diff-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .diff-btns button { width: 100%; justify-content: center; font-size: 1rem; padding: 14px; }
+  svg-icon { display: inline-block; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <h1>Algebraic Fractions Tutor</h1>
+    <p id="pageIndicator">Page 1 of 6</p>
+  </div>
+  <div class="content">
+
+    <!-- PAGE 0: Welcome -->
+    <div class="page active" id="page-0">
+      <h2 class="blue">Algebraic Fractions Practice</h2>
+      <p>This app generates random questions about algebraic fractions such as adding two fractions together to form a single expression or splitting a single expression into separate, partial, fractions.</p>
+      <p>An algebraic fraction is also known as a <strong class="blue">rational expression</strong>.</p>
+    </div>
+
+    <!-- PAGE 1: Addition -->
+    <div class="page" id="page-1">
+      <h2 class="blue">Adding Algebraic Fractions</h2>
+      <p>Combine these fractions into a single expression:</p>
+      <div class="problem-box blue-border" id="addProblemBox"></div>
+      <div class="answer-box" id="addAnswerBox" style="display:none">
+        <h3>Answer:</h3>
+        <div class="expr" id="addAnswerContent"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-purple" onclick="toggleAnswer('add')">Show Answer</button>
+        <button class="btn-green" onclick="newProblem('add')">
+          &#x21bb; New Problem
+        </button>
+      </div>
+      <p class="hint">Hint: Find a common denominator and combine the numerators.</p>
+    </div>
+
+    <!-- PAGE 2: Partial Fractions -->
+    <div class="page" id="page-2">
+      <h2 class="blue">Partial Fraction Decomposition</h2>
+      <p>Split this expression into simpler fractions:</p>
+      <div class="problem-box blue-border" id="pfProblemBox"></div>
+      <div class="answer-box" id="pfAnswerBox" style="display:none">
+        <h3>Answer:</h3>
+        <div class="expr" id="pfAnswerContent"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-purple" onclick="toggleAnswer('pf')">Show Answer</button>
+        <button class="btn-green" onclick="newProblem('pf')">&#x21bb; New Problem</button>
+      </div>
+      <p class="hint" id="pfHint"></p>
+    </div>
+
+    <!-- PAGE 3: Practice Mode -->
+    <div class="page" id="page-3">
+      <h2 class="blue">Ready to Practice?</h2>
+      <p>Choose your difficulty level and start solving problems!</p>
+      <div class="diff-btns">
+        <button class="btn-yellow" onclick="goTo(4)">Medium Level</button>
+        <button class="btn-red" onclick="goTo(5)">Hard Level</button>
+      </div>
+    </div>
+
+    <!-- PAGE 4: Medium -->
+    <div class="page" id="page-4">
+      <h2 class="yellow">Simplify the Following Algebraic Fraction</h2>
+      <p>Simplify this rational expression by cancelling common factors:</p>
+      <div class="problem-box yellow-border" id="medProblemBox"></div>
+      <div class="answer-box" id="medAnswerBox" style="display:none">
+        <h3>Simplified Answer:</h3>
+        <div class="expr" id="medAnswerContent"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-purple" onclick="toggleAnswer('med')">Show Answer</button>
+        <button class="btn-green" onclick="newProblem('med')">&#x21bb; New Problem</button>
+      </div>
+      <p class="hint">Hint: Factor both numerator and denominator, then cancel common factors.</p>
+    </div>
+
+    <!-- PAGE 5: Hard -->
+    <div class="page" id="page-5">
+      <h2 class="red">Perform the Following Algebraic Division</h2>
+      <p>Divide the numerator by the denominator and express as quotient + remainder/divisor:</p>
+      <div class="problem-box red-border" id="hardProblemBox"></div>
+      <div class="answer-box" id="hardAnswerBox" style="display:none">
+        <h3>Answer:</h3>
+        <div class="expr" id="hardAnswerContent"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-purple" onclick="toggleAnswer('hard')">Show Answer</button>
+        <button class="btn-green" onclick="newProblem('hard')">&#x21bb; New Problem</button>
+      </div>
+      <p class="hint">Hint: Use polynomial long division to find quotient and remainder.</p>
+    </div>
+
+  </div>
+  <div class="footer">
+    <button class="btn-blue" id="btnPrev" onclick="goTo(currentPage-1)">&#8249; Previous</button>
+    <div class="dots" id="dotsContainer"></div>
+    <button class="btn-blue" id="btnNext" onclick="goTo(currentPage+1)">Next &#8250;</button>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const TOTAL_PAGES = 6;
+let currentPage = 0;
+let problems = {};
+let answerVisible = { add: false, pf: false, med: false, hard: false };
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function rnd(min, max) {
+  let n = 0;
+  while (n === 0) n = Math.floor(Math.random() * (max - min + 1)) + min;
+  return n;
+}
+function rndSmall() { return rnd(-4, 4); }
+
+function fmtLinear(a, b, v) {
+  let s = '';
+  if (a === 1) s = v;
+  else if (a === -1) s = '-' + v;
+  else s = a + v;
+  if (b > 0) s += ' + ' + b;
+  else if (b < 0) s += ' \u2212 ' + Math.abs(b);
+  return s;
+}
+
+const SUP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function sup(n) { return n.toString().split('').map(d => SUP[d]).join(''); }
+
+function fmtPoly(coeffs, v) {
+  // coeffs[i] = coefficient of v^i
+  const deg = coeffs.length - 1;
+  let terms = [];
+  for (let i = deg; i >= 0; i--) {
+    const c = coeffs[i];
+    if (c === 0) continue;
+    let term = '';
+    if (i === 0) term = Math.abs(c).toString();
+    else if (i === 1) term = (Math.abs(c) === 1 ? '' : Math.abs(c)) + v;
+    else term = (Math.abs(c) === 1 ? '' : Math.abs(c)) + v + sup(i);
+    if (terms.length === 0) { if (c < 0) term = '\u2212' + term; }
+    else term = (c > 0 ? ' + ' : ' \u2212 ') + term;
+    terms.push(term);
+  }
+  return terms.length ? terms.join('') : '0';
+}
+
+function fmtNumerator(cV, c0, v) {
+  let s = '';
+  if (cV !== 0) s = (cV === 1 ? v : cV === -1 ? '-' + v : cV + v);
+  if (c0 !== 0) {
+    if (!s) s = c0.toString();
+    else s += (c0 > 0 ? ' + ' : ' \u2212 ') + Math.abs(c0);
+  }
+  return s || '0';
+}
+
+function expandPoly(factors) {
+  let c = [1];
+  for (const {a, b} of factors) {
+    let nc = new Array(c.length + 1).fill(0);
+    for (let i = 0; i < c.length; i++) {
+      nc[i + 1] += c[i] * a;
+      nc[i]     += c[i] * b;
+    }
+    c = nc;
+  }
+  return c;
+}
+
+function multiplyPoly(p1, p2) {
+  let r = new Array(p1.length + p2.length - 1).fill(0);
+  for (let i = 0; i < p1.length; i++)
+    for (let j = 0; j < p2.length; j++)
+      r[i + j] += p1[i] * p2[j];
+  return r;
+}
+
+function dividePoly(dividend, divisor) {
+  let rem = [...dividend];
+  let quot = [];
+  const dd = divisor.length - 1;
+  for (let i = rem.length - 1; i >= dd; i--) {
+    const c = rem[i] / divisor[dd];
+    quot.unshift(c);
+    for (let j = 0; j <= dd; j++) rem[i - dd + j] -= c * divisor[j];
+  }
+  while (quot.length > 1 && quot[quot.length - 1] === 0) quot.pop();
+  return quot;
+}
+
+// ── Problem generators ────────────────────────────────────────────────────
+const VARS = ['x', 'u', 'v', 'y'];
+function randVar() { return VARS[Math.floor(Math.random() * VARS.length)]; }
+
+function genAdd() {
+  const v = randVar();
+  return { v,
+    n1: rndSmall(), a1: rndSmall(), b1: rndSmall(),
+    n2: rndSmall(), a2: rndSmall(), b2: rndSmall() };
+}
+
+function genPF() {
+  const v = randVar();
+  const a1=rndSmall(), b1=rndSmall(), a2=rndSmall(), b2=rndSmall();
+  const A=rndSmall(), B=rndSmall();
+  return { v, a1, b1, a2, b2, A, B,
+    cV: A*a2 + B*a1,
+    c0: A*b2 + B*b1 };
+}
+
+function genMed() {
+  const v = randVar();
+  const a1=rndSmall(), b1=rndSmall(), a2=rndSmall(), b2=rndSmall();
+  const useFirst = Math.random() < 0.5;
+  const cA = useFirst ? a1 : a2, cB = useFirst ? b1 : b2;
+  const deg = [2,3,4][Math.floor(Math.random()*3)];
+  let numFact = [{a:cA,b:cB}];
+  for (let i=1; i<deg; i++) numFact.push({a:rndSmall(),b:rndSmall()});
+  const numC = expandPoly(numFact);
+  const twoFactor = Math.random() < 0.5;
+  const denFact = twoFactor ? [{a:a1,b:b1},{a:a2,b:b2}] : [{a:cA,b:cB}];
+  const denC = expandPoly(denFact);
+  return { v, numC, denC, cA, cB, a1, b1, a2, b2, twoFactor };
+}
+
+function genHard() {
+  const v = randVar();
+  const divDeg = Math.random() < 0.5 ? 1 : 2;
+  const totDeg = Math.random() < 0.5 ? 3 : 4;
+  const qDeg = totDeg - divDeg;
+  let divC = [], qC = [], remC = [];
+  for (let i=0; i<=divDeg; i++) divC.push(rnd(-4,4));
+  for (let i=0; i<=qDeg;  i++) qC.push(rnd(-7,7));
+  for (let i=0; i<divDeg; i++) remC.push(rnd(-7,7));
+  let divdC = multiplyPoly(qC, divC);
+  for (let i=0; i<remC.length; i++) divdC[i] += remC[i];
+  return { v, divdC, divC, qC, remC };
+}
+
+// ── DOM helpers ───────────────────────────────────────────────────────────
+function fracHTML(num, den) {
+  return `<div class="fraction"><div class="num">${num}</div><div class="bar"></div><div class="den">${den}</div></div>`;
+}
+
+function renderAdd() {
+  const p = problems.add;
+  const d1 = '(' + fmtLinear(p.a1, p.b1, p.v) + ')';
+  const d2 = '(' + fmtLinear(p.a2, p.b2, p.v) + ')';
+  document.getElementById('addProblemBox').innerHTML =
+    `<div class="expr">${fracHTML(p.n1, d1)}<span class="op">+</span>${fracHTML(p.n2, d2)}</div>`;
+  // answer
+  const cV = p.n1*p.a2 + p.n2*p.a1, c0 = p.n1*p.b2 + p.n2*p.b1;
+  const num = fmtNumerator(cV, c0, p.v);
+  const den = d1 + d2;
+  document.getElementById('addAnswerContent').innerHTML = fracHTML(num, den);
+}
+
+function renderPF() {
+  const p = problems.pf;
+  const d1 = fmtLinear(p.a1, p.b1, p.v);
+  const d2 = fmtLinear(p.a2, p.b2, p.v);
+  const num = fmtNumerator(p.cV, p.c0, p.v);
+  const den = '(' + d1 + ')(' + d2 + ')';
+  document.getElementById('pfProblemBox').innerHTML =
+    `<div class="expr">${fracHTML(num, den)}</div>`;
+  document.getElementById('pfAnswerContent').innerHTML =
+    `${fracHTML(p.A, '(' + d1 + ')')}<span class="op">+</span>${fracHTML(p.B, '(' + d2 + ')')}`;
+  document.getElementById('pfHint').textContent =
+    `Hint: Express as A/(${d1}) + B/(${d2}) and solve for A and B.`;
+}
+
+function renderMed() {
+  const p = problems.med;
+  document.getElementById('medProblemBox').innerHTML =
+    `<div class="expr">${fracHTML(fmtPoly(p.numC, p.v), fmtPoly(p.denC, p.v))}</div>`;
+  // simplified
+  const q = dividePoly(p.numC, [p.cB, p.cA]);
+  let ansHTML;
+  if (!p.twoFactor) {
+    ansHTML = `<span style="font-family:monospace">${fmtPoly(q, p.v)}</span>`;
+  } else {
+    const remA = (p.cA===p.a1&&p.cB===p.b1) ? p.a2 : p.a1;
+    const remB = (p.cA===p.a1&&p.cB===p.b1) ? p.b2 : p.b1;
+    ansHTML = fracHTML(fmtPoly(q, p.v), fmtLinear(remA, remB, p.v));
+  }
+  document.getElementById('medAnswerContent').innerHTML = ansHTML;
+}
+
+function renderHard() {
+  const p = problems.hard;
+  document.getElementById('hardProblemBox').innerHTML =
+    `<div class="expr">${fracHTML(fmtPoly(p.divdC, p.v), fmtPoly(p.divC, p.v))}</div>`;
+  document.getElementById('hardAnswerContent').innerHTML =
+    `<span style="font-family:monospace;font-size:1rem">${fmtPoly(p.qC, p.v)}</span>
+     <span class="op">+</span>
+     ${fracHTML(fmtPoly(p.remC, p.v), fmtPoly(p.divC, p.v))}`;
+}
+
+const renderers = { add: renderAdd, pf: renderPF, med: renderMed, hard: renderHard };
+const ansBoxIds  = { add:'addAnswerBox', pf:'pfAnswerBox', med:'medAnswerBox', hard:'hardAnswerBox' };
+const answerBtns = {};
+
+function newProblem(key) {
+  if (key === 'add')  problems.add  = genAdd();
+  if (key === 'pf')   problems.pf   = genPF();
+  if (key === 'med')  problems.med  = genMed();
+  if (key === 'hard') problems.hard = genHard();
+  answerVisible[key] = false;
+  document.getElementById(ansBoxIds[key]).style.display = 'none';
+  const btn = document.querySelector(`#page-${pageForKey(key)} .btn-purple`);
+  if (btn) btn.textContent = 'Show Answer';
+  renderers[key]();
+}
+
+function pageForKey(k) {
+  return {add:1, pf:2, med:4, hard:5}[k];
+}
+
+function toggleAnswer(key) {
+  answerVisible[key] = !answerVisible[key];
+  const box = document.getElementById(ansBoxIds[key]);
+  box.style.display = answerVisible[key] ? 'block' : 'none';
+  const btn = document.querySelector(`#page-${pageForKey(key)} .btn-purple`);
+  if (btn) btn.textContent = answerVisible[key] ? 'Hide Answer' : 'Show Answer';
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────
+function buildDots() {
+  const c = document.getElementById('dotsContainer');
+  c.innerHTML = '';
+  for (let i = 0; i < TOTAL_PAGES; i++) {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === currentPage ? ' active' : '');
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function goTo(n) {
+  if (n < 0 || n >= TOTAL_PAGES) return;
+  document.getElementById('page-' + currentPage).classList.remove('active');
+  currentPage = n;
+  document.getElementById('page-' + currentPage).classList.add('active');
+  document.getElementById('pageIndicator').textContent = `Page ${currentPage+1} of ${TOTAL_PAGES}`;
+  document.getElementById('btnPrev').disabled = currentPage === 0;
+  document.getElementById('btnNext').disabled = currentPage === TOTAL_PAGES - 1;
+  buildDots();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+problems.add  = genAdd();
+problems.pf   = genPF();
+problems.med  = genMed();
+problems.hard = genHard();
+renderAdd(); renderPF(); renderMed(); renderHard();
+buildDots();
+document.getElementById('btnPrev').disabled = true;
+</script>
+</body>
+</html>
