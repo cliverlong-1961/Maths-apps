@@ -123,6 +123,18 @@
             font-style: italic;
         }
 
+        #page-shm-math.active {
+            display: block;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 50px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
         footer {
             margin-top: 40px;
             text-align: center;
@@ -544,10 +556,33 @@
                     <div class="spring-sphere"></div>
                 </div>
 
+                <h3 style="color:#667eea; margin: 30px 0 10px;">Variables added to oscillation</h3>
+                <div class="spring-container" id="spring-annotated-container" style="position:relative;">
+                    <div class="center-line"></div>
+                    <div class="spring-sphere" id="spring-sphere-annotated"></div>
+                    <!-- Equilibrium label -->
+                    <div id="eq-label" style="position:absolute;top:8px;left:50%;transform:translateX(-50%);color:#667eea;font-size:0.85em;font-style:italic;white-space:nowrap;">x = 0 (equilibrium)</div>
+                    <!-- Equilibrium tick -->
+                    <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:2px;height:12px;background:#667eea;opacity:0.6;"></div>
+                    <!-- Displacement arrow and label -->
+                    <div id="disp-arrow-container" style="position:absolute;top:50%;transform:translateY(-50%);pointer-events:none;"></div>
+                    <!-- Velocity label -->
+                    <div id="vel-label" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:0.85em;color:#e74c3c;font-style:italic;white-space:nowrap;"></div>
+                    <!-- Amplitude markers -->
+                    <div style="position:absolute;top:8px;left:10%;color:#2ecc71;font-size:0.8em;font-style:italic;">x = −A</div>
+                    <div style="position:absolute;top:8px;right:10%;color:#2ecc71;font-size:0.8em;font-style:italic;">x = +A</div>
+                    <!-- Left amplitude tick -->
+                    <div style="position:absolute;bottom:0;left:10%;width:2px;height:12px;background:#2ecc71;opacity:0.6;"></div>
+                    <!-- Right amplitude tick -->
+                    <div style="position:absolute;bottom:0;right:10%;width:2px;height:12px;background:#2ecc71;opacity:0.6;"></div>
+                    <!-- Displacement text top -->
+                    <div id="x-label" style="position:absolute;top:8px;font-size:0.8em;color:#764ba2;font-style:italic;white-space:nowrap;"></div>
+                </div>
+
                 <div class="highlight-box">
                     <h2>Animation Details</h2>
                     <ul>
-                        <li><strong>Starting Position:</strong> The sphere begins at the center (equilibrium)</li>
+                        <li><strong>Idealisation:</strong> The spring does not 'get in the way' of the motion of the object. As the object passes through the centre the 'spring' is always pulling the object back to the centre. There is no friction or energy losses so the object oscillates continuously, never stopping</li>
                         <li><strong>Left Motion:</strong> Moves to the left, slowing down as the spring extends (2 seconds)</li>
                         <li><strong>Reversal:</strong> Stops at maximum displacement, then accelerates back</li>
                         <li><strong>Through Center:</strong> Passes through equilibrium at maximum speed</li>
@@ -557,22 +592,30 @@
                 </div>
 
                 <p>
-                    The motion follows Hooke's Law: <em>F = -kx</em>, where the restoring force is proportional 
-                    to the displacement. This results in sinusoidal motion with the sphere's position varying as 
-                    <em>x(t) = A sin(ωt)</em>, where <em>A</em> is the amplitude and <em>ω</em> is the angular frequency.
+                    The motion is determined by Hooke's Law: <em>F = −kx</em>, where the restoring force, <em>F</em>, 
+                    is proportional, but in the opposite direction, to the displacement, <em>x</em>, from the centre of motion. 
+                    A basic solution for the sphere's position, <em>x</em>, at any time, <em>t</em>, is:
                 </p>
 
-                <div class="equation">
-                    a = -ω²x &nbsp;&nbsp;&nbsp; (acceleration proportional to displacement)
+                <div class="equation-large">
+                    <em>x</em>(<em>t</em>) = <em>A</em> sin(<em>ω</em><em>t</em>)
                 </div>
 
-                <p>
-                    This is a perfect example of where calculus is essential—the acceleration continuously 
-                    changes as a function of position, requiring differential equations to solve.
-                </p>
+                <p>where <em>A</em> is the amplitude or maximum displacement from the centre, and <em>ω</em> is the angular frequency.</p>
+
+                <p>To give some physical meaning to <em>A</em> and <em>ω</em>:</p>
+
+                <p>If <em>A</em> increases that means at its maximum displacement, the object is further away from the centre of motion. As <em>t</em> changes, the value of <em>x</em>(<em>t</em>) varies between +<em>A</em> and −<em>A</em> (its maximum displacement) because the value of sin varies between +1 and −1.</p>
+
+                <p>And finally if we think of values of <em>ω</em> resulting in sin(2<em>t</em>) or sin(3<em>t</em>), the object is oscillating around the centre faster as <em>ω</em> increases. We say the object's 'angular frequency' is increasing.</p>
+
+                <p>Much more mathematical detail about the solution is available in the following sub-page.</p>
+
+
             </div>
 
             <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-shm-math')">Mathematical detail of solution to Hooke's law equation →</button>
                 <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
             </div>
 
@@ -1414,6 +1457,140 @@
             </footer>
         </div>
 
+        <!-- Page: Mathematical detail of Hooke's Law solution -->
+        <div class="page" id="page-shm-math">
+            <h1>Mathematical Detail of Solution to Hooke's Law Equation</h1>
+            <p class="subtitle">From F = −kx to x(t) = A sin(ωt)</p>
+
+            <div class="content">
+
+                <div class="highlight-box">
+                    <h2>1. Start from Hooke's Law</h2>
+                    <p>Hooke's law states that the restoring force of a spring is proportional to the displacement from equilibrium and acts in the opposite direction:</p>
+                    <div class="equation-large"><em>F</em> = −<em>kx</em></div>
+                    <p>where <em>k</em> is the spring constant and <em>x</em> is the displacement from the central (equilibrium) point. The negative sign means the force always pulls the object back toward the centre.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>2. Apply Newton's Second Law</h2>
+                    <p>Newton's second law says:</p>
+                    <div class="equation-large">
+                        <em>F</em> = <em>m</em> <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span>
+                    </div>
+                    <p>Combining with Hooke's law and rearranging:</p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> + <span class="frac"><span class="top"><em>k</em></span><span class="bottom"><em>m</em></span></span><em>x</em> = 0
+                    </div>
+                    <p>Now define <em>ω</em>² = <em>k</em>/<em>m</em>. The equation of motion becomes:</p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> + <em>ω</em>²<em>x</em> = 0
+                    </div>
+                    <p>This is the standard differential equation for simple harmonic motion (SHM).</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>3. Test the Proposed Solution x(t) = A sin(ωt)</h2>
+                    <p>We check whether this function satisfies the equation of motion.</p>
+                    <p><strong>First derivative:</strong></p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d<em>x</em></span><span class="bottom">d<em>t</em></span></span> = <em>A</em><em>ω</em> cos(<em>ω</em><em>t</em>)
+                    </div>
+                    <p><strong>Second derivative:</strong></p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> = −<em>A</em><em>ω</em>² sin(<em>ω</em><em>t</em>) = −<em>ω</em>²<em>x</em>(<em>t</em>)
+                    </div>
+                    <p>since <em>x</em>(<em>t</em>) = <em>A</em> sin(<em>ω</em><em>t</em>) by definition.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>4. Substitute Back into the Equation of Motion</h2>
+                    <div class="equation-large">
+                        (−<em>ω</em>²<em>x</em>) + <em>ω</em>²<em>x</em> = 0
+                    </div>
+                    <p>The equation is satisfied exactly. ✓</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>5. Physical Interpretation — Why Sine Appears</h2>
+                    <p>The acceleration is proportional to −<em>x</em>. Sine (and cosine) functions are the <em>only</em> functions whose second derivative is proportional to the negative of the function itself:</p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d²</span><span class="bottom">d<em>t</em>²</span></span> sin(<em>ω</em><em>t</em>) = −<em>ω</em>² sin(<em>ω</em><em>t</em>)
+                    </div>
+                    <p>That mathematical property perfectly matches the physics of a restoring force that always points toward the centre.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>6. General Solution</h2>
+                    <p>The full solution to the SHM equation is:</p>
+                    <div class="equation-large">
+                        <em>x</em>(<em>t</em>) = <em>A</em> sin(<em>ω</em><em>t</em>) + <em>B</em> cos(<em>ω</em><em>t</em>)
+                    </div>
+                    <p>or equivalently:</p>
+                    <div class="equation-large">
+                        <em>x</em>(<em>t</em>) = <em>X</em><sub>0</sub> sin(<em>ω</em><em>t</em> + <em>φ</em>)
+                    </div>
+                    <p>where <em>X</em><sub>0</sub> is the amplitude, <em>ω</em> = √(<em>k</em>/<em>m</em>) is the angular frequency, and <em>φ</em> is the phase constant determined by initial conditions. The form <em>x</em>(<em>t</em>) = <em>A</em> sin(<em>ω</em><em>t</em>) is the valid solution when the object starts at <em>x</em> = 0 with maximum velocity.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>7. Physical Meaning of ω² = k/m</h2>
+                    <p><strong>How fast the system oscillates:</strong> <em>k</em> is the stiffness of the spring (strength of restoring force) and <em>m</em> is the mass (inertia resisting acceleration). So:</p>
+                    <div class="equation-large">
+                        <em>ω</em> =
+                        <span style="display:inline-flex; align-items:stretch; vertical-align:middle; line-height:1;">
+                            <span style="display:inline-flex; align-items:center; color:#764ba2; font-size:2.6em; line-height:1; margin-right:-3px; padding-bottom:2px;">√</span>
+                            <span style="border-top:2px solid #764ba2; padding:4px 10px 4px 6px; display:inline-flex; align-items:center; justify-content:center;">
+                                <span class="frac"><span class="top"><em>k</em></span><span class="bottom"><em>m</em></span></span>
+                            </span>
+                        </span>
+                    </div>
+                    <p>is the natural angular frequency of the motion. A large <em>k</em> (stiff spring) means a stronger restoring force and faster oscillations; a large <em>m</em> (heavy object) means more inertia and slower oscillations.</p>
+                    <p><strong>Acceleration per unit displacement:</strong> Rewriting the equation of motion as</p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> = −<span class="frac"><span class="top"><em>k</em></span><span class="bottom"><em>m</em></span></span><em>x</em>
+                    </div>
+                    <p>shows that <em>k</em>/<em>m</em> is the proportionality constant between acceleration and displacement — it tells you how strongly the system accelerates back toward equilibrium for a given displacement.</p>
+                    <p><strong>Connection to period and frequency:</strong></p>
+                    <div class="equation-large">
+                        <em>T</em> = <span class="frac"><span class="top">2<em>π</em></span><span class="bottom"><em>ω</em></span></span> = 2<em>π</em>
+                        <span style="display:inline-flex; align-items:stretch; vertical-align:middle; line-height:1;">
+                            <span style="display:inline-flex; align-items:center; color:#764ba2; font-size:2.6em; line-height:1; margin-right:-3px; padding-bottom:2px;">√</span>
+                            <span style="border-top:2px solid #764ba2; padding:4px 10px 4px 6px; display:inline-flex; align-items:center; justify-content:center;">
+                                <span class="frac"><span class="top"><em>m</em></span><span class="bottom"><em>k</em></span></span>
+                            </span>
+                        </span>
+                    </div>
+                    <p>Doubling the mass increases the period (slower motion); doubling the spring constant decreases the period (faster motion).</p>
+                    <p><strong>Why the square appears:</strong> The differential equation involves a second derivative (acceleration). Since sine satisfies</p>
+                    <div class="equation-large">
+                        <span class="frac"><span class="top">d²</span><span class="bottom">d<em>t</em>²</span></span> sin(<em>ω</em><em>t</em>) = −<em>ω</em>² sin(<em>ω</em><em>t</em>)
+                    </div>
+                    <p>the physics (force ∝ displacement) naturally produces a second derivative proportional to −<em>x</em>, which mathematically introduces <em>ω</em>², not just <em>ω</em>. In short, <em>ω</em>² = <em>k</em>/<em>m</em> means "the square of the natural oscillation rate is set by the ratio of restoring force strength to inertia."</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h2>8. Meaning of ω in One-Dimensional Oscillation</h2>
+                    <p><strong>How fast the object oscillates:</strong> <em>ω</em> measures how rapidly the motion repeats in time:</p>
+                    <div class="equation-large">
+                        <em>ω</em> = 2<em>π</em><em>f</em> = <span class="frac"><span class="top">2<em>π</em></span><span class="bottom"><em>T</em></span></span>
+                    </div>
+                    <p>where <em>f</em> is the frequency (oscillations per second) and <em>T</em> is the period. <em>ω</em> is the rate of change of the phase of the motion, in radians per second.</p>
+                    <p><strong>Why "angular" frequency for straight-line motion?</strong> Even though the mass moves in a straight line, its motion is mathematically equivalent to the projection of uniform circular motion onto one axis. A point moving in a circle at constant angular speed <em>ω</em> has horizontal position <em>x</em>(<em>t</em>) = <em>A</em> sin(<em>ω</em><em>t</em>) — identical to SHM. So <em>ω</em> comes from the circular-motion analogy, not because the object is physically rotating.</p>
+                    <p><strong>Physical takeaway:</strong> In one-dimensional oscillation, <em>ω</em> is the natural angular frequency — the intrinsic rate at which the system oscillates about equilibrium. It is not about direction of motion, but about how quickly the system cycles through its back-and-forth motion in time, determined entirely by the balance between restoring force (<em>k</em>) and inertia (<em>m</em>). Units: rad s⁻¹.</p>
+                </div>
+
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-spring')">← Back to Spring Oscillation</button>
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            <footer>
+                Mathematical derivation of simple harmonic motion
+            </footer>
+        </div>
+
     <script>
         function showPage(pageId) {
             // Hide all pages
@@ -1434,6 +1611,7 @@
             // Start appropriate animation
             if (pageId === 'page-spring') {
                 animateSpring();
+                animateSpringAnnotated();
             } else if (pageId === 'page-vertical-spring') {
                 animateVerticalSpring();
             } else if (pageId === 'page-circular') {
@@ -1470,6 +1648,86 @@
                 requestAnimationFrame(animate);
             }
             
+            requestAnimationFrame(animate);
+        }
+
+        // Annotated spring animation
+        function animateSpringAnnotated() {
+            const sphere = document.getElementById('spring-sphere-annotated');
+            const xLabel = document.getElementById('x-label');
+            const velLabel = document.getElementById('vel-label');
+            const dispContainer = document.getElementById('disp-arrow-container');
+            if (!sphere) return;
+
+            const period = 8000;
+            const amplitude = 0.4;
+            const centerPct = 50;
+            const containerW = sphere.closest('.spring-container').offsetWidth || 600;
+            let startTime = null;
+
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const elapsed = currentTime - startTime;
+                const omega = (2 * Math.PI) / period;
+                const t = elapsed;
+                // x(t) = -A sin(ωt), v(t) = -Aω cos(ωt)
+                const xNorm = -Math.sin(omega * t); // normalised -1..1
+                const vNorm = -Math.cos(omega * t); // normalised
+                const position = centerPct + xNorm * amplitude * 100;
+                sphere.style.left = position + '%';
+
+                // x label (displacement value above sphere)
+                const xPx = Math.round(xNorm * 100);
+                xLabel.textContent = `x = ${xPx > 0 ? '+' : ''}${xPx}`;
+                // position label just above sphere
+                const sphereLeft = parseFloat(sphere.style.left);
+                xLabel.style.left = sphereLeft + '%';
+                xLabel.style.transform = 'translateX(-50%)';
+                xLabel.style.top = '28px';
+
+                // displacement arrow (from centre to sphere)
+                const centrePx = containerW * 0.5;
+                const spherePx = containerW * (position / 100);
+                const dx = spherePx - centrePx;
+                dispContainer.innerHTML = '';
+                if (Math.abs(dx) > 8) {
+                    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+                    const w = Math.abs(dx), h = 24;
+                    svg.setAttribute('width', w);
+                    svg.setAttribute('height', h);
+                    svg.style.position = 'absolute';
+                    svg.style.top = '50%';
+                    svg.style.transform = 'translateY(-50%)';
+                    svg.style.left = (dx > 0 ? centrePx : spherePx) + 'px';
+                    const col = '#764ba2';
+                    const y = h / 2;
+                    // line
+                    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+                    line.setAttribute('x1', dx > 0 ? 0 : w);
+                    line.setAttribute('y1', y);
+                    line.setAttribute('x2', dx > 0 ? w : 0);
+                    line.setAttribute('y2', y);
+                    line.setAttribute('stroke', col);
+                    line.setAttribute('stroke-width', '2');
+                    svg.appendChild(line);
+                    // arrowhead
+                    const poly = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+                    const tip = dx > 0 ? w : 0;
+                    const dir = dx > 0 ? 1 : -1;
+                    poly.setAttribute('points', `${tip},${y} ${tip - dir*8},${y-4} ${tip - dir*8},${y+4}`);
+                    poly.setAttribute('fill', col);
+                    svg.appendChild(poly);
+                    // label x above arrow
+                    dispContainer.appendChild(svg);
+                }
+
+                // velocity label
+                const vPct = Math.round(vNorm * 100);
+                velLabel.textContent = `v = ${vPct > 0 ? '+' : ''}${vPct} (max = ±Aω)`;
+                velLabel.style.color = Math.abs(vNorm) > 0.8 ? '#e74c3c' : '#999';
+
+                requestAnimationFrame(animate);
+            }
             requestAnimationFrame(animate);
         }
 
