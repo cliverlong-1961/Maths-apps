@@ -412,6 +412,9 @@
             if (sectionId === 'intro') {
                 header.textContent = 'Basic proof terminology and concepts';
                 subtitle.textContent = '';
+            } else if (sectionId === 'number-systems') {
+                header.textContent = 'Number systems';
+                subtitle.textContent = 'Definitions and properties of the main number systems';
             } else if (sectionId === 'algebraic') {
                 header.textContent = 'Algebraic proofs';
                 subtitle.textContent = 'Fundamental algebraic identities and their proofs';
@@ -433,6 +436,9 @@
             } else if (sectionId === 'contradiction') {
                 header.textContent = 'Proof by contradiction';
                 subtitle.textContent = 'Proofs using reductio ad absurdum';
+            } else if (sectionId === 'preliminary-properties') {
+                header.textContent = 'Preliminary properties required in proofs';
+                subtitle.textContent = 'Foundational properties used in mathematical proof';
             } else if (sectionId === 'resources') {
                 header.textContent = 'Good proof resources';
                 subtitle.textContent = 'Helpful books, websites, and tools for learning mathematical proof';
@@ -449,6 +455,25 @@
                 ],
                 throwOnError: false
             });
+        }
+
+        function toggleReveal(proofId) {
+            const proofContainer = document.getElementById(proofId);
+            const linkText = document.getElementById(proofId + '-link');
+            if (proofContainer.classList.contains('expanded')) {
+                proofContainer.classList.remove('expanded');
+                linkText.textContent = 'Reveal properties →';
+            } else {
+                proofContainer.classList.add('expanded');
+                linkText.textContent = 'Hide properties ↑';
+                renderMathInElement(proofContainer, {
+                    delimiters: [
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
         }
 
         function toggleProof(proofId) {
@@ -519,6 +544,8 @@
                     <div class="cta-section">
                         <p class="cta-text">Ready to explore mathematical proofs?</p>
                         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="showSection('preliminary-properties'); document.getElementById('navigation').style.display='block';">Preliminary Properties →</button>
+                            <button class="btn-primary" onclick="showSection('number-systems'); document.getElementById('navigation').style.display='block';">Number Systems →</button>
                             <button class="btn-primary" onclick="showSection('algebraic'); document.getElementById('navigation').style.display='block';">Algebraic Proofs →</button>
                             <button class="btn-primary" onclick="showSection('number-theory'); document.getElementById('navigation').style.display='block';">Number Theory →</button>
                             <button class="btn-primary" onclick="showSection('real-numbers'); document.getElementById('navigation').style.display='block';">Real Number Proofs →</button>
@@ -530,17 +557,175 @@
                 </div>
             </section>
 
+            <!-- Preliminary Properties Section -->
+            <section id="preliminary-properties" class="section">
+                <div class="definitions-section">
+                    <h3>Preliminary properties</h3>
+                    <p>Any proof builds on some very basic properties of the objects we are considering. These are so simple we almost think they are 'obvious' and not question them. However, if we are attempting to be rigorous in our proof it helps to know what we are accepting as true and what we can build proofs using logic rules. Knowing that these properties are 'complete' or 'consistent' can involve some really hard work and for our purposes we don't probe to that depth. We can still produce satisfying proofs by knowing and accepting the basic properties.</p>
+                    <p>For each topic I will list some of the preliminary properties used in proofs about these objects.</p>
+                </div>
+            </section>
+
+            <!-- Number Systems Section -->
+            <section id="number-systems" class="section">
+                <div class="intro">
+                    <p>Most of the proofs in this app are about the properties of numbers. There can be proofs about other mathematical objects, and the basic principles of constructing a valid proof in this app still apply to those more abstract and complicated objects. However, to understand the basic idea and process of constructing a valid proof, the numbers we are familiar with provide more than enough examples to study.</p>
+                    <p>The following definitions are not truly mathematically rigorous but they are detailed enough and familiar enough to be useful for our needs in studying proof.</p>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Definitions</h3>
+                    
+                    <p>
+                        <span class="term">Positive Integers</span> (or natural numbers<sup>*1</sup>) are basic counting numbers such as 
+                        <span class="example-list">1, 2, 3, ... , 37, ... , 256, ...</span>
+                    </p>
+                    
+                    <p>
+                        <span class="term">Integers</span> are positive and negative counting numbers including zero: 
+                        <span class="example-list">..., -3, -2, -1, 0, +1, +2, +3, ...</span>
+                    </p>
+                    
+                    <p>
+                        <span class="term">Rational numbers</span> (or fractions) are created when you divide one integer by another 
+                        (excluding division by zero) for example: <span class="example-list">1/2, -8/13</span><sup>*2</sup>
+                    </p>
+                    
+                    <p>
+                        <span class="term">Real numbers</span> we can think of as any point on the number line. 
+                        I will introduce irrational and complex numbers later.
+                    </p>
+
+                    <div class="footnote">
+                        <p><sup>*1</sup> Some mathematicians include 0 in the natural numbers, others do not.</p>
+                        <p><sup>*2</sup> Note that every integer is also a rational number (e.g., 5 = 5/1).</p>
+                    </div>
+                </div>
+            </section>
+
             <!-- Algebraic Proofs Section -->
             <section id="algebraic" class="section">
                 <div class="intro">
                     <p>This collection presents rigorous proofs of fundamental algebraic expressions and identities. Each proof is presented with clear steps and mathematical justification.</p>
                 </div>
 
+                <div class="definitions-section">
+                    <h3>Properties of the algebra of numbers and arithmetic</h3>
+                    <p style="margin-bottom: 15px;">Click on the link to reveal properties of algebra and arithmetic we apply to numbers without usually thinking about them. These are the basic properties and rules of addition and multiplication we can use in a proof about numbers without thinking about them. The rules can themselves be studied and modified according to needs for other purposes and that is a basic idea in 'abstract algebra', which is beyond our scope in this app.</p>
+                    <p style="margin-bottom: 15px;">See also: <span class="topic-link" onclick="showSection('number-systems'); document.getElementById('navigation').style.display='block';">Number systems →</span></p>
+                    <span class="topic-link" id="proof-alg-props-link" onclick="toggleReveal('proof-alg-props')">Reveal →</span>
+
+                    <div id="proof-alg-props" class="proof-container" style="margin-top: 15px;">
+                        <p style="margin-bottom: 15px;">Here are the basic algebraic properties most commonly used in mathematical proofs:</p>
+
+                        <div class="proof-step">
+                            <div class="step-number">1. Commutative Properties</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Addition: \(a + b = b + a\)</li>
+                                    <li>Multiplication: \(ab = ba\)</li>
+                                </ul>
+                                These allow you to rearrange terms without changing the result.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">2. Associative Properties</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Addition: \((a + b) + c = a + (b + c)\)</li>
+                                    <li>Multiplication: \((ab)c = a(bc)\)</li>
+                                </ul>
+                                These justify regrouping of terms.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">3. Distributive Property</div>
+                            <div class="step-content">
+                                \[a(b + c) = ab + ac\]
+                                (and similarly \((a + b)c = ac + bc\)). This is essential for expanding and factoring expressions.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">4. Identity Properties</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Additive identity: \(a + 0 = a\)</li>
+                                    <li>Multiplicative identity: \(a \cdot 1 = a\)</li>
+                                </ul>
+                                These show that 0 and 1 leave numbers unchanged.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">5. Inverse Properties</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Additive inverse: \(a + (-a) = 0\)</li>
+                                    <li>Multiplicative inverse (for \(a \neq 0\)): \(a \cdot \dfrac{1}{a} = 1\)</li>
+                                </ul>
+                                These are used to cancel terms and solve equations.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">6. Closure Properties</div>
+                            <div class="step-content">
+                                For a given number system (like integers or real numbers):
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Closed under addition: \((a + b)\) is in the set</li>
+                                    <li>Closed under multiplication: \((ab)\) is in the set</li>
+                                </ul>
+                                This ensures operations stay within the system.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">7. Cancellation Laws</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>If \(a + c = b + c\), then \(a = b\)</li>
+                                    <li>If \(ac = bc\) and \(c \neq 0\), then \(a = b\)</li>
+                                </ul>
+                                These are frequently used to simplify equations in proofs.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">8. Zero Property of Multiplication</div>
+                            <div class="step-content">
+                                \[ab = 0 \implies a = 0 \text{ or } b = 0\]
+                                This is fundamental in algebra and number theory.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">9. Substitution Property of Equality</div>
+                            <div class="step-content">
+                                If \(a = b\), then \(a\) can be replaced with \(b\) in any expression.
+                                <br><br>
+                                This underlies almost every algebraic proof step.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">10. Transitive Property of Equality</div>
+                            <div class="step-content">
+                                If \(a = b\) and \(b = c\), then \(a = c\).
+                                <br><br>
+                                This allows chaining equalities in logical arguments.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="cta-section" style="margin-top: 30px;">
                     <p class="cta-text">Choose a category to explore:</p>
                     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                         <button class="btn-primary" onclick="showSection('algebraic-basic');">Basic algebra →</button>
-                        <button class="btn-primary" onclick="showSection('algebraic-inequalities');">Inequalities →</button>
+
                     </div>
                 </div>
             </section>
@@ -601,6 +786,93 @@
                             
                             <div class="proof-conclusion">
                                 <strong>Conclusion:</strong> Therefore, \((a + b)^2 \equiv a^2 + 2ab + b^2\) ∎
+                            </div>
+                        </div>
+                    </article>
+</div>
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>The irrationality of \(\sqrt{2}\)</h3>
+                        <div class="formula">
+                            \[\sqrt{2} \notin \mathbb{Q}\]
+                        </div>
+                        <p class="description">
+                            This is the classic proof that has a long heritage. However, in my opinion it is introduced far too early in the study of proof, before more straightforward contradiction proofs have been understood, and an important detail — the parity lemma — is often glossed over.
+                        </p>
+                        <p class="description">
+                            Remember on the number theory page there are different types of 'basic' numbers. There is a type of number, the 'real' number (tricky to define rigorously), which we can think of as a set or collection of numbers that in a sense 'contains' the rational numbers but also 'other' numbers too. These 'other' numbers, the 'irrational' numbers, were famously (allegedly?) rejected by the Ancient Greek mathematicians and philosophers — just google for the stories about this.
+                        </p>
+                        <p class="description">
+                            Back to the maths. The purpose of this proof is to show that the number 2 has a square root that can be shown to 'exist' (the length of the hypotenuse of a right-angled triangle with two sides equal to 1), but \(\sqrt{2}\) can be shown to not be rational. Therefore, because it 'exists', it must be a different kind of number — an 'irrational number'.
+                        </p>
+
+                        <span class="topic-link" id="proof-irrat2-link" onclick="toggleProof('proof-irrat2')">View Proof →</span>
+
+                        <div id="proof-irrat2" class="proof-container">
+                            <div class="proof-header">Proof by Contradiction: \(\sqrt{2} \notin \mathbb{Q}\)</div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assumption</div>
+                                <div class="step-content">
+                                    Assume for the sake of contradiction that \(\sqrt{2}\) is rational.
+                                    <br><br>
+                                    Then by definition of a rational number, there exist integers \(p, q \in \mathbb{Z}\) with \(q \neq 0\) such that:
+                                    \[\sqrt{2} = \frac{p}{q}\]
+                                    Furthermore, we may assume this fraction is in its <em>lowest terms</em>, meaning \(p\) and \(q\) share no common factors, i.e. \(\gcd(p, q) = 1\).
+                                </div>
+                                <div class="step-justification">Every rational number can be expressed as a fraction in lowest terms</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Square both sides</div>
+                                <div class="step-content">
+                                    Squaring both sides of \(\sqrt{2} = \dfrac{p}{q}\):
+                                    \[2 = \frac{p^2}{q^2}\]
+                                    Multiplying both sides by \(q^2\):
+                                    \[p^2 = 2q^2\]
+                                </div>
+                                <div class="step-justification">Algebraic manipulation; \(q \neq 0\) so multiplication is valid</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Conclude \(p\) is even</div>
+                                <div class="step-content">
+                                    Since \(p^2 = 2q^2\), the right-hand side is divisible by 2, so \(p^2\) is even.
+                                    <br><br>
+                                    By the <strong>Parity Lemma</strong> (proved above): if \(p^2\) is even then \(p\) is even.
+                                    <br><br>
+                                    Therefore there exists an integer \(m\) such that:
+                                    \[p = 2m\]
+                                </div>
+                                <div class="step-justification">Parity Lemma: \(k^2 \text{ even} \Rightarrow k \text{ even}\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 4: Show \(q\) is also even</div>
+                                <div class="step-content">
+                                    Substitute \(p = 2m\) into \(p^2 = 2q^2\):
+                                    \[(2m)^2 = 2q^2\]
+                                    \[4m^2 = 2q^2\]
+                                    \[q^2 = 2m^2\]
+                                    So \(q^2\) is even. Again by the <strong>Parity Lemma</strong>, \(q\) is even.
+                                </div>
+                                <div class="step-justification">Parity Lemma applied a second time: \(q^2 \text{ even} \Rightarrow q \text{ even}\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 5: Derive a contradiction</div>
+                                <div class="step-content">
+                                    We have shown that both \(p\) and \(q\) are even, meaning both are divisible by 2.
+                                    <br><br>
+                                    But this contradicts our assumption that \(\dfrac{p}{q}\) was in lowest terms, i.e. that \(\gcd(p, q) = 1\).
+                                    <br><br>
+                                    If both \(p\) and \(q\) are divisible by 2 then \(\gcd(p, q) \geq 2 \neq 1\). This is a contradiction.
+                                </div>
+                                <div class="step-justification">A fraction in lowest terms cannot have both numerator and denominator sharing a common factor</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Our assumption that \(\sqrt{2} \in \mathbb{Q}\) must be false. Therefore \(\sqrt{2}\) is irrational, i.e. \(\sqrt{2} \notin \mathbb{Q}\). ∎
                             </div>
                         </div>
                     </article>
@@ -698,6 +970,21 @@
                     <button onclick="showSection('algebraic');">← Back to Algebraic proofs</button>
                 </nav>
 
+                <div class="definitions-section">
+                    <h3>Preliminary properties of inequalities</h3>
+                    <ul style="margin: 10px 0 0 25px; line-height: 2;">
+                        <li>For each \(x \in \mathbb{R}\) exactly one of the following holds: \(x > 0\), \(x = 0\), \(x < 0\)</li>
+                        <li>When \(x \in \mathbb{R}\) then \(x > 0 \Leftrightarrow -x < 0\)</li>
+                        <li>Let \(x, y \in \mathbb{R}\). If \(x, y > 0\) then \(x + y > 0\)</li>
+                        <li>Let \(x, y \in \mathbb{R}\). If \(x, y > 0\) then \(xy > 0\)</li>
+                    </ul>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Very useful technique in inequality proof</h3>
+                    <p>Often if you are given or have arrived at \(\{\text{something}\} < \{\text{something else}\}\), then often it is useful, or even necessary, to rearrange this to \(\{\text{something else}\} - \{\text{something}\} > 0\) so one of the properties of inequalities (see above) can be applied.</p>
+                </div>
+
                 <h2>Inequality proofs</h2>
                 
                 <div class="topic-grid">
@@ -765,6 +1052,51 @@
                         </div>
                     </article>
 
+                    <article class="topic-card">
+                        <h3>Adding to an inequality</h3>
+                        <div class="formula">
+                            \[x > y \Rightarrow a + x > a + y\]
+                        </div>
+                        <p class="description">Let \(a, b, x, y \in \mathbb{R}\). Prove if \(x > y\) then \(a + x > a + y\).</p>
+                        <span class="topic-link" id="proof-add-ineq-link" onclick="toggleProof('proof-add-ineq')">View Proof →</span>
+
+                        <div id="proof-add-ineq" class="proof-container">
+                            <div class="proof-header">Proof: Adding to an inequality</div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Start from the hypothesis</div>
+                                <div class="step-content">
+                                    We are given that \(x > y\), which means:
+                                    \[x - y > 0\]
+                                </div>
+                                <div class="step-justification">By the preliminary property: \(x > y \Leftrightarrow x - y > 0\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Rewrite the target expression</div>
+                                <div class="step-content">
+                                    Consider the difference of the two expressions we wish to compare:
+                                    \[(a + x) - (a + y) = a + x - a - y = x - y\]
+                                </div>
+                                <div class="step-justification">Expanding and cancelling \(a\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Conclude</div>
+                                <div class="step-content">
+                                    From Step 1 we know \(x - y > 0\), and from Step 2 we have:
+                                    \[(a + x) - (a + y) = x - y > 0\]
+                                    Therefore \(a + x > a + y\).
+                                </div>
+                                <div class="step-justification">By the preliminary property: \((a+x) - (a+y) > 0 \Leftrightarrow a + x > a + y\)</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> For all \(a, x, y \in \mathbb{R}\), if \(x > y\) then \(a + x > a + y\). ∎
+                            </div>
+                        </div>
+                    </article>
+
                     <article class="topic-card disabled">
                         <h3>AM-GM Inequality</h3>
                         <div class="formula">
@@ -810,32 +1142,15 @@
             <!-- Number Theory Section -->
             <section id="number-theory" class="section">
                 <div class="definitions-section">
-                    <h3>Definitions</h3>
-                    
-                    <p>
-                        <span class="term">Positive Integers</span> (or natural numbers<sup>*1</sup>) are basic counting numbers such as 
-                        <span class="example-list">1, 2, 3, ... , 37, ... , 256, ...</span>
-                    </p>
-                    
-                    <p>
-                        <span class="term">Integers</span> are positive and negative counting numbers including zero: 
-                        <span class="example-list">..., -3, -2, -1, 0, +1, +2, +3, ...</span>
-                    </p>
-                    
-                    <p>
-                        <span class="term">Rational numbers</span> (or fractions) are created when you divide one integer by another 
-                        (excluding division by zero) for example: <span class="example-list">1/2, -8/13</span><sup>*2</sup>
-                    </p>
-                    
-                    <p>
-                        <span class="term">Real numbers</span> we can think of as any point on the number line. 
-                        I will introduce irrational and complex numbers later.
-                    </p>
+                    <h3>Number theory</h3>
+                    <p>Typically 'Number Theory' refers to the properties of integers such as properties of divisibility and prime numbers. The definitions of the main types of numbers is given below. However, the proofs for real numbers are separated into a separate section as the approaches to proofs for integers against reals are fairly different.</p>
+                    <h4 style="margin: 20px 0 10px; color: #34495e; font-weight: bold; font-size: 1.1em;">Proof by cases</h4>
+                    <p>Often a proof about properties of integers can be splitting the working into two cases: considering what happens when we start 'n is a general even number (\(n = 2k\), \(k\) an integer)' and follow with the case 'n is a general odd number (\(n = 2k+1\), \(k\) an integer)'.</p>
+                </div>
 
-                    <div class="footnote">
-                        <p><sup>*1</sup> Some mathematicians include 0 in the natural numbers, others do not.</p>
-                        <p><sup>*2</sup> Note that every integer is also a rational number (e.g., 5 = 5/1).</p>
-                    </div>
+                <div class="definitions-section">
+                    <h3>Types of number</h3>
+                    <p>For definitions of the main types of numbers used in these proofs, see: <span class="topic-link" onclick="showSection('number-systems'); document.getElementById('navigation').style.display='block';">Number systems →</span></p>
                 </div>
 
                 <div class="definitions-section">
@@ -858,6 +1173,117 @@
                     <p style="margin-top: 20px;">
                         In the example above, an even number is defined in terms of more basic objects and operations such as integer and multiplication—implicitly in "2k".
                     </p>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Fundamental properties of integers</h3>
+                    <p style="margin-bottom: 15px;">We work hard at a young age to try to learn how to calculate with numbers: whole numbers, negative numbers, fractions, decimals. We do this for so long that eventually we don't question these rules or properties — we try not to think about them when we use them. However, for proofs we ultimately need to state what rules or properties are so basic that we don't question them but accept them as correct and use these properties in proofs. The basic properties of integers can be revealed by clicking on the link below. There are quite a few and I recommend you substitute some simple numbers to make sure you understand them. Ultimately in a proof about integers you can only use these rules or properties or any properties built from them. In normal life we don't worry about this detail — we just accept and apply the rules of calculation we have been taught.</p>
+                    <span class="topic-link" id="proof-int-props-link" onclick="toggleReveal('proof-int-props')">Reveal properties →</span>
+
+                    <div id="proof-int-props" class="proof-container" style="margin-top: 15px;">
+                        <p style="margin-bottom: 15px;">Here are the core fundamental properties of integers (\(\mathbb{Z}\)) that are typically used in mathematics:</p>
+
+                        <div class="proof-step">
+                            <div class="step-number">1. Closure</div>
+                            <div class="step-content">
+                                If \(a\) and \(b\) are integers, then:
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>\(a + b\) is an integer</li>
+                                    <li>\(a - b\) is an integer</li>
+                                    <li>\(a \times b\) is an integer</li>
+                                </ul>
+                                <em>Note: division is not closed in integers, since \(1 \div 2 = 0.5\), which is not an integer.</em>
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">2. Commutative Properties</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Addition: \(a + b = b + a\)</li>
+                                    <li>Multiplication: \(a \times b = b \times a\)</li>
+                                </ul>
+                                This means order does not matter for addition and multiplication.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">3. Associative Properties</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Addition: \((a + b) + c = a + (b + c)\)</li>
+                                    <li>Multiplication: \((a \times b) \times c = a \times (b \times c)\)</li>
+                                </ul>
+                                This allows regrouping without changing the result.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">4. Distributive Property</div>
+                            <div class="step-content">
+                                Multiplication distributes over addition:
+                                \[a(b + c) = ab + ac\]
+                                This is a key structural property of integers.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">5. Identity Elements</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Additive identity: \(a + 0 = a\)</li>
+                                    <li>Multiplicative identity: \(a \times 1 = a\)</li>
+                                </ul>
+                                So, 0 and 1 play special roles.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">6. Inverse Properties</div>
+                            <div class="step-content">
+                                Additive inverse: for every integer \(a\), there exists \(-a\) such that:
+                                \[a + (-a) = 0\]
+                                <em>Multiplicative inverses generally do not exist in integers except for \(1\) and \(-1\).</em>
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">7. Ordering Properties</div>
+                            <div class="step-content">
+                                Integers are totally ordered: for any integers \(a\) and \(b\), exactly one is true:
+                                \[a < b, \quad a = b, \quad \text{or} \quad a > b\]
+                                The order is compatible with addition and multiplication (by positives).
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">8. No Zero Divisors</div>
+                            <div class="step-content">
+                                If \(ab = 0\), then \(a = 0\) or \(b = 0\).
+                                <br><br>
+                                This makes integers an integral domain under addition and multiplication.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">9. Well-Ordering Principle (for non-negative integers)</div>
+                            <div class="step-content">
+                                Every non-empty set of non-negative integers has a smallest element.
+                                <br><br>
+                                This property underpins mathematical induction.
+                            </div>
+                        </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">10. Infinite and Discrete Structure</div>
+                            <div class="step-content">
+                                <ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+                                    <li>Integers extend infinitely in both positive and negative directions.</li>
+                                    <li>They are discrete — there are no integers between consecutive numbers such as 2 and 3.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <h2>Available Proofs</h2>
@@ -976,17 +1402,7 @@
                         </div>
                     </article>
 
-                    <article class="topic-card disabled">
-                        <h3>Integer problems and Proof by cases</h3>
-                        <p class="description">'Number theory' is normally applied to questions about the properties of integers. Often the proof can be splitting the working into two cases: considering what happens when we start 'n is a general even numbers (n = 2k, k an integer)' and follow with the case 'n is a general odd numbers (n = 2k+1, k an integer)'</p>
-                        <span class="topic-link">Coming Soon</span>
-                    </article>
 
-                    <article class="topic-card disabled">
-                        <h3>Real number problems and Proof by cases</h3>
-                        <p class="description">In questions about the properties of real numbers, often the proof can split the working into three cases: When x is a real number, case 1: considering what happens when we start 'x is a positive real number' and follow with case 2: 'x is a negative real number' and case 3: 'x = 0'</p>
-                        <span class="topic-link">Coming Soon</span>
-                    </article>
                 </div>
             </section>
 
@@ -1001,23 +1417,232 @@
                     </p>
                     
                     <p>
-                        Common proof techniques for real numbers include using the trichotomy property (every real number is either 
-                        positive, negative, or zero), properties of absolute values, and inequalities.
+                        Common proof techniques for real numbers include                         using techniques such as:
+                        <ul style="margin: 10px 0 0 25px; line-height: 1.9;">
+                            <li>splitting the proof into three cases — every real number is either positive, negative, or zero</li>
+                            <li>properties of absolute values</li>
+                            <li>inequalities</li>
+                        </ul>
                     </p>
                 </div>
 
                 <h2>Available Proofs</h2>
                 
                 <div class="topic-grid">
-                    <article class="topic-card disabled">
-                        <h3>Coming Soon</h3>
-                        <p class="description">Real number proofs will be added here.</p>
-                        <span class="topic-link">In Development</span>
+                    <article class="topic-card">
+                        <h3>Parity lemma</h3>
+                        <div class="formula">
+                            \[k^2 \text{ even} \Rightarrow k \text{ even}, \quad k \in \mathbb{Z}\]
+                        </div>
+                        <p class="description">
+                            The following property is a key part of the proof of the irrationality of \(\sqrt{2}\), but it is usually glossed over. It is covered here, with two different proof approaches, as a prelude to that famous proof. Although this is a proof about integers, it is an important proof about \(\sqrt{2}\), a real number.
+                        </p>
+                        <p class="description">
+                            <strong>Theorem.</strong> Let \(k \in \mathbb{Z}\). If \(k^2\) is even then \(k\) is even.
+                        </p>
+
+                        <p style="margin-top: 10px; font-weight: bold; color: #34495e;">Proof 1 — Contraposition</p>
+                        <span class="topic-link" id="proof-parity-contra-link" onclick="toggleProof('proof-parity-contra')">View Proof →</span>
+
+                        <div id="proof-parity-contra" class="proof-container">
+                            <div class="proof-header">Proof by Contraposition: If \(k\) is odd then \(k^2\) is odd</div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Strategy</div>
+                                <div class="step-content">
+                                    To prove \(k^2 \text{ even} \Rightarrow k \text{ even}\), we instead prove the contrapositive:
+                                    \[k \text{ odd} \Rightarrow k^2 \text{ odd}\]
+                                    These two statements are logically equivalent.
+                                </div>
+                                <div class="step-justification">A statement \(P \Rightarrow Q\) is logically equivalent to its contrapositive \(\neg Q \Rightarrow \neg P\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assume \(k\) is odd</div>
+                                <div class="step-content">
+                                    Since \(k\) is odd, there exists an integer \(m\) such that:
+                                    \[k = 2m + 1\]
+                                </div>
+                                <div class="step-justification">Definition of an odd integer</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Compute \(k^2\)</div>
+                                <div class="step-content">
+                                    \[k^2 = (2m+1)^2 = 4m^2 + 4m + 1 = 2(2m^2 + 2m) + 1\]
+                                    Let \(n = 2m^2 + 2m\). Since \(m \in \mathbb{Z}\), we have \(n \in \mathbb{Z}\), so:
+                                    \[k^2 = 2n + 1\]
+                                </div>
+                                <div class="step-justification">Expanding and factoring; integers are closed under addition and multiplication</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Conclude \(k^2\) is odd</div>
+                                <div class="step-content">
+                                    Since \(k^2 = 2n + 1\) for some integer \(n\), by definition \(k^2\) is odd.
+                                </div>
+                                <div class="step-justification">Definition of an odd integer</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> We have shown \(k \text{ odd} \Rightarrow k^2 \text{ odd}\). By contraposition, \(k^2 \text{ even} \Rightarrow k \text{ even}\). ∎
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 20px; font-weight: bold; color: #34495e;">Proof 2 — Contradiction</p>
+                        <span class="topic-link" id="proof-parity-absurd-link" onclick="toggleProof('proof-parity-absurd')">View Proof →</span>
+
+                        <div id="proof-parity-absurd" class="proof-container">
+                            <div class="proof-header">Proof by Contradiction: Let \(k \in \mathbb{Z}\). If \(k^2\) is even then \(k\) is even.</div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assumption</div>
+                                <div class="step-content">
+                                    Assume for the sake of contradiction that \(k^2\) is even but \(k\) is <em>not</em> even, i.e. \(k\) is odd.
+                                    <br><br>
+                                    Since \(k\) is odd, there exists an integer \(m\) such that:
+                                    \[k = 2m + 1\]
+                                </div>
+                                <div class="step-justification">We assume the hypothesis (\(k^2\) even) and the negation of the conclusion (\(k\) odd) simultaneously</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Compute \(k^2\)</div>
+                                <div class="step-content">
+                                    \[k^2 = (2m + 1)^2 = 4m^2 + 4m + 1 = 2(2m^2 + 2m) + 1\]
+                                    Let \(n = 2m^2 + 2m \in \mathbb{Z}\), so:
+                                    \[k^2 = 2n + 1\]
+                                </div>
+                                <div class="step-justification">Expanding; integers are closed under addition and multiplication</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Derive a contradiction</div>
+                                <div class="step-content">
+                                    From Step 2, \(k^2 = 2n + 1\), which means \(k^2\) is <em>odd</em>.
+                                    <br><br>
+                                    But we assumed \(k^2\) is <em>even</em>. A number cannot be both even and odd — this is a contradiction.
+                                </div>
+                                <div class="step-justification">Every integer is either even or odd, but not both</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> The assumption that \(k\) is odd must be false. Therefore, if \(k^2\) is even, then \(k\) is even. ∎
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="topic-card">
+                        <h3>The irrationality of &radic;2</h3>
+                        <div class="formula">
+                            \[\sqrt{2} \notin \mathbb{Q}\]
+                        </div>
+                        <p class="description">
+                            This is the classic proof that has a long heritage. However, in my opinion it is introduced far too early in the study of proof,
+                            before more straightforward contradiction proofs have been understood, and an important detail, the parity lemma, is often glossed over.
+                            Remember on the number theory page there are different types of 'basic' numbers. We can think of numbers as used for counting or measuring things — different activities, but all relate to numbers.
+                            An idea from Ancient mathematics (maybe Arabic, Greek, Indian or other) is that every number corresponds to a point or length on a straight line.
+                            There is a type of number, the 'real' number (tricky to define rigorously),
+                            which we can think of as a set or collection of numbers that in a sense 'contains' the rational numbers but 'other' numbers too. These 'other' numbers, the 'irrational' numbers,
+                            were famously (allegedly?) rejected by the Ancient Greek mathematicians and philosophers — just search for the stories about this. Back to the maths.
+                            The purpose of this proof is to show that the number 2 has a square root that can be shown to 'exist' (the length of the hypotenuse of a right-angled triangle with two sides equal to 1),
+                            but &radic;2 can be shown to not be rational. Therefore, because &radic;2 'exists', it must be a different kind of number — an 'irrational number'.
+                        </p>
+
+                        <span class="topic-link" id="proof-irrat2-real-link" onclick="toggleProof('proof-irrat2-real')">View Proof →</span>
+
+                        <div id="proof-irrat2-real" class="proof-container">
+                            <div class="proof-header">Proof: \(\sqrt{2}\) is irrational, i.e. \(\sqrt{2} \notin \mathbb{Q}\)</div>
+
+                            <!-- Proof by Contradiction banner -->
+                            <div style="background:#fff3cd; border-left:4px solid #e67e22; border-radius:4px; padding:12px 16px; margin-bottom:18px;">
+                                <span style="font-weight:bold; color:#b7600a;">⚡ Proof by Contradiction</span>
+                                <span style="color:#7a4200;"> — We assume the opposite of what we want to prove and derive a logical impossibility. The contradiction shows the assumption must be false.</span>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Assume (for contradiction) that \(\sqrt{2}\) is rational</div>
+                                <div class="step-content">
+                                    <div style="background:#fff8ec; border:1px dashed #e67e22; border-radius:4px; padding:10px; margin-bottom:10px; font-size:0.93em; color:#7a4200;">
+                                        <strong>Proof by contradiction in action:</strong> We assume the negation of our goal — that \(\sqrt{2}\) <em>is</em> rational — and aim to reach a contradiction.
+                                    </div>
+                                    By definition of a rational number, there exist integers \(p, q \in \mathbb{Z}\) with \(q \ne 0\) such that:
+                                    \[\sqrt{2} = \frac{p}{q}\]
+                                    Furthermore, we may assume this fraction is in its <em>lowest terms</em>, meaning \(p\) and \(q\) share no common factors — i.e. \(\gcd(p, q) = 1\).
+                                </div>
+                                <div class="step-justification">Every rational number can be written as a fraction in lowest terms</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Square both sides</div>
+                                <div class="step-content">
+                                    Squaring both sides of \(\sqrt{2} = \dfrac{p}{q}\):
+                                    \[2 = \frac{p^2}{q^2}\]
+                                    Multiplying both sides by \(q^2\):
+                                    \[p^2 = 2q^2\]
+                                    Since the right-hand side is \(2 \times (\text{integer})\), we conclude that \(p^2\) is even.
+                                </div>
+                                <div class="step-justification">Algebraic manipulation; \(q \ne 0\) so multiplication is valid</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Conclude that \(p\) is even</div>
+                                <div class="step-content">
+                                    We have shown \(p^2\) is even. We now need to conclude that \(p\) itself is even.
+                                    <div style="background:#e8f4fd; border-left:4px solid #2980b9; border-radius:4px; padding:10px; margin:10px 0; font-size:0.93em; color:#1a5276;">
+                                        <strong>🔑 Parity Lemma applied here:</strong> The parity lemma states that if \(k^2\) is even then \(k\) is even (for \(k \in \mathbb{Z}\)). Applying this with \(k = p\): since \(p^2\) is even, it follows that \(p\) is even.
+                                        <br><small style="color:#2471a3;">See the Parity Lemma proof card above for the full proof of this step.</small>
+                                    </div>
+                                    Therefore there exists an integer \(m\) such that:
+                                    \[p = 2m\]
+                                </div>
+                                <div class="step-justification">Parity Lemma: \(k^2 \text{ even} \Rightarrow k \text{ even}\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 4: Show that \(q\) is also even</div>
+                                <div class="step-content">
+                                    Substitute \(p = 2m\) into \(p^2 = 2q^2\):
+                                    \[(2m)^2 = 2q^2\]
+                                    \[4m^2 = 2q^2\]
+                                    \[q^2 = 2m^2\]
+                                    So \(q^2\) is even (it equals \(2 \times m^2\)).
+                                    <div style="background:#e8f4fd; border-left:4px solid #2980b9; border-radius:4px; padding:10px; margin:10px 0; font-size:0.93em; color:#1a5276;">
+                                        <strong>🔑 Parity Lemma applied again:</strong> Applying the parity lemma with \(k = q\): since \(q^2\) is even, it follows that \(q\) is even.
+                                    </div>
+                                    Therefore \(q\) is even.
+                                </div>
+                                <div class="step-justification">Parity Lemma applied a second time: \(q^2 \text{ even} \Rightarrow q \text{ even}\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 5: Derive the contradiction</div>
+                                <div class="step-content">
+                                    <div style="background:#fff8ec; border:1px dashed #e67e22; border-radius:4px; padding:10px; margin-bottom:10px; font-size:0.93em; color:#7a4200;">
+                                        <strong>Proof by contradiction — the contradiction arrives:</strong> We now have everything needed to reach the impossibility.
+                                    </div>
+                                    We have shown that both \(p\) and \(q\) are even — meaning both are divisible by 2, so \(\gcd(p,q) \geq 2\).
+                                    <br><br>
+                                    But in Step 1 we assumed that \(\dfrac{p}{q}\) was in <em>lowest terms</em>, meaning \(\gcd(p, q) = 1\).
+                                    <br><br>
+                                    We have \(\gcd(p,q) \geq 2\) and \(\gcd(p,q) = 1\) simultaneously — this is a contradiction.
+                                </div>
+                                <div class="step-justification">A fraction in lowest terms cannot have both numerator and denominator divisible by 2</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Our assumption (from Step 1) that \(\sqrt{2} \in \mathbb{Q}\) must be false. Therefore \(\sqrt{2}\) is irrational, i.e. \(\sqrt{2} \notin \mathbb{Q}\). ∎
+                            </div>
+                        </div>
                     </article>
                 </div>
 
                 <div style="margin-top: 30px; text-align: center;">
                     <p style="color: #7f8c8d; font-style: italic;">More real number proofs will be added to this collection over time.</p>
+                    <div style="margin-top: 25px;">
+                        <p class="cta-text">See also:</p>
+                        <button class="btn-primary" onclick="showSection('algebraic-inequalities');">Algebraic Inequalities →</button>
+                    </div>
                 </div>
             </section>
 
