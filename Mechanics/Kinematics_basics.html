@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic kinematics</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Computer Modern Serif', 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #fafafa;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #34495e;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-breadcrumb button {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            font-size: 0.95em;
+            padding: 5px 10px;
+            text-decoration: underline;
+        }
+
+        .nav-breadcrumb button:hover {
+            color: #2980b9;
+        }
+
+        /* Main Content */
+        main {
+            padding-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 30px 0 20px;
+            font-weight: normal;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #34495e;
+            margin: 20px 0 15px;
+            font-weight: normal;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Intro Content */
+        .intro-content {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .intro-content p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .step-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+
+        .code-inline {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .definition-box {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .definition-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .action-box {
+            background: #fff9e6;
+            border: 1px solid #f39c12;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .action-box h4 {
+            margin-top: 0;
+            color: #e67e22;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .cta-text {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 14px 32px;
+            font-size: 1.1em;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+            cursor: pointer;
+            border: none;
+            margin: 0 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Topic Grid */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .topic-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .topic-card:hover:not(.disabled) {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .topic-card .formula {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .topic-card .description {
+            font-size: 0.95em;
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+
+        .topic-link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .topic-link:hover {
+            text-decoration: underline;
+        }
+
+        .disabled {
+            opacity: 0.5;
+        }
+
+        .disabled .topic-link {
+            cursor: not-allowed;
+            color: #95a5a6;
+        }
+
+        /* Definitions Section */
+        .definitions-section {
+            background: white;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .definitions-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .definitions-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .footnote {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        
+        .example-list {
+            font-family: 'Courier New', monospace;
+            color: #34495e;
+            margin: 0 5px;
+        }
+        
+        .definition-highlight {
+            background-color: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #f39c12;
+            margin: 20px 0;
+        }
+
+        .intro p {
+            font-size: 1.05em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Step List Styles */
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-list li::before {
+            content: "Step " counter(step-counter) ": ";
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1em;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro-content {
+                padding: 25px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update header based on section
+            const header = document.querySelector('header h1');
+            const subtitle = document.querySelector('.subtitle');
+            const navigation = document.getElementById('navigation');
+            
+            if (sectionId === 'intro') {
+                header.textContent = 'Important actions when tackling a kinematics (suvat) question';
+                subtitle.textContent = '';
+                if (navigation) navigation.style.display = 'none';
+            } else if (sectionId === 'basic-concepts-intro') {
+                header.textContent = 'Basic Concepts';
+                subtitle.textContent = 'Understanding motion fundamentals';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'reading-question') {
+                header.textContent = 'Reading the question';
+                subtitle.textContent = 'Identifying kinematics problems';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'drawing-diagrams') {
+                header.textContent = 'Drawing diagrams';
+                subtitle.textContent = 'Visualizing kinematics problems';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'basic-concepts') {
+                header.textContent = 'Notation';
+                subtitle.textContent = 'Adding numbers to motion';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'kinematics') {
+                header.textContent = 'Kinematic equations';
+                subtitle.textContent = 'Mathematical framework for kinematics';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'solution-method') {
+                header.textContent = 'Solution method';
+                subtitle.textContent = 'Step-by-step approach to solving problems';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'examples') {
+                header.textContent = 'Worked examples';
+                subtitle.textContent = 'Step-by-step solutions to common problems';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'applications') {
+                header.textContent = 'Real-world applications';
+                subtitle.textContent = 'Kinematics in practice';
+                if (navigation) navigation.style.display = 'block';
+            } else if (sectionId === 'standard-results') {
+                header.textContent = 'Standard results';
+                subtitle.textContent = 'Key formulas and equations';
+                if (navigation) navigation.style.display = 'block';
+            } 
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Re-render math after showing new section
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+        
+        function toggleSolution(solutionId) {
+            const solution = document.getElementById(solutionId);
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+                // Re-render math in the solution
+                renderMathInElement(solution, {
+                    delimiters: [
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Basic kinematics</h1>
+            <p class="subtitle"></p>
+        </header>
+
+        <nav class="nav-breadcrumb" id="navigation" style="display: none;">
+            <button onclick="showSection('intro'); document.getElementById('navigation').style.display='none';">← Back to Introduction</button>
+        </nav>
+
+        <main>
+            <!-- Introduction Section -->
+            <section id="intro" class="section active">
+                <div class="intro-content">
+                    <p>
+                        Kinematics questions are questions about the motion of objects. The objects are moving with constant acceleration. If the objects are moving with "smoothly" changing acceleration then use calculus techniques; see the following notes.
+                    </p>
+                    
+                    <p>
+                        When approaching kinematics problems, success depends on following a systematic approach. This guide outlines the essential steps and considerations for solving kinematics questions effectively.
+                    </p>
+
+                    <div class="definition-box">
+                        <h3>Why do we talk about particles?</h3>
+                        <p>
+                            In mechanics, we often model objects as <strong>particles</strong> – point masses with no size or shape. A particle has a position expressed either as a 2D or 3D coordinate such as (3, -4) or (7, -1, -3). Position can also be expressed as the vector <strong>p</strong> or the vector <strong>q</strong>, but to calculate with these, values need to be given for the position components of the position vector. This simplification is valid when:
+                        </p>
+                        <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                            <li>The size of the object is negligible compared to the distances involved in the motion, in other words a particle has position/location but no length or breadth.</li>
+                            <li>We can ignore rotational effects and focus only on translational motion</li>
+                            <li>All parts of the object move together as one unit</li>
+                        </ul>
+                        <p style="margin-top: 15px;">
+                            For projectile motion, treating objects as particles allows us to focus on the <strong>center of mass</strong> trajectory without worrying about rotation or shape. This makes the mathematics much simpler while still giving accurate results for most real-world situations.
+                        </p>
+                    </div>
+
+
+
+                    <div class="cta-section">
+                        <p class="cta-text">Ready to explore straight line uniform acceleration motion in detail?</p>
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn-primary" onclick="showSection('basic-concepts-intro');">Basic Concepts →</button>
+                            <button class="btn-primary" onclick="showSection('reading-question');">Reading the Question →</button>
+                            <button class="btn-primary" onclick="showSection('basic-concepts');">Notation →</button>
+                            <button class="btn-primary" onclick="showSection('kinematics');">Kinematic Equations →</button>
+                            <button class="btn-primary" onclick="showSection('drawing-diagrams');">Drawing Diagrams →</button>
+                            <button class="btn-primary" onclick="showSection('solution-method');">Solution Method →</button>
+                           
+                            <button class="btn-primary" onclick="showSection('standard-results');">Standard Results →</button>
+                            <button class="btn-primary" onclick="showSection('examples');">Worked Examples →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+	<!-- Standard results Section -->
+            <section id="standard-results" class="section">
+                <h2>Standard results</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Acceleration and velocity from rest</h3>
+                        <div class="formula">
+                            \[a = \frac{2s}{t^2} \], \[v = \frac{2s}{t} \]
+                        </div>
+                        <p class="description">A particle travels with uniform acceleration along a horizontal straight line, initially at rest over a distance of s metres that takes t seconds. Find its acceleration and velocity after t seconds.</p>
+                        <span class="topic-link" onclick="toggleSolution('displacement-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="displacement-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u = 0\) m/s (initially at rest)</p>
+                            <p style="margin-bottom: 5px;">• Displacement: \(s \) m</p>
+                            <p style="margin-bottom: 15px;">• Time for this displacement: \(t \) s</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part 1: Find acceleration</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(s = ut + \frac{1}{2} a{t^2}\):</p>
+                            <p style="margin-bottom: 5px;"> u = 0:</p>
+                            <p style="margin-bottom: 5px;">s = \(\frac{1}{2} a{t^2}\):</p>
+                            <p style="margin-bottom: 5px;">\(a = \frac{2s}{t^2} \):</p>
+
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part 2: Find velocity after t seconds</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(v = u + at\):</p>
+                            <p style="margin-bottom: 5px;">\[v = 0 + \frac{2s}{t^2}t\]</p>
+                            <p style="margin-bottom: 15px;">\[v = \frac{2s}{t}\text{ m/s}\]</p>
+                            
+                          
+                            
+                            <span class="topic-link" onclick="toggleSolution('displacement-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Maximum height</h3>
+                        <div class="formula">
+                            \[H = \frac{u^2}{2g}\]
+                        </div>
+                        <p class="description">An object is thrown vertically upwards from a surface with an initial speed of \(u\). Determine the maximum height the object reaches before it falls back to the ground.</p>
+                        <span class="topic-link" onclick="toggleSolution('maxheight-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="maxheight-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u\) m/s (upwards)</p>
+                            <p style="margin-bottom: 5px;">• Final velocity at maximum height: \(v = 0\) m/s</p>
+                            <p style="margin-bottom: 5px;">• Acceleration: \(a = -g\) (downwards, so negative)</p>
+                            <p style="margin-bottom: 15px;">• Displacement to maximum height: \(s = H\) (what we need to find)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Analysis:</strong></p>
+                            <p style="margin-bottom: 15px;">At the maximum height, the object momentarily stops before falling back down, so the velocity at maximum height is zero.</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Finding maximum height:</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(v^2 = u^2 + 2as\):</p>
+                            <p style="margin-bottom: 5px;">\[0^2 = u^2 + 2(-g)H\]</p>
+                            <p style="margin-bottom: 5px;">\[0 = u^2 - 2gH\]</p>
+                            <p style="margin-bottom: 5px;">\[2gH = u^2\]</p>
+                            <p style="margin-bottom: 15px;">\[H = \frac{u^2}{2g}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer:</strong></p>
+                            <p style="margin-bottom: 15px;">The maximum height reached is \(H = \frac{u^2}{2g}\)</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Note:</strong></p>
+                            <p>This formula shows that the maximum height is proportional to the square of the initial velocity. If you double the initial speed, the maximum height increases by a factor of four.</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('maxheight-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Time of flight</h3>
+                        <div class="formula">
+                           \[T = \frac{2u}{g}\]
+                        </div>
+                        <p class="description">An object is thrown vertically upwards from the ground with an initial speed of \(u\). Determine the time the object takes to fall back to the ground.</p>
+                        <span class="topic-link" onclick="toggleSolution('timeofflight-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="timeofflight-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u\) m/s (upwards)</p>
+                            <p style="margin-bottom: 5px;">• Acceleration: \(a = -g\) (downwards, so negative)</p>
+                            <p style="margin-bottom: 5px;">• Displacement when back at ground: \(s = 0\) m</p>
+                            <p style="margin-bottom: 15px;">• Time to return to ground: \(t = T\) (what we need to find)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Analysis:</strong></p>
+                            <p style="margin-bottom: 15px;">When the object returns to the ground, it is back at its starting position, so the total displacement is zero.</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Finding time of flight:</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(s = ut + \frac{1}{2}at^2\):</p>
+                            <p style="margin-bottom: 5px;">\[0 = uT + \frac{1}{2}(-g)T^2\]</p>
+                            <p style="margin-bottom: 5px;">\[0 = uT - \frac{1}{2}gT^2\]</p>
+                            <p style="margin-bottom: 5px;">Factor out \(T\):</p>
+                            <p style="margin-bottom: 5px;">\[0 = T\left(u - \frac{1}{2}gT\right)\]</p>
+                            <p style="margin-bottom: 15px;">This gives two solutions: \(T = 0\) (initial launch) or \(u - \frac{1}{2}gT = 0\)</p>
+                            
+                            <p style="margin-bottom: 5px;">Solving for the non-zero solution:</p>
+                            <p style="margin-bottom: 5px;">\[u - \frac{1}{2}gT = 0\]</p>
+                            <p style="margin-bottom: 5px;">\[\frac{1}{2}gT = u\]</p>
+                            <p style="margin-bottom: 15px;">\[T = \frac{2u}{g}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer:</strong></p>
+                            <p style="margin-bottom: 15px;">The time of flight is \(T = \frac{2u}{g}\)</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Note:</strong></p>
+                            <p>This is exactly twice the time it takes to reach maximum height. The object takes the same time going up as it does coming down.</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('timeofflight-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Total distance travelled</h3>
+                        <div class="formula">
+                            \[H = \frac{u^2}{g}\]
+                        </div>
+                        <p class="description">An object is thrown vertically upwards from the ground with an initial speed of \(u\). Determine the total distance the object travels from initial projection to when it falls back to the ground.</p>
+                        <span class="topic-link" onclick="toggleSolution('totaldistance-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="totaldistance-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u\) m/s (upwards)</p>
+                            <p style="margin-bottom: 5px;">• Acceleration: \(a = -g\) (downwards, so negative)</p>
+                            <p style="margin-bottom: 15px;">• Object starts and ends at ground level</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Analysis:</strong></p>
+                            <p style="margin-bottom: 5px;">Distance is different from displacement. The object:</p>
+                            <p style="margin-bottom: 5px;">1. Travels upward from ground to maximum height</p>
+                            <p style="margin-bottom: 15px;">2. Travels downward from maximum height back to ground</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Step 1: Find maximum height</strong></p>
+                            <p style="margin-bottom: 5px;">At maximum height, velocity \(v = 0\)</p>
+                            <p style="margin-bottom: 5px;">Using \(v^2 = u^2 + 2as\):</p>
+                            <p style="margin-bottom: 5px;">\[0^2 = u^2 + 2(-g)H\]</p>
+                            <p style="margin-bottom: 5px;">\[0 = u^2 - 2gH\]</p>
+                            <p style="margin-bottom: 15px;">\[H = \frac{u^2}{2g}\]</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Step 2: Calculate total distance</strong></p>
+                            <p style="margin-bottom: 5px;">Distance up = \(H = \frac{u^2}{2g}\)</p>
+                            <p style="margin-bottom: 5px;">Distance down = \(H = \frac{u^2}{2g}\)</p>
+                            <p style="margin-bottom: 5px;">Total distance = Distance up + Distance down</p>
+                            <p style="margin-bottom: 15px;">\[\text{Total distance} = \frac{u^2}{2g} + \frac{u^2}{2g} = \frac{2u^2}{2g} = \frac{u^2}{g}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer:</strong></p>
+                            <p style="margin-bottom: 15px;">The total distance travelled is \(\frac{u^2}{g}\)</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Important note:</strong></p>
+                            <p>The total <strong>displacement</strong> is zero (starts and ends at the same point), but the total <strong>distance</strong> is \(\frac{u^2}{g}\) because distance doesn't consider direction.</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('totaldistance-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+                </div>
+	</section>
+
+
+
+            <!-- Basic Concepts Intro Section -->
+            <section id="basic-concepts-intro" class="section">
+                <div class="definitions-section">
+                    <h3>Understanding Motion</h3>
+                    
+                    <p>
+                        <span class="term">Motion</span> is the change in position of an object over time. When an object moves, it changes its location relative to a reference point or coordinate system. Motion can be described in terms of how far something moves, how fast it moves, and whether its speed is changing.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Distance</span> is the total length of the path traveled by an object, regardless of direction. It is always a positive value and is measured in units such as meters (m), kilometers (km), or miles. Distance tells us "how much ground was covered" during the motion.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Speed</span> is the rate at which distance is covered over time. It tells us how fast an object is moving and is calculated as distance divided by time. Speed is measured in units such as meters per second (m/s) or kilometers per hour (km/h). Like distance, speed is always positive or zero.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Acceleration</span> is the rate at which speed changes over time. When an object speeds up, slows down, or changes direction, it is accelerating. Acceleration is measured in units such as meters per second squared (m/s²). Positive acceleration means the object is speeding up, while negative acceleration (sometimes called deceleration) means it is slowing down.
+                    </p>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Directed motion</h3>
+                    
+                    <p>
+                        In mechanics or kinematic questions most quantities are 'directed' - or have a direction. When you move a certain distance, you also move in a direction: up, down, left, right, North, South etc. The effect of your movement results from both how far you move from your start point and in which direction you moved. In order to determine your direction of movement you need some axes - more on that later.
+                    </p>
+                    
+                    <p>
+                        Movement expressed as distance plus direction is called <strong>displacement</strong>. Speed plus direction is called <strong>velocity</strong>. Acceleration plus direction is, well, <strong>acceleration</strong>. Time does not have a direction in the sense of up, down, left, right but we can think of a positive time as being something happening in the future and a negative time as being something happening in the past.
+                    </p>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Constant speed</h3>
+                    
+                    <p>
+                        When an object moves with constant speed, it covers equal distances in equal time intervals. The animation below demonstrates this concept - the circle travels at a steady rate from left to right, taking exactly three seconds to complete its journey.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 40px 0;">
+                        <svg width="600" height="200" viewBox="0 0 600 200" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Horizontal line (track) -->
+                            <line x1="50" y1="100" x2="550" y2="100" stroke="#34495e" stroke-width="3"/>
+                            
+                            <!-- Start marker -->
+                            <line x1="50" y1="90" x2="50" y2="110" stroke="#34495e" stroke-width="3"/>
+                            <text x="50" y="130" text-anchor="middle" fill="#34495e" font-size="14">Start</text>
+                            
+                            <!-- End marker -->
+                            <line x1="550" y1="90" x2="550" y2="110" stroke="#34495e" stroke-width="3"/>
+                            <text x="550" y="130" text-anchor="middle" fill="#34495e" font-size="14">End</text>
+                            
+                            <!-- Moving circle -->
+                            <circle id="movingCircle" cx="50" cy="100" r="20" fill="#3498db" stroke="#2980b9" stroke-width="2">
+                                <animate attributeName="cx" from="50" to="550" dur="3s" repeatCount="indefinite"/>
+                            </circle>
+                        </svg>
+                        <p style="margin-top: 20px; font-style: italic; color: #666; font-weight: bold;">Constant speed animation</p>
+                        <p style="margin-top: 10px; color: #555;">The circle travels from left to right in 3 seconds at constant speed</p>
+                    </div>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Adding numbers to constant speed animation</h3>
+                    
+                    <p>
+                        This animation shows the same constant speed motion, but now with position (s) and time (t) labels appearing at key points. Notice how both position and time increase proportionally - at each second, the position increases by 1 meter.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 40px 0;">
+                        <svg id="animatedSvg" width="600" height="250" viewBox="0 0 600 250" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Horizontal line (track) -->
+                            <line x1="50" y1="100" x2="550" y2="100" stroke="#34495e" stroke-width="3"/>
+                            
+                            <!-- Start marker -->
+                            <line x1="50" y1="90" x2="50" y2="110" stroke="#34495e" stroke-width="3"/>
+                            <text x="50" y="130" text-anchor="middle" fill="#34495e" font-size="14">Start</text>
+                            <text id="label0" x="50" y="150" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=0, t=0</text>
+                            
+                            <!-- One third marker -->
+                            <text id="label1" x="217" y="150" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=1, t=1</text>
+                            
+                            <!-- Two thirds marker -->
+                            <text id="label2" x="383" y="150" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=2, t=2</text>
+                            
+                            <!-- End marker -->
+                            <line x1="550" y1="90" x2="550" y2="110" stroke="#34495e" stroke-width="3"/>
+                            <text x="550" y="130" text-anchor="middle" fill="#34495e" font-size="14">End</text>
+                            <text id="label3" x="550" y="150" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=3, t=3</text>
+                            
+                            <!-- Moving circle -->
+                            <circle id="movingCircle2" cx="50" cy="100" r="20" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        </svg>
+                        <p style="margin-top: 20px; font-style: italic; color: #666; font-weight: bold;">Adding numbers to constant speed animation</p>
+                        <p style="margin-top: 10px; color: #555;">Position (s) and time (t) labels appear as the circle progresses</p>
+                    </div>
+                    
+                    <script>
+                        (function() {
+                            const circle = document.getElementById('movingCircle2');
+                            const label0 = document.getElementById('label0');
+                            const label1 = document.getElementById('label1');
+                            const label2 = document.getElementById('label2');
+                            const label3 = document.getElementById('label3');
+                            
+                            const startX = 50;
+                            const endX = 550;
+                            const duration = 3000; // 3 seconds
+                            const pauseDuration = 2000; // 2 seconds pause at the end
+                            const totalCycle = duration + pauseDuration;
+                            
+                            let startTime = null;
+                            
+                            function animate(timestamp) {
+                                if (!startTime) startTime = timestamp;
+                                const elapsed = timestamp - startTime;
+                                const cycleTime = elapsed % totalCycle;
+                                
+                                if (cycleTime < duration) {
+                                    // Moving phase
+                                    const progress = cycleTime / duration;
+                                    const currentX = startX + (endX - startX) * progress;
+                                    circle.setAttribute('cx', currentX);
+                                    
+                                    // Show label0 at start
+                                    if (cycleTime < 50) {
+                                        label0.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    // Show label1 at 1/3
+                                    if (progress >= 1/3) {
+                                        label1.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    // Show label2 at 2/3
+                                    if (progress >= 2/3) {
+                                        label2.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    // Show label3 at end
+                                    if (progress >= 0.99) {
+                                        label3.setAttribute('opacity', '1');
+                                    }
+                                } else {
+                                    // Pause phase - hold at end position with all labels visible
+                                    circle.setAttribute('cx', endX);
+                                    label0.setAttribute('opacity', '1');
+                                    label1.setAttribute('opacity', '1');
+                                    label2.setAttribute('opacity', '1');
+                                    label3.setAttribute('opacity', '1');
+                                    
+                                    // Near the end of pause, reset circle and clear labels
+                                    if (cycleTime >= totalCycle - 50) {
+                                        circle.setAttribute('cx', startX);
+                                        label0.setAttribute('opacity', '0');
+                                        label1.setAttribute('opacity', '0');
+                                        label2.setAttribute('opacity', '0');
+                                        label3.setAttribute('opacity', '0');
+                                    }
+                                }
+                                
+                                requestAnimationFrame(animate);
+                            }
+                            
+                            requestAnimationFrame(animate);
+                        })();
+                    </script>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Accelerating motion - falling particle</h3>
+                    
+                    <p>
+                        Unlike constant speed motion, when an object accelerates, it covers increasing distances in equal time intervals. This animation shows a particle falling under gravity, where the distance fallen increases with the square of time (s = ½gt²). Notice how the particle falls progressively farther during each second.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 40px 0;">
+                        <svg id="fallingSvg" width="600" height="450" viewBox="0 0 600 450" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Vertical line (track) -->
+                            <line x1="300" y1="50" x2="300" y2="410" stroke="#34495e" stroke-width="3"/>
+                            
+                            <!-- Start marker -->
+                            <line x1="290" y1="50" x2="310" y2="50" stroke="#34495e" stroke-width="3"/>
+                            <text x="320" y="55" text-anchor="start" fill="#34495e" font-size="14">Start</text>
+                            <text id="fallLabel0" x="360" y="55" text-anchor="start" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=0, t=0</text>
+                            
+                            <!-- One second marker (40px down) -->
+                            <text id="fallLabel1" x="360" y="95" text-anchor="start" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=1, t=1</text>
+                            
+                            <!-- Two seconds marker (160px total from start) -->
+                            <text id="fallLabel2" x="360" y="215" text-anchor="start" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=4, t=2</text>
+                            
+                            <!-- Three seconds marker (360px total from start) -->
+                            <text id="fallLabel3" x="360" y="415" text-anchor="start" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=9, t=3</text>
+                            
+                            <!-- Falling particle -->
+                            <circle id="fallingCircle" cx="300" cy="50" r="20" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                        </svg>
+                        <p style="margin-top: 20px; font-style: italic; color: #666; font-weight: bold;">Accelerating motion - falling particle</p>
+                        <p style="margin-top: 10px; color: #555;">The particle accelerates as it falls, covering increasing distances each second</p>
+                    </div>
+                    
+                    <script>
+                        (function() {
+                            const circle = document.getElementById('fallingCircle');
+                            const fallLabel0 = document.getElementById('fallLabel0');
+                            const fallLabel1 = document.getElementById('fallLabel1');
+                            const fallLabel2 = document.getElementById('fallLabel2');
+                            const fallLabel3 = document.getElementById('fallLabel3');
+                            
+                            const startY = 50;
+                            const positions = [
+                                { y: 50, time: 0 },      // s=0, t=0
+                                { y: 90, time: 1000 },   // s=1, t=1 (40px down)
+                                { y: 210, time: 2000 },  // s=4, t=2 (160px from start)
+                                { y: 410, time: 3000 }   // s=9, t=3 (360px from start)
+                            ];
+                            
+                            const duration = 3000; // 3 seconds to fall
+                            const pauseDuration = 2000; // 2 seconds pause at bottom
+                            const totalCycle = duration + pauseDuration;
+                            
+                            let startTime = null;
+                            
+                            function easeInQuad(t) {
+                                return t * t; // Quadratic easing for acceleration
+                            }
+                            
+                            function animate(timestamp) {
+                                if (!startTime) startTime = timestamp;
+                                const elapsed = timestamp - startTime;
+                                const cycleTime = elapsed % totalCycle;
+                                
+                                if (cycleTime < duration) {
+                                    // Falling phase
+                                    const progress = cycleTime / duration;
+                                    const easedProgress = easeInQuad(progress);
+                                    const currentY = startY + (positions[3].y - startY) * easedProgress;
+                                    circle.setAttribute('cy', currentY);
+                                    
+                                    // Show label0 at start
+                                    if (cycleTime < 50) {
+                                        fallLabel0.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    // Show label1 at t=1
+                                    if (cycleTime >= 1000) {
+                                        fallLabel1.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    // Show label2 at t=2
+                                    if (cycleTime >= 2000) {
+                                        fallLabel2.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    // Show label3 at t=3
+                                    if (cycleTime >= 2950) {
+                                        fallLabel3.setAttribute('opacity', '1');
+                                    }
+                                } else {
+                                    // Pause phase - hold at bottom with all labels visible
+                                    circle.setAttribute('cy', positions[3].y);
+                                    fallLabel0.setAttribute('opacity', '1');
+                                    fallLabel1.setAttribute('opacity', '1');
+                                    fallLabel2.setAttribute('opacity', '1');
+                                    fallLabel3.setAttribute('opacity', '1');
+                                    
+                                    // Near the end of pause, reset circle and clear labels
+                                    if (cycleTime >= totalCycle - 50) {
+                                        circle.setAttribute('cy', startY);
+                                        fallLabel0.setAttribute('opacity', '0');
+                                        fallLabel1.setAttribute('opacity', '0');
+                                        fallLabel2.setAttribute('opacity', '0');
+                                        fallLabel3.setAttribute('opacity', '0');
+                                    }
+                                }
+                                
+                                requestAnimationFrame(animate);
+                            }
+                            
+                            requestAnimationFrame(animate);
+                        })();
+                    </script>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Accelerating motion - horizontal</h3>
+                    
+                    <p>
+                        The same acceleration pattern can occur in any direction, not just vertically. This animation shows the same accelerating motion as the falling particle, but now moving horizontally from left to right. The particle still covers increasing distances in equal time intervals (1, 4, 9 units at t=1, 2, 3).
+                    </p>
+                    
+                    <div style="text-align: center; margin: 40px 0;">
+                        <svg id="horizontalAccelSvg" width="600" height="250" viewBox="0 0 600 250" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Horizontal line (track) -->
+                            <line x1="50" y1="125" x2="550" y2="125" stroke="#34495e" stroke-width="3"/>
+                            
+                            <!-- Start marker -->
+                            <line x1="50" y1="115" x2="50" y2="135" stroke="#34495e" stroke-width="3"/>
+                            <text x="50" y="105" text-anchor="middle" fill="#34495e" font-size="14">Start</text>
+                            <text id="horizLabel0" x="50" y="155" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=0, t=0</text>
+                            
+                            <!-- One second marker (56.67px right) -->
+                            <text id="horizLabel1" x="106.67" y="155" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=1, t=1</text>
+                            
+                            <!-- Two seconds marker (226.67px total from start) -->
+                            <text id="horizLabel2" x="276.67" y="155" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=4, t=2</text>
+                            
+                            <!-- Three seconds marker (500px total from start) -->
+                            <text id="horizLabel3" x="550" y="155" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold" opacity="0">s=9, t=3</text>
+                            
+                            <!-- Accelerating particle -->
+                            <circle id="horizAccelCircle" cx="50" cy="125" r="20" fill="#e67e22" stroke="#d35400" stroke-width="2"/>
+                        </svg>
+                        <p style="margin-top: 20px; font-style: italic; color: #666; font-weight: bold;">Accelerating motion - horizontal</p>
+                        <p style="margin-top: 10px; color: #555;">The particle accelerates horizontally, covering increasing distances each second</p>
+                    </div>
+                    
+                    <script>
+                        (function() {
+                            const circle = document.getElementById('horizAccelCircle');
+                            const horizLabel0 = document.getElementById('horizLabel0');
+                            const horizLabel1 = document.getElementById('horizLabel1');
+                            const horizLabel2 = document.getElementById('horizLabel2');
+                            const horizLabel3 = document.getElementById('horizLabel3');
+                            
+                            const startX = 50;
+                            const endX = 550;
+                            const positions = [
+                                { x: 50, time: 0 },           // s=0, t=0
+                                { x: 106.67, time: 1000 },    // s=1, t=1
+                                { x: 276.67, time: 2000 },    // s=4, t=2
+                                { x: 550, time: 3000 }        // s=9, t=3
+                            ];
+                            
+                            const duration = 3000;
+                            const pauseDuration = 2000;
+                            const totalCycle = duration + pauseDuration;
+                            
+                            let startTime = null;
+                            
+                            function easeInQuad(t) {
+                                return t * t;
+                            }
+                            
+                            function animate(timestamp) {
+                                if (!startTime) startTime = timestamp;
+                                const elapsed = timestamp - startTime;
+                                const cycleTime = elapsed % totalCycle;
+                                
+                                if (cycleTime < duration) {
+                                    const progress = cycleTime / duration;
+                                    const easedProgress = easeInQuad(progress);
+                                    const currentX = startX + (positions[3].x - startX) * easedProgress;
+                                    circle.setAttribute('cx', currentX);
+                                    
+                                    if (cycleTime < 50) {
+                                        horizLabel0.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    if (cycleTime >= 1000) {
+                                        horizLabel1.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    if (cycleTime >= 2000) {
+                                        horizLabel2.setAttribute('opacity', '1');
+                                    }
+                                    
+                                    if (cycleTime >= 2950) {
+                                        horizLabel3.setAttribute('opacity', '1');
+                                    }
+                                } else {
+                                    circle.setAttribute('cx', positions[3].x);
+                                    horizLabel0.setAttribute('opacity', '1');
+                                    horizLabel1.setAttribute('opacity', '1');
+                                    horizLabel2.setAttribute('opacity', '1');
+                                    horizLabel3.setAttribute('opacity', '1');
+                                    
+                                    if (cycleTime >= totalCycle - 50) {
+                                        circle.setAttribute('cx', startX);
+                                        horizLabel0.setAttribute('opacity', '0');
+                                        horizLabel1.setAttribute('opacity', '0');
+                                        horizLabel2.setAttribute('opacity', '0');
+                                        horizLabel3.setAttribute('opacity', '0');
+                                    }
+                                }
+                                
+                                requestAnimationFrame(animate);
+                            }
+                            
+                            requestAnimationFrame(animate);
+                        })();
+                    </script>
+                </div>
+            </section>
+
+            <!-- Reading the Question Section -->
+            <section id="reading-question" class="section">
+                <div class="definitions-section">
+                    <h3>Indicators of a constant acceleration or suvat question</h3>
+                    
+                    <p>
+                        Recognizing when a problem requires constant acceleration, or suvat, methods is the crucial first step in solving it. Here are the key indicators to look for:
+                    </p>
+                    
+                    <p>
+                        <span class="term">Keywords:</span> Look for words like "constant acceleration", "starts from rest", "the vehicle passes the start with velocity u ms⁻¹", etc.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Direction of motion:</span> In simple (1D) problems the object such as a car or a ball is travelling in a straight line such as falling vertically or travelling along a horizontal surface. A particle travelling along a flat inclined plane is travelling in 'one' direction parallel to the plane but this requires resolving velocities (examples later).
+                    </p>
+                    
+                    <div class="footnote">
+                        <p><strong>Note:</strong> Problems may not explicitly state "constant acceleration" or "kinematics" but the context will indicate it (e.g., a vehicle accelerating uniformly, an object falling freely, or a ball rolling down a slope).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Drawing Diagrams Section -->
+            <section id="drawing-diagrams" class="section">
+                <div class="definitions-section">
+                    <h3>Why diagrams are essential</h3>
+                    
+                    <p>
+                        Drawing a clear diagram is one of the most important steps in solving projectile motion problems. A good diagram helps you visualize the problem, identify what you know, and determine what you need to find.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Coordinate system:</span> Always establish a clear coordinate system. Typically, the x-axis is horizontal and the y-axis is vertical, with the origin at a convenient location (often the launch point).
+                    </p>
+                    
+                    <p>
+                        <span class="term">Initial position:</span> Mark the starting position of the projectile clearly on your diagram.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Velocity components:</span> Draw and label the initial velocity vector and its horizontal and vertical components \(v_{0x}\) and \(v_{0y}\).
+                    </p>
+                    
+                    <p>
+                        <span class="term">Trajectory path:</span> Sketch the parabolic path the projectile will follow.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Key points:</span> Mark important points such as the maximum height, landing position, or any target locations mentioned in the problem.
+                    </p>
+                    
+                    <p>
+                        <span class="term">Known and unknown quantities:</span> Label all known values and indicate what you need to find.
+                    </p>
+
+                    <div class="footnote">
+                        <p><strong>Tip:</strong> A well-drawn diagram can often reveal the solution method before you even write an equation!</p>
+                    </div>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Reference axes</h3>
+                    
+                    <p>
+                        Axes must have a start point, or origin. One axis must point in a straight line in one direction, the second axis must point in one of the directions perpendicular (at right angles) to the first axis. All directed quantities must have their direction expressed in relation to the axes.
+                    </p>
+                    
+                    <p>
+                        Example:
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg width="400" height="300" viewBox="0 0 400 300" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Level ground -->
+                            <line x1="50" y1="250" x2="350" y2="250" stroke="#8B4513" stroke-width="3"/>
+                            <rect x="50" y="250" width="300" height="10" fill="#D2B48C"/>
+                            
+                            <!-- Vertical column -->
+                            <rect x="175" y="100" width="50" height="150" fill="#A9A9A9" stroke="#696969" stroke-width="2"/>
+                            <rect x="170" y="95" width="60" height="10" fill="#808080"/>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">A vertical column on level ground</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg width="400" height="300" viewBox="0 0 400 300" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Level ground -->
+                            <line x1="50" y1="250" x2="350" y2="250" stroke="#8B4513" stroke-width="3"/>
+                            <rect x="50" y="250" width="300" height="10" fill="#D2B48C"/>
+                            
+                            <!-- Vertical column -->
+                            <rect x="175" y="100" width="50" height="150" fill="#A9A9A9" stroke="#696969" stroke-width="2"/>
+                            <rect x="170" y="95" width="60" height="10" fill="#808080"/>
+                            
+                            <!-- Horizontal axis (x-axis) -->
+                            <defs>
+                                <marker id="arrowhead-x" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#2E86AB" />
+                                </marker>
+                            </defs>
+                            <line x1="80" y1="250" x2="320" y2="250" stroke="#2E86AB" stroke-width="2" marker-end="url(#arrowhead-x)"/>
+                            <text x="325" y="255" fill="#2E86AB" font-size="16" font-weight="bold">x</text>
+                            
+                            <!-- Vertical axis (y-axis) -->
+                            <defs>
+                                <marker id="arrowhead-y" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#A23B72" />
+                                </marker>
+                            </defs>
+                            <line x1="200" y1="250" x2="200" y2="70" stroke="#A23B72" stroke-width="2" marker-end="url(#arrowhead-y)"/>
+                            <text x="205" y="65" fill="#A23B72" font-size="16" font-weight="bold">y</text>
+                            
+                            <!-- Origin marker -->
+                            <circle cx="200" cy="250" r="4" fill="#000"/>
+                            <text x="205" y="268" fill="#000" font-size="14" font-weight="bold">O</text>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">The same column with coordinate axes: origin O at the base of the column</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg width="400" height="300" viewBox="0 0 400 300" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Level ground -->
+                            <line x1="50" y1="250" x2="350" y2="250" stroke="#8B4513" stroke-width="3"/>
+                            <rect x="50" y="250" width="300" height="10" fill="#D2B48C"/>
+                            
+                            <!-- Vertical column -->
+                            <rect x="175" y="100" width="50" height="150" fill="#A9A9A9" stroke="#696969" stroke-width="2"/>
+                            <rect x="170" y="95" width="60" height="10" fill="#808080"/>
+                            
+                            <!-- Horizontal axis (x-axis) -->
+                            <defs>
+                                <marker id="arrowhead-x2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#2E86AB" />
+                                </marker>
+                            </defs>
+                            <line x1="80" y1="250" x2="320" y2="250" stroke="#2E86AB" stroke-width="2" marker-end="url(#arrowhead-x2)"/>
+                            <text x="325" y="255" fill="#2E86AB" font-size="16" font-weight="bold">x</text>
+                            
+                            <!-- Vertical axis (y-axis) -->
+                            <defs>
+                                <marker id="arrowhead-y2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#A23B72" />
+                                </marker>
+                            </defs>
+                            <line x1="200" y1="250" x2="200" y2="70" stroke="#A23B72" stroke-width="2" marker-end="url(#arrowhead-y2)"/>
+                            <text x="205" y="65" fill="#A23B72" font-size="16" font-weight="bold">y</text>
+                            
+                            <!-- Origin marker -->
+                            <circle cx="200" cy="250" r="4" fill="#000"/>
+                            <text x="205" y="268" fill="#000" font-size="14" font-weight="bold">O</text>
+                            
+                            <!-- Positive direction arrows -->
+                            <!-- Vertical positive arrow (40px to left of y-axis) -->
+                            <defs>
+                                <marker id="arrowhead-pos-y" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#006400" />
+                                </marker>
+                            </defs>
+                            <line x1="160" y1="200" x2="160" y2="130" stroke="#006400" stroke-width="3" marker-end="url(#arrowhead-pos-y)"/>
+                            <text x="148" y="120" fill="#006400" font-size="20" font-weight="bold">+</text>
+                            
+                            <!-- Horizontal positive arrow (40px above x-axis) -->
+                            <defs>
+                                <marker id="arrowhead-pos-x" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#006400" />
+                                </marker>
+                            </defs>
+                            <line x1="230" y1="210" x2="300" y2="210" stroke="#006400" stroke-width="3" marker-end="url(#arrowhead-pos-x)"/>
+                            <text x="305" y="218" fill="#006400" font-size="20" font-weight="bold">+</text>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">Coordinate axes with positive directions indicated</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg width="400" height="300" viewBox="0 0 400 300" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Sloped surface (25 degrees angle) -->
+                            <polygon points="50,230 330,230 330,100 50,230" fill="#D2B48C" stroke="#8B4513" stroke-width="3"/>
+                            
+                            <!-- Horizontal reference line for angle -->
+                            <line x1="50" y1="230" x2="180" y2="230" stroke="#999" stroke-width="1" stroke-dasharray="5,5"/>
+                            
+                            <!-- Angle arc and label -->
+                            <path d="M 110 230 A 60 60 0 0 0 80 210" fill="none" stroke="#000" stroke-width="1.5"/>
+                            <text x="115" y="225" font-size="18" font-style="italic" fill="#000">θ</text>
+                            
+                            <!-- Center point of slope -->
+                            <circle cx="190" cy="165" r="4" fill="#000"/>
+                            <text x="195" y="183" fill="#000" font-size="14" font-weight="bold">O</text>
+                            
+                            <!-- x-axis parallel to slope -->
+                            <defs>
+                                <marker id="arrowhead-x-slope" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#2E86AB" />
+                                </marker>
+                            </defs>
+                            <line x1="110" y1="200" x2="270" y2="130" stroke="#2E86AB" stroke-width="2" marker-end="url(#arrowhead-x-slope)"/>
+                            <text x="275" y="128" fill="#2E86AB" font-size="16" font-weight="bold">x</text>
+                            
+                            <!-- y-axis perpendicular to slope -->
+                            <defs>
+                                <marker id="arrowhead-y-slope" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#A23B72" />
+                                </marker>
+                            </defs>
+                            <line x1="190" y1="165" x2="145" y2="80" stroke="#A23B72" stroke-width="2" marker-end="url(#arrowhead-y-slope)"/>
+                            <text x="138" y="75" fill="#A23B72" font-size="16" font-weight="bold">y</text>
+                            
+                            <!-- Positive direction arrows -->
+                            <defs>
+                                <marker id="arrowhead-pos-x-slope" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#006400" />
+                                </marker>
+                            </defs>
+                            <line x1="190" y1="143" x2="260" y2="108" stroke="#006400" stroke-width="3" marker-end="url(#arrowhead-pos-x-slope)"/>
+                            <text x="265" y="106" fill="#006400" font-size="20" font-weight="bold">+</text>
+                            
+                            <defs>
+                                <marker id="arrowhead-pos-y-slope" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#006400" />
+                                </marker>
+                            </defs>
+                            <line x1="208" y1="157" x2="163" y2="72" stroke="#006400" stroke-width="3" marker-end="url(#arrowhead-pos-y-slope)"/>
+                            <text x="155" y="65" fill="#006400" font-size="20" font-weight="bold">+</text>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">A sloped surface at angle θ measured relative to the horizontal with coordinate axes: x-axis parallel to slope, y-axis perpendicular to slope</p>
+                    </div>
+                </div>
+                
+                <div class="definitions-section">
+                    <h3>Specific values</h3>
+                    
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li>The point from where we are measuring displacement and start time, the values \(s=0\) and \(t=0\) are assigned (1D case)</li>
+                        <li>Even if the particle starts moving from a position above the ground, say one metre, then \(s=0\) is usually measured from where object starts moving, not from the ground</li>
+                        <li>'Starts from rest' means \(u=0\) or \(v_0 = 0\)</li>
+                    </ul>
+                    
+                    <p style="text-align: center; margin: 20px 0; font-weight: bold;">
+                        Example: a particle at rest is dropped from the top of a 5m tall tower to the ground below.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <svg width="400" height="300" viewBox="0 0 400 300" style="border: 1px solid #ddd; background: #fafafa;">
+                            <!-- Level ground -->
+                            <line x1="50" y1="250" x2="350" y2="250" stroke="#8B4513" stroke-width="3"/>
+                            <rect x="50" y="250" width="300" height="10" fill="#D2B48C"/>
+                            
+                            <!-- Label for ground -->
+                            <text x="350" y="268" fill="#000" font-size="14" font-weight="bold">s=+5</text>
+                            
+                            <!-- Vertical column -->
+                            <rect x="175" y="100" width="50" height="150" fill="#A9A9A9" stroke="#696969" stroke-width="2"/>
+                            <rect x="170" y="95" width="60" height="10" fill="#808080"/>
+                            
+                            <!-- Vertical axis (y-axis) -->
+                            <defs>
+                                <marker id="arrowhead-y-specific" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#A23B72" />
+                                </marker>
+                            </defs>
+                            <line x1="200" y1="100" x2="200" y2="270" stroke="#A23B72" stroke-width="2" marker-end="url(#arrowhead-y-specific)"/>
+                            <text x="205" y="285" fill="#A23B72" font-size="16" font-weight="bold">s</text>
+                            
+                            <!-- Origin marker at top of column -->
+                            <circle cx="200" cy="100" r="4" fill="#000"/>
+                            <text x="205" y="95" fill="#000" font-size="14" font-weight="bold">O</text>
+                            
+                            <!-- Small circle at top of column (30px to the right) -->
+                            <circle cx="230" cy="100" r="5" fill="#FF0000" stroke="#000" stroke-width="1"/>
+                            <text x="238" y="93" fill="#000" font-size="13" font-weight="bold">s=0</text>
+                            <text x="238" y="105" fill="#000" font-size="13" font-weight="bold">t=0</text>
+                            <text x="238" y="117" fill="#000" font-size="13" font-weight="bold">u=0</text>
+                            
+                            <!-- Positive direction arrows -->
+                            <defs>
+                                <marker id="arrowhead-pos-y-specific" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#006400" />
+                                </marker>
+                            </defs>
+                            <line x1="160" y1="130" x2="160" y2="200" stroke="#006400" stroke-width="3" marker-end="url(#arrowhead-pos-y-specific)"/>
+                            <text x="148" y="220" fill="#006400" font-size="20" font-weight="bold">+</text>
+                        </svg>
+                        <p style="margin-top: 10px; font-style: italic; color: #666;">Initial position at the top of the column where s=0, t=0, u=0, with positive direction downward</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Basic Concepts Section (Notation) -->
+            <section id="basic-concepts" class="section">
+                <div class="definitions-section">
+                    <h3>Notation</h3>
+                    
+                    <p>
+                        If a problem is about (uniform acceleration) motion in a straight line (it is one-dimensional), then we can use the following variables to express and solve our problem:
+                    </p>
+                    
+                    <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 20px; line-height: 1.8;">
+                        <li>\(s\) is displacement from origin</li>
+                        <li>\(u\) is initial velocity</li>
+                        <li>\(v\) is final velocity</li>
+                        <li>\(a\) is (constant) acceleration</li>
+                        <li>\(t\) is time (a non directed quantity)</li>
+                    </ul>
+                    
+                    <p>
+                        If a problem is about (uniform acceleration) motion in a plane (it is two-dimensional), then we can use the following variables to express and solve our problem:
+                    </p>
+                    
+                    <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 20px; line-height: 1.8;">
+                        <li>\(s_x\) and \(s_y\) are displacement in the x and y direction</li>
+                        <li>\(u_x\) and \(u_y\) are initial velocity in the x and y direction</li>
+                        <li>\(v_x\) and \(v_y\) are final velocity in the x and y direction</li>
+                        <li>\(a_x\) and \(a_y\) are acceleration in the x and y direction</li>
+                    </ul>
+                    
+                    <p>
+                        Sometimes we use the following notation:
+                    </p>
+                    
+                    <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 20px; line-height: 1.8;">
+                        <li>\(v_0\) is the initial <strong style="color: #00008B;">speed</strong> when the particle is initially travelling at a non-zero angle relative to one of the reference axes</li>
+                        <li>\(v_{0x}\) and \(v_{0y}\) are initial velocity in the x and y direction</li>
+                    </ul>
+                </div>
+
+
+
+              
+            </section>
+
+
+            <!-- Kinematic Equations Section -->
+            <section id="kinematics" class="section">
+                <div class="definitions-section">
+                    <h3>Constant acceleration equations</h3>
+                    
+                    <p>
+                        The five standard constant acceleration equations (also known as suvat equations) relate displacement, initial velocity, final velocity, acceleration, and time:
+                    </p>
+                    
+                    <div class="definition-highlight">
+                        <ul style="margin-left: 20px; margin-top: 10px; line-height: 2.5;">
+                            <li>\(v = u + at\)</li>
+                            <li>\(s = ut + \frac{1}{2}at^2\)</li>
+                            <li>\(s = vt - \frac{1}{2}at^2\)</li>
+                            <li>\(s = \frac{1}{2}(u+v)t\)</li>
+                            <li>\(v^2 = u^2 + 2as\)</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 20px;">
+                        Where: <strong>s</strong> = displacement, <strong>u</strong> = initial velocity, <strong>v</strong> = final velocity, <strong>a</strong> = acceleration, <strong>t</strong> = time
+                    </p>
+                    
+                    <p style="margin-top: 20px;">
+                        In a kinematics question you will be given 3 variable values, often expressed in words like 'initially at rest' and be asked to determine the value of one other variable. So the question will be about 4 variables, three known values, one to be determined. Find the equation that relates these four variables and apply it to the values.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Solution Method Section -->
+            <section id="solution-method" class="section">
+                <div class="intro-content">
+                    <h3>Essential steps for solving 1D constant acceleration problems:</h3>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Read the question carefully:</strong> 
+                            Identify what the problem is asking for and what information is given. Look for keywords like "initially at rest" (u=0), "dropped" (u=0), or "comes to rest" (v=0).
+                        </li>
+                        
+                        <li>
+                            <strong>Draw a diagram:</strong> 
+                            Sketch the motion showing the start and end positions. Mark the positive direction clearly (usually upward is positive for vertical motion, or the direction of initial motion for horizontal).
+                        </li>
+                        
+                        <li>
+                            <strong>List the known quantities:</strong> 
+                            Write down the values for s, u, v, a, and t that are given in the problem. Remember: s=0 at the starting position, t=0 at the start time.
+                        </li>
+                        
+                        <li>
+                            <strong>Identify what you need to find:</strong> 
+                            Clearly state which variable(s) you need to calculate.
+                        </li>
+                        
+                        <li>
+                            <strong>Choose the appropriate suvat equation:</strong> 
+                            Select the equation that contains the three known quantities and the one unknown you're solving for.
+                        </li>
+                        
+                        <li>
+                            <strong>Substitute and solve:</strong> 
+                            Plug in the known values with correct signs (positive or negative based on direction) and solve for the unknown. Show your working clearly.
+                        </li>
+                        
+                        <li>
+                            <strong>Check your answer:</strong> 
+                            Does the sign make sense? Is the magnitude reasonable? Does it have the correct units?
+                        </li>
+                    </ol>
+
+                   
+
+                    <div class="action-box">
+                        <h4>⚠️ Common mistakes to avoid:</h4>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Forgetting that horizontal velocity remains constant (no horizontal acceleration)</li>
+                            <li>Using wrong sign conventions for vertical motion</li>
+                            <li>Mixing up initial and final conditions</li>
+                            <li>Not checking if the answer is physically reasonable</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <!-- Worked Examples Section -->
+            <section id="examples" class="section">
+                <div class="definitions-section">
+                    <h3>Problem-solving approach</h3>
+                    
+                    <p>
+                        Apply the method described on the <span class="topic-link" onclick="showSection('solution-method')">Solution Method</span> page.
+                    </p>
+                </div>
+
+                <h2>Example problems</h2>
+                
+              
+					
+					<article class="topic-card">
+                        <h3>Displacement</h3>
+                        <div class="formula">
+                            \[s = ut + \frac{1}{2}at^2\]
+                        </div>
+                        <p class="description">A particle travels with uniform acceleration along a horizontal straight line, initially at rest over a distance of 20 metres that takes 8 seconds. Find its acceleration and velocity after 10 seconds.</p>
+                        <span class="topic-link" onclick="toggleSolution('displacement-solution2')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="displacement-solution2" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u = 0\) m/s (initially at rest)</p>
+                            <p style="margin-bottom: 5px;">• Displacement: \(s = 20\) m</p>
+                            <p style="margin-bottom: 15px;">• Time for this displacement: \(t = 8\) s</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part 1: Find acceleration</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(s = ut + \frac{1}{2}at^2\):</p>
+                            <p style="margin-bottom: 5px;">\[20 = 0(8) + \frac{1}{2}a(8)^2\]</p>
+                            <p style="margin-bottom: 5px;">\[20 = \frac{1}{2}a(64)\]</p>
+                            <p style="margin-bottom: 5px;">\[20 = 32a\]</p>
+                            <p style="margin-bottom: 15px;">\[a = \frac{20}{32} = 0.625\text{ m/s}^2\]</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part 2: Find velocity after 10 seconds</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(v = u + at\):</p>
+                            <p style="margin-bottom: 5px;">\[v = 0 + 0.625(10)\]</p>
+                            <p style="margin-bottom: 15px;">\[v = 6.25\text{ m/s}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer:</strong></p>
+                            <p style="margin-bottom: 5px;">• Acceleration: \(a = 0.625\text{ m/s}^2\)</p>
+                            <p>• Velocity after 10 seconds: \(v = 6.25\text{ m/s}\)</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('displacement-solution2')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Acceleration</h3>
+                        <div class="formula">
+                            \[s = \frac{1}{2}(u+v)t\]
+                        </div>
+                        <p class="description">An object accelerates uniformly from 2 ms\(^{-1}\) to 10 ms\(^{-1}\) along a straight line. During this acceleration the object travels 48m. Calculate: a) the time taken for the travel b) the acceleration of the object.</p>
+                        <span class="topic-link" onclick="toggleSolution('acceleration-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="acceleration-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u = 2\) m/s</p>
+                            <p style="margin-bottom: 5px;">• Final velocity: \(v = 10\) m/s</p>
+                            <p style="margin-bottom: 5px;">• Displacement: \(s = 48\) m</p>
+                            <p style="margin-bottom: 5px;">• Time: \(t = ?\) (to find in part a)</p>
+                            <p style="margin-bottom: 15px;">• Acceleration: \(a = ?\) (to find in part b)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part a) Find the time taken</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(s = \frac{1}{2}(u+v)t\):</p>
+                            <p style="margin-bottom: 5px;">\[48 = \frac{1}{2}(2 + 10)t\]</p>
+                            <p style="margin-bottom: 5px;">\[48 = \frac{1}{2}(12)t\]</p>
+                            <p style="margin-bottom: 5px;">\[48 = 6t\]</p>
+                            <p style="margin-bottom: 15px;">\[t = 8\text{ s}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer to part a):</strong></p>
+                            <p style="margin-bottom: 20px;">The time taken for the travel is 8 seconds</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part b) Find the acceleration</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(v = u + at\):</p>
+                            <p style="margin-bottom: 5px;">\[10 = 2 + a(8)\]</p>
+                            <p style="margin-bottom: 5px;">\[10 = 2 + 8a\]</p>
+                            <p style="margin-bottom: 5px;">\[8 = 8a\]</p>
+                            <p style="margin-bottom: 15px;">\[a = 1\text{ m/s}^2\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer to part b):</strong></p>
+                            <p style="margin-bottom: 20px;">The acceleration of the object is 1 m/s²</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Verification:</strong></p>
+                            <p style="margin-bottom: 5px;">We can verify using \(v^2 = u^2 + 2as\):</p>
+                            <p style="margin-bottom: 5px;">\[10^2 = 2^2 + 2(1)(48)\]</p>
+                            <p style="margin-bottom: 5px;">\[100 = 4 + 96\]</p>
+                            <p style="margin-bottom: 15px;">\[100 = 100\] ✓</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Key insight:</strong></p>
+                            <p>When you know initial velocity, final velocity, and displacement, using \(s = \frac{1}{2}(u+v)t\) is often the most efficient way to find time, as it's a simple linear equation.</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('acceleration-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Time taken</h3>
+                        <div class="formula">
+                            \[s = ut + \frac{1}{2}at^2\]
+                        </div>
+                        <p class="description">A particle is projected vertically upwards with a speed 19.6 ms\(^{-1}\). a) Calculate the time taken for the particle to: i) reach 14.7m above its starting point ii) be at 14.7m above its starting point for the second time. b) How long will the particle be above 14.7m?</p>
+                        <span class="topic-link" onclick="toggleSolution('time-taken-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="time-taken-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Initial velocity: \(u = 19.6\) m/s (upwards, positive)</p>
+                            <p style="margin-bottom: 5px;">• Acceleration: \(a = -9.8\) m/s² (gravity, downwards, negative)</p>
+                            <p style="margin-bottom: 5px;">• Displacement: \(s = 14.7\) m</p>
+                            <p style="margin-bottom: 15px;">• Time: \(t = ?\) (what we need to find)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part a) i) Time to reach 14.7m (first time)</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(s = ut + \frac{1}{2}at^2\):</p>
+                            <p style="margin-bottom: 5px;">\[14.7 = 19.6t + \frac{1}{2}(-9.8)t^2\]</p>
+                            <p style="margin-bottom: 5px;">\[14.7 = 19.6t - 4.9t^2\]</p>
+                            <p style="margin-bottom: 5px;">Rearranging:</p>
+                            <p style="margin-bottom: 5px;">\[4.9t^2 - 19.6t + 14.7 = 0\]</p>
+                            <p style="margin-bottom: 5px;">Dividing by 4.9:</p>
+                            <p style="margin-bottom: 5px;">\[t^2 - 4t + 3 = 0\]</p>
+                            <p style="margin-bottom: 5px;">Factoring:</p>
+                            <p style="margin-bottom: 5px;">\[(t - 1)(t - 3) = 0\]</p>
+                            <p style="margin-bottom: 15px;">Solutions: \(t = 1\) s or \(t = 3\) s</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer to part a) i):</strong></p>
+                            <p style="margin-bottom: 15px;">The particle reaches 14.7m for the first time at \(t = 1\) s (on the way up)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part a) ii) Time at 14.7m (second time)</strong></p>
+                            <p style="margin-bottom: 5px;"><strong>Answer to part a) ii):</strong></p>
+                            <p style="margin-bottom: 15px;">The particle is at 14.7m for the second time at \(t = 3\) s (on the way down)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part b) Time above 14.7m</strong></p>
+                            <p style="margin-bottom: 5px;">The particle is above 14.7m between \(t = 1\) s and \(t = 3\) s</p>
+                            <p style="margin-bottom: 5px;">Time above 14.7m = \(3 - 1 = 2\) s</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer to part b):</strong></p>
+                            <p style="margin-bottom: 15px;">The particle will be above 14.7m for 2 seconds</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Physical interpretation:</strong></p>
+                            <p>The particle passes through 14.7m twice - once while ascending at \(t = 1\) s and once while descending at \(t = 3\) s. This symmetry occurs because the motion is uniformly accelerated.</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('time-taken-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
+                        <h3>Speed of projection</h3>
+                        <div class="formula">
+                            \[v = u + at\]
+                        </div>
+                        <p class="description">An object is thrown vertically upwards. It takes 7s to return to its original position. Taking g = 9.8 ms\(^{-2}\), calculate a) the speed of projection (initial speed) b) the maximum height reached by the object.</p>
+                        <span class="topic-link" onclick="toggleSolution('speed-projection-solution')" style="cursor: pointer;">Learn More →</span>
+                        
+                        <div id="speed-projection-solution" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #3498db; text-align: left;">
+                            <p style="margin-bottom: 10px;"><strong>Solution:</strong></p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Given information:</strong></p>
+                            <p style="margin-bottom: 5px;">• Total time to return to starting position: \(t = 7\) s</p>
+                            <p style="margin-bottom: 5px;">• Acceleration: \(a = -9.8\) m/s² (gravity, downwards, negative)</p>
+                            <p style="margin-bottom: 5px;">• Displacement when returned: \(s = 0\) m</p>
+                            <p style="margin-bottom: 15px;">• Initial velocity: \(u = ?\) (what we need to find)</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part a) Find the speed of projection</strong></p>
+                            <p style="margin-bottom: 5px;">Using \(s = ut + \frac{1}{2}at^2\):</p>
+                            <p style="margin-bottom: 5px;">\[0 = u(7) + \frac{1}{2}(-9.8)(7)^2\]</p>
+                            <p style="margin-bottom: 5px;">\[0 = 7u + \frac{1}{2}(-9.8)(49)\]</p>
+                            <p style="margin-bottom: 5px;">\[0 = 7u - 240.1\]</p>
+                            <p style="margin-bottom: 5px;">\[7u = 240.1\]</p>
+                            <p style="margin-bottom: 15px;">\[u = 34.3\text{ m/s}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer to part a):</strong></p>
+                            <p style="margin-bottom: 20px;">The speed of projection is 34.3 m/s</p>
+                            
+                            <p style="margin-bottom: 10px;"><strong>Part b) Find the maximum height</strong></p>
+                            <p style="margin-bottom: 5px;">At maximum height, the velocity is zero: \(v = 0\)</p>
+                            <p style="margin-bottom: 5px;">Using \(v^2 = u^2 + 2as\):</p>
+                            <p style="margin-bottom: 5px;">\[0^2 = (34.3)^2 + 2(-9.8)s\]</p>
+                            <p style="margin-bottom: 5px;">\[0 = 1176.49 - 19.6s\]</p>
+                            <p style="margin-bottom: 5px;">\[19.6s = 1176.49\]</p>
+                            <p style="margin-bottom: 15px;">\[s = 60.025 \approx 60.0\text{ m}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Answer to part b):</strong></p>
+                            <p style="margin-bottom: 20px;">The maximum height reached is 60.0 m</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Alternative method for part b):</strong></p>
+                            <p style="margin-bottom: 5px;">Since the motion is symmetric, the time to reach maximum height is half the total time:</p>
+                            <p style="margin-bottom: 5px;">\[t_{max} = \frac{7}{2} = 3.5\text{ s}\]</p>
+                            <p style="margin-bottom: 5px;">Using \(s = ut + \frac{1}{2}at^2\):</p>
+                            <p style="margin-bottom: 5px;">\[s = 34.3(3.5) + \frac{1}{2}(-9.8)(3.5)^2\]</p>
+                            <p style="margin-bottom: 5px;">\[s = 120.05 - 60.025\]</p>
+                            <p style="margin-bottom: 15px;">\[s = 60.025 \approx 60.0\text{ m}\]</p>
+                            
+                            <p style="margin-bottom: 5px;"><strong>Physical interpretation:</strong></p>
+                            <p>The object takes 3.5s to reach maximum height and 3.5s to fall back down, demonstrating the symmetry of vertical motion under constant acceleration.</p>
+                            
+                            <span class="topic-link" onclick="toggleSolution('speed-projection-solution')" style="cursor: pointer; margin-top: 15px; display: inline-block;">Hide Solution ↑</span>
+                        </div>
+                    </article>
+					
+                   
+                </div>
+            </section>
+
+
+        </main>
+
+        <footer>
+            <p>Basic kinematics - Interactive mechanics guide</p>
+        </footer>
+    </div>
+</body>
+</html>
+                            
