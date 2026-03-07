@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stationary points</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --concave-primary: #1e40af;
+            --concave-accent: #2563eb;
+            --convex-primary: #991b1b;
+            --convex-accent: #dc2626;
+            --bg-main: #f5f5f5;
+            --bg-paper: #ffffff;
+            --text-dark: #1f2937;
+            --text-medium: #4b5563;
+            --text-light: #6b7280;
+            --border-color: #d1d5db;
+            --accent: #374151;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 3rem 2rem;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Home Page */
+        .home-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 300;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .nav-card {
+            background: var(--bg-paper);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+        
+        .nav-card.concave {
+            border-left: 4px solid var(--concave-primary);
+        }
+        
+        .nav-card.convex {
+            border-left: 4px solid var(--convex-primary);
+        }
+        
+        .nav-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .nav-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-medium);
+        }
+        
+        .nav-card h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        .nav-card p {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Animation Canvas */
+        .animation-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .animation-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .animation-header h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.25rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .animation-header p {
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+        
+        .canvas-wrapper {
+            background: var(--bg-paper);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 500px;
+            background: #fafafa;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn {
+            font-family: 'Source Sans Pro', sans-serif;
+            padding: 0.75rem 2rem;
+            font-size: 0.95rem;
+            border: 1px solid;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            font-weight: 400;
+            margin: 0 0.5rem;
+        }
+        
+        .btn-primary {
+            color: white;
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+        
+        .btn-primary:hover {
+            background: var(--text-dark);
+            border-color: var(--text-dark);
+        }
+        
+        .btn-secondary {
+            color: var(--text-medium);
+            border-color: var(--border-color);
+            background: white;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--text-dark);
+        }
+        
+        /* Math Content */
+        .math-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .math-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .math-header h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .math-header p {
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+        
+        .content-section {
+            background: var(--bg-paper);
+            border-left: 3px solid;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .content-section.concave {
+            border-color: var(--concave-primary);
+        }
+        
+        .content-section.convex {
+            border-color: var(--convex-primary);
+        }
+        
+        .content-section h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .content-section p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .math-formula {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        
+        .key-point {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-point strong {
+            color: var(--text-dark);
+        }
+        
+        .example-box {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .example-box h4 {
+            color: var(--accent);
+            font-family: 'Source Sans Pro', sans-serif;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .example-box p {
+            color: var(--text-dark);
+        }
+        
+        .back-home {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="home-container">
+            <h1>Stationary points</h1>
+            <p class="subtitle">Understanding where functions change direction</p>
+            
+            <div class="nav-grid">
+                
+                
+                <div class="nav-card" style="border-left: 4px solid #7c3aed;" onclick="showPage('tricky-points')">
+                    <div class="nav-icon">f'(x) = 0 and f''(x) = 0</div>
+                    <h3>Tricky Stationary Points</h3>
+                    <p>When the second derivative test fails and higher-order analysis is needed</p>
+                </div>
+                
+                <div class="nav-card" style="border-left: 4px solid #059669;" onclick="showPage('alternative-tests')">
+                    <div class="nav-icon">f'(x) sign</div>
+                    <h3>Alternative Tests</h3>
+                    <p>Other methods when f'(a) = 0 and f''(a) = 0</p>
+                </div>
+                
+                <div class="nav-card" style="border-left: 4px solid #d97706;" onclick="showPage('inflection-nonstationary')">
+                    <div class="nav-icon">f''(x) = 0</div>
+                    <h3>f''(x) = 0, again</h3>
+                    <p>But it's not a stationary point</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    <!-- Tricky Stationary Points Page -->
+    <div id="tricky-points" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #7c3aed;">
+                <h2>f ''(x) = 0</h2>
+                <p>Tricky Stationary Points</p>
+            </div>
+            
+             <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="trickyPointsGraph" width="800" height="300"></canvas>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>When the Second Derivative Test Fails</h3>
+                <p>We've seen that when f'(c) = 0 at a critical point c:</p>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">If f''(c) > 0, then c is a local minimum (concave up)</li>
+                    <li style="margin-bottom: 0.5rem;">If f''(c) < 0, then c is a local maximum (concave down)</li>
+                    <li style="margin-bottom: 0.5rem;">But what if <strong>f''(c) = 0</strong>?</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>The Test is Inconclusive:</strong> When both f'(c) = 0 AND f''(c) = 0, the second derivative test gives us no information. The point could be a maximum, a minimum, or neither (an inflection point)!
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Three Classic Examples</h3>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 1: f(x) = x³ — INFLECTION POINT</h4>
+                    <p>First derivative: f'(x) = 3x²</p>
+                    <p>Second derivative: f''(x) = 6x</p>
+                    <p>Third derivative: f'''(x) = 6</p>
+                    <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
+                    <p><strong>Result:</strong> x = 0 is an <em>inflection point</em>, not a maximum or minimum. The function changes from concave down (x < 0) to concave up (x > 0), and continues increasing throughout.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 2: f(x) = x⁴ — LOCAL MINIMUM</h4>
+                    <p>First derivative: f'(x) = 4x³</p>
+                    <p>Second derivative: f''(x) = 12x²</p>
+                    <p>Third derivative: f'''(x) = 24x</p>
+                    <p>Fourth derivative: f⁽⁴⁾(x) = 24</p>
+                    <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
+                    <p><strong>Result:</strong> x = 0 is a <em>local minimum</em>. The function is concave up everywhere (except right at x = 0), creating a flatter, gentler bowl shape than x².</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 3: f(x) = -x⁴ — LOCAL MAXIMUM</h4>
+                    <p>First derivative: f'(x) = -4x³</p>
+                    <p>Second derivative: f''(x) = -12x²</p>
+                    <p>Third derivative: f'''(x) = -24x</p>
+                    <p>Fourth derivative: f⁽⁴⁾(x) = -24</p>
+                    <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
+                    <p><strong>Result:</strong> x = 0 is a <em>local maximum</em>. The function is concave down everywhere (except right at x = 0), forming an inverted bowl that's flatter at the top than -x².</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>The Higher-Order Derivative Test</h3>
+                <p>When f''(c) = 0, we need to check higher derivatives. Here's the general pattern:</p>
+                
+                <div class="math-formula">
+                    At a critical point c where f'(c) = 0:<br><br>
+                    • If the first non-zero derivative is f⁽ⁿ⁾(c) where n is ODD:<br>
+                    &nbsp;&nbsp;→ c is an inflection point (neither max nor min)<br><br>
+                    • If the first non-zero derivative is f⁽ⁿ⁾(c) where n is EVEN:<br>
+                    &nbsp;&nbsp;→ c is a maximum if f⁽ⁿ⁾(c) < 0<br>
+                    &nbsp;&nbsp;→ c is a minimum if f⁽ⁿ⁾(c) > 0
+                </div>
+                
+                <div class="key-point">
+                    <strong>Quick Rule:</strong> For f(x) = ±xⁿ at x = 0:<br>
+                    • Odd powers (x³, x⁵, x⁷, ...) → inflection points<br>
+                    • Even powers (x⁴, x⁶, x⁸, ...) → extrema (max or min depending on sign)
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Applying the Test</h3>
+                
+                <div class="example-box">
+                    <h4>WORKED EXAMPLE: f(x) = x³</h4>
+                    <p>f'(0) = 0 ✓ (critical point)</p>
+                    <p>f''(0) = 0 (second derivative test fails)</p>
+                    <p>f'''(0) = 6 ≠ 0 (third derivative is first non-zero)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> Since the first non-zero derivative is the <em>third</em> (odd), x = 0 is an inflection point.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>WORKED EXAMPLE: f(x) = x⁴</h4>
+                    <p>f'(0) = 0 ✓ (critical point)</p>
+                    <p>f''(0) = 0 (second derivative test fails)</p>
+                    <p>f'''(0) = 0 (third derivative also zero)</p>
+                    <p>f⁽⁴⁾(0) = 24 > 0 (fourth derivative is first non-zero)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> Since the first non-zero derivative is the <em>fourth</em> (even) and positive, x = 0 is a local minimum.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Why This Matters</h3>
+                <p><strong>Flatter Curves:</strong> When f''(c) = 0 at an extremum, the curve is flatter near that point. Compare the sharper minimum of y = x² with the gentler minimum of y = x⁴—both have minima at x = 0, but x⁴ approaches the minimum more gradually.</p>
+                
+                <p><strong>Inflection Points with Horizontal Tangents:</strong> The point (0,0) on y = x³ is special: it's an inflection point where the tangent is horizontal. The curve doesn't change direction (it keeps increasing), but it does change its curvature from concave down to concave up.</p>
+                
+                
+            </div>
+            
+           
+            
+           
+        </div>
+    </div>
+
+    <!-- Alternative Tests Page -->
+    <div id="alternative-tests" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #059669;">
+                <h2>Alternatives to the Second Derivative Test</h2>
+                <p>f'(a) = 0 and f''(a) = 0</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>The Challenge</h3>
+                <p>When you find a critical point at x = a where f'(a) = 0, your first instinct is to use the second derivative test. But what happens when f''(a) = 0 as well? The second derivative test becomes <strong>inconclusive</strong>.</p>
+                
+                <div class="key-point">
+                    <strong>Don't Panic!</strong> There are several reliable alternative methods to determine whether x = a is a maximum, minimum, or neither. You don't always need higher derivatives.
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 1: The First Derivative Test</h3>
+                <p>This is often the most practical and intuitive method. Instead of looking at f''(a), we examine the <strong>sign of f'(x)</strong> on both sides of x = a.</p>
+                
+                <div class="math-formula">
+                    <strong>First Derivative Test Algorithm:</strong><br><br>
+                    1. Find f'(x) and verify f'(a) = 0<br>
+                    2. Choose a test point just left of a (call it a - h, where h is small)<br>
+                    3. Choose a test point just right of a (call it a + h)<br>
+                    4. Evaluate f'(a - h) and f'(a + h)<br><br>
+                    
+                    <strong>Decision Rules:</strong><br>
+                    • If f' changes from NEGATIVE to POSITIVE → LOCAL MINIMUM<br>
+                    • If f' changes from POSITIVE to NEGATIVE → LOCAL MAXIMUM<br>
+                    • If f' has the SAME SIGN on both sides → INFLECTION POINT
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x⁴ at x = 0</h4>
+                    <p><strong>Step 1:</strong> f'(x) = 4x³, so f'(0) = 0 ✓</p>
+                    <p><strong>Step 2:</strong> f''(x) = 12x², so f''(0) = 0 (inconclusive!)</p>
+                    <p><strong>Step 3:</strong> Use the first derivative test:</p>
+                    <p style="margin-left: 1.5rem;">• Test x = -0.1: f'(-0.1) = 4(-0.1)³ = -0.004 &lt; 0 (negative)</p>
+                    <p style="margin-left: 1.5rem;">• Test x = +0.1: f'(+0.1) = 4(+0.1)³ = +0.004 &gt; 0 (positive)</p>
+                    <p><strong>Conclusion:</strong> f' changes from negative to positive, so x = 0 is a <strong>local minimum</strong>.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x³ at x = 0</h4>
+                    <p><strong>Step 1:</strong> f'(x) = 3x², so f'(0) = 0 ✓</p>
+                    <p><strong>Step 2:</strong> f''(x) = 6x, so f''(0) = 0 (inconclusive!)</p>
+                    <p><strong>Step 3:</strong> Use the first derivative test:</p>
+                    <p style="margin-left: 1.5rem;">• Test x = -0.1: f'(-0.1) = 3(-0.1)² = +0.03 &gt; 0 (positive)</p>
+                    <p style="margin-left: 1.5rem;">• Test x = +0.1: f'(+0.1) = 3(+0.1)² = +0.03 &gt; 0 (positive)</p>
+                    <p><strong>Conclusion:</strong> f' stays positive on both sides, so x = 0 is an <strong>inflection point</strong> (not an extremum).</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 2: Behaviour of f ''(x) near f ''(x) = 0</h3>
+                <p>If f'(a) = 0 and f''(a) = 0 then</p>
+                
+                <div class="math-formula">
+                    Once you have determined f''(a) = 0, examine values around a.<br><br>
+                    • If f''(x) > 0 on both sides of x = a → concave up (minimum)<br>
+                    • If f''(x) < 0 on both sides of x = a → concave down (maximum)<br>
+                    • If f''(x) changes sign on either side of x = a → point of inflection
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x⁴ at x = 0</h4>
+                    <p>f'(x) = 4x³, so f'(0) = 0 ✓</p>
+                    <p>f''(x) = 12x², so f''(0) = 0</p>
+                    <p style="margin-top: 1rem;"><strong>Check f''(x) near x = 0:</strong></p>
+                    <p style="margin-left: 1.5rem;">• At x = -0.1: f''(-0.1) = 12(-0.1)² = 0.12 > 0</p>
+                    <p style="margin-left: 1.5rem;">• At x = +0.1: f''(+0.1) = 12(+0.1)² = 0.12 > 0</p>
+                    <p><strong>Conclusion:</strong> f''(x) > 0 on both sides, so the curve is <strong>concave up</strong> near x = 0, making it a <strong>local minimum</strong>.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x³ at x = 0</h4>
+                    <p>f'(x) = 3x², so f'(0) = 0 ✓</p>
+                    <p>f''(x) = 6x, so f''(0) = 0</p>
+                    <p style="margin-top: 1rem;"><strong>Check f''(x) near x = 0:</strong></p>
+                    <p style="margin-left: 1.5rem;">• At x = -0.1: f''(-0.1) = 6(-0.1) = -0.6 < 0</p>
+                    <p style="margin-left: 1.5rem;">• At x = +0.1: f''(+0.1) = 6(+0.1) = +0.6 > 0</p>
+                    <p><strong>Conclusion:</strong> f''(x) <strong>changes sign</strong> from negative to positive, so x = 0 is a <strong>point of inflection</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 3: Function value around f '(a) = 0</h3>
+                <p>For some value of the function at x = a, f(a), and function values close to, and around this stationary point (small h > 0):</p>
+                <p>If f(a - h) > f(a) and f(a + h) > f(a), then points around x = a are 'above' f(a) so we have a <strong>local minimum</strong> at x = a.</p>
+                <p>Similarly, if f(a - h) < f(a) and f(a + h) < f(a), then points around x = a are 'below' f(a) so we have a <strong>local maximum</strong> at x = a.</p>
+                <p>Finally, if the sign of f(a - h) and f(a + h) are different, then we have a (horizontal) <strong>point of inflection</strong> at x = a.</p>
+                
+                <p>When in doubt, evaluate the function itself at points near the critical point. This direct approach shows whether nearby values are higher or lower.</p>
+                
+                <div class="example-box">
+                    <h4>VALUES TABLE: f(x) = -x⁴</h4>
+                    <p>Critical point at x = 0 with f'(0) = 0 and f''(0) = 0</p>
+                    <table style="margin: 1rem auto; border-collapse: collapse; text-align: center;">
+                        <tr style="border-bottom: 2px solid #000;">
+                            <td style="padding: 0.5rem 1rem; font-weight: bold;">x</td>
+                            <td style="padding: 0.5rem 1rem;">-0.5</td>
+                            <td style="padding: 0.5rem 1rem;">-0.2</td>
+                            <td style="padding: 0.5rem 1rem;">-0.1</td>
+                            <td style="padding: 0.5rem 1rem; font-weight: bold;">0</td>
+                            <td style="padding: 0.5rem 1rem;">0.1</td>
+                            <td style="padding: 0.5rem 1rem;">0.2</td>
+                            <td style="padding: 0.5rem 1rem;">0.5</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem 1rem; font-weight: bold;">f(x)</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0625</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0016</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0001</td>
+                            <td style="padding: 0.5rem 1rem; font-weight: bold; background: #fef3c7;">0</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0001</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0016</td>
+                            <td style="padding: 0.5rem 1rem;">-0.0625</td>
+                        </tr>
+                    </table>
+                    <p><strong>Conclusion:</strong> All nearby values are less than f(0) = 0, so x = 0 is a <strong>local maximum</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Method 4: using technology to sketch graph</h3>
+                <p>Sometimes the best approach is simply to sketch the function or use graphing technology. Visual inspection can quickly reveal the nature of a critical point.</p>
+                
+                <div class="canvas-wrapper">
+                    <canvas id="alternativeTestGraph" width="800" height="300"></canvas>
+                </div>
+                
+                <p style="margin-top: 1.5rem;"><strong>Visual Clues:</strong></p>
+                <ul style="margin-left: 2rem;">
+                    <li style="margin-bottom: 0.5rem;">Does the graph have a valley at x = a? → Minimum</li>
+                    <li style="margin-bottom: 0.5rem;">Does the graph have a peak at x = a? → Maximum</li>
+                    <li style="margin-bottom: 0.5rem;">Does the graph pass through x = a without turning? → Inflection point</li>
+                </ul>
+            </div>
+            
+           
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Comparison of Methods</h3>
+                
+                <div class="example-box">
+                    <h4>WHEN TO USE EACH METHOD</h4>
+                    <p><strong>First Derivative Test:</strong> Best general-purpose method. Works for all functions and gives clear results. Choose this when derivatives are easy to evaluate.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Sign Chart:</strong> Best for systematic analysis and when you want to understand the complete behavior of f' around the critical point. Great for exam solutions.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Table of Values:</strong> Best when derivatives are complicated or when you want numerical confirmation. Also useful for approximate/numerical analysis.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Graphical Analysis:</strong> Best for intuition and quick checks. Use technology to visualize complex functions.</p>
+                    
+                    
+                  
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #059669;">
+                <h3>Complete Worked Example</h3>
+                
+                <div class="example-box">
+                    <h4>PROBLEM: Classify the critical point of f(x) = x⁵ - 5x⁴ at x = 0</h4>
+                    
+                    <p style="margin-top: 1rem;"><strong>Verify it's a critical point:</strong></p>
+                    <p>f'(x) = 5x⁴ - 20x³ = 5x³(x - 4)</p>
+                    <p>f'(0) = 0 ✓</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Try second derivative test:</strong></p>
+                    <p>f''(x) = 20x³ - 60x²</p>
+                    <p>f''(0) = 0 (inconclusive!)</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Solution using First Derivative Test:</strong></p>
+                    <p>f'(x) = 5x³(x - 4)</p>
+                    <p style="margin-left: 1.5rem;">• At x = -0.1: f'(-0.1) = 5(-0.1)³(-0.1 - 4) = 5(-0.001)(-4.1) ≈ 0.02 > 0</p>
+                    <p style="margin-left: 1.5rem;">• At x = +0.1: f'(+0.1) = 5(+0.1)³(+0.1 - 4) = 5(+0.001)(-3.9) ≈ -0.02 < 0</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> f' changes from positive to negative, so <strong>x = 0 is a local maximum</strong>.</p>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+
+    <!-- Inflection Points (Non-stationary) Page -->
+    <div id="inflection-nonstationary" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #d97706;">
+                <h2>f ''(x) = 0, again</h2>
+                <p>But it's not a stationary point</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>A Different Kind of Inflection Point</h3>
+                <p>We've explored what happens when <strong>both</strong> f'(a) = 0 and f''(a) = 0 at a point x = a. But what if only f''(a) = 0 while f'(a) ≠ 0?</p>
+                
+                <div class="key-point">
+                    <strong>Key Distinction:</strong> When f''(a) = 0 but f'(a) ≠ 0, we still have a <strong>point of inflection</strong> where concavity changes, but the tangent line is NOT horizontal. The function continues increasing or decreasing through the inflection point.
+                </div>
+                
+                <p>This is actually the <em>typical</em> case for inflection points! Points where the tangent is horizontal (f'(a) = 0) are special exceptions.</p>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Definition</h3>
+                <p>A <strong>point of inflection</strong> occurs at x = a if:</p>
+                
+                <div class="math-formula">
+                    1. The function is continuous at x = a<br>
+                    2. The concavity changes at x = a<br><br>
+                    
+                    This typically means f''(a) = 0 AND f''(x) changes sign at x = a<br><br>
+                    
+                    Note: f'(a) can be ANY value (zero or non-zero)
+                </div>
+                
+                <p>The condition f'(a) = 0 is NOT required for an inflection point. When f'(a) ≠ 0, the inflection point has a sloped tangent line.</p>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="inflectionNonStationaryGraph" width="800" height="350"></canvas>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Classic Examples</h3>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 1: f(x) = x³ - 3x</h4>
+                    <p>First derivative: f'(x) = 3x² - 3</p>
+                    <p>Second derivative: f''(x) = 6x</p>
+                    <p style="margin-top: 1rem;">At x = 0:</p>
+                    <p style="margin-left: 1.5rem;">• f'(0) = 3(0)² - 3 = -3 ≠ 0 (NOT a stationary point)</p>
+                    <p style="margin-left: 1.5rem;">• f''(0) = 6(0) = 0 ✓</p>
+                    <p style="margin-left: 1.5rem;">• For x < 0: f''(x) < 0 (concave down)</p>
+                    <p style="margin-left: 1.5rem;">• For x > 0: f''(x) > 0 (concave up)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> x = 0 is an inflection point where the curve changes from concave down to concave up, while continuing to decrease (since f'(0) = -3 < 0).</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 2: f(x) = sin(x) at x = 0, π, 2π, ...</h4>
+                    <p>First derivative: f'(x) = cos(x)</p>
+                    <p>Second derivative: f''(x) = -sin(x)</p>
+                    <p style="margin-top: 1rem;">At x = π:</p>
+                    <p style="margin-left: 1.5rem;">• f'(π) = cos(π) = -1 ≠ 0 (NOT a stationary point)</p>
+                    <p style="margin-left: 1.5rem;">• f''(π) = -sin(π) = 0 ✓</p>
+                    <p style="margin-left: 1.5rem;">• For x slightly less than π: f''(x) > 0 (concave up)</p>
+                    <p style="margin-left: 1.5rem;">• For x slightly more than π: f''(x) < 0 (concave down)</p>
+                    <p style="margin-top: 1rem;"><strong>Conclusion:</strong> x = π is an inflection point where concavity changes, and the function is decreasing throughout (f'(π) < 0).</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE 3: f(x) = (x - 2)³ + 5</h4>
+                    <p>First derivative: f'(x) = 3(x - 2)²</p>
+                    <p>Second derivative: f''(x) = 6(x - 2)</p>
+                    <p style="margin-top: 1rem;">At x = 2:</p>
+                    <p style="margin-left: 1.5rem;">• f'(2) = 3(2 - 2)² = 0 (This IS a stationary point!)</p>
+                    <p style="margin-left: 1.5rem;">• f''(2) = 6(2 - 2) = 0 ✓</p>
+                    <p style="margin-top: 1rem;"><strong>Note:</strong> This is the special case where f'(a) = 0 AND f''(a) = 0 (horizontal inflection point, like x³ shifted right and up).</p>
+                    <p style="margin-top: 1rem;">But consider x = 3:</p>
+                    <p style="margin-left: 1.5rem;">• f'(3) = 3(3 - 2)² = 3 ≠ 0</p>
+                    <p style="margin-left: 1.5rem;">• f''(3) = 6(3 - 2) = 6 ≠ 0 (no inflection here)</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Visual Characteristics</h3>
+                <p>At an inflection point where f'(a) ≠ 0, you'll observe:</p>
+                
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li style="margin-bottom: 0.5rem;"><strong>The curve "straightens out"</strong> momentarily as it passes through the point</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The tangent line crosses the curve</strong> (rather than just touching it)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The curve changes from bending one way to bending the other</strong></li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The function continues in the same direction</strong> (keeps increasing or keeps decreasing)</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>Contrast with f'(a) = 0:</strong> When f'(a) = 0 at an inflection point, the tangent is horizontal and the curve has a local "flat spot." When f'(a) ≠ 0, there's no flat spot—the curve just smoothly changes its curvature while maintaining its direction.
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Finding All Inflection Points</h3>
+                <p>To find ALL inflection points of a function (both types):</p>
+                
+                <div class="math-formula">
+                    <strong>Step-by-Step Procedure:</strong><br><br>
+                    1. Find f''(x)<br>
+                    2. Solve f''(x) = 0 to find <em>candidates</em><br>
+                    3. For each candidate x = a, check if f''(x) changes sign:<br>
+                    &nbsp;&nbsp;&nbsp;• Test f''(x) at points just left and right of a<br>
+                    &nbsp;&nbsp;&nbsp;• If signs differ → inflection point ✓<br>
+                    &nbsp;&nbsp;&nbsp;• If signs same → NOT an inflection point ✗<br>
+                    4. Also check points where f''(x) is undefined (if any)<br><br>
+                    
+                    Note: You do NOT need to check f'(a) unless you specifically want to know if the tangent is horizontal
+                </div>
+                
+                <div class="example-box">
+                    <h4>COMPLETE ANALYSIS: f(x) = x⁴ - 4x³</h4>
+                    <p><strong>Step 1:</strong> f'(x) = 4x³ - 12x² = 4x²(x - 3)</p>
+                    <p><strong>Step 2:</strong> f''(x) = 12x² - 24x = 12x(x - 2)</p>
+                    <p><strong>Step 3:</strong> Solve f''(x) = 0: 12x(x - 2) = 0 → x = 0 or x = 2</p>
+                    <p style="margin-top: 1rem;"><strong>Test x = 0:</strong></p>
+                    <p style="margin-left: 1.5rem;">• f''(-0.1) = 12(-0.1)(-0.1 - 2) = 12(-0.1)(-2.1) = 2.52 > 0</p>
+                    <p style="margin-left: 1.5rem;">• f''(+0.1) = 12(+0.1)(+0.1 - 2) = 12(+0.1)(-1.9) = -2.28 < 0</p>
+                    <p style="margin-left: 1.5rem;">• Signs change! x = 0 IS an inflection point ✓</p>
+                    <p style="margin-left: 1.5rem;">• Check: f'(0) = 0 (horizontal tangent at inflection point)</p>
+                    <p style="margin-top: 1rem;"><strong>Test x = 2:</strong></p>
+                    <p style="margin-left: 1.5rem;">• f''(1.9) = 12(1.9)(1.9 - 2) = 12(1.9)(-0.1) = -2.28 < 0</p>
+                    <p style="margin-left: 1.5rem;">• f''(2.1) = 12(2.1)(2.1 - 2) = 12(2.1)(+0.1) = 2.52 > 0</p>
+                    <p style="margin-left: 1.5rem;">• Signs change! x = 2 IS an inflection point ✓</p>
+                    <p style="margin-left: 1.5rem;">• Check: f'(2) = 4(2)²(2 - 3) = 16(-1) = -16 ≠ 0 (sloped tangent!)</p>
+                    <p style="margin-top: 1rem;"><strong>Summary:</strong> Two inflection points—one with horizontal tangent (x = 0), one with sloped tangent (x = 2).</p>
+                </div>
+            </div>
+            
+            <div class="content-section" style="border-color: #d97706;">
+                <h3>Common Mistakes to Avoid</h3>
+                
+                <div class="example-box">
+                    <h4>MISTAKE 1: Assuming all points where f''(x) = 0 are inflection points</h4>
+                    <p><strong>Counterexample:</strong> f(x) = x⁴ has f''(0) = 0, but x = 0 is a minimum, not an inflection point. You must verify that f''(x) changes sign.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>MISTAKE 2: Thinking inflection points must have f'(x) = 0</h4>
+                    <p><strong>Reality:</strong> Most inflection points have f'(x) ≠ 0. The horizontal tangent case is the exception, not the rule.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>MISTAKE 3: Confusing "change in direction" with "change in concavity"</h4>
+                    <p><strong>Clarification:</strong> At an inflection point, the <em>concavity</em> changes (the curve bends differently), but the <em>direction</em> may continue unchanged (function keeps increasing or decreasing).</p>
+                </div>
+            </div>
+            
+          
+            
+
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+             window.scrollTo(0,0);   // force top
+            
+            // Start animations when showing animation pages
+            if 
+               (pageId === 'tricky-points') {
+                setTimeout(() => drawTrickyPointsGraph(), 100);
+            } else if (pageId === 'alternative-tests') {
+                setTimeout(() => drawAlternativeTestGraph(), 100);
+            } else if (pageId === 'inflection-nonstationary') {
+                setTimeout(() => drawInflectionNonStationaryGraph(), 100);
+            }
+        }
+        
+        // Draw graph for Tricky Stationary Points page
+        function drawTrickyPointsGraph() {
+            const canvas = document.getElementById('trickyPointsGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 40;
+            const xMin = -2.5;
+            const xMax = 2.5;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw y = x³ (purple - inflection point)
+            ctx.strokeStyle = '#7c3aed';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (Math.abs(canvasY - centerY) < height) {
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Draw y = x⁴ (blue - minimum)
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            
+            firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw y = -x⁴ (red - maximum)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            
+            firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = -(x * x * x * x);
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Mark the critical point (0,0) on all three curves
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add labels for the functions
+            ctx.fillStyle = '#7c3aed';
+            ctx.font = '16px Arial';
+            ctx.fillText('y = x³ (inflection)', 20, 30);
+            
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('y = x⁴ (minimum)', 20, 55);
+            
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('y = -x⁴ (maximum)', 20, 80);
+        }
+        
+        // Draw graph for Alternative Tests page
+        function drawAlternativeTestGraph() {
+            const canvas = document.getElementById('alternativeTestGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const xMin = -2.5;
+            const xMax = 2.5;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw grid for derivative signs
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 0.5;
+            ctx.setLineDash([2, 2]);
+            
+            // Vertical lines at test points
+            const testPoints = [-1, -0.5, 0.5, 1];
+            testPoints.forEach(x => {
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(x), 0);
+                ctx.lineTo(toCanvasX(x), height);
+                ctx.stroke();
+            });
+            
+            ctx.setLineDash([]);
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            
+            // Draw f(x) = x⁴ with annotations
+            ctx.strokeStyle = '#059669';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Mark the critical point
+            ctx.fillStyle = '#059669';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add derivative sign indicators
+            ctx.font = 'bold 20px Arial';
+            
+            // Left side (negative derivative)
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('f\' < 0', toCanvasX(-1.5), centerY + 30);
+            ctx.fillText('↘', toCanvasX(-1.5) + 10, centerY + 55);
+            
+            // Right side (positive derivative)
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('f\' > 0', toCanvasX(1.2), centerY + 30);
+            ctx.fillText('↗', toCanvasX(1.2) + 10, centerY + 55);
+            
+            // Label the critical point
+            ctx.fillStyle = '#059669';
+            ctx.font = '16px Arial';
+            ctx.fillText('f\'(0) = 0', centerX + 10, centerY - 10);
+            ctx.fillText('MINIMUM', centerX - 45, centerY - 25);
+            
+            // Add function label
+            ctx.fillStyle = '#059669';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('f(x) = x⁴', 20, 30);
+            ctx.font = '14px Arial';
+            ctx.fillText('Sign of f\'(x) changes from - to +', 20, 55);
+        }
+        
+        // Draw graph for Inflection Points (Non-stationary) page
+        function drawInflectionNonStationaryGraph() {
+            const canvas = document.getElementById('inflectionNonStationaryGraph');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const xMin = -3;
+            const xMax = 3;
+            
+            function toCanvasX(x) {
+                return centerX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return centerY - y * scale;
+            }
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#4b5563';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 20, centerY - 10);
+            ctx.fillText('y', centerX + 10, 20);
+            
+            // Draw f(x) = x³ - 3x (inflection at x = 0, f'(0) ≠ 0)
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = xMin; x <= xMax; x += 0.05) {
+                const y = x * x * x - 3 * x;
+                const canvasX = toCanvasX(x);
+                const canvasY = toCanvasY(y);
+                
+                if (Math.abs(canvasY - centerY) < height) {
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Mark the inflection point at (0, 0)
+            ctx.fillStyle = '#d97706';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw tangent line at x = 0 (slope = -3)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            
+            const x0 = 0;
+            const y0 = 0;
+            const slope = -3; // f'(0) = 3(0)² - 3 = -3
+            
+            const xLeft = -1.5;
+            const xRight = 1.5;
+            const yLeft = y0 + slope * (xLeft - x0);
+            const yRight = y0 + slope * (xRight - x0);
+            
+            ctx.moveTo(toCanvasX(xLeft), toCanvasY(yLeft));
+            ctx.lineTo(toCanvasX(xRight), toCanvasY(yRight));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Add concavity labels
+            ctx.font = 'bold 16px Arial';
+            
+            // Left side (concave down)
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('Concave ∩', toCanvasX(-2), toCanvasY(2));
+            ctx.fillText('down', toCanvasX(-2), toCanvasY(2) + 20);
+            ctx.fillText('f\'\'(x) < 0', toCanvasX(-2), toCanvasY(2) + 40);
+            
+            // Right side (concave up)
+            ctx.fillStyle = '#2563eb';
+            ctx.fillText('Concave ∪', toCanvasX(1.3), toCanvasY(-2));
+            ctx.fillText('up', toCanvasX(1.3), toCanvasY(-2) + 20);
+            ctx.fillText('f\'\'(x) > 0', toCanvasX(1.3), toCanvasY(-2) + 40);
+            
+            // Label the inflection point
+            ctx.fillStyle = '#d97706';
+            ctx.font = '16px Arial';
+            ctx.fillText('Inflection point', centerX + 15, centerY - 15);
+            ctx.fillText('f\'\'(0) = 0', centerX + 15, centerY + 5);
+            ctx.fillText('f\'(0) = -3 ≠ 0', centerX + 15, centerY + 25);
+            
+            // Add function label
+            ctx.fillStyle = '#d97706';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('f(x) = x³ - 3x', 20, 30);
+            
+            ctx.fillStyle = '#dc2626';
+            ctx.font = '16px Arial';
+            ctx.fillText('Tangent: y = -3x (dashed)', 20, 55);
+        }
+        
+        
+       
+    </script>
+</body>
+</html>
