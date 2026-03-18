@@ -90,11 +90,11 @@
             border-color: var(--accent);
         }
         
-        .nav-card.concave {
+        .nav-card.concave-v2 {
             border-left: 4px solid var(--concave-primary);
         }
         
-        .nav-card.convex {
+        .nav-card.convex-v2 {
             border-left: 4px solid var(--convex-primary);
         }
         
@@ -374,7 +374,7 @@
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartConvex-v2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartConvexv2()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
@@ -393,7 +393,7 @@
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartConcave-v2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartConcavev2()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
@@ -412,7 +412,7 @@
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartTangentConvex-v2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartTangentConvexv2()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
@@ -431,7 +431,7 @@
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartTangentConcave-v2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartTangentConcavev2()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
@@ -823,16 +823,16 @@
             
             // Start animations when showing animation pages
             if (pageId === 'concave-animation-v2') {
-                setTimeout(() => initConcaveAnimation-v2(), 100);
+                setTimeout(() => initConcaveAnimationv2(), 100);
             } else if (pageId === 'convex-animation-v2') {
-                setTimeout(() => initConvexAnimation-v2(), 100);
+                setTimeout(() => initConvexAnimationv2(), 100);
             } else if (pageId === 'tangent-concave-v2') {
-                setTimeout(() => initTangentConcaveAnimation-v2(), 100);
+                setTimeout(() => initTangentConcaveAnimationv2(), 100);
             } else if (pageId === 'tangent-convex-v2') {
-                setTimeout(() => initTangentConvexAnimation-v2(), 100);
-            } else if (pageId === 'concave-math') {
+                setTimeout(() => initTangentConvexAnimationv2(), 100);
+            } else if (pageId === 'concave-math-v2') {
                 setTimeout(() => drawConcaveMathGraph(), 100);
-            } else if (pageId === 'convex-math') {
+            } else if (pageId === 'convex-math-v2') {
                 setTimeout(() => drawConvexMathGraph(), 100);
             } else if (pageId === 'summary-curvature') {
                 setTimeout(() => {
@@ -1677,9 +1677,9 @@
             ctx.fillText('(getting more negative)', 420, height - 12);
         }
         
-        // Draw static graph for Concave Mathematics page
-        function drawConcaveMathGraph() {
-            const canvas = document.getElementById('concaveMathGraph');
+        // Draw static graph for Convex Mathematics page
+        function drawConvexMathGraph() {
+            const canvas = document.getElementById('convexMathGraph');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -1878,7 +1878,7 @@
         // Convex Animation (U-shaped bowl with rolling sphere) v2
         let convexAnimationId-v2;
         
-        function initConvexAnimation-v2() {
+        function initConvexAnimationv2() {
             const canvas = document.getElementById('convexCanvas-2');
             if (!canvas) return;
             
@@ -2009,17 +2009,17 @@
             animate();
         }
         
-        function restartConvex-v2() {
+        function restartConvexv2() {
             if (convexAnimationId-v2) {
                 cancelAnimationFrame(convexAnimationId-v2);
             }
-            initConvexAnimation-v2();
+            initConvexAnimationv2();
         }
         
         // Concave (down) Animation (Inverted bowl - concave down v2)
         let concaveAnimationId-v2;
         
-        function initConcaveAnimation-v2() {
+        function initConcaveAnimationv2() {
             const canvas = document.getElementById('concaveCanvas-v2');
             if (!canvas) return;
             
@@ -2152,17 +2152,17 @@
             animate();
         }
         
-        function restartConcave-v2() {
+        function restartConcavev2() {
             if (concaveAnimationId-v2) {
                 cancelAnimationFrame(concaveAnimationId-v2);
             }
-            initConcaveAnimation-v2();
+            initConcaveAnimationv2();
         }
         
         // Tangent to Convex (Concave Up) Animation (y = 1 + x²) v2
         let tangentConvexAnimationId-v2;
         
-        function initTangentConvexAnimation-v2() {
+        function initTangentConvexAnimationv2() {
             const canvas = document.getElementById('tangentConvexCanvas-v2');
             if (!canvas) return;
             
@@ -2305,17 +2305,17 @@
             animate();
         }
         
-        function restartTangentConvex-v2() {
+        function restartTangentConvexv2() {
             if (tangentConvexAnimationId-v2) {
                 cancelAnimationFrame(tangentConvexAnimationId-v2);
             }
-            initTangentConvexAnimation-v2();
+            initTangentConvexAnimationv2();
         }
         
         // Tangent to Concave (down) Animation (y = 1 - x²) v2
         let tangentConcaveAnimationId-v2;
         
-        function initTangentConcaveAnimation-v2() {
+        function initTangentConcaveAnimationv2() {
             const canvas = document.getElementById('tangentConcaveCanvas-v2');
             if (!canvas) return;
             
@@ -2458,11 +2458,11 @@
             animate();
         }
         
-        function restartTangentConcave-v2() {
+        function restartTangentConcavev2() {
             if (tangentConcaveAnimationId-v2) {
                 cancelAnimationFrame(tangentConcaveAnimationId-v2);
             }
-            initTangentConcaveAnimation-v2();
+            initTangentConcaveAnimationv2();
         }
     </script>
 </body>
