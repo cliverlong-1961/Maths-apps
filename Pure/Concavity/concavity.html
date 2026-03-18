@@ -344,14 +344,14 @@
                 
                 <div class="nav-card convex-v2" onclick="showPage('convex-math-v2')">
                     <div class="nav-icon">f''(x) > 0</div>
-                    <h3>Convex  Mathematics</h3>
-                    <p>Explore the mathematical theory behind concave upward (convex) functions</p>
+                    <h3>Convex Mathematics v2</h3>
+                    <p>Explore the mathematical theory behind concave upward (convex) functions v2</p>
                 </div>
                 
                 <div class="nav-card concave-v2" onclick="showPage('concave-math-v2')">
                     <div class="nav-icon">f''(x) < 0</div>
-                    <h3>Concave (down) Mathematics</h3>
-                    <p>Understand the mathematics of concave (down) surfaces</p>
+                    <h3>Concave (down) Mathematics v2</h3>
+                    <p>Understand the mathematics of concave (down) surfaces v2</p>
                 </div>
                 
                 <div class="nav-card full-width" style="border-left: 4px solid #8b5cf6;" onclick="showPage('summary-curvature')">
@@ -826,10 +826,10 @@
                 setTimeout(() => initConcaveAnimation-v2(), 100);
             } else if (pageId === 'convex-animation-v2') {
                 setTimeout(() => initConvexAnimation-v2(), 100);
-            } else if (pageId === 'tangent-concave') {
-                setTimeout(() => initTangentConcaveAnimation(), 100);
-            } else if (pageId === 'tangent-convex') {
-                setTimeout(() => initTangentConvexAnimation(), 100);
+            } else if (pageId === 'tangent-concave-v2') {
+                setTimeout(() => initTangentConcaveAnimation-v2(), 100);
+            } else if (pageId === 'tangent-convex-v2') {
+                setTimeout(() => initTangentConvexAnimation-v2(), 100);
             } else if (pageId === 'concave-math') {
                 setTimeout(() => drawConcaveMathGraph(), 100);
             } else if (pageId === 'convex-math') {
