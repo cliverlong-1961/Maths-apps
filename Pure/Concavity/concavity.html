@@ -90,11 +90,11 @@
             border-color: var(--accent);
         }
         
-        .nav-card.concave-v2 {
+        .nav-card.concavev2 {
             border-left: 4px solid var(--concave-primary);
         }
         
-        .nav-card.convex-v2 {
+        .nav-card.convexv2 {
             border-left: 4px solid var(--convex-primary);
         }
         
@@ -317,38 +317,38 @@
             <p class="subtitle">Understanding the Shape of Functions</p>
             
             <div class="nav-grid">
-                <div class="nav-card concave-v2" onclick="showPage('concave-animation-v2')">
+                <div class="nav-card concavev2" onclick="showPage('concave-animationv2')">
                     <div class="nav-icon"> ∩</div>
                     <h3>Concave Down v2</h3>
                     <p>See a sphere roll off a concave surface, mirroring a downward-curving function - v2</p>
                 </div>
                 
-                <div class="nav-card convex-v2" onclick="showPage('convex-animation-v2')">
+                <div class="nav-card convexv2" onclick="showPage('convex-animationv2')">
                     <div class="nav-icon">∪</div>
                     <h3>Concave up (convex)</h3>
                     <p>
                     Watch a sphere settle into a convex bowl, just like a parabola curving upward -v2</p>
                 </div>
                 
-                <div class="nav-card convex-v2" onclick="showPage('tangent-convex-v2')">
+                <div class="nav-card convexv2" onclick="showPage('tangent-convexv2')">
                     <div class="nav-icon">y = 1+x²</div>
                     <h3>Tangents to Concave Up (convex)</h3>
                     <p>Visualize tangent lines sweeping across a concave upward curve</p>
                 </div>
                 
-                <div class="nav-card concave-v2" onclick="showPage('tangent-concave-v2')">
+                <div class="nav-card concavev2" onclick="showPage('tangent-concavev2')">
                     <div class="nav-icon">y = 1-x²</div>
                     <h3>Tangents to Concave (Down) v2</h3>
                     <p>See tangent lines moving across a concave (down) curve v2</p>
                 </div>
                 
-                <div class="nav-card convex-v2" onclick="showPage('convex-math-v2')">
+                <div class="nav-card convexv2" onclick="showPage('convex-mathv2')">
                     <div class="nav-icon">f''(x) > 0</div>
                     <h3>Convex Mathematics v2</h3>
                     <p>Explore the mathematical theory behind concave upward (convex) functions v2</p>
                 </div>
                 
-                <div class="nav-card concave-v2" onclick="showPage('concave-math-v2')">
+                <div class="nav-card concavev2" onclick="showPage('concave-mathv2')">
                     <div class="nav-icon">f''(x) < 0</div>
                     <h3>Concave (down) Mathematics v2</h3>
                     <p>Understand the mathematics of concave (down) surfaces v2</p>
@@ -366,7 +366,7 @@
     </div>
 
     <!-- Convex Animation Page -v2 -->
-    <div id="convex-animation-v2" class="page">
+    <div id="convex-animationv2" class="page">
         <div class="animation-container">
             <div class="animation-header">
                 <h2>Convex (Concave Up) Animation-v2</h2>
@@ -379,13 +379,13 @@
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="convexCanvas-v2"></canvas>
+                <canvas id="convexCanvasv2"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Concave (down) Animation Page -v2 -->
-    <div id="concave-animation-v2" class="page">
+    <div id="concave-animationv2" class="page">
         <div class="animation-container">
             <div class="animation-header">
                 <h2>Concave (down) Animation v2</h2>
@@ -398,13 +398,13 @@
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="concaveCanvas-v2"></canvas>
+                <canvas id="concaveCanvasv2"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Tangent to Concave Up (Convex) Page - v2 -->
-    <div id="tangent-convex-v2" class="page">
+    <div id="tangent-convexv2" class="page">
         <div class="animation-container">
             <div class="animation-header">
                 <h2>Tangents to Concave Up (convex) Curve - v2</h2>
@@ -417,13 +417,13 @@
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="tangentConvexCanvas-v2"></canvas>
+                <canvas id="tangentConvexCanvasv2"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Tangent to Concave (down) Page v2 -->
-    <div id="tangent-concave-v2" class="page">
+    <div id="tangent-concavev2" class="page">
         <div class="animation-container">
             <div class="animation-header">
                 <h2>Tangents to Concave (down) Curve -v2</h2>
@@ -436,15 +436,15 @@
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="tangentConcaveCanvas-v2"></canvas>
+                <canvas id="tangentConcaveCanvasv2"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Convex Mathematics Page -->
-    <div id="convex-math-v2" class="page">
+    <div id="convex-mathv2" class="page">
         <div class="math-container">
-            <div class="math-header convex-v2">
+            <div class="math-header convexv2">
                 <h2>Mathematics of Concave Up (convex) Functions v2</h2>
                 <p>When the graph curves upward like a smile</p>
             </div>
@@ -457,7 +457,7 @@
                 <img src="https://raw.githubusercontent.com/cliverlong-1961/Maths-apps/main/Pure/Concavity/convex-v2.png" alt="Convexity image" style="width:50%; display:block;">
             </div>
             
-            <div class="content-section convex-v2">
+            <div class="content-section convexv2">
                 <h3>Definition</h3>
                 <p>A function y = f(x) is <strong>concave up</strong> (or convex) on an interval if the graph of the function lies above 
                 all of its tangent lines on that interval. 
@@ -469,7 +469,7 @@
                 </div>
             </div>
             
-            <div class="content-section convex-v2">
+            <div class="content-section convexv2">
                 <h3>Graph and second derivative</h3>
                 <p>For a concave up (convex) region of a curve the gradient of the curve/tangent changes from negative to positive. 
                 For this region the graph of the gradient (derivative) is increasing (from negative to positive). Hence the gradient curve has itself a positive gradient, that is, the second derivative is positive.</p>
@@ -493,7 +493,7 @@
                 </div>
             </div>
             
-            <div class="content-section convex-v2">
+            <div class="content-section convexv2">
                 <h3>Physical Interpretation</h3>
                 <p>Think of the concave up (convex) bowl in the animation. When the sphere is placed anywhere in the bowl, 
                 gravity pulls it toward the lowest point. 
@@ -504,7 +504,7 @@
                  The concave up shape ensures that nearby points have higher function values.</p>
             </div>
             
-            <div class="content-section convex-v2">
+            <div class="content-section convexv2">
                 <h3>Inflection Points</h3>
                 <p>A function changes from concave up (convex) to concave (down) (or vice versa) at an <strong>inflection point</strong>. 
                 At these points:</p>
@@ -533,9 +533,9 @@
     </div>
 
     <!-- Concave Mathematics Page-v2 -->
-    <div id="concave-math-v2" class="page">
+    <div id="concave-mathv2" class="page">
         <div class="math-container">
-            <div class="math-header concave-v2">
+            <div class="math-header concavev2">
                 <h2>Mathematics of Concave (down) Functions - v2</h2>
                 <p>When the graph curves downward like a frown</p>
             </div>
@@ -568,7 +568,7 @@
                  Hence the gradient curve has itself a negative gradient, that is, the second derivative is negative. v2</p>
             </div>
             
-            <div class="content-section concave-v2">
+            <div class="content-section concavev2">
                 <h3>Second Derivative Test</h3>
                 <p>The mathematical test for concave (down) behavior uses the second derivative: v2</p>
                 
@@ -588,7 +588,7 @@
                 </div>
             </div>
             
-            <div class="content-section concave-v2">
+            <div class="content-section concavev2">
                 <h3>Physical Interpretation</h3>
                 <p>Consider the concave (down) bowl in the animation (opening downward). 
                 When the sphere is placed on top, any slight disturbance causes it to roll away. 
@@ -600,7 +600,7 @@
                 making the critical point a peak rather than a valley.</p>
             </div>
             
-            <div class="content-section concave-v2">
+            <div class="content-section concavev2">
                 <h3>Comparison with Concave Up (convex)</h3>
                 <p>The key differences between concave up (convex) and concave (down) functions:</p>
                 
@@ -624,7 +624,7 @@
             </div>
             
             
-            <div class="content-section concave-v2">
+            <div class="content-section concavev2">
                 <h3>The Second Derivative Test for Extrema</h3>
                 <p>Concavity is essential for classifying critical points:</p>
                 
@@ -822,17 +822,17 @@
             window.scrollTo(0,0);   // reset scroll to top
             
             // Start animations when showing animation pages
-            if (pageId === 'concave-animation-v2') {
+            if (pageId === 'concave-animationv2') {
                 setTimeout(() => initConcaveAnimationv2(), 100);
-            } else if (pageId === 'convex-animation-v2') {
+            } else if (pageId === 'convex-animationv2') {
                 setTimeout(() => initConvexAnimationv2(), 100);
-            } else if (pageId === 'tangent-concave-v2') {
+            } else if (pageId === 'tangent-concavev2') {
                 setTimeout(() => initTangentConcaveAnimationv2(), 100);
-            } else if (pageId === 'tangent-convex-v2') {
+            } else if (pageId === 'tangent-convexv2') {
                 setTimeout(() => initTangentConvexAnimationv2(), 100);
-            } else if (pageId === 'concave-math-v2') {
+            } else if (pageId === 'concave-mathv2') {
                 setTimeout(() => drawConcaveMathGraph(), 100);
-            } else if (pageId === 'convex-math-v2') {
+            } else if (pageId === 'convex-mathv2') {
                 setTimeout(() => drawConvexMathGraph(), 100);
             } else if (pageId === 'summary-curvature') {
                 setTimeout(() => {
@@ -1876,7 +1876,7 @@
         }
         
         // Convex Animation (U-shaped bowl with rolling sphere) v2
-        let convexAnimationId-v2;
+        let convexAnimationIdv2;
         
         function initConvexAnimationv2() {
             const canvas = document.getElementById('convexCanvas-2');
@@ -2010,17 +2010,17 @@
         }
         
         function restartConvexv2() {
-            if (convexAnimationId-v2) {
-                cancelAnimationFrame(convexAnimationId-v2);
+            if (convexAnimationIdv2) {
+                cancelAnimationFrame(convexAnimationIdv2);
             }
             initConvexAnimationv2();
         }
         
         // Concave (down) Animation (Inverted bowl - concave down v2)
-        let concaveAnimationId-v2;
+        let concaveAnimationIdv2;
         
         function initConcaveAnimationv2() {
-            const canvas = document.getElementById('concaveCanvas-v2');
+            const canvas = document.getElementById('concaveCanvasv2');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2146,24 +2146,24 @@
                 ctx.arc(ballX - 5, ballY - 5, 5, 0, Math.PI * 2);
                 ctx.fill();
                 
-                concaveAnimationId-v2 = requestAnimationFrame(animate);
+                concaveAnimationIdv2 = requestAnimationFrame(animate);
             }
             
             animate();
         }
         
         function restartConcavev2() {
-            if (concaveAnimationId-v2) {
-                cancelAnimationFrame(concaveAnimationId-v2);
+            if (concaveAnimationIdv2) {
+                cancelAnimationFrame(concaveAnimationIdv2);
             }
             initConcaveAnimationv2();
         }
         
         // Tangent to Convex (Concave Up) Animation (y = 1 + x²) v2
-        let tangentConvexAnimationId-v2;
+        let tangentConvexAnimationIdv2;
         
         function initTangentConvexAnimationv2() {
-            const canvas = document.getElementById('tangentConvexCanvas-v2');
+            const canvas = document.getElementById('tangentConvexCanvasv2');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2299,24 +2299,24 @@
                     }
                 }
                 
-                tangentConvexAnimationId-v2 = requestAnimationFrame(animate);
+                tangentConvexAnimationIdv2 = requestAnimationFrame(animate);
             }
             
             animate();
         }
         
         function restartTangentConvexv2() {
-            if (tangentConvexAnimationId-v2) {
-                cancelAnimationFrame(tangentConvexAnimationId-v2);
+            if (tangentConvexAnimationIdv2) {
+                cancelAnimationFrame(tangentConvexAnimationIdv2);
             }
             initTangentConvexAnimationv2();
         }
         
         // Tangent to Concave (down) Animation (y = 1 - x²) v2
-        let tangentConcaveAnimationId-v2;
+        let tangentConcaveAnimationIdv2;
         
         function initTangentConcaveAnimationv2() {
-            const canvas = document.getElementById('tangentConcaveCanvas-v2');
+            const canvas = document.getElementById('tangentConcaveCanvasv2');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2452,15 +2452,15 @@
                     }
                 }
                 
-                tangentConcaveAnimationId-v2 = requestAnimationFrame(animate);
+                tangentConcaveAnimationIdv2 = requestAnimationFrame(animate);
             }
             
             animate();
         }
         
         function restartTangentConcavev2() {
-            if (tangentConcaveAnimationId-v2) {
-                cancelAnimationFrame(tangentConcaveAnimationId-v2);
+            if (tangentConcaveAnimationIdv2) {
+                cancelAnimationFrame(tangentConcaveAnimationIdv2);
             }
             initTangentConcaveAnimationv2();
         }
