@@ -355,6 +355,14 @@
                     <p>Explore the mathematical theory behind concave upward (convex) functions v2</p>
                 </div>
                 
+                 <div class="nav-card full-width" style="border-left: 4px solid #8b5cf6;" onclick="showPage('second-deriv-tptsv2')">
+                    <div class="nav-icon">📊</div>
+                    <h3>Relationship between f''(x) and turnign points</h3>
+                    <p>A comprehensive overview of second derivatives and turning points</p>
+                </div>
+
+
+                
                 
                 <div class="nav-card full-width" style="border-left: 4px solid #8b5cf6;" onclick="showPage('summary-curvature')">
                     <div class="nav-icon">📊</div>
@@ -372,7 +380,7 @@
         <div class="animation-container">
             <div class="animation-header">
                 <h2>Convex (Concave Up) Animation-v2</h2>
-                <p>A sphere rolling in a concave bowl settles at the minimum point</p>
+                <p>A sphere rolling in a concave up (convex) bowl settles at the minimum point v2</p>
             </div>
             
             <div class="controls">
@@ -558,15 +566,19 @@
                 
                 <div class="key-point">
                     <strong>Key Insight:</strong> For a concave (down) function, the rate of change is decreasing. 
-                    As you move from left to right, the slope of the tangent line becomes less steep (less positive or more negative).
+                    
                 </div>
                 
             </div>
             
             <div class="content-section convex">
                 <h3>Graph and second derivative</h3>
-                <p>For a concave (down) region of a curve the gradient of the curve/tangent changes from positive to negative.
-                 For this region the graph of the gradient (derivative) is decreasing (from positive to negative). 
+                <p>For a concave (down) region of a curve as as point moves from left (negtive to right (positive)
+                 the gradient of the curve/tangent changes from positive to small positive to zero to increasing negative 
+                 (or any part of that change in gradient if there is not a turning point along the interval).
+                 << visual examples here >>
+                 Alternatively, for this region the graph of the gradient (derivative) its value is decreasing (from positive to negative). 
+                 << visual examples here >>
                  Hence the gradient curve has itself a negative gradient, that is, the second derivative is negative. v2</p>
             </div>
             
@@ -579,7 +591,8 @@
                 </div>
                 
                 <p>When f''(x) is negative, the first derivative f'(x) is decreasing. 
-                This means the slope of the function is getting smaller (less steep), creating the downward curve.</p>
+                This means the slope of the function is getting less positive and/or more negative, 
+                causing the "cave" to point downward.</p>
                 
                 <div class="example-box">
                     <h4>EXAMPLE: f(x) = -x²</h4>
@@ -625,8 +638,32 @@
                 </div>
             </div>
             
+ 
+             
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+                      
+
+        </div>
+    </div>
+
+
+
+    <!-- Second derivative and turning points Page-v2 -->
+    <div id="second-deriv-tptsv2" class="page">
+        <div class="math-container">
+            <div class="math-header tptv2">
+                <h2>Use of second derivative with turning points - v2</h2>
+                <p>Maximum, minimum or something else?</p>
+            </div>
             
-            <div class="content-section concavev2">
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+           
+            <div class="content-section tptv2">
                 <h3>The Second Derivative Test for Extrema</h3>
                 <p>Concavity is essential for classifying critical points:</p>
                 
@@ -639,14 +676,6 @@
                 
                 <p>This test provides a quick way to classify extrema without analyzing the first derivative on both sides of the critical point.</p>
             </div>
-             
-            <div class="back-home">
-                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
-            </div>
-                      
-
-        </div>
-    </div>
 
     <!-- Summary of f''(x) and curvature Page -->
     <div id="summary-curvature" class="page">
