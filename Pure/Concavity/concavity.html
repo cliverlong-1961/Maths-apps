@@ -90,11 +90,11 @@
             border-color: var(--accent);
         }
         
-        .nav-card.concavev2 {
+        .nav-card.concave {
             border-left: 4px solid var(--concave-primary);
         }
         
-        .nav-card.convexv2 {
+        .nav-card.convex {
             border-left: 4px solid var(--convex-primary);
         }
         
@@ -317,45 +317,45 @@
             <p class="subtitle">Understanding the Shape of Functions</p>
             
             <div class="nav-grid">
-                <div class="nav-card concavev2" onclick="showPage('concave-animationv2')">
+                <div class="nav-card concave" onclick="showPage('concave-animation')">
                     <div class="nav-icon"> ∩</div>
-                    <h3>Concave Down v2</h3>
-                    <p>See a sphere roll off a concave surface, mirroring a downward-curving function - v2</p>
+                    <h3>Concave Down</h3>
+                    <p>See a sphere roll off a concave surface, mirroring a downward-curving function</p>
                 </div>
                 
-                <div class="nav-card convexv2" onclick="showPage('convex-animationv2')">
+                <div class="nav-card convex" onclick="showPage('convex-animation')">
                     <div class="nav-icon">∪</div>
                     <h3>Concave up (convex)</h3>
                     <p>
-                    Watch a sphere settle into a convex bowl, just like a parabola curving upward -v2</p>
+                    Watch a sphere settle into a convex bowl, just like a parabola curving upward</p>
                 </div>
                 
-                <div class="nav-card concavev2" onclick="showPage('tangent-concavev2')">
+                <div class="nav-card concave" onclick="showPage('tangent-concave')">
                     <div class="nav-icon">y = 1-x²</div>
-                    <h3>Tangents to Concave (Down) v2</h3>
-                    <p>See tangent lines moving across a concave (down) curve v2</p>
+                    <h3>Tangents to Concave (Down)</h3>
+                    <p>See tangent lines moving across a concave (down) curve</p>
                 </div>
                 
-                <div class="nav-card convexv2" onclick="showPage('tangent-convexv2')">
+                <div class="nav-card convex" onclick="showPage('tangent-convex')">
                     <div class="nav-icon">y = 1+x²</div>
                     <h3>Tangents to Concave Up (convex)</h3>
                     <p>Visualize tangent lines sweeping across a concave upward curve</p>
                 </div>
                 
                 
-                <div class="nav-card concavev2" onclick="showPage('concave-mathv2')">
+                <div class="nav-card concave" onclick="showPage('concave-math')">
                     <div class="nav-icon">f''(x) < 0</div>
-                    <h3>Concave (down) Mathematics v2</h3>
-                    <p>Understand the mathematics of concave (down) curves v2</p>
+                    <h3>Concave (down) Mathematics</h3>
+                    <p>Understand the mathematics of concave (down) curves</p>
                 </div>
                 
-                <div class="nav-card convexv2" onclick="showPage('convex-mathv2')">
+                <div class="nav-card convex" onclick="showPage('convex-math')">
                     <div class="nav-icon">f''(x) > 0</div>
-                    <h3>Convex Mathematics v2</h3>
-                    <p>Explore the mathematical theory behind concave upward (convex) functions v2</p>
+                    <h3>Convex Mathematics</h3>
+                    <p>Explore the mathematical theory behind concave upward (convex) functions</p>
                 </div>
                 
-                 <div class="nav-card full-width" style="border-left: 4px solid #8b5cf6;" onclick="showPage('second-deriv-tptsv2')">
+                 <div class="nav-card full-width" style="border-left: 4px solid #8b5cf6;" onclick="showPage('second-deriv-tpts')">
                     <div class="nav-icon">📊</div>
                     <h3>Relationship between f ''(x) and turning points</h3>
                     <p>A summary of second derivatives and turning points</p>
@@ -375,87 +375,87 @@
         </div>
     </div>
 
-    <!-- Convex Animation Page -v2 -->
-    <div id="convex-animationv2" class="page">
+    <!-- Convex Animation Page - -->
+    <div id="convex-animation" class="page">
         <div class="animation-container">
             <div class="animation-header">
-                <h2>Convex (Concave Up) Animation-v2</h2>
-                <p>A sphere rolling in a concave up (convex) bowl settles at the minimum point v2</p>
+                <h2>Convex (Concave Up) Animation</h2>
+                <p>A sphere rolling in a concave up (convex) bowl settles at the minimum point </p>
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartConvexv2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartConvex()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="convexCanvasv2"></canvas>
+                <canvas id="convexCanvas"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Concave (down) Animation Page -v2 -->
-    <div id="concave-animationv2" class="page">
+    <!-- Concave (down) Animation Page - -->
+    <div id="concave-animation" class="page">
         <div class="animation-container">
             <div class="animation-header">
-                <h2>Concave (down) Animation v2</h2>
-                <p>A sphere rolling off a concave (down) surface demonstrates instability at the maximum v2</p>
+                <h2>Concave (down) Animation</h2>
+                <p>A sphere rolling off a concave (down) surface demonstrates instability at the maximum</p>
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartConcavev2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartConcave()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="concaveCanvasv2"></canvas>
+                <canvas id="concaveCanvas"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Tangent to Concave Up (Convex) Page - v2 -->
-    <div id="tangent-convexv2" class="page">
+    <!-- Tangent to Concave Up (Convex) Page -  -->
+    <div id="tangent-convex" class="page">
         <div class="animation-container">
             <div class="animation-header">
-                <h2>Tangents to Concave Up (convex) Curve - v2</h2>
+                <h2>Tangents to Concave Up (convex) Curve </h2>
                 <p>The tangent always lies below the curve. The slope of the tangents increase from negative, through zero, to positive.</p>
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartTangentConvexv2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartTangentConvex()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="tangentConvexCanvasv2"></canvas>
+                <canvas id="tangentConvexCanvas"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Tangent to Concave (down) Page v2 -->
-    <div id="tangent-concavev2" class="page">
+    <!-- Tangent to Concave (down) Page  -->
+    <div id="tangent-concave" class="page">
         <div class="animation-container">
             <div class="animation-header">
-                <h2>Tangents to Concave (down) Curve -v2</h2>
+                <h2>Tangents to Concave (down) Curve</h2>
                 <p>The tangent always lies above the curve. The slope of the tangents decrease from positive, through zero, to negative.</p>
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" onclick="restartTangentConcavev2()">Restart Animation</button>
+                <button class="btn btn-primary" onclick="restartTangentConcave()">Restart Animation</button>
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
             <div class="canvas-wrapper">
-                <canvas id="tangentConcaveCanvasv2"></canvas>
+                <canvas id="tangentConcaveCanvas"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Convex Mathematics Page -->
-    <div id="convex-mathv2" class="page">
+    <div id="convex-math" class="page">
         <div class="math-container">
-            <div class="math-header convexv2">
-                <h2>Mathematics of Concave Up (convex) Functions v2</h2>
+            <div class="math-header convex">
+                <h2>Mathematics of Concave Up (convex) Functions</h2>
                 <p>When the graph curves upward like a smile</p>
             </div>
             
@@ -467,7 +467,7 @@
                 <img src="https://raw.githubusercontent.com/cliverlong-1961/Maths-apps/main/Pure/Concavity/convex-v2.png" alt="Convexity image" style="width:50%; display:block;">
             </div>
             
-            <div class="content-section convexv2">
+            <div class="content-section convex">
                 <h3>Definition</h3>
                 <p>A function y = f(x) is <strong>concave up</strong> (or convex) on an interval if the graph of the function lies above 
                 all of its tangent lines on that interval. 
@@ -479,7 +479,7 @@
                 </div>
             </div>
             
-            <div class="content-section convexv2">
+            <div class="content-section convex">
                 <h3>Graph and second derivative</h3>
                 <p>For a concave up (convex) region of a curve the gradient of the curve/tangent changes from negative to positive. 
                 For this region the graph of the gradient (derivative) is increasing (from negative to positive). Hence the gradient curve has itself a positive gradient, that is, the second derivative is positive.</p>
@@ -490,7 +490,7 @@
                 <p>The primary mathematical test for concavity uses the second derivative:</p>
                 
                 <div class="math-formula">
-                    If f''(x) > 0 for all x in an interval, then f is concave up (convex) on that interval v2
+                    If f''(x) > 0 for all x in an interval, then f is concave up (convex) on that interval 
                 </div>
                 
                 <p>The second derivative f''(x) measures the rate of change of the first derivative f'(x). When f''(x) is positive, the slope is increasing, creating the upward curve.</p>
@@ -503,7 +503,7 @@
                 </div>
             </div>
             
-            <div class="content-section convexv2">
+            <div class="content-section convex">
                 <h3>Physical Interpretation</h3>
                 <p>Think of the concave up (convex) bowl in the animation. When the sphere is placed anywhere in the bowl, 
                 gravity pulls it toward the lowest point. 
@@ -514,109 +514,10 @@
                  The concave up shape ensures that nearby points have higher function values.</p>
             </div>
             
-            <div class="content-section convexv2">
-                <h3>Inflection Points</h3>
-                <p>A function changes from concave up (convex) to concave (down) (or vice versa) at an <strong>inflection point</strong>. 
-                At these points:</p>
-                
-                <div class="math-formula">
-                    f''(x) = 0 and f''(x) changes sign
-                </div>
-                
-                <div class="example-box">
-                    <h4>EXAMPLE: f(x) = x³</h4>
-                    <p>First derivative: f'(x) = 3x²</p>
-                    <p>Second derivative: f''(x) = 6x</p>
-                    <p>• When x < 0: f''(x) < 0 (concave (down))</p>
-                    <p>• When x > 0: f''(x) > 0 (concave up (convex) )</p>
-                    <p>The point (0,0) is an inflection point where concavity changes.</p>
-                </div>
-            </div>
             
             
-            <div class="back-home">
-                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
-            </div>
-                
-            
-        </div>
-    </div>
-
-    <!-- Concave Mathematics Page-v2 -->
-    <div id="concave-mathv2" class="page">
-        <div class="math-container">
-            <div class="math-header concavev2">
-                <h2>Mathematics of Concave (down) Functions - v2</h2>
-                <p>When the graph curves downward like a frown</p>
-            </div>
-            
-            <div class="back-home">
-                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
-            </div>
-            
-			<div class="canvas-wrapper">
-                <img src="https://raw.githubusercontent.com/cliverlong-1961/Maths-apps/main/Pure/Concavity/concave-v2.png" alt="Concavity image" style="width:50%; display:block;">
-            </div>
-            
-            <div class="content-section convex">
-                <h3>Definition</h3>
-                <p>A function y = f(x) is <strong>concave (down)</strong> on an interval if the graph of the function lies below 
-                all of its tangent lines on that interval. Visually, the graph curves downward, 
-                resembling an upside-down bowl or the letter "∩". v2</p>
-                
-                <div class="key-point">
-                    <strong>Key Insight:</strong> For a concave (down) function, the rate of change is decreasing. 
-                    
-                </div>
-                
-            </div>
-            
-            <div class="content-section convex">
-                <h3>Graph and second derivative</h3>
-                <p>For a concave (down) region of a curve as as point moves from left (negtive to right (positive)
-                 the gradient of the curve/tangent changes from positive to small positive to zero to increasing negative 
-                 (or any part of that change in gradient if there is not a turning point along the interval).
-                 << visual examples here >>
-                 Alternatively, for this region the graph of the gradient (derivative) its value is decreasing (from positive to negative). 
-                 << visual examples here >>
-                 Hence the gradient curve has itself a negative gradient, that is, the second derivative is negative. v2</p>
-            </div>
-            
-            <div class="content-section concavev2">
-                <h3>Second Derivative Test</h3>
-                <p>The mathematical test for concave (down) behavior uses the second derivative: v2</p>
-                
-                <div class="math-formula">
-                    If f''(x) < 0 for all x in an interval, then f is concave (down) on that interval v2
-                </div>
-                
-                <p>When f''(x) is negative, the first derivative f'(x) is decreasing. 
-                This means the slope of the function is getting less positive and/or more negative, 
-                causing the "cave" to point downward.</p>
-                
-                <div class="example-box">
-                    <h4>EXAMPLE: f(x) = -x²</h4>
-                    <p>First derivative: f'(x) = -2x</p>
-                    <p>Second derivative: f''(x) = -2</p>
-                    <p>Since f''(x) = -2 < 0 for all x, the inverted parabola y = -x² is concave (down) everywhere. 
-                    The vertex at (0,0) represents a maximum point. v2</p>
-                </div>
-            </div>
-            
-            <div class="content-section concavev2">
-                <h3>Physical Interpretation</h3>
-                <p>Consider the concave (down) bowl in the animation (opening downward). 
-                When the sphere is placed on top, any slight disturbance causes it to roll away. 
-                This represents an <strong>unstable equilibrium</strong>—the sphere cannot remain at the peak 
-                and will naturally move toward lower positions.</p>
-                
-                <p>In calculus, at a critical point where f'(x) = 0, if f''(x) < 0, then that point is a <strong>local maximum</strong>. 
-                The concave (down) shape ensures that nearby points have lower function values, 
-                making the critical point a peak rather than a valley.</p>
-            </div>
-            
-            <div class="content-section concavev2">
-                <h3>Comparison with Concave Up (convex)</h3>
+             <div class="content-section concave">
+                <h3>Comparison with Concave (down)</h3>
                 <p>The key differences between concave up (convex) and concave (down) functions:</p>
                 
                 <div class="example-box">
@@ -638,6 +539,107 @@
                 </div>
             </div>
             
+            
+            <div class="content-section convex">
+                <h3>Inflection Points</h3>
+                <p>A function changes from concave up (convex) to concave (down) (or vice versa) at an <strong>inflection point</strong>. 
+                At these points:</p>
+                
+                <div class="math-formula">
+                    f''(x) = 0 and f''(x) changes sign
+                </div>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = x³</h4>
+                    <p>First derivative: f'(x) = 3x²</p>
+                    <p>Second derivative: f''(x) = 6x</p>
+                    <p>• When x < 0: f''(x) < 0 (concave (down))</p>
+                    <p>• When x > 0: f''(x) > 0 (concave up (convex) )</p>
+                    <p>The point (0,0) is an inflection point where concavity changes.</p>
+                </div>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>   
+            
+        </div>
+    </div>
+
+    <!-- Concave Mathematics Page- -->
+    <div id="concave-math" class="page">
+        <div class="math-container">
+            <div class="math-header concave">
+                <h2>Mathematics of Concave (down) Functions</h2>
+                <p>When the graph curves downward like a frown</p>
+            </div>
+            
+            <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+			<div class="canvas-wrapper">
+                <img src="https://raw.githubusercontent.com/cliverlong-1961/Maths-apps/main/Pure/Concavity/concave-v2.png" alt="Concavity image" style="width:50%; display:block;">
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Definition</h3>
+                <p>A function y = f(x) is <strong>concave (down)</strong> on an interval if the graph of the function lies below 
+                all of its tangent lines on that interval. Visually, the graph curves downward, 
+                resembling an upside-down bowl or the letter "∩".</p>
+                
+                <div class="key-point">
+                    <strong>Key Insight:</strong> For a concave (down) function, the rate of change is decreasing. 
+                    
+                </div>
+                
+            </div>
+            
+            <div class="content-section convex">
+                <h3>Graph and second derivative</h3>
+                <p>For a concave (down) region of a curve as as point moves from left on x-axis (negative) to right (positive)
+                 the gradient of the curve/tangent changes from positive to small positive to zero to increasing negative 
+                 (or any part of that change in gradient if there is not a turning point along the interval).
+                 << visual examples here >>
+                 Alternatively, for this region the graph of the gradient (derivative) its value is decreasing (from positive to negative). 
+                 << visual examples here >>
+                 Hence the gradient curve has itself a negative gradient, that is, the second derivative is negative. </p>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Second Derivative Test</h3>
+                <p>The mathematical test for concave (down) behaviour uses the second derivative:</p>
+                
+                <div class="math-formula">
+                    If f''(x) < 0 for all x in an interval, then f is concave (down) on that interval 
+                </div>
+                
+                <p>When f''(x) is negative, the first derivative f'(x) is decreasing. 
+                This means the slope of the function is getting less positive and/or more negative, 
+                causing the "cave" to point downward.</p>
+                
+                <div class="example-box">
+                    <h4>EXAMPLE: f(x) = -x²</h4>
+                    <p>First derivative: f'(x) = -2x</p>
+                    <p>Second derivative: f''(x) = -2</p>
+                    <p>Since f''(x) = -2 < 0 for all x, the inverted parabola y = -x² is concave (down) everywhere. 
+                    The vertex at (0,0) represents a maximum point. </p>
+                </div>
+            </div>
+            
+            <div class="content-section concave">
+                <h3>Physical Interpretation</h3>
+                <p>Consider the concave (down) bowl in the animation (opening downward). 
+                When the sphere is placed on top, any slight disturbance causes it to roll away. 
+                This represents an <strong>unstable equilibrium</strong>—the sphere cannot remain at the peak 
+                and will naturally move toward lower positions.</p>
+                
+                <p>In calculus, at a critical point where f'(x) = 0, if f''(x) < 0, then that point is a <strong>local maximum</strong>. 
+                The concave (down) shape ensures that nearby points have lower function values, 
+                making the critical point a peak rather than a valley.</p>
+            </div>
+            
+            
  
              
             <div class="back-home">
@@ -650,11 +652,11 @@
 
 
 
-    <!-- Second derivative and turning points Page-v2 -->
-    <div id="second-deriv-tptsv2" class="page">
+    <!-- Second derivative and turning points Page- -->
+    <div id="second-deriv-tpts" class="page">
         <div class="math-container">
-            <div class="math-header tptv2">
-                <h2>Use of second derivative with turning points - v2</h2>
+            <div class="math-header tpt">
+                <h2>Use of second derivative with turning points</h2>
                 <p>Maximum, minimum or something else?</p>
             </div>
             
@@ -663,7 +665,7 @@
             </div>
             
            
-            <div class="content-section tptv2">
+            <div class="content-section tpt">
                 <h3>The Second Derivative Test for Extrema</h3>
                 <p>Concavity is essential for classifying critical points:</p>
                 
@@ -709,7 +711,7 @@
                 <h3>Sign of f''(x) and Concavity</h3>
                 
                 <div class="math-formula">
-                    <strong>f''(x) > 0 → CONCAVE up (convex)  (∪ shape) V2</strong><br>
+                    <strong>f''(x) > 0 → CONCAVE up (convex)  (∪ shape)</strong><br>
                     • The curve bends upward<br>
                     • The slope f'(x) is increasing<br>
                     • The graph lies above its tangent lines<br>
@@ -717,12 +719,12 @@
                 </div>
                 
                 <div class="canvas-wrapper" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-                    <canvas id="concaveDownExamplev2" width="800" height="200"></canvas>
+                    <canvas id="concaveDownExample" width="800" height="200"></canvas>
                 </div>
                 
                 <div class="math-formula">
                     
-                    <strong>f''(x) < 0 → CONCAVE (DOWN) (∩ shape) v2</strong><br>
+                    <strong>f''(x) < 0 → CONCAVE (DOWN) (∩ shape) </strong><br>
                     • The curve bends downward<br>
                     • The slope f'(x) is decreasing<br>
                     • The graph lies below its tangent lines<br>
@@ -730,7 +732,7 @@
                 </div>
                 
                 <div class="canvas-wrapper" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-                    <canvas id="concaveUpExamplev2" width="800" height="200"></canvas>
+                    <canvas id="concaveUpExample" width="800" height="200"></canvas>
                 </div>
                 
                 <div class="math-formula">
@@ -859,22 +861,22 @@
             window.scrollTo(0,0);   // reset scroll to top
             
             // Start animations when showing animation pages
-            if (pageId === 'concave-animationv2') {
-                setTimeout(() => initConcaveAnimationv2(), 100);
-            } else if (pageId === 'convex-animationv2') {
-                setTimeout(() => initConvexAnimationv2(), 100);
-            } else if (pageId === 'tangent-concavev2') {
-                setTimeout(() => initTangentConcaveAnimationv2(), 100);
-            } else if (pageId === 'tangent-convexv2') {
-                setTimeout(() => initTangentConvexAnimationv2(), 100);
-            } else if (pageId === 'concave-mathv2') {
+            if (pageId === 'concave-animation') {
+                setTimeout(() => initConcaveAnimation(), 100);
+            } else if (pageId === 'convex-animation') {
+                setTimeout(() => initConvexAnimation(), 100);
+            } else if (pageId === 'tangent-concave') {
+                setTimeout(() => initTangentConcaveAnimation(), 100);
+            } else if (pageId === 'tangent-convex') {
+                setTimeout(() => initTangentConvexAnimation(), 100);
+            } else if (pageId === 'concave-math') {
                 setTimeout(() => drawConcaveMathGraph(), 100);
-            } else if (pageId === 'convex-mathv2') {
+            } else if (pageId === 'convex-math') {
                 setTimeout(() => drawConvexMathGraph(), 100);
             } else if (pageId === 'summary-curvature') {
                 setTimeout(() => {
-                    drawconcaveDownExamplev2();
-                    drawConcaveUpExamplev2();
+                    drawconcaveDownExample();
+                    drawConcaveUpExample();
                 }, 100);
 
             }
@@ -1476,8 +1478,8 @@
         }
         
         // Draw concave up example for summary page
-        function drawconcaveDownExamplev2() {
-            const canvas = document.getElementById('concaveDownExamplev2');
+        function drawconcaveDownExample() {
+            const canvas = document.getElementById('concaveDownExample');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -1595,8 +1597,8 @@
         }
         
         // Draw concave down example for summary page
-        function drawConcaveUpExamplev2() {
-            const canvas = document.getElementById('concaveUpExamplev2');
+        function drawConcaveUpExample() {
+            const canvas = document.getElementById('concaveUpExample');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -1912,11 +1914,11 @@
             ctx.fillText('y = -2x (solid)', 20, 55);
         }
         
-        // Convex Animation (U-shaped bowl with rolling sphere) v2
-        let convexAnimationIdv2;
+        // Convex Animation (U-shaped bowl with rolling sphere) 
+        let convexAnimationId;
         
-        function initConvexAnimationv2() {
-            const canvas = document.getElementById('convexCanvasv2');
+        function initConvexAnimation() {
+            const canvas = document.getElementById('convexCanvas');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2046,18 +2048,18 @@
             animate();
         }
         
-        function restartConvexv2() {
-            if (convexAnimationIdv2) {
-                cancelAnimationFrame(convexAnimationIdv2);
+        function restartConvex() {
+            if (convexAnimationId) {
+                cancelAnimationFrame(convexAnimationId);
             }
-            initConvexAnimationv2();
+            initConvexAnimation();
         }
         
-        // Concave (down) Animation (Inverted bowl - concave down v2)
-        let concaveAnimationIdv2;
+        // Concave (down) Animation (Inverted bowl - concave down )
+        let concaveAnimationId;
         
-        function initConcaveAnimationv2() {
-            const canvas = document.getElementById('concaveCanvasv2');
+        function initConcaveAnimation() {
+            const canvas = document.getElementById('concaveCanvas');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2183,24 +2185,24 @@
                 ctx.arc(ballX - 5, ballY - 5, 5, 0, Math.PI * 2);
                 ctx.fill();
                 
-                concaveAnimationIdv2 = requestAnimationFrame(animate);
+                concaveAnimationId = requestAnimationFrame(animate);
             }
             
             animate();
         }
         
-        function restartConcavev2() {
-            if (concaveAnimationIdv2) {
-                cancelAnimationFrame(concaveAnimationIdv2);
+        function restartConcave() {
+            if (concaveAnimationId) {
+                cancelAnimationFrame(concaveAnimationId);
             }
-            initConcaveAnimationv2();
+            initConcaveAnimation();
         }
         
-        // Tangent to Convex (Concave Up) Animation (y = 1 + x²) v2
-        let tangentConvexAnimationIdv2;
+        // Tangent to Convex (Concave Up) Animation (y = 1 + x²) 
+        let tangentConvexAnimationId;
         
-        function initTangentConvexAnimationv2() {
-            const canvas = document.getElementById('tangentConvexCanvasv2');
+        function initTangentConvexAnimation() {
+            const canvas = document.getElementById('tangentConvexCanvas');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2336,24 +2338,24 @@
                     }
                 }
                 
-                tangentConvexAnimationIdv2 = requestAnimationFrame(animate);
+                tangentConvexAnimationId = requestAnimationFrame(animate);
             }
             
             animate();
         }
         
-        function restartTangentConvexv2() {
-            if (tangentConvexAnimationIdv2) {
-                cancelAnimationFrame(tangentConvexAnimationIdv2);
+        function restartTangentConvex() {
+            if (tangentConvexAnimationId) {
+                cancelAnimationFrame(tangentConvexAnimationId);
             }
-            initTangentConvexAnimationv2();
+            initTangentConvexAnimation();
         }
         
-        // Tangent to Concave (down) Animation (y = 1 - x²) v2
-        let tangentConcaveAnimationIdv2;
+        // Tangent to Concave (down) Animation (y = 1 - x²) 
+        let tangentConcaveAnimationId;
         
-        function initTangentConcaveAnimationv2() {
-            const canvas = document.getElementById('tangentConcaveCanvasv2');
+        function initTangentConcaveAnimation() {
+            const canvas = document.getElementById('tangentConcaveCanvas');
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
@@ -2489,17 +2491,17 @@
                     }
                 }
                 
-                tangentConcaveAnimationIdv2 = requestAnimationFrame(animate);
+                tangentConcaveAnimationId = requestAnimationFrame(animate);
             }
             
             animate();
         }
         
-        function restartTangentConcavev2() {
-            if (tangentConcaveAnimationIdv2) {
-                cancelAnimationFrame(tangentConcaveAnimationIdv2);
+        function restartTangentConcave() {
+            if (tangentConcaveAnimationId) {
+                cancelAnimationFrame(tangentConcaveAnimationId);
             }
-            initTangentConcaveAnimationv2();
+            initTangentConcaveAnimation();
         }
     </script>
 </body>
