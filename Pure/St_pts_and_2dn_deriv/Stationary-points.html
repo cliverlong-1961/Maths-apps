@@ -415,17 +415,20 @@
                 
                 <div class="math-formula">
                     At a critical point c where f'(c) = 0:<br><br>
-                    • If the first non-zero derivative is f⁽ⁿ⁾(c) where n is ODD:<br>
+                    And the "nth (order) derivative" is the function we get when differentiating f(x) n times <br>
+                    so  f⁽2⁾(c) is the second-order (or just second) derivative<br>
+                    and f⁽4⁾(c) is the fourth(-order) derivative, and so on ..<br>
+                    • If the first (higher-order) derivative to have a non-zero value, f⁽ⁿ⁾(c) ≠ 0, where n is ODD:<br>
                     &nbsp;&nbsp;→ c is an inflection point (neither max nor min)<br><br>
-                    • If the first non-zero derivative is f⁽ⁿ⁾(c) where n is EVEN:<br>
-                    &nbsp;&nbsp;→ c is a maximum if f⁽ⁿ⁾(c) < 0<br>
-                    &nbsp;&nbsp;→ c is a minimum if f⁽ⁿ⁾(c) > 0
+                    • If the first (higher-order) derivative to have a non-zero value, f⁽ⁿ⁾(c) ≠ 0, where n is EVEN:<br>
+                    and  f⁽ⁿ⁾(c) < 0 &nbsp;&nbsp;→ f(c) is a local maximum<br>
+                    and  f⁽ⁿ⁾(c) > 0 &nbsp;&nbsp;→ f(c) is a local minimum
                 </div>
                 
                 <div class="key-point">
-                    <strong>Quick Rule:</strong> For f(x) = ±xⁿ at x = 0:<br>
+                    <strong>Quick Rule:</strong> For f(x) = ±xⁿ at critical point x = c, f'(c) = 0:<br>
                     • Odd powers (x³, x⁵, x⁷, ...) → inflection points<br>
-                    • Even powers (x⁴, x⁶, x⁸, ...) → extrema (max or min depending on sign)
+                    • Even powers (x⁴, x⁶, x⁸, ...) → extrema (max or min)
                 </div>
             </div>
             
@@ -561,9 +564,11 @@
                 <p>For some value of the function at x = a, f(a), and function values close to, and around this stationary point (small h > 0):</p>
                 <p>If f(a - h) > f(a) and f(a + h) > f(a), then points around x = a are 'above' f(a) so we have a <strong>local minimum</strong> at x = a.</p>
                 <p>Similarly, if f(a - h) < f(a) and f(a + h) < f(a), then points around x = a are 'below' f(a) so we have a <strong>local maximum</strong> at x = a.</p>
-                <p>Finally, if the sign of f(a - h) and f(a + h) are different, then we have a (horizontal) <strong>point of inflection</strong> at x = a.</p>
+                <p>Finally, if the sign of f(a - h) - f(a) and f(a + h) - f(a) are different, then we have a (horizontal) <strong>point of inflection</strong> at x = a.</p>
                 
-                <p>When in doubt, evaluate the function itself at points near the critical point. This direct approach shows whether nearby values are higher or lower.</p>
+                <p>When in doubt, evaluate the function itself at points near the critical point. 
+                This direct approach shows whether nearby values of the function are higher or lower
+                than the value of the function at the critical point.</p>
                 
                 <div class="example-box">
                     <h4>VALUES TABLE: f(x) = -x⁴</h4>
