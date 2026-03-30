@@ -306,6 +306,40 @@
             margin-top: 3rem;
             margin-bottom: 2rem;
         }
+        
+        .container-graph {
+			/* display: flex;
+			gap: 10px; */
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 10px;
+		}
+
+		.container-graph figure {
+			flex: 1 1 0;          /* each takes equal space */
+			margin: 0;
+			text-align: center;
+		}
+
+		.container-graph img {
+			width: 100%;      /* fill the figure (key fix) */
+			height: auto;
+			display: block;
+			background: red;
+		}
+
+		figcaption {
+			font-size: 14px;
+			color: #555;
+			margin-top: 5px;
+		}
+		figcaption {
+			font-size: 14px;
+			color: #555;
+			margin-top: 5px; /* Space between image and label */
+		}
+
+        
     </style>
 </head>
 <body>
@@ -324,6 +358,15 @@
                     <h3>Tricky Stationary Points</h3>
                     <p>When the second derivative test fails and higher-order analysis is needed</p>
                 </div>
+              
+              
+               <div class="nav-card" style="border-left: 4px solid #7c3aed;" onclick="showPage('higher-order')">
+                    <div class="nav-icon">Higher order derivative test</div>
+                    <h3>Tricky Stationary Points II</h3>
+                    <p>When the second derivative test fails and higher-order analysis is needed</p>
+                </div>
+              
+              
                 
                 <div class="nav-card" style="border-left: 4px solid #059669;" onclick="showPage('alternative-tests')">
                     <div class="nav-icon">f'(x) sign</div>
@@ -340,11 +383,6 @@
         </div>
     </div>
 
-    
-
-    
-
-    
 
     <!-- Tricky Stationary Points Page -->
     <div id="tricky-points" class="page">
@@ -358,10 +396,39 @@
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
             
-            <div class="canvas-wrapper">
-                <canvas id="trickyPointsGraph" width="800" height="300"></canvas>
-            </div>
             
+            <div class="container-graph">
+				<figure>
+					<img src="plus-x3.png" alt="plus-x3">
+
+				</figure>
+				<figure>
+					<img src="plus-x4.png" alt="plus-x4">
+
+				</figure>
+				<figure>	
+					<img src="minus-x4.png" alt="minus-x4">
+
+				</figure>
+
+			</div>
+
+			<div class="container-graph">
+				<figure>
+					<figcaption>y = x³</figcaption>
+				</figure>
+				<figure>
+
+					<figcaption>y = x<sup>4</sup></figcaption>
+				</figure>
+				<figure>	
+
+					<figcaption>y = -x<sup>4</sup></figcaption>
+				</figure>
+
+			</div>
+            
+             
             <div class="content-section" style="border-color: #7c3aed;">
                 <h3>When the Second Derivative Test Fails</h3>
                 <p>We've seen that when f'(c) = 0 at a critical point c:</p>
@@ -383,9 +450,9 @@
                     <h4>EXAMPLE 1: f(x) = x³ — INFLECTION POINT</h4>
                     <p>First derivative: f'(x) = 3x²</p>
                     <p>Second derivative: f''(x) = 6x</p>
-                    <p>Third derivative: f'''(x) = 6</p>
+                    
                     <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
-                    <p><strong>Result:</strong> x = 0 is an <em>inflection point</em>, not a maximum or minimum. The function changes from concave down (x < 0) to concave up (x > 0), and continues increasing throughout.</p>
+                    <p><strong>Result:</strong> At x = 0 the test for the stationary point is <em>inconclusive</em>, see the higher-order derivative test.</p>
                 </div>
                 
                 <div class="example-box">
@@ -395,20 +462,54 @@
                     <p>Third derivative: f'''(x) = 24x</p>
                     <p>Fourth derivative: f⁽⁴⁾(x) = 24</p>
                     <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
-                    <p><strong>Result:</strong> x = 0 is a <em>local minimum</em>. The function is concave up everywhere (except right at x = 0), creating a flatter, gentler bowl shape than x².</p>
+                                        <p><strong>Result:</strong> At x = 0 the test for the stationary point is <em>inconclusive</em>, see the higher-order derivative test.</p>
                 </div>
                 
                 <div class="example-box">
                     <h4>EXAMPLE 3: f(x) = -x⁴ — LOCAL MAXIMUM</h4>
                     <p>First derivative: f'(x) = -4x³</p>
                     <p>Second derivative: f''(x) = -12x²</p>
-                    <p>Third derivative: f'''(x) = -24x</p>
-                    <p>Fourth derivative: f⁽⁴⁾(x) = -24</p>
+
                     <p style="margin-top: 1rem;">At x = 0: f'(0) = 0 and f''(0) = 0</p>
-                    <p><strong>Result:</strong> x = 0 is a <em>local maximum</em>. The function is concave down everywhere (except right at x = 0), forming an inverted bowl that's flatter at the top than -x².</p>
+                    <p><strong>Result:</strong> At x = 0 the test for stationary point is <em>inconclusive</em>, see the higher-order derivative test.</p>
                 </div>
             </div>
             
+            
+           
+            
+           
+        </div>
+    </div>
+    
+    <!-- Tricky Stationary Points Page -->
+    <div id="higher-order" class="page">
+        <div class="math-container">
+            <div class="math-header" style="border-color: #7c3aed;">
+                <h2>Higher order derivative test</h2>
+                <p>Tricky Stationary Points</p>
+            </div>
+            
+             <div class="back-home">
+                <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
+            </div>
+            
+            
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>When the Second Derivative Test Fails</h3>
+                <p>We've seen that when f'(c) = 0 at a critical point c:</p>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">If f''(c) > 0, then c is a local minimum (concave up)</li>
+                    <li style="margin-bottom: 0.5rem;">If f''(c) < 0, then c is a local maximum (concave down)</li>
+                    <li style="margin-bottom: 0.5rem;">But what if <strong>f''(c) = 0</strong>?</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>The Test is Inconclusive:</strong> When both f'(c) = 0 AND f''(c) = 0, the second derivative test gives us no information. The point could be a maximum, a minimum, or neither (an inflection point)!
+                </div>
+            </div>
+            
+              
             <div class="content-section" style="border-color: #7c3aed;">
                 <h3>The Higher-Order Derivative Test</h3>
                 <p>When f''(c) = 0, we need to check higher derivatives. Here's the general pattern:</p>
@@ -835,9 +936,7 @@
             
             // Start animations when showing animation pages
             if 
-               (pageId === 'tricky-points') {
-                setTimeout(() => drawTrickyPointsGraph(), 100);
-            } else if (pageId === 'alternative-tests') {
+              (pageId === 'alternative-tests') {
                 setTimeout(() => drawAlternativeTestGraph(), 100);
             } else if (pageId === 'inflection-nonstationary') {
                 setTimeout(() => drawInflectionNonStationaryGraph(), 100);
@@ -845,133 +944,8 @@
         }
         
         // Draw graph for Tricky Stationary Points page
-        function drawTrickyPointsGraph() {
-            const canvas = document.getElementById('trickyPointsGraph');
-            if (!canvas) return;
-            
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            
-            const centerX = width / 2;
-            const centerY = height / 2;
-            const scale = 40;
-            const xMin = -2.5;
-            const xMax = 2.5;
-            
-            function toCanvasX(x) {
-                return centerX + x * scale;
-            }
-            
-            function toCanvasY(y) {
-                return centerY - y * scale;
-            }
-            
-            // Clear canvas
-            ctx.clearRect(0, 0, width, height);
-            
-            // Draw axes
-            ctx.strokeStyle = '#9ca3af';
-            ctx.lineWidth = 1;
-            
-            // X-axis
-            ctx.beginPath();
-            ctx.moveTo(0, centerY);
-            ctx.lineTo(width, centerY);
-            ctx.stroke();
-            
-            // Y-axis
-            ctx.beginPath();
-            ctx.moveTo(centerX, 0);
-            ctx.lineTo(centerX, height);
-            ctx.stroke();
-            
-            // Draw axis labels
-            ctx.fillStyle = '#4b5563';
-            ctx.font = '14px Arial';
-            ctx.fillText('x', width - 20, centerY - 10);
-            ctx.fillText('y', centerX + 10, 20);
-            
-            // Draw y = x³ (purple - inflection point)
-            ctx.strokeStyle = '#7c3aed';
-            ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            
-            let firstPoint = true;
-            for (let x = xMin; x <= xMax; x += 0.05) {
-                const y = x * x * x;
-                const canvasX = toCanvasX(x);
-                const canvasY = toCanvasY(y);
-                
-                if (Math.abs(canvasY - centerY) < height) {
-                    if (firstPoint) {
-                        ctx.moveTo(canvasX, canvasY);
-                        firstPoint = false;
-                    } else {
-                        ctx.lineTo(canvasX, canvasY);
-                    }
-                }
-            }
-            ctx.stroke();
-            
-            // Draw y = x⁴ (blue - minimum)
-            ctx.strokeStyle = '#2563eb';
-            ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            
-            firstPoint = true;
-            for (let x = xMin; x <= xMax; x += 0.05) {
-                const y = x * x * x * x;
-                const canvasX = toCanvasX(x);
-                const canvasY = toCanvasY(y);
-                
-                if (firstPoint) {
-                    ctx.moveTo(canvasX, canvasY);
-                    firstPoint = false;
-                } else {
-                    ctx.lineTo(canvasX, canvasY);
-                }
-            }
-            ctx.stroke();
-            
-            // Draw y = -x⁴ (red - maximum)
-            ctx.strokeStyle = '#dc2626';
-            ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            
-            firstPoint = true;
-            for (let x = xMin; x <= xMax; x += 0.05) {
-                const y = -(x * x * x * x);
-                const canvasX = toCanvasX(x);
-                const canvasY = toCanvasY(y);
-                
-                if (firstPoint) {
-                    ctx.moveTo(canvasX, canvasY);
-                    firstPoint = false;
-                } else {
-                    ctx.lineTo(canvasX, canvasY);
-                }
-            }
-            ctx.stroke();
-            
-            // Mark the critical point (0,0) on all three curves
-            ctx.fillStyle = '#000000';
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Add labels for the functions
-            ctx.fillStyle = '#7c3aed';
-            ctx.font = '16px Arial';
-            ctx.fillText('y = x³ (inflection)', 20, 30);
-            
-            ctx.fillStyle = '#2563eb';
-            ctx.fillText('y = x⁴ (minimum)', 20, 55);
-            
-            ctx.fillStyle = '#dc2626';
-            ctx.fillText('y = -x⁴ (maximum)', 20, 80);
-        }
-        
+        // replaced by desmos screenshots
+         
         // Draw graph for Alternative Tests page
         function drawAlternativeTestGraph() {
             const canvas = document.getElementById('alternativeTestGraph');
