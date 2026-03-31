@@ -424,6 +424,10 @@
             } else if (sectionId === 'algebraic-inequalities') {
                 header.textContent = 'Algebraic inequalities';
                 subtitle.textContent = 'Fundamental inequality proofs';
+             } else if (sectionId === 'moduli-cases') {
+                header.textContent = 'Moduli and cases';
+                subtitle.textContent = 'Basic real number proofs involving moduli and cases';
+
             } else if (sectionId === 'number-theory') {
                 header.textContent = 'Basic number theory';
                 subtitle.textContent = 'Fundamental definitions and proofs in number theory';
@@ -1053,6 +1057,8 @@
                             </div>
                         </div>
                     </article>
+                    
+                    
 
                     <article class="topic-card">
                         <h3>Adding to an inequality</h3>
@@ -1140,6 +1146,198 @@
                     <p style="color: #7f8c8d; font-style: italic;">More inequality proofs will be added to this collection over time.</p>
                 </div>
             </section>
+
+<!-- Moduli and cases Sub-section -->
+            <section id="moduli-cases" class="section">
+                <div class="intro">
+                    <p>Proofs of basic moduli properties of real numbers.</p>
+                </div>
+
+                <nav class="nav-breadcrumb" style="text-align: center; margin-bottom: 30px;">
+                    <button onclick="showSection('real-numbers');">← Back to real number proofs</button>
+                </nav>
+
+                <div class="definitions-section">
+                    <h3>Preliminary properties of inequalities</h3>
+                    <ul style="margin: 10px 0 0 25px; line-height: 2;">
+                        <li>For each \(x \in \mathbb{R}\) exactly one of the following holds: \(x > 0\), \(x = 0\), \(x < 0\)</li>
+                        <li>When \(x \in \mathbb{R}\) then \(x > 0 \Leftrightarrow -x < 0\)</li>
+                        <li>Let \(x, y \in \mathbb{R}\). If \(x, y > 0\) then \(x + y > 0\)</li>
+                        <li>Let \(x, y \in \mathbb{R}\). If \(x, y > 0\) then \(xy > 0\)</li>
+                    </ul>
+                </div>
+
+                <div class="definitions-section">
+                    <h3>Very useful technique in inequality proof</h3>
+                    <p>Often if you are given or have arrived at \(\{\text{something}\} < \{\text{something else}\}\), then often it is useful, or even necessary, to rearrange this to \(\{\text{something else}\} - \{\text{something}\} > 0\) so one of the properties of inequalities (see above) can be applied.</p>
+                </div>
+
+                <h2>Moduli proofs</h2>
+                
+                <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Product of moduli</h3>
+                        <div class="formula">
+                            |x||y| = |xy|]
+                        </div>
+                        <p class="description">xxx</p>
+                        <span class="topic-link" id="product-moduli-link" onclick="toggleProof('product-moduli')">View Proof →</span>
+                        
+                        <div id="product-moduli" class="proof-container">
+                            <div class="proof-header">Proof: Product of moduli</div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Method 1: Algebraic Manipulation</div>
+                                <div class="step-content">
+                                    
+							This is a great one because you *have* to control the logic carefully—otherwise it turns into hand-waving.
+							
+							---
+							
+							## **Statement**
+							
+							For all real numbers ( x ) and ( y ),
+							[
+							|xy| = |x||y|.
+							]
+							
+							---
+							
+							## **Strategy **
+							
+							Consider the cases where numbers are:
+							
+							* positive
+							* zero
+							* negative
+							
+							---
+							
+							## **Proof (by cases)**
+							
+							We use:
+							[
+							|x| =
+							\begin{cases}
+							x & x > 0 \
+							0 & x = 0 \
+							-x & x < 0
+							\end{cases}
+							]
+							
+							---
+							
+							### **Case 1: ( x = 0 ) or ( y = 0 )**
+							
+							Then:
+							[
+							xy = 0 \quad \Rightarrow \quad |xy| = 0
+							]
+							
+							Also:
+							[
+							|x||y| = 0
+							]
+							
+							So:
+							[
+							|xy| = |x||y|
+							]
+							
+							---
+							
+							### **Case 2: ( x > 0 ), ( y > 0 )**
+							
+							Then:
+							[
+							|x| = x,\quad |y| = y
+							]
+							
+							So:
+							[
+							|x||y| = xy
+							]
+							
+							And since ( xy > 0 ),
+							[
+							|xy| = xy
+							]
+							
+							Hence:
+							[
+							|xy| = |x||y|
+							]
+							
+							---
+							
+							### **Case 3: ( x < 0 ), ( y < 0 )**
+							
+							Then:
+							[
+							|x| = -x,\quad |y| = -y
+							]
+							
+							So:
+							[
+							|x||y| = (-x)(-y) = xy
+							]
+							
+							Also, ( xy > 0 ), so:
+							[
+							|xy| = xy
+							]
+							
+							Thus:
+							[
+							|xy| = |x||y|
+							]
+							
+							---
+							
+							### **Case 4: One positive, one negative**
+							
+							Without loss of generality, let:
+							[
+							x > 0,\quad y < 0
+							]
+							
+							Then:
+							[
+							|x| = x,\quad |y| = -y
+							]
+							
+							So:
+							[
+							|x||y| = x(-y) = -xy
+							]
+							
+							Now ( xy < 0 ), so:
+							[
+							|xy| = -(xy)
+							]
+							
+							Hence:
+							[
+							|xy| = -xy = |x||y|
+							]
+							
+							(The case ( x < 0, y > 0 ) is identical.)
+							
+							---
+							
+							## **Conclusion**
+							
+							All possible sign combinations are covered, and in every case:
+							[
+							|xy| = |x||y|.
+							]
+						
+
+
+
+                        </div>
+                    </article>
+                    </section>
 
             <!-- Number Theory Section -->
             <section id="number-theory" class="section">
@@ -1645,6 +1843,7 @@
                     <div style="margin-top: 25px;">
                         <p class="cta-text">See also:</p>
                         <button class="btn-primary" onclick="showSection('algebraic-inequalities');">Algebraic Inequalities →</button>
+                        <button class="btn-primary" onclick="showSection('moduli-cases');">Moduli and cases →</button>
                     </div>
                 </div>
             </section>
