@@ -40,7 +40,7 @@
             text-align: center;
             color: #666;
             font-size: 1.1em;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-style: italic;
         }
 
@@ -172,7 +172,8 @@
 
         .btn-container {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         /* Animation page styles */
@@ -501,9 +502,9 @@
                     <h2>When Do You Need Calculus?</h2>
                     <ul>
                         <li><strong>Constant speed but changing direction:</strong> calculus can be used to find instantaneous velocity as a function of time or position</li>
-                        <li><strong>Varying force:</strong> Any changing force causes changing acceleration, requiring calculus to link position, velocity, and acceleration</li>
+                        <li><strong>Position varying force:</strong> Any force that changes according to the position of the object causes changing acceleration, requiring calculus to link position, velocity, and acceleration</li>
                         <li><strong>Complex paths:</strong> Curved trajectories, circular motion, or oscillations demand differential equations</li>
-                        <li><strong>Time-varying forces:</strong> When forces change with time or position (like springs or gravity wells)</li>
+                        <li><strong>Time-varying forces:</strong> When forces change with time or position (like springs or pendulums)</li>
                     </ul>
                 </div>
 
@@ -543,6 +544,10 @@
         <div class="page" id="page-spring">
             <h1>Horizontal Motion Attached to Perfect Spring</h1>
             <p class="subtitle">Simple Harmonic Motion Demonstration</p>
+                        
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
             
             <div class="content">
                 <p>
@@ -628,6 +633,12 @@
         <div class="page" id="page-vertical-spring">
             <h1>Vertical Motion on a Perfect Spring</h1>
             <p class="subtitle">Simple Harmonic Motion with Gravity</p>
+           
+            
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+            
             
             <div class="content">
                 <p>
@@ -684,10 +695,19 @@
             <h1>Horizontal Circular Motion</h1>
             <p class="subtitle">Uniform Circular Motion Viewed at an Angle</p>
             
+            
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            
             <div class="content">
                 <p>
-                    Watch a disk rotating in a horizontal plane, viewed from 30 degrees above. The red spot 
-                    on the circumference traces an elliptical path (eccentricity = 0.5). The disk completes 
+                    Watch a particle, seen as a red dot, 
+                    rotating in a horizontal plane, viewed from 30 degrees above. The red spot 
+                    appears in the animation to trace an elliptical path,  
+                    although in our model it is moving in a horizontal circle. 
+                    The object completes 
                     one full rotation every 3 seconds.
                 </p>
 
@@ -1044,6 +1064,12 @@
             <h1>Elliptical Orbit</h1>
             <p class="subtitle">Motion Around an Ellipse with Axis at Focus</p>
             
+            
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            
             <div class="content">
                 <p>
                     Watch a red dot moving around the perimeter of an ellipse (eccentricity = 0.5). The vertical 
@@ -1069,7 +1095,8 @@
                     <ul>
                         <li><strong>Fixed ellipse:</strong> The ellipse remains stationary with one focus at the vertical axis</li>
                         <li><strong>Variable radius:</strong> The dot's distance from the focus varies between <em>a(1-e)</em> and <em>a(1+e)</em></li>
-                        <li><strong>Focal property:</strong> At periapsis (closest point): r = 50px; at apoapsis (farthest): r = 150px</li>
+                        <li><strong>Focal property:</strong> At periapsis (object closest to focus): r = 50px; 
+                        at apoapsis (object farthest from focus): r = 150px</li>
                         <li><strong>Kepler's 2nd Law:</strong> The dot sweeps out equal areas in equal times, moving faster near periapsis and slower near apoapsis</li>
                     </ul>
                 </div>
@@ -1104,6 +1131,12 @@
         <div class="page" id="page-resistance">
             <h1>Vertical Motion with Resistance</h1>
             <p class="subtitle">Air Resistance Proportional to Velocity</p>
+            
+            
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
             
             <div class="content">
                 <p>
@@ -1198,6 +1231,12 @@
             <h1>Where Calculus Doesn't Help</h1>
             <p class="subtitle">Ball Travelling Horizontally and Bouncing Off Vertical Wall</p>
             
+            
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+            
             <div class="content">
                 <p>
                     When the ball is travelling horizontally with constant speed it is not subject to a 
@@ -1248,6 +1287,12 @@
         <div class="page" id="page-polar-vectors">
             <h1>Differentiation of Radial and Tangential Vectors</h1>
             <p class="subtitle">Why the derivatives of unit vectors point where they do</p>
+
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
 
             <div class="content">
 
@@ -1471,6 +1516,12 @@
             <h1>Mathematical Detail of Solution to Hooke's Law Equation</h1>
             <p class="subtitle">From F = −kx to x(t) = A sin(ωt)</p>
 
+
+            <div class="btn-container">
+                <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
+            </div>
+
+
             <div class="content">
 
                 <div class="highlight-box">
@@ -1486,7 +1537,8 @@
                     <div class="equation-large">
                         <em>F</em> = <em>m</em> <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span>
                     </div>
-                    <p>Combining with Hooke's law and rearranging:</p>
+                    <p>If we equate the force, F, from the two previous equations,
+                     that is combining Newton's Second Law with Hooke's law and rearranging:</p>
                     <div class="equation-large">
                         <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> + <span class="frac"><span class="top"><em>k</em></span><span class="bottom"><em>m</em></span></span><em>x</em> = 0
                     </div>
