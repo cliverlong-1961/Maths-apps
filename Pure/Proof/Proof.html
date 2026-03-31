@@ -794,9 +794,9 @@
                             </div>
                         </div>
                     </article>
-				</div>
+			
 				
-               <div class="topic-grid">
+				
 			<!--
                     <article class="topic-card">
                         <h3>The irrationality of \(\sqrt{2}\)</h3>
@@ -998,16 +998,17 @@
                     <article class="topic-card">
                         <h3>Sum and reciprocal inequality</h3>
                         <div class="formula">
-                            \[a + \frac{1}{a} \geq 2 \text{ for } a > 0\]
+                            \(a + \frac{1}{a} \geq 2\)  for  \(a > 0\)
                         </div>
-                        <p class="description">Given a is a positive real number, prove that a + 1/a ≥ 2.</p>
+                        <p class="description">Given that \(a\) is a positive real number, prove that \(a + \frac{1}{a} \geq 2\).</p>
                         <span class="topic-link" id="proof-sum-reciprocal-link" onclick="toggleProof('proof-sum-reciprocal')">View Proof →</span>
                         
                         <div id="proof-sum-reciprocal" class="proof-container">
                             <div class="proof-header">Proof: Sum and Reciprocal Inequality</div>
                             
                             <div class="proof-step">
-                                <div class="step-number">Method 1: Algebraic Manipulation. Step 1</div>
+								<p>Method 1: Algebraic Manipulation. </p>
+                                <div class="step-number">Step 1</div>
                                 <div class="step-content">
                                     Start with the inequality we want to prove:
                                     \[a + \frac{1}{a} \geq 2\]
@@ -1034,7 +1035,8 @@
                                 <div class="step-number">Step 3</div>
                                 <div class="step-content">
                                     Since the square of any real number is non-negative:
-                                    \[(a - 1)^2 \geq 0\] is always true.
+                                    \[(a - 1)^2 \geq 0\] 
+                                    <p>This is always true.</p>
                                     
                                     Equality holds when \((a - 1)^2 = 0\), which occurs when \(a = 1\).
                                 </div>
@@ -1042,7 +1044,8 @@
                             </div>
                             
                             <div class="proof-step">
-                                <div class="step-number">Method 2: AM-GM Inequality</div>
+								<p><strong>Method 2: AM-GM Inequality</strong></p>
+                                <div class="step-number"></div>
                                 <div class="step-content">
                                     Apply the AM-GM inequality to \(a\) and \(\frac{1}{a}\):
                                     \[\frac{a + \frac{1}{a}}{2} \geq \sqrt{a \cdot \frac{1}{a}} = \sqrt{1} = 1\]
@@ -1066,7 +1069,7 @@
                         <div class="formula">
                             \[x > y \Rightarrow a + x > a + y\]
                         </div>
-                        <p class="description">Let \(a, b, x, y \in \mathbb{R}\). Prove if \(x > y\) then \(a + x > a + y\).</p>
+                        <p class="description">Let \(a, x, y \in \mathbb{R}\). Prove if \(x > y\) then \(a + x > a + y\).</p>
                         <span class="topic-link" id="proof-add-ineq-link" onclick="toggleProof('proof-add-ineq')">View Proof →</span>
 
                         <div id="proof-add-ineq" class="proof-container">
@@ -1159,7 +1162,7 @@
                 </nav>
 
                 <div class="definitions-section">
-                    <h3>Preliminary properties of inequalities</h3>
+                    <h3>Preliminary properties of inequalities required in moduli proofs</h3>
                     <ul style="margin: 10px 0 0 25px; line-height: 2;">
                         <li>For each \(x \in \mathbb{R}\) exactly one of the following holds: \(x > 0\), \(x = 0\), \(x < 0\)</li>
                         <li>When \(x \in \mathbb{R}\) then \(x > 0 \Leftrightarrow -x < 0\)</li>
@@ -1179,7 +1182,7 @@
                     <article class="topic-card">
                         <h3>Product of moduli</h3>
                         <div class="formula">
-                            |x||y| = |xy|
+						\[|x||y| = |xy|\]
                         </div>
                         <!-- <p class="description">xxx</p>  -->
                         <span class="topic-link" id="product-moduli-link" onclick="toggleProof('product-moduli')">View Proof →</span>
@@ -1190,7 +1193,7 @@
                             <div class="proof-step">
                                 <div class="step-number">Algebraic Manipulation</div>
                                 <div class="step-content">
-                                For all real numbers ( x ) and ( y ),
+                                <p>For all real numbers \( x \) and \( y \),</p>
 							\[|xy| = |x||y|\]
 						<p>Consider the cases where numbers are:</p>
 							<ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
@@ -1216,9 +1219,9 @@
 								
 						
 							
-                                <div class="step-number"> Case 1</div>
+                                <div class="step-number">Case 1</div>
                                 <div class="step-content">
-                                    <p>( x = 0 ) or ( y = 0 )</p>
+                                    <p>\( x = 0 \) or \( y = 0 \)</p>
 							
 							Then:
 							\[
@@ -1240,102 +1243,101 @@
                             
                             <div class="proof-step">
                                 <div class="step-number">Case 2</div>
-                                <div class="step-content">
-                                    <p>( x > 0 ), ( y > 0 )</p>
-							
-							Then:
-							\[
-							|x| = x,\quad |y| = y
-							\]
-							
-							So:
-							\[
-							|x||y| = xy
-							\]
-							
-							And since ( xy > 0 ),
-							\[
-							|xy| = xy
-							\]
-							
-							Hence:
-							\[
-							|xy| = |x||y|
-							\]
-							
-                                </div>
+	                                <div class="step-content">
+	                                    <p>\( x > 0 \), \( y > 0 \)</p>
+											
+											Then:
+											\[
+											|x| = x,\quad |y| = y
+											\]
+											
+											So:
+											\[
+											|x||y| = xy
+											\]
+											
+											And since \( xy > 0 \),
+											\[
+											|xy| = xy
+											\]
+											
+											Hence:
+											\[
+											|xy| = |x||y|
+											\]
+											
+	                                </div>
                                 <div class="step-justification">.....</div>
                             </div>
                             
                             <div class="proof-step">
                                 <div class="step-number">Case 3</div>
-                                <div class="step-content">
-                                    <p>( x < 0 ), ( y < 0 )</p> 
-							
-							Then:
-							\[
-							|x| = -x,\quad |y| = -y
-							\]
-							
-							So:
-							\[
-							|x||y| = (-x)(-y) = xy
-							\]
-							
-							Also, ( xy > 0 ), so:
-							\[
-							|xy| = xy
-							\]
-							
-							Thus:
-							\[
-							|xy| = |x||y|
-							\]
-							
-                                </div>
+	                                <div class="step-content">
+	                                    <p>\( x < 0 \), \( y < 0 \)</p> 
+											
+											Then:
+											\[
+											|x| = -x,\quad |y| = -y
+											\]
+											
+											So:
+											\[
+											|x||y| = (-x)(-y) = xy
+											\]
+											
+											Also, \( xy > 0 \), so:
+											\[
+											|xy| = xy
+											\]
+											
+											Thus:
+											\[
+											|xy| = |x||y|
+											\]
+											
+	                                </div>
                                 <div class="step-justification"> ..... </div>
                             
                             </div> <!-- Close Case 3 -->
 
                             <div class="proof-step">
                                 <div class="step-number">Case 4</div>
-                                <div class="step-content">
-							<p>One positive, one negative</p>
-							
-							Without loss of generality, let:
-							\[
-							x > 0,\quad y < 0
-							\]
-							
-							Then:
-							\[
-							|x| = x,\quad |y| = -y
-							\]
-							
-							So:
-							\[
-							|x||y| = x(-y) = -xy
-							\]
-							
-							Now ( xy < 0 ), so:
-							\[
-							|xy| = -(xy)
-							\]
-							
-							Hence:
-							\[|xy| = -xy = |x||y|\]
-							
-							(The case ( x < 0, y > 0 ) is identical.)							
-                                </div>
+	                                <div class="step-content">
+										<p>One positive, one negative</p>
+										
+										Without loss of generality, let:
+										\[
+										x > 0,\quad y < 0
+										\]
+										
+										Then:
+										\[
+										|x| = x,\quad |y| = -y
+										\]
+										
+										So:
+										\[
+										|x||y| = x\(-y\) = -xy
+										\]
+										
+										Now \( xy < 0 \), so:
+										\[
+										|xy| = -\(xy\)
+										\]
+										
+										Hence:
+										\[|xy| = -xy = |x||y|\]
+										
+										(The case \( x < 0, y > 0 \) is identical.)							
+	                                </div>
                                 <div class="step-justification"> ..... </div>
                             </div>
                             
-							
-							</div>
+                            
+						</div> <!-- proof container -->
 
-
-                        </div>
                     </article>
+                    </div>  <!-- Topic grid -->
                     </section>
 
             <!-- Number Theory Section -->
@@ -1611,18 +1613,18 @@
                     <h3>Introduction to Real Number Proofs</h3>
                     
                     <p>
-                        Real numbers include all rational and irrational numbers. Proofs involving real numbers often require 
+                        The real numbers include both (and only) rational and irrational numbers. Proofs involving real numbers often require 
                         careful consideration of properties such as ordering, absolute values, and the completeness of the real number system.
                     </p>
                     
-                    <p>
-                        Common proof techniques for real numbers include                         using techniques such as:
+                    
+                       <p>Common proof techniques for real numbers include using techniques such as:</p> 
                         <ul style="margin: 10px 0 0 25px; line-height: 1.9;">
                             <li>splitting the proof into three cases — every real number is either positive, negative, or zero</li>
                             <li>properties of absolute values</li>
                             <li>inequalities</li>
                         </ul>
-                    </p>
+                   
                 </div>
 
                 <h2>Available Proofs</h2>
@@ -2310,7 +2312,7 @@
                     </article>
                     
                     <article class="topic-card">
-                        <h3>The irrationality of &radic;2</h3>
+                        <h3>The irrationality of \(\sqrt{2}\)</h3>
                         <div class="formula">
                             \[\sqrt{2} \notin \mathbb{Q}\]
                         </div>
@@ -2323,7 +2325,7 @@
                             which we can think of as a set or collection of numbers that in a sense 'contains' the rational numbers but 'other' numbers too. These 'other' numbers, the 'irrational' numbers,
                             were famously (allegedly?) rejected by the Ancient Greek mathematicians and philosophers — just search for the stories about this. Back to the maths.
                             The purpose of this proof is to show that the number 2 has a square root that can be shown to 'exist' (the length of the hypotenuse of a right-angled triangle with two sides equal to 1),
-                            but &radic;2 can be shown to not be rational. Therefore, because &radic;2 'exists', it must be a different kind of number — an 'irrational number'.
+                            but \(\sqrt{2}\) can be shown to not be rational. Therefore, because \(\sqrt{2}\) 'exists', it must be a different kind of number — an 'irrational number'.
                         </p>
 
                         <span class="topic-link" id="proof-irrat2-real-link" onclick="toggleProof('proof-irrat2-real')">View Proof →</span>
