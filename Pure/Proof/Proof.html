@@ -170,6 +170,7 @@
             cursor: pointer;
             border: none;
             margin: 0 10px;
+            width: auto; 
         }
 
         .btn-primary:hover {
@@ -1006,7 +1007,7 @@
                             <div class="proof-header">Proof: Sum and Reciprocal Inequality</div>
                             
                             <div class="proof-step">
-                                <div class="step-number">Method 1: Algebraic Manipulation</div>
+                                <div class="step-number">Method 1: Algebraic Manipulation. Step 1</div>
                                 <div class="step-content">
                                     Start with the inequality we want to prove:
                                     \[a + \frac{1}{a} \geq 2\]
@@ -1147,7 +1148,7 @@
                 </div>
             </section>
 
-<!-- Moduli and cases Sub-section -->
+		<!-- Moduli and cases Sub-section -->
             <section id="moduli-cases" class="section">
                 <div class="intro">
                     <p>Proofs of basic moduli properties of real numbers.</p>
@@ -1178,161 +1179,159 @@
                     <article class="topic-card">
                         <h3>Product of moduli</h3>
                         <div class="formula">
-                            |x||y| = |xy|]
+                            |x||y| = |xy|
                         </div>
-                        <p class="description">xxx</p>
+                        <!-- <p class="description">xxx</p>  -->
                         <span class="topic-link" id="product-moduli-link" onclick="toggleProof('product-moduli')">View Proof →</span>
                         
                         <div id="product-moduli" class="proof-container">
                             <div class="proof-header">Proof: Product of moduli</div>
                             
                             <div class="proof-step">
-                                <div class="step-number">Method 1: Algebraic Manipulation</div>
+                                <div class="step-number">Algebraic Manipulation</div>
                                 <div class="step-content">
-                                    
-							This is a great one because you *have* to control the logic carefully—otherwise it turns into hand-waving.
+                                For all real numbers ( x ) and ( y ),
+							\[|xy| = |x||y|\]
+						<p>Consider the cases where numbers are:</p>
+							<ul style="margin: 8px 0 8px 25px; line-height: 1.9;">
+							<li>positive</li> 
+							<li>zero</li>
+							<li>negative</li>
+							</ul>
+						
+						We use:
+						\[
+						|x| =
+						\begin{cases}
+						x & \text{if } x > 0 \\
+						0 & \text{if } x = 0 \\
+						-x & \text{if } x < 0
+						\end{cases}
+						\]
+												
+                                </div>
+                             </div> 
 							
-							---
+							<div class="proof-step">
+								
+						
 							
-							## **Statement**
-							
-							For all real numbers ( x ) and ( y ),
-							[
-							|xy| = |x||y|.
-							]
-							
-							---
-							
-							## **Strategy **
-							
-							Consider the cases where numbers are:
-							
-							* positive
-							* zero
-							* negative
-							
-							---
-							
-							## **Proof (by cases)**
-							
-							We use:
-							[
-							|x| =
-							\begin{cases}
-							x & x > 0 \
-							0 & x = 0 \
-							-x & x < 0
-							\end{cases}
-							]
-							
-							---
-							
-							### **Case 1: ( x = 0 ) or ( y = 0 )**
+                                <div class="step-number"> Case 1</div>
+                                <div class="step-content">
+                                    <p>( x = 0 ) or ( y = 0 )</p>
 							
 							Then:
-							[
+							\[
 							xy = 0 \quad \Rightarrow \quad |xy| = 0
-							]
+							\]
 							
 							Also:
-							[
+							\[
 							|x||y| = 0
-							]
+							\]
 							
 							So:
-							[
+							\[
 							|xy| = |x||y|
-							]
-							
-							---
-							
-							### **Case 2: ( x > 0 ), ( y > 0 )**
+							\]
+                                </div>
+                                <div class="step-justification">Since ......</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Case 2</div>
+                                <div class="step-content">
+                                    <p>( x > 0 ), ( y > 0 )</p>
 							
 							Then:
-							[
+							\[
 							|x| = x,\quad |y| = y
-							]
+							\]
 							
 							So:
-							[
+							\[
 							|x||y| = xy
-							]
+							\]
 							
 							And since ( xy > 0 ),
-							[
+							\[
 							|xy| = xy
-							]
+							\]
 							
 							Hence:
-							[
+							\[
 							|xy| = |x||y|
-							]
+							\]
 							
-							---
-							
-							### **Case 3: ( x < 0 ), ( y < 0 )**
+                                </div>
+                                <div class="step-justification">.....</div>
+                            </div>
+                            
+                            <div class="proof-step">
+                                <div class="step-number">Case 3</div>
+                                <div class="step-content">
+                                    <p>( x < 0 ), ( y < 0 )</p> 
 							
 							Then:
-							[
+							\[
 							|x| = -x,\quad |y| = -y
-							]
+							\]
 							
 							So:
-							[
+							\[
 							|x||y| = (-x)(-y) = xy
-							]
+							\]
 							
 							Also, ( xy > 0 ), so:
-							[
+							\[
 							|xy| = xy
-							]
+							\]
 							
 							Thus:
-							[
+							\[
 							|xy| = |x||y|
-							]
+							\]
 							
-							---
-							
-							### **Case 4: One positive, one negative**
+                                </div>
+                                <div class="step-justification"> ..... </div>
+                            
+                            </div> <!-- Close Case 3 -->
+
+                            <div class="proof-step">
+                                <div class="step-number">Case 4</div>
+                                <div class="step-content">
+							<p>One positive, one negative</p>
 							
 							Without loss of generality, let:
-							[
+							\[
 							x > 0,\quad y < 0
-							]
+							\]
 							
 							Then:
-							[
+							\[
 							|x| = x,\quad |y| = -y
-							]
+							\]
 							
 							So:
-							[
+							\[
 							|x||y| = x(-y) = -xy
-							]
+							\]
 							
 							Now ( xy < 0 ), so:
-							[
+							\[
 							|xy| = -(xy)
-							]
+							\]
 							
 							Hence:
-							[
-							|xy| = -xy = |x||y|
-							]
+							\[|xy| = -xy = |x||y|\]
 							
-							(The case ( x < 0, y > 0 ) is identical.)
+							(The case ( x < 0, y > 0 ) is identical.)							
+                                </div>
+                                <div class="step-justification"> ..... </div>
+                            </div>
+                            
 							
-							---
-							
-							## **Conclusion**
-							
-							All possible sign combinations are covered, and in every case:
-							[
-							|xy| = |x||y|.
-							]
-						
-
+							</div>
 
 
                         </div>
@@ -1840,9 +1839,9 @@
 			-->
                 <div style="margin-top: 30px; text-align: center;">
                     <p style="color: #7f8c8d; font-style: italic;">More real number proofs will be added to this collection over time.</p>
-                    <div style="margin-top: 25px;display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <div style="margin-top: 25px;display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
 						
-                        <p class="cta-text">See also:</p>
+                        <p class="cta-text" style="flex-basis: 100%;">See also:</p>
                         <button class="btn-primary" onclick="showSection('algebraic-inequalities');">Algebraic Inequalities →</button>
                         <button class="btn-primary" onclick="showSection('moduli-cases');">Moduli and cases →</button>
                     </div>
