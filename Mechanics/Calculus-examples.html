@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculus and Particle Motion</title>
+    <title>Calculus and particle motion</title>
     <style>
         * {
             margin: 0;
@@ -487,22 +487,23 @@
     <div class="container">
         <!-- Page 1: Home -->
         <div class="page active" id="page-home">
-            <h1>Calculus & Particle Motion</h1>
+            <h1>Calculus & particle motion</h1>
             <p class="subtitle">Understanding When Mathematics Meets Movement</p>
             
             <div class="content">
                 <p>
-                    Calculus becomes essential for describing particle motion whenever the acceleration 
-                    changes continuously over time. While simple algebra is sufficient for constant velocity motion, 
+                    Calculus is the technique needed for describing particle motion whenever the acceleration 
+                    changes continuously over time. A particle cannot be subject to immediate or abrupt
+                    changes in motion. While simple algebra, such as s = vt, is sufficient for constant velocity motion, 
                     and constant acceleration problems can be solved with the 'suvat' equations, more complicated 
                     scenarios require calculus.
                 </p>
 
                 <div class="highlight-box">
-                    <h2>When Do You Need Calculus?</h2>
+                    <h2>When do you need calculus?</h2>
                     <ul>
                         <li><strong>Constant speed but changing direction:</strong> calculus can be used to find instantaneous velocity as a function of time or position</li>
-                        <li><strong>Position varying force:</strong> Any force that changes according to the position of the object causes changing acceleration, requiring calculus to link position, velocity, and acceleration</li>
+                        <li><strong>Force that varies as the position of an object changes:</strong> Any force that changes according to the position of the object causes changing acceleration, requiring calculus to link position, velocity, and acceleration</li>
                         <li><strong>Complex paths:</strong> Curved trajectories, circular motion, or oscillations demand differential equations</li>
                         <li><strong>Time-varying forces:</strong> When forces change with time or position (like springs or pendulums)</li>
                     </ul>
@@ -542,7 +543,7 @@
 
         <!-- Page 2: Spring Oscillation -->
         <div class="page" id="page-spring">
-            <h1>Horizontal Motion Attached to Perfect Spring</h1>
+            <h1>Horizontal motion for an object attached to a perfect spring</h1>
             <p class="subtitle">Simple Harmonic Motion Demonstration</p>
                         
             <div class="btn-container">
@@ -588,17 +589,18 @@
                     <h2>Animation Details</h2>
                     <ul>
                         <li><strong>Idealisation:</strong> The spring does not 'get in the way' of the motion of the object. As the object passes through the centre the 'spring' is always pulling the object back to the centre. There is no friction or energy losses so the object oscillates continuously, never stopping</li>
-                        <li><strong>Left Motion:</strong> Moves to the left, slowing down as the spring extends (2 seconds)</li>
+                        <li><strong>Left Motion:</strong> Object moves to the left, slowing down as the spring extends (2 seconds)</li>
                         <li><strong>Reversal:</strong> Stops at maximum displacement, then accelerates back</li>
                         <li><strong>Through Center:</strong> Passes through equilibrium at maximum speed</li>
                         <li><strong>Right Motion:</strong> Continues to the right, stops at maximum displacement</li>
-                        <li><strong>Return:</strong> Springs back to center, completing one full cycle (8 seconds total)</li>
+                        <li><strong>Return:</strong> Spring pulls the object back to center, completing one full cycle (8 seconds total)</li>
                     </ul>
                 </div>
 
                 <p>
-                    The motion is determined by Hooke's Law: <em>F = −kx</em>, where the restoring force, <em>F</em>, 
-                    is proportional, but in the opposite direction, to the displacement, <em>x</em>, from the centre of motion. 
+                    The motion is determined by Hooke's Law: <em>F = −kx</em> (k is positive), where the restoring force, <em>F</em>, 
+                    is proportional, but in the opposite direction, to the displacement, <em>x</em>, from the centre of motion.
+                    In other words as the object moves away from the centre the spring is pulling it harder back towards the centre. 
                     A basic solution for the sphere's position, <em>x</em>, at any time, <em>t</em>, is:
                 </p>
 
@@ -610,9 +612,13 @@
 
                 <p>To give some physical meaning to <em>A</em> and <em>ω</em>:</p>
 
-                <p>If <em>A</em> increases that means at its maximum displacement, the object is further away from the centre of motion. As <em>t</em> changes, the value of <em>x</em>(<em>t</em>) varies between +<em>A</em> and −<em>A</em> (its maximum displacement) because the value of sin varies between +1 and −1.</p>
+                <p>If <em>A</em> increases that means at its maximum displacement, the object is further away from the centre of motion. As <em>t</em> changes, the value of <em>x</em>(<em>t</em>) varies between +<em>A</em> and −<em>A</em> 
+                (its maximum displacement) because the value of sin varies between +1 and −1.
+                In other words the object moves between equal displacements to the left and right of the centre.
+                </p>
+                
 
-                <p>And finally if we think of values of <em>ω</em> resulting in sin(2<em>t</em>) or sin(3<em>t</em>), the object is oscillating around the centre faster as <em>ω</em> increases. We say the object's 'angular frequency' is increasing.</p>
+                <p>And finally if we think of different values of <em>ω</em>, resulting in sin(2<em>t</em>) or sin(3<em>t</em>), the object is oscillating around the centre faster as <em>ω</em> increases. We say the object's 'angular frequency' is increasing.</p>
 
                 <p>Much more mathematical detail about the solution is available in the following sub-page.</p>
 
@@ -620,7 +626,7 @@
             </div>
 
             <div class="btn-container">
-                <button class="btn-navigate" onclick="showPage('page-shm-math')">Mathematical detail of solution to Hooke's law equation →</button>
+                <button class="btn-navigate" onclick="showPage('page-shm-math')">Mathematical detail of solution to Hooke's Law equation →</button>
                 <button class="btn-navigate" onclick="showPage('page-home')">← Back to Home</button>
             </div>
 
@@ -631,7 +637,7 @@
 
         <!-- Page 3: Vertical Spring with Gravity -->
         <div class="page" id="page-vertical-spring">
-            <h1>Vertical Motion on a Perfect Spring</h1>
+            <h1>Vertical motion on a perfect spring</h1>
             <p class="subtitle">Simple Harmonic Motion with Gravity</p>
            
             
@@ -643,8 +649,8 @@
             <div class="content">
                 <p>
                     Watch as a sphere oscillates vertically under the combined influence of a spring force 
-                    and gravity. The equilibrium position occurs where the spring force balances the weight, 
-                    and the motion about this point exhibits simple harmonic motion.
+                    and gravity. The equilibrium position occurs where the spring force balances the weight. 
+                    The motion of the object about this equilibrum point exhibits simple harmonic motion.
                 </p>
 
                 <div class="vertical-spring-container">
@@ -657,17 +663,22 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h2>Physics of Vertical SHM</h2>
+                    <h2>Physics of vertical SHM</h2>
+
+                    <p>If the object is oscillating vertically, we might choose to use <em>y</em>
+					to label this direction of motion.
+					</p>
+
                     <ul>
-                        <li><strong>Forces:</strong> Spring force (<em>F = -kx</em>) and gravitational force (<em>F = -mg</em>)</li>
-                        <li><strong>Equilibrium:</strong> At equilibrium, the spring force balances gravity: <em>kx<sub>eq</sub> = mg</em></li>
+                        <li><strong>Forces:</strong> Spring force towards equilibrium point (<em>F = -ky</em>) and gravitational force (<em>F = -mg</em>), always down.</li>
+                        <li><strong>Equilibrium:</strong> At equilibrium, the spring force balances gravity: <em>ky<sub>eq</sub> = mg</em></li>
                         <li><strong>SHM about equilibrium:</strong> When displaced from equilibrium, the net restoring force is proportional to displacement</li>
                         <li><strong>Period:</strong> The period of oscillation <em>T = 2π√(m/k)</em> is the same as horizontal SHM</li>
                     </ul>
                 </div>
 
                 <p>
-                    The equation of motion from the natural spring length is:
+                    The equation of motion of the object attached to the spring is:
                 </p>
 
                 <div class="equation">
@@ -675,9 +686,11 @@
                 </div>
 
                 <p>
-                    where <em>y<sub>eq</sub></em> is the equilibrium position (spring stretched by <em>mg/k</em>), 
-                    and the sphere oscillates harmonically about this point. Gravity shifts the equilibrium but 
-                    doesn't affect the frequency of oscillation.
+                    where <em>y(t)</em> is the height of the object above the ground at any moment, <em>t</em>,
+                    and <em>y<sub>eq</sub></em> is the height above the ground of the 
+                    equilibrium (centre) position (spring stretched by <em>mg/k</em>), 
+                    and the object oscillates harmonically about this equilibrium point. 
+                    
                 </p>
             </div>
 
@@ -703,10 +716,10 @@
             
             <div class="content">
                 <p>
-                    Watch a particle, seen as a red dot, 
+                    Watch a particle, visualised as a red dot 
                     rotating in a horizontal plane, viewed from 30 degrees above. The red spot 
                     appears in the animation to trace an elliptical path,  
-                    although in our model it is moving in a horizontal circle. 
+                    although in the mathematical model it is moving in a horizontal circle. 
                     The object completes 
                     one full rotation every 3 seconds.
                 </p>
@@ -795,7 +808,7 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h2>Linear Velocity and Angular Velocity Relationship</h2>
+                    <h2>Linear velocity and angular velocity relationship</h2>
                     <p>
                         For a particle moving in a circle at constant distance <span class="var">r</span> from the center 
                         with constant angular velocity <span class="var">ω</span>, we can derive the linear (tangential) 
@@ -821,14 +834,14 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h2>Radial Acceleration Using Small Changes</h2>
+                    <h2>Radial acceleration using small changes</h2>
                     <p>
-                        The radial or centripetal acceleration is the acceleration to the centre or axis of rotation. 
-                        Don't confuse with the angular acceleration which is a measure of how quickly the angular 
+                        The radial or centripetal acceleration is the acceleration towards the centre or axis of rotation. 
+                        Don't confuse with the angular acceleration which is a measure of how quickly the angular (rotating) 
                         velocity is changing.
                     </p>
                     <p>
-                        We can derive the centripetal acceleration by examining the change in velocity as the object 
+                        We can derive the expression for radial (centripetal) acceleration by examining the change in velocity as the object 
                         moves through a small angle d<span class="var">θ</span>.
                     </p>
                     <p style="text-align: center; margin-top: 20px;">
@@ -903,23 +916,21 @@
                     </p>
                     <p style="text-align: center; font-size: 0.9em; color: #666; margin-top: 10px;">
                         As the particle moves from P to Q through angle d<span class="var">θ</span>, the velocity vector 
-                        rotates by the same angle. The triangle shows the component of velocity perpendicular to the 
-                        original direction.
+                        rotates by the same angle. The triangle with a corner at Q shows the component of velocity perpendicular to the 
+                        original direction from P.
                     </p>
-                </div>
 
-                <div class="highlight-box">
-                    <h2>Radial Acceleration Detailed Explanation</h2>
+                    <h2>Radial acceleration detailed derivation</h2>
                     <p>
                         The derivation of the equation for radial acceleration of an object travelling at constant 
                         (tangential) speed around a horizontal circle follows.
                     </p>
                     <p style="color:#764ba2; font-style:italic; margin: 10px 0;">
-                        Although the diagram is of a vertical circle, always remember this derivation is only for 
+                        Although the diagram above is of a vertical circle, always remember this derivation is only for 
                         an object travelling in a horizontal circular path.
                     </p>
                     <p>
-                        A result derived earlier, to be used later — the relationship between the tangential velocity 
+                        A result derived earlier, to be used later, the relationship between the tangential velocity 
                         <span class="var">v</span>, the angular velocity <span class="var">ω</span> = 
                         <span class="frac"><span class="top">d<span class="var">θ</span></span><span class="bottom">d<span class="var">t</span></span></span>, 
                         and the radius of the path <span class="var">r</span>:
@@ -979,7 +990,7 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h2>Radial Acceleration Using Polar Coordinate Vectors</h2>
+                    <h2>Radial acceleration using polar coordinate vectors</h2>
                     <p>
                         To find the acceleration of an object moving in a circle at constant radius <span class="var">r</span> 
                         with constant angular velocity <span class="var">ω</span>, we use polar coordinates with unit vectors: 
@@ -1033,7 +1044,7 @@
                     <button class="btn-navigate" onclick="showPage('page-polar-vectors')">See Differentiation of Radial &amp; Tangential Vectors →</button>
                 </div>
 
-                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">Cartesian Coordinates of Position of Spot</h3>
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">Cartesian coordinates of position of spot</h3>
 
                 <p>
                     The position of the red spot can be described using parametric equations:
@@ -1091,12 +1102,12 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h2>Elliptical Motion About a Focus</h2>
+                    <h2>Properties of elliptical motion about a focus</h2>
                     <ul>
-                        <li><strong>Fixed ellipse:</strong> The ellipse remains stationary with one focus at the vertical axis</li>
-                        <li><strong>Variable radius:</strong> The dot's distance from the focus varies between <em>a(1-e)</em> and <em>a(1+e)</em></li>
-                        <li><strong>Focal property:</strong> At periapsis (object closest to focus): r = 50px; 
-                        at apoapsis (object farthest from focus): r = 150px</li>
+                        <li><strong>Fixed ellipse:</strong> The elliptical path remains stationary with one focus at the vertical axis</li>
+                        <li><strong>Variable radius:</strong When the eccentricity of the ellipse is e,
+                        The dot's distance from the focus varies between <em>a(1-e)</em> and <em>a(1+e)</em></li>
+                        
                         <li><strong>Kepler's 2nd Law:</strong> The dot sweeps out equal areas in equal times, moving faster near periapsis and slower near apoapsis</li>
                     </ul>
                 </div>
@@ -1110,9 +1121,10 @@
                 </div>
 
                 <p>
-                    where <em>a</em> = 100px is the semi-major axis and <em>e</em> = 0.5 is the eccentricity. 
+                    where <em>a</em> is the length of the semi-major axis of the ellipse and <em>e</em> is the eccentricity of the ellipse. 
                     This animation uses Kepler's equation to solve for the true orbital position at each moment, 
-                    demonstrating actual Keplerian motion. The dot moves fastest at periapsis and slowest at apoapsis, 
+                    demonstrating actual Keplerian motion. The dot moves fastest at periapsis (object closest to focus) and slowest at
+                     apoapsis (object furthest from focus), 
                     exactly as planets orbit the sun. This non-uniform motion requires calculus and differential 
                     equations to describe accurately.
                 </p>
@@ -1152,7 +1164,7 @@
                     The standard mass multiplied by acceleration, <em>ma</em>, is written as 
                     <span class="var">m</span><span class="frac"><span class="top">d<span class="var">v</span></span><span class="bottom">d<span class="var">t</span></span></span>. 
                     This is equal to the sum of the forces acting on the object: 1) the weight acting downwards −<span class="var">mg</span>, and 
-                    2) the resistance proportional to velocity as −<span class="var">mKv</span> (to make later algebra easier since <span class="var">m</span> 
+                    2) the resistance proportional to velocity as −<span class="var">mKv</span> (to make later algebra easier with <span class="var">m</span> 
                     and <span class="var">K</span> are constants. <span class="var">K</span> has dimensions s⁻¹).
                 </p>
 
@@ -1186,7 +1198,7 @@
                 </div>
 
                 <p>
-                    So if we have a value for <span class="var">K</span> and the initial velocity, we can calculate how long it takes 
+                    If we have a value for <span class="var">K</span> and the initial velocity, we can calculate how long it takes 
                     for the object to reach a certain velocity, <span class="var">v</span>.
                 </p>
 
@@ -1513,7 +1525,7 @@
 
         <!-- Page: Mathematical detail of Hooke's Law solution -->
         <div class="page" id="page-shm-math">
-            <h1>Mathematical Detail of Solution to Hooke's Law Equation</h1>
+            <h1>Mathematical detail of simple (and more complicated) solution(s) to Hooke's Law equation</h1>
             <p class="subtitle">From F = −kx to x(t) = A sin(ωt)</p>
 
 
@@ -1532,8 +1544,8 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h2>2. Apply Newton's Second Law</h2>
-                    <p>Newton's second law says:</p>
+                    <h2>2. Apply Newton's second law</h2>
+                    <p>Newton's second law can be written as:</p>
                     <div class="equation-large">
                         <em>F</em> = <em>m</em> <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span>
                     </div>
@@ -1542,15 +1554,16 @@
                     <div class="equation-large">
                         <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> + <span class="frac"><span class="top"><em>k</em></span><span class="bottom"><em>m</em></span></span><em>x</em> = 0
                     </div>
-                    <p>Now define <em>ω</em>² = <em>k</em>/<em>m</em>. The equation of motion becomes:</p>
+                    <p>Now define <em>ω</em>² = <em>k</em>/<em>m</em> (*). The equation of motion becomes:</p>
                     <div class="equation-large">
                         <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> + <em>ω</em>²<em>x</em> = 0
                     </div>
                     <p>This is the standard differential equation for simple harmonic motion (SHM).</p>
+                    <p>(*) See later why this is useful</p>
                 </div>
 
                 <div class="highlight-box">
-                    <h2>3. Test the Proposed Solution x(t) = A sin(ωt)</h2>
+                    <h2>3. Test the proposed solution x(t) = A sin(ωt) (*)</h2>
                     <p>We check whether this function satisfies the equation of motion.</p>
                     <p><strong>First derivative:</strong></p>
                     <div class="equation-large">
@@ -1561,18 +1574,20 @@
                         <span class="frac"><span class="top">d²<em>x</em></span><span class="bottom">d<em>t</em>²</span></span> = −<em>A</em><em>ω</em>² sin(<em>ω</em><em>t</em>) = −<em>ω</em>²<em>x</em>(<em>t</em>)
                     </div>
                     <p>since <em>x</em>(<em>t</em>) = <em>A</em> sin(<em>ω</em><em>t</em>) by definition.</p>
+
                 </div>
 
                 <div class="highlight-box">
-                    <h2>4. Substitute Back into the Equation of Motion</h2>
+                    <h2>4. Substitute back into the equation of motion</h2>
                     <div class="equation-large">
                         (−<em>ω</em>²<em>x</em>) + <em>ω</em>²<em>x</em> = 0
                     </div>
                     <p>The equation is satisfied exactly. ✓</p>
+                     <p>(*) This is why k/m has been replaced by <em>ω</em>.</p>
                 </div>
 
                 <div class="highlight-box">
-                    <h2>5. Physical Interpretation — Why Sine Appears</h2>
+                    <h2>5. Physical Interpretation — why sine appears in the solution</h2>
                     <p>The acceleration is proportional to −<em>x</em>. Sine (and cosine) functions are the <em>only</em> functions whose second derivative is proportional to the negative of the function itself:</p>
                     <div class="equation-large">
                         <span class="frac"><span class="top">d²</span><span class="bottom">d<em>t</em>²</span></span> sin(<em>ω</em><em>t</em>) = −<em>ω</em>² sin(<em>ω</em><em>t</em>)
@@ -1626,11 +1641,12 @@
                     <div class="equation-large">
                         <span class="frac"><span class="top">d²</span><span class="bottom">d<em>t</em>²</span></span> sin(<em>ω</em><em>t</em>) = −<em>ω</em>² sin(<em>ω</em><em>t</em>)
                     </div>
-                    <p>the physics (force ∝ displacement) naturally produces a second derivative proportional to −<em>x</em>, which mathematically introduces <em>ω</em>², not just <em>ω</em>. In short, <em>ω</em>² = <em>k</em>/<em>m</em> means "the square of the natural oscillation rate is set by the ratio of restoring force strength to inertia."</p>
+                    <p>the physics (force ∝ displacement) naturally produces a second derivative proportional to −<em>x</em>, which mathematically introduces <em>ω</em>², not just <em>ω</em>. In short, <em>ω</em>² = <em>k</em>/<em>m</em> means "the square of the natural oscillation rate is set by the ratio of 
+                    restoring force strength to the inertia of the oscillating object."</p>
                 </div>
 
                 <div class="highlight-box">
-                    <h2>8. Meaning of ω in One-Dimensional Oscillation</h2>
+                    <h2>8. Meaning of ω in one-dimensional oscillation</h2>
                     <p><strong>How fast the object oscillates:</strong> <em>ω</em> measures how rapidly the motion repeats in time:</p>
                     <div class="equation-large">
                         <em>ω</em> = 2<em>π</em><em>f</em> = <span class="frac"><span class="top">2<em>π</em></span><span class="bottom"><em>T</em></span></span>
