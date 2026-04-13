@@ -395,7 +395,21 @@
              <div class="back-home">
                 <button class="btn btn-secondary" onclick="showPage('home')">Back to Home</button>
             </div>
-            
+          
+           
+            <div class="content-section" style="border-color: #7c3aed;">
+                <h3>Meaning of "stationary point" on a curve</h3>
+                <p>If we plot the graph of a simple function, y = f(x), where y is plotted vertically and
+                x is plotted horizontally, then a stationary point is when the derivative dy/dx or f'(c) equals zero.
+                This point is also known as a "critical" point, because something significant happens to 
+                the behaviour of the function there.</p>
+                <p>In the examples immediately below, each has critical point
+                when x = 0 and the tangent to the curve is horizontal there 
+                but the curve has either a horizontal inflection point, 
+                a local minimum or local maximum here.</p>
+                <p>Our job is to determine which behaviour the graph has at the critical point.</p>  
+            </div>
+
             
             <div class="container-graph">
 				<figure>
@@ -431,7 +445,7 @@
              
             <div class="content-section" style="border-color: #7c3aed;">
                 <h3>When the Second Derivative Test Fails</h3>
-                <p>We've seen that when f'(c) = 0 at a critical point c:</p>
+                <p>We are taught early in our study of calculus that when f'(c) = 0 at a critical point c:</p>
                 <ul style="margin-left: 2rem; margin-top: 1rem;">
                     <li style="margin-bottom: 0.5rem;">If f''(c) > 0, then c is a local minimum (concave up)</li>
                     <li style="margin-bottom: 0.5rem;">If f''(c) < 0, then c is a local maximum (concave down)</li>
@@ -447,7 +461,7 @@
                 <h3>Three Classic Examples</h3>
                 
                 <div class="example-box">
-                    <h4>EXAMPLE 1: f(x) = x³ — INFLECTION POINT</h4>
+                    <h4>EXAMPLE 1: f(x) = x³ — (Horizontal) INFLECTION POINT</h4>
                     <p>First derivative: f'(x) = 3x²</p>
                     <p>Second derivative: f''(x) = 6x</p>
                     
@@ -496,7 +510,10 @@
             
             
             <div class="content-section" style="border-color: #7c3aed;">
-                <h3>When the Second Derivative Test Fails</h3>
+                <h3>When the second derivative test fails</h3>
+                <p>Study the app on concavity before this to ensure you understand
+                the language surrounding "concave".</p>
+                <p>See: <a href="https://maths-apps.crlong.uk/Pure/Concavity/concavity.html">Concavity app</a></p>
                 <p>We've seen that when f'(c) = 0 at a critical point c:</p>
                 <ul style="margin-left: 2rem; margin-top: 1rem;">
                     <li style="margin-bottom: 0.5rem;">If f''(c) > 0, then c is a local minimum (concave up)</li>
@@ -511,7 +528,7 @@
             
               
             <div class="content-section" style="border-color: #7c3aed;">
-                <h3>The Higher-Order Derivative Test</h3>
+                <h3>The higher-order derivative test</h3>
                 <p>When f''(c) = 0, we need to check higher derivatives. Here's the general pattern:</p>
                 
                 <div class="math-formula">
@@ -519,9 +536,9 @@
                     And the "nth (order) derivative" is the function we get when differentiating f(x) n times <br>
                     so  f⁽2⁾(c) is the second-order (or just second) derivative<br>
                     and f⁽4⁾(c) is the fourth(-order) derivative, and so on ..<br>
-                    • If the first (higher-order) derivative to have a non-zero value, f⁽ⁿ⁾(c) ≠ 0, where n is ODD:<br>
+                    • The first (higher-order) derivative at the critical point to have a non-zero value, f⁽ⁿ⁾(c) ≠ 0, where n is ODD:<br>
                     &nbsp;&nbsp;→ c is an inflection point (neither max nor min)<br><br>
-                    • If the first (higher-order) derivative to have a non-zero value, f⁽ⁿ⁾(c) ≠ 0, where n is EVEN:<br>
+                    • The first (higher-order) derivative at the critical point to have non-zero value, f⁽ⁿ⁾(c) ≠ 0, where n is EVEN:<br>
                     and  f⁽ⁿ⁾(c) < 0 &nbsp;&nbsp;→ f(c) is a local maximum<br>
                     and  f⁽ⁿ⁾(c) > 0 &nbsp;&nbsp;→ f(c) is a local minimum
                 </div>
@@ -573,7 +590,7 @@
     <div id="alternative-tests" class="page">
         <div class="math-container">
             <div class="math-header" style="border-color: #059669;">
-                <h2>Alternatives to the Second Derivative Test</h2>
+                <h2>Alternatives to the second derivative test</h2>
                 <p>f'(a) = 0 and f''(a) = 0</p>
             </div>
             
@@ -776,8 +793,8 @@
             </div>
             
             <div class="content-section" style="border-color: #d97706;">
-                <h3>A Different Kind of Inflection Point</h3>
-                <p>We've explored what happens when <strong>both</strong> f'(a) = 0 and f''(a) = 0 at a point x = a. But what if only f''(a) = 0 while f'(a) ≠ 0?</p>
+                <h3>A different kind of inflection point</h3>
+                <p>We have explored what happens when <strong>both</strong> f'(a) = 0 and f''(a) = 0 at a point x = a. But what if only f''(a) = 0 while f'(a) ≠ 0?</p>
                 
                 <div class="key-point">
                     <strong>Key Distinction:</strong> When f''(a) = 0 but f'(a) ≠ 0, we still have a <strong>point of inflection</strong> where concavity changes, but the tangent line is NOT horizontal. The function continues increasing or decreasing through the inflection point.
@@ -848,14 +865,18 @@
             </div>
             
             <div class="content-section" style="border-color: #d97706;">
-                <h3>Visual Characteristics</h3>
+                <h3>Visual characteristics</h3>
                 <p>At an inflection point where f'(a) ≠ 0, you'll observe:</p>
                 
                 <ul style="margin-left: 2rem; margin-top: 1rem;">
                     <li style="margin-bottom: 0.5rem;"><strong>The curve "straightens out"</strong> momentarily as it passes through the point</li>
-                    <li style="margin-bottom: 0.5rem;"><strong>The tangent line crosses the curve</strong> (rather than just touching it)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>The tangent line crosses the curve</strong> (rather than just touching it) 
+                    i.e. the tangent changes from being above the curve to below it (or vice versa), either side of the inflection point </li>
                     <li style="margin-bottom: 0.5rem;"><strong>The curve changes from bending one way to bending the other</strong></li>
                     <li style="margin-bottom: 0.5rem;"><strong>The function continues in the same direction</strong> (keeps increasing or keeps decreasing)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>If the curve represents a road we are looking down on, 
+                    and we are turning the steering wheel one way to go round a bend,</strong> the inflection point is where we stop turning one way and start 
+                    turning the other - at the inflection point the steering is (for an instant) pointing straight ahead, not turning</li>
                 </ul>
                 
                 <div class="key-point">
@@ -864,7 +885,7 @@
             </div>
             
             <div class="content-section" style="border-color: #d97706;">
-                <h3>Finding All Inflection Points</h3>
+                <h3>Finding all inflection points on a curve</h3>
                 <p>To find ALL inflection points of a function (both types):</p>
                 
                 <div class="math-formula">
