@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanics: Moments and Equilibrium</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #fafafa;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #34495e;
+            margin-bottom: 40px;
+        }
+
+        h1 { font-size: 2.5em; color: #2c3e50; margin-bottom: 10px; font-weight: normal; }
+
+        .subtitle { font-size: 1.2em; color: #7f8c8d; font-style: italic; }
+
+        .nav-breadcrumb { text-align: center; margin-bottom: 30px; }
+        .nav-breadcrumb button {
+            background: none; border: none; color: #3498db;
+            cursor: pointer; font-size: 0.95em; padding: 5px 10px;
+            text-decoration: underline; font-family: Georgia, serif;
+        }
+        .nav-breadcrumb button:hover { color: #2980b9; }
+
+        h2 {
+            font-size: 1.8em; color: #2c3e50; margin: 30px 0 20px;
+            font-weight: normal; border-bottom: 1px solid #bdc3c7; padding-bottom: 10px;
+        }
+        h3 { font-size: 1.4em; color: #34495e; margin: 20px 0 15px; font-weight: normal; }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .intro-content {
+            max-width: 760px; margin: 0 auto; background: white;
+            padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .intro-content p { font-size: 1.05em; line-height: 1.8; margin-bottom: 20px; text-align: justify; }
+
+        .definition-box {
+            background: #fafafa; border: 1px solid #ddd;
+            padding: 20px; margin: 25px 0; border-radius: 4px;
+        }
+        .definition-box h3 { margin-top: 0; color: #2c3e50; font-size: 1.15em; }
+
+        .highlight-box {
+            background: #fff9e6; border-left: 4px solid #f39c12;
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+        }
+
+        .key-result {
+            background: #e8f6f3; border-left: 4px solid #16a085;
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+        }
+
+        .worked-example {
+            background: #f0f7ff; border: 1px solid #c5dff8;
+            border-radius: 8px; padding: 25px; margin: 25px 0;
+        }
+        .worked-example h4 {
+            color: #1a5276; font-size: 1.1em; margin-bottom: 15px;
+            border-bottom: 1px solid #c5dff8; padding-bottom: 8px;
+        }
+        .worked-example p { margin-bottom: 12px; line-height: 1.7; }
+
+        .example-step {
+            padding: 12px 15px; margin: 10px 0;
+            background: white; border-left: 3px solid #95a5a6; border-radius: 4px;
+        }
+        .step-label { font-weight: bold; color: #3498db; margin-bottom: 6px; }
+
+        /* Real-world motivating questions */
+        .motivation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .motivation-card {
+            background: white; border: 1px solid #ddd;
+            border-radius: 8px; padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .motivation-card svg { display: block; margin: 0 auto 15px; }
+        .motivation-card .question {
+            font-style: italic; color: #34495e;
+            font-size: 0.97em; line-height: 1.6; text-align: center;
+        }
+        .motivation-card .question strong {
+            display: block; font-style: normal; font-size: 1.05em;
+            color: #2c3e50; margin-bottom: 8px; text-align: center;
+        }
+
+        /* Balance diagrams for static examples */
+        .diagram-row {
+            display: flex; gap: 20px; flex-wrap: wrap;
+            justify-content: center; margin: 25px 0;
+        }
+        .diagram-box {
+            background: white; border: 1px solid #ddd; border-radius: 8px;
+            padding: 20px; text-align: center; flex: 1; min-width: 240px;
+        }
+        .diagram-box p { font-size: 0.95em; color: #555; margin-top: 12px; line-height: 1.5; }
+
+        /* Topic cards grid */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px; margin-top: 30px;
+        }
+        .topic-card {
+            background: white; border: 1px solid #ddd;
+            border-radius: 8px; padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+        .topic-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.10); }
+        .topic-card h3 { margin-top: 0; margin-bottom: 12px; font-size: 1.1em; color: #2c3e50; }
+        .topic-card p { font-size: 0.93em; color: #666; margin-bottom: 15px; line-height: 1.5; }
+
+        /* CTA buttons */
+        .cta-section {
+            text-align: center; margin-top: 45px; padding-top: 35px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .cta-text { font-size: 1.05em; color: #666; margin-bottom: 22px; }
+
+        .btn-primary {
+            display: inline-block; background-color: #3498db; color: white;
+            padding: 13px 28px; font-size: 1em; border-radius: 6px;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(52,152,219,0.3);
+            cursor: pointer; border: none; margin: 6px;
+            font-family: Georgia, serif;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9; transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52,152,219,0.4);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        /* Definitions / content sections */
+        .definitions-section {
+            background: white; padding: 30px; margin: 25px 0;
+            border-radius: 8px; border: 1px solid #e0e0e0;
+        }
+        .definitions-section h3 {
+            color: #2c3e50; margin-bottom: 18px; font-size: 1.25em;
+            border-bottom: 2px solid #3498db; padding-bottom: 8px;
+        }
+        .definitions-section p { margin-bottom: 14px; line-height: 1.7; }
+
+        .force-table {
+            width: 100%; border-collapse: collapse; margin: 15px 0;
+            font-size: 0.97em;
+        }
+        .force-table th {
+            background: #34495e; color: white;
+            padding: 10px 15px; text-align: left;
+        }
+        .force-table td { padding: 10px 15px; border-bottom: 1px solid #eee; }
+        .force-table tr:nth-child(even) td { background: #f8f9fa; }
+
+        .intro-para {
+            font-size: 1.05em; color: #555; margin-bottom: 18px; line-height: 1.7;
+        }
+
+        .reveal-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #3498db;
+            font-size: 0.95em;
+            font-family: Georgia, serif;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .reveal-link:hover { text-decoration: underline; color: #2980b9; }
+
+        footer {
+            margin-top: 60px; padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            text-align: center; color: #7f8c8d; font-size: 0.9em;
+        }
+
+        @media (max-width: 700px) {
+            h1 { font-size: 1.9em; }
+            .intro-content { padding: 22px; }
+            .motivation-grid { grid-template-columns: 1fr; }
+            .topic-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+
+        const sectionTitles = {
+            'intro':         ['Mechanics: Moments and Equilibrium', 'Turning effects of forces'],
+            'particles':     ['Particles, rods and forces', 'Modelling assumptions in mechanics'],
+            'strings':       ['Strings and tension', 'Modelling inextensible strings and wires'],
+            'thrust':        ['Rods and thrust', 'Compressive forces in rigid rods'],
+            'uniform-bar':   ['Non-uniform bar', 'Moments applied to a non-uniform horizontal beam'],
+            'hinges':        ['Hinges', 'Reaction forces at a smooth hinge'],
+            'ladders':       ['Ladders', 'Equilibrium of a ladder against a wall'],
+        };
+
+        function toggleEq(id, link) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'none') {
+                el.style.display = 'block';
+                link.textContent = 'Hide equations ▾';
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            } else {
+                el.style.display = 'none';
+                link.textContent = 'Reveal equations ▸';
+            }
+        }
+
+        function toggleDiagram(id, link) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'none') {
+                el.style.display = 'block';
+                link.textContent = 'Hide diagram ▾';
+            } else {
+                el.style.display = 'none';
+                link.textContent = 'Reveal diagram ▸';
+            }
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            const nav = document.getElementById('navigation');
+            if (id === 'intro') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'block';
+            }
+            const [title, sub] = sectionTitles[id] || ['Moments', ''];
+            document.querySelector('header h1').textContent = title;
+            document.querySelector('.subtitle').textContent = sub;
+            window.scrollTo(0, 0);
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Mechanics: Moments and Equilibrium</h1>
+        <p class="subtitle">Turning effects of forces</p>
+    </header>
+
+    <nav class="nav-breadcrumb" id="navigation" style="display:none;">
+        <button onclick="showSection('intro')">← Back to Introduction</button>
+    </nav>
+
+    <main>
+
+<!-- ═══════════════════════════════════════════════ HOME PAGE ═══ -->
+<section id="intro" class="section active">
+<div class="intro-content">
+
+    <h2 style="border:none; margin-top:0;">Forces and acceleration</h2>
+    <p>
+        When a single unbalanced force acts on a particle, or when the resultant of several forces acting
+        on a particle is non-zero, the particle accelerates in the direction of that resultant force.
+        This is Newton's Second Law:
+    </p>
+    \[\mathbf{F}_{\text{resultant}} = m\mathbf{a}\]
+    <p>
+        Here \(m\) is the mass of the particle (in kg), \(\mathbf{a}\) is its acceleration (in m s\(^{-2}\)),
+        and \(\mathbf{F}_{\text{resultant}}\) is the vector sum of all forces acting (in N). If the resultant
+        force is zero, the particle is in <strong>equilibrium</strong> — it either remains at rest or moves
+        with constant velocity.
+    </p>
+
+    <!-- ── Balanced forces examples ── -->
+    <h2>Balanced forces — static equilibrium</h2>
+    <p>
+        An object that is stationary has zero acceleration, so the resultant of <em>all</em> forces acting
+        on it must be zero. We consider equilibrium in two directions separately.
+    </p>
+
+    <div class="diagram-row">
+        <!-- Vertical balance -->
+        <div class="diagram-box">
+            <strong style="font-size:1em; display:block; margin-bottom:12px;">Vertical equilibrium</strong>
+            <svg width="160" height="215" viewBox="0 0 160 215" xmlns="http://www.w3.org/2000/svg">
+                <!-- ground -->
+                <rect x="20" y="130" width="120" height="9" fill="#bdc3c7" rx="2"/>
+                <!-- block -->
+                <rect x="45" y="90" width="70" height="40" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="2" rx="3"/>
+                <text x="80" y="115" text-anchor="middle" font-size="13" fill="#1a4f7a" font-family="Georgia">block</text>
+                <!-- R: line from top of block up to arrowhead tip -->
+                <line x1="100" y1="130" x2="100" y2="69" stroke="#e74c3c" stroke-width="2.5"/>
+                <!-- R arrowhead: upward triangle, tip at (100,69) -->
+                <polygon points="100,69 93,82 107,82" fill="#e74c3c" transform="rotate(0,100,69)"/>
+                <text x="108" y="87" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">R</text>
+                <!-- mg: line from bottom of block down to arrowhead tip -->
+                <line x1="80" y1="120" x2="80" y2="181" stroke="#2c3e50" stroke-width="2.5"/>
+                <!-- mg arrowhead: downward triangle, tip at (80,181) -->
+                <polygon points="80,181 73,168 87,168" fill="#2c3e50" transform="rotate(0,80,181)"/>
+                <text x="88" y="163" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">mg</text>
+            </svg>
+            <p>
+                A block rests on a horizontal surface. Its weight \(mg\) acts downward;
+                the normal reaction \(R\) acts upward. Since the block is stationary:
+                \(R - mg = 0\), so \(R = mg\).
+            </p>
+        </div>
+
+        <!-- Horizontal balance -->
+        <div class="diagram-box">
+            <strong style="font-size:1em; display:block; margin-bottom:12px;">Horizontal equilibrium</strong>
+            <svg width="200" height="130" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrRblue" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+                        <polygon points="0,0 10,5 0,10" fill="#3498db"/>
+                    </marker>
+                    <marker id="arrRorange" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+                        <polygon points="0,0 10,5 0,10" fill="#e67e22"/>
+                    </marker>
+                </defs>
+                <!-- block -->
+                <rect x="70" y="45" width="60" height="40" fill="#d5f5e6" stroke="#27ae60" stroke-width="2" rx="3"/>
+                <text x="100" y="70" text-anchor="middle" font-size="13" fill="#1a6637" font-family="Georgia">block</text>
+                <!-- P: push right — moved up 5px -->
+                <line x1="0" y1="55" x2="48" y2="55" stroke="#3498db" stroke-width="2.5" marker-end="url(#arrRblue)"/>
+                <text x="10" y="48" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">P</text>
+                <!-- F: reversed — moved left 30px -->
+                <line x1="78" y1="80" x2="32" y2="80" stroke="#e67e22" stroke-width="2.5" marker-end="url(#arrRorange)"/>
+                <text x="36" y="73" font-size="12" fill="#d35400" font-family="Georgia" font-style="italic">F</text>
+                <!-- ground -->
+                <rect x="10" y="84" width="180" height="8" fill="#bdc3c7" rx="2"/>
+            </svg>
+            <p>
+                A horizontal pushing force \(P\) is applied to a stationary block. Friction \(F\)
+                acts in the opposite direction. Horizontal equilibrium gives: \(P - F = 0\), so \(F = P\).
+            </p>
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>Key point:</strong> These two examples show that a particle (or block modelled as a particle)
+        is in equilibrium if and only if the resultant force in <em>every</em> direction is zero.
+        When we move from particles to <em>extended bodies</em> (rods, planks, ladders), equilibrium
+        requires an additional condition: the resultant <em>moment</em> about any point must also be zero.
+    </div>
+
+    <!-- ── Real world motivation ── -->
+    <h2>Why do turning effects matter?</h2>
+    <p>
+        The three situations below cannot be fully explained by force balance alone — they involve
+        the <em>turning effect</em> (moment) of a force. Each one raises a natural question for you to think about.
+    </p>
+
+    <div class="motivation-grid">
+
+        <!-- Door -->
+        <div class="motivation-card">
+            <svg width="200" height="210" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg">
+                <!-- frame -->
+                <rect x="15" y="10" width="170" height="170" fill="none" stroke="#7f8c8d" stroke-width="3" rx="2"/>
+                <!-- door panel -->
+                <rect x="18" y="13" width="160" height="158" fill="#e8d5b0" stroke="#8d6e3f" stroke-width="2"/>
+                <!-- hinge marks on LEFT -->
+                <rect x="18" y="35" width="12" height="18" fill="#7f8c8d" rx="2"/>
+                <rect x="18" y="130" width="12" height="18" fill="#7f8c8d" rx="2"/>
+                <text x="36" y="48" font-size="10" fill="#555" font-family="Georgia">hinge</text>
+                <!-- Handle on RIGHT -->
+                <rect x="155" y="85" width="10" height="22" fill="#c0392b" rx="3"/>
+                <text x="117" y="100" font-size="10" fill="#555" font-family="Georgia">handle</text>
+                <!-- arrow showing pivot -->
+                <line x1="22" y1="90" x2="22" y2="90" stroke="none"/>
+                <!-- label -->
+                <text x="100" y="195" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">View facing the door</text>
+            </svg>
+            <p class="question">
+                <strong>The door handle</strong>
+                The hinge is on the left; the handle is on the far right.
+                Why is the handle placed as far as possible from the hinge?
+            </p>
+        </div>
+
+        <!-- Wheelbarrow -->
+        <div class="motivation-card">
+            <svg width="200" height="190" viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg">
+                
+                <!-- wheel (moved 20px right: cx=35) -->
+                <circle cx="35" cy="148" r="22" fill="none" stroke="#555" stroke-width="3"/>
+                <circle cx="35" cy="148" r="5" fill="#555"/>
+                <!-- tray (rotated 180° around centre 60,115) -->
+                <polygon points="30,130 90,130 80,100 40,100" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="2" transform="rotate(180,60,115)"/>
+                <!-- load in tray -->
+                <ellipse cx="60" cy="112" rx="18" ry="10" fill="#c9a96e" stroke="#a07840" stroke-width="1.5"/>
+                <!-- downward arrow from centre of load — doubled length -->
+                <line x1="60" y1="122" x2="60" y2="158" stroke="#2c3e50" stroke-width="2"/>
+                <polygon points="60,161 55,149 65,149" fill="#2c3e50"/>
+                <!-- right handle only -->
+                <line x1="80" y1="100" x2="170" y2="70" stroke="#8d6e3f" stroke-width="4" stroke-linecap="round"/>
+                <!-- right circle (remaining handle end) -->
+                <circle cx="162" cy="68" r="6" fill="#f0c080" stroke="#d4a055" stroke-width="1.5"/>
+                <!-- lift arrow: base on top of circle (162,62), tip pointing upward at (162,35) -->
+                <line x1="162" y1="62" x2="162" y2="38" stroke="#e74c3c" stroke-width="2"/>
+                <polygon points="162,35 156,47 168,47" fill="#e74c3c"/>
+                <text x="166" y="52" font-size="10" fill="#c0392b" font-family="Georgia">lift</text>
+                <!-- ground -->
+                <line x1="10" y1="170" x2="190" y2="170" stroke="#bdc3c7" stroke-width="3"/>
+                <!-- label -->
+                <text x="100" y="188" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">Side view</text>
+            </svg>
+            <p class="question">
+                <strong>The wheelbarrow</strong>
+                The wheel acts as a pivot. The load sits close to the wheel; the handles extend well behind it.
+                Why are the arms of the wheelbarrow so long?
+            </p>
+        </div>
+
+        <!-- Spanner -->
+        <div class="motivation-card">
+            <svg width="210" height="190" viewBox="0 0 210 190" xmlns="http://www.w3.org/2000/svg">
+
+                <!-- ═══ HEXAGONAL NUT ═══ flat-top hex centred at (42, 88) radius ~16 -->
+                <polygon points="42,72 55,80 55,96 42,104 29,96 29,80"
+                         fill="#b0bec5" stroke="#546e7a" stroke-width="2"/>
+                <!-- nut inner hole -->
+                <polygon points="42,79 49,83 49,93 42,97 35,93 35,83"
+                         fill="#78909c" stroke="none"/>
+
+                <!-- ═══ OPEN-END SPANNER ═══
+                     The wrench head wraps around the nut with two jaws.
+                     Upper jaw: top lip curves over nut
+                     Lower jaw: bottom lip curves under nut
+                     Handle tapers to the right. All drawn as one filled path. -->
+
+                <!-- Wrench body fill (steel grey with gradient-like shading) -->
+                <!-- Main outline: head region left, then tapered handle to right -->
+                <path d="
+                    M 10,70
+                    Q 10,58  22,58
+                    L 60,60
+                    Q 70,60  72,65
+                    L 195,79
+                    Q 200,80  200,88
+                    Q 200,96  195,97
+                    L 72,111
+                    Q 70,116  60,116
+                    L 22,118
+                    Q 10,118  10,106
+                    Q 10,100  16,98
+                    L 26,96
+                    Q 29,104  42,104
+                    Q 55,104  58,96
+                    L 66,96
+                    Q 68,92  68,88
+                    Q 68,84  66,80
+                    L 58,80
+                    Q 55,72  42,72
+                    Q 29,72  26,80
+                    L 16,78
+                    Q 10,76  10,70
+                    Z"
+                    fill="#90a4ae" stroke="#455a64" stroke-width="1.8" stroke-linejoin="round"/>
+
+                <!-- Upper jaw inner edge highlight -->
+                <path d="M 26,80 Q 29,72 42,72 Q 55,72 58,80 L 66,80"
+                      fill="none" stroke="#b0bec5" stroke-width="1" opacity="0.7"/>
+                <!-- Lower jaw inner edge highlight -->
+                <path d="M 26,96 Q 29,104 42,104 Q 55,104 58,96 L 66,96"
+                      fill="none" stroke="#546e7a" stroke-width="1" opacity="0.7"/>
+
+                <!-- Handle centre line highlight -->
+                <line x1="72" y1="85" x2="196" y2="86" stroke="#b0bec5" stroke-width="2" opacity="0.5"/>
+
+                <!-- ═══ DISTANCE BRACE ═══ -->
+                <line x1="42" y1="122" x2="200" y2="122" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <line x1="42" y1="118" x2="42" y2="126" stroke="#e74c3c" stroke-width="1.5"/>
+                <line x1="200" y1="118" x2="200" y2="126" stroke="#e74c3c" stroke-width="1.5"/>
+                <text x="121" y="136" text-anchor="middle" font-size="10" fill="#c0392b" font-family="Georgia" font-style="italic">d (long handle)</text>
+
+                <!-- ═══ FORCE ARROW F upward at right end ═══ -->
+                <line x1="200" y1="79" x2="200" y2="50" stroke="#3498db" stroke-width="2.5"/>
+                <polygon points="200,47 194,59 206,59" fill="#3498db"/>
+                <text x="183" y="67" font-size="11" fill="#2471a3" font-family="Georgia" font-style="italic">F</text>
+
+                <!-- ═══ LABELS ═══ -->
+                <text x="105" y="152" text-anchor="middle" font-size="11" fill="#2c3e50" font-family="Georgia">Moment = F × d</text>
+                <text x="105" y="167" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">larger d → larger turning effect</text>
+            </svg>
+            <p class="question">
+                <strong>The spanner</strong>
+                A force \(F\) is applied at the end of the handle, a distance \(d\) from the nut.
+                Why is it easier to turn the nut when the handle is longer?
+                Why is the pulling force best applied at right angles to the spanner?
+            </p>
+        </div>
+    </div>
+
+    <p>
+        All three questions share the same answer: the further a force is applied from the pivot point,
+        the larger the <strong>moment</strong> (turning effect) it produces. The formal study of moments
+        and their role in equilibrium is the subject of the pages below.
+    </p>
+
+    <!-- ── Navigation buttons ── -->
+    <div class="cta-section">
+        <p class="cta-text">Choose a topic to explore:</p>
+        <div>
+            <button class="btn-primary" onclick="showSection('particles')">Particles &amp; rods →</button>
+            <button class="btn-primary" onclick="showSection('strings')">Strings &amp; tension →</button>
+            <button class="btn-primary" onclick="showSection('thrust')">Rods &amp; thrust →</button>
+            <button class="btn-primary" onclick="showSection('uniform-bar')">Non-uniform bar →</button>
+            <button class="btn-primary" onclick="showSection('hinges')">Hinges →</button>
+            <button class="btn-primary" onclick="showSection('ladders')">Ladders →</button>
+        </div>
+    </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ PARTICLES & RODS ═══ -->
+<section id="particles" class="section">
+
+    <div class="definitions-section">
+        <h3>What is a particle?</h3>
+        <p>
+            In mechanics we often simplify a real object into a <strong>particle</strong>: a point mass that
+            has mass but no physical size. All forces on a particle act through a single point, so
+            there is no possibility of rotation — the only condition for equilibrium is that the
+            resultant force is zero.
+        </p>
+
+    </div>
+
+    <div class="definitions-section">
+        <h3>What is a rigid rod?</h3>
+        <p>
+            A <strong>rigid rod</strong> (or <em>lamina</em>, <em>plank</em>, <em>beam</em> or <em>ladder</em>)
+            is a body with a definite length and shape that does not change. Unlike a particle, forces can act at
+            different points along the rod. This means the rod can:
+        </p>
+        <ul style="margin: 10px 0 10px 25px; line-height:1.8;">
+            <li>Translate (move as a whole) if the resultant force is non-zero.</li>
+            <li>Rotate about a point (pivot) if the resultant <em>moment</em> is non-zero.</li>
+        </ul>
+        <p>
+            For a rigid rod to be in full equilibrium, <strong>both</strong> conditions must hold:
+        </p>
+        <div class="key-result">
+            \[\sum F = 0 \quad \text{(forces balance)}\]
+            \[\sum M = 0 \quad \text{(moments balance)}\]
+        </div>
+    </div>
+
+    <div class="definitions-section">
+        <h3>The moment of a force</h3>
+        <p>
+            The <strong>moment</strong> of a force about a point (the <em>pivot</em> or <em>fulcrum</em>)
+            measures its turning effect. For a force \(F\) acting perpendicular to the line joining
+            the pivot to the point of application:
+        </p>
+        \[\text{Moment} = F \times d\]
+        <p>
+            where \(d\) is the <strong>perpendicular distance</strong> from the pivot to the line of action
+            of the force. The unit is the <strong>newton-metre</strong> (N m).
+        </p>
+        <p>
+            A moment is <strong>clockwise</strong> (CW) or <strong>anticlockwise</strong> (ACW) according to
+            the direction it would cause rotation. Anticlockwise can be taken as positive or negative, then clockwise has the opposite sign. Once you have chosen for your question, apply the sign consistently to all moments.
+        </p>
+
+        <svg width="100%" height="160" viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg">
+            <!-- pivot -->
+            <polygon points="200,85 218,110 182,110" fill="#34495e"/>
+            <line x1="160" y1="110" x2="260" y2="110" stroke="#7f8c8d" stroke-width="3"/>
+            <!-- rod -->
+            <line x1="50" y1="85" x2="400" y2="85" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+            <!-- force F1 down-left -->
+            <line x1="80" y1="85" x2="80" y2="143" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="80,148 74,136 86,136" fill="#e74c3c"/>
+            <text x="52" y="125" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">F₁</text>
+            <!-- distance d1 -->
+            <line x1="80" y1="72" x2="200" y2="72" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="125" y="68" font-size="11" fill="#c0392b" font-family="Georgia" font-style="italic">d₁</text>
+            <!-- force F2 down-right -->
+            <line x1="340" y1="85" x2="340" y2="143" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="340,148 334,136 346,136" fill="#3498db"/>
+            <text x="346" y="125" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">F₂</text>
+            <!-- distance d2 -->
+            <line x1="200" y1="72" x2="340" y2="72" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="255" y="68" font-size="11" fill="#2471a3" font-family="Georgia" font-style="italic">d₂</text>
+            <!-- ACW label -->
+            <text x="100" y="40" font-size="12" fill="#c0392b" font-family="Georgia">ACW moment: F₁ × d₁</text>
+            <!-- CW label -->
+            <text x="250" y="40" font-size="12" fill="#2471a3" font-family="Georgia">CW moment: F₂ × d₂</text>
+        </svg>
+
+        <p style="margin-top:10px;">
+            For the rod above to be in rotational equilibrium about the pivot:
+            \(F_1 d_1 = F_2 d_2\).
+        </p>
+        <p style="margin-top:10px;">
+            If the force or distance increases on one side of the equation then the moment increases and the rod will be pulled down on the side that has the increased force or increased distance from the pivot.
+        </p>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Seesaw</h4>
+        <p>
+            Two children sit on a uniform seesaw of length 3.2 m pivoted at its midpoint.
+            Child A (mass 40 kg) sits 1.6 m from the pivot. Child B (mass 50 kg) sits at a distance \(x\) m
+            from the pivot on the other side. Find \(x\) for the seesaw to be in equilibrium
+            (take \(g = 9.8\) m s\(^{-2}\)).
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Identify the pivot and forces</div>
+            The pivot is at the midpoint. Balance the moments.
+            <button class="reveal-link" onclick="toggleEq('see-eq1', this)">Reveal equations ▸</button>
+            <div id="see-eq1" style="display:none;">
+            Weight of A: \(W_A = 40 \times 9.8 = 392\) N acts 1.6 m to the left.<br>
+            Weight of B: \(W_B = 50 \times 9.8 = 490\) N acts \(x\) m to the right.
+            </div>
+        </div>
+
+        <!-- Seesaw diagram -->
+        <button class="reveal-link" onclick="toggleDiagram('see-diagram', this)">Reveal diagram ▸</button>
+        <div id="see-diagram" style="display:none;">
+        <svg width="100%" height="175" viewBox="0 0 500 175" xmlns="http://www.w3.org/2000/svg">
+            <!-- plank -->
+            <rect x="40" y="90" width="420" height="12" fill="#d5c89a" stroke="#8d6e3f" stroke-width="2" rx="2"/>
+            <!-- pivot triangle at midpoint (x=250) -->
+            <polygon points="250,102 234,130 266,130" fill="#34495e"/>
+            <line x1="210" y1="130" x2="290" y2="130" stroke="#7f8c8d" stroke-width="3"/>
+            <!-- Child A (left): sitting at 1.6m from pivot → x=250-160=90, scaled: plank=420px=3.2m so 1px=3.2/420m; 1.6m=210px left of centre → x=250-210=40 -->
+            <!-- scale: 420px = 3.2m → 1m = 131.25px; 1.6m = 210px from centre -->
+            <!-- Child A at x=40 (left end) -->
+            <circle cx="80" cy="82" r="10" fill="#e8d5b0" stroke="#8d6e3f" stroke-width="1.5"/>
+            <line x1="80" y1="92" x2="80" y2="90" stroke="#8d6e3f" stroke-width="1.5"/>
+            <!-- W_A arrow downward from plank -->
+            <line x1="80" y1="102" x2="80" y2="145" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="80,148 74,136 86,136" fill="#e74c3c"/>
+            <text x="86" y="140" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">W<tspan baseline-shift="sub" font-size="9">A</tspan> = 392 N</text>
+            <!-- Child B (right): x m from pivot; shown at x=250+x_px -->
+            <!-- show B at ~1.28m for illustration: 1.28×131.25≈168px right of centre → x=250+168=418 -->
+            <circle cx="410" cy="82" r="10" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="1.5"/>
+            <line x1="410" y1="92" x2="410" y2="90" stroke="#2c7bb5" stroke-width="1.5"/>
+            <!-- W_B arrow downward -->
+            <line x1="410" y1="102" x2="410" y2="145" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="410,148 404,136 416,136" fill="#3498db"/>
+            <text x="418" y="140" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">W<tspan baseline-shift="sub" font-size="9">B</tspan> = 490 N</text>
+            <!-- distance d1: from child A to pivot -->
+            <line x1="80" y1="72" x2="250" y2="72" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="80" y1="68" x2="80" y2="76" stroke="#e74c3c" stroke-width="1.5"/>
+            <line x1="250" y1="68" x2="250" y2="76" stroke="#e74c3c" stroke-width="1.5"/>
+            <text x="165" y="66" text-anchor="middle" font-size="11" fill="#c0392b" font-family="Georgia" font-style="italic">1.6 m</text>
+            <!-- distance d2: from pivot to child B -->
+            <line x1="250" y1="72" x2="410" y2="72" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="410" y1="68" x2="410" y2="76" stroke="#3498db" stroke-width="1.5"/>
+            <text x="330" y="66" text-anchor="middle" font-size="11" fill="#2471a3" font-family="Georgia" font-style="italic">x m</text>
+            <!-- labels -->
+            <text x="80" y="170" text-anchor="middle" font-size="11" fill="#555" font-family="Georgia">A (40 kg)</text>
+            <text x="410" y="170" text-anchor="middle" font-size="11" fill="#555" font-family="Georgia">B (50 kg)</text>
+            <text x="250" y="170" text-anchor="middle" font-size="11" fill="#555" font-family="Georgia">pivot</text>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 2 — Moments equation about the pivot</div>
+            For equilibrium: ACW moments = CW moments
+            <button class="reveal-link" onclick="toggleEq('see-eq2', this)">Reveal equations ▸</button>
+            <div id="see-eq2" style="display:none;">
+            \[392 \times 1.6 = 490 \times x\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Solve</div>
+            Solve for the unknown distance \(x\)<br>
+            <button class="reveal-link" onclick="toggleEq('see-eq3', this)">Reveal equations ▸</button>
+            <div id="see-eq3" style="display:none;">
+            \[x = \frac{392 \times 1.6}{490} = \frac{627.2}{490} \approx 1.28 \text{ m}\]
+            </div>
+        </div>
+        <div class="key-result">
+            Child B must sit <strong>1.28 m</strong> from the pivot (to 3 s.f.).
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('intro')">← Home</button>
+        <button class="btn-primary" onclick="showSection('strings')">Strings &amp; tension →</button>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ STRINGS & TENSION ═══ -->
+<section id="strings" class="section">
+
+    <div class="definitions-section">
+        <h3>Direction of tension</h3>
+
+        <div style="text-align:center; margin: 16px 0 20px;">
+        <svg width="100%" height="160" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- LEFT PERSON -->
+            <!-- head -->
+            <circle cx="60" cy="42" r="16" fill="#f0c080" stroke="#d4a055" stroke-width="1.5"/>
+            <!-- body -->
+            <line x1="60" y1="58" x2="60" y2="105" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <!-- left arm (reaching right toward spring) -->
+            <line x1="60" y1="72" x2="105" y2="80" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <!-- left hand -->
+            <circle cx="108" cy="80" r="5" fill="#f0c080" stroke="#d4a055" stroke-width="1.5"/>
+            <!-- right arm (behind body) -->
+            <line x1="60" y1="72" x2="30" y2="85" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <!-- legs -->
+            <line x1="60" y1="105" x2="42" y2="140" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <line x1="60" y1="105" x2="72" y2="140" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- RIGHT PERSON (mirrored) -->
+            <circle cx="440" cy="42" r="16" fill="#f0c080" stroke="#d4a055" stroke-width="1.5"/>
+            <line x1="440" y1="58" x2="440" y2="105" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <!-- right arm reaching left toward spring -->
+            <line x1="440" y1="72" x2="395" y2="80" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="392" cy="80" r="5" fill="#f0c080" stroke="#d4a055" stroke-width="1.5"/>
+            <!-- left arm behind -->
+            <line x1="440" y1="72" x2="470" y2="85" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <!-- legs -->
+            <line x1="440" y1="105" x2="422" y2="140" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <line x1="440" y1="105" x2="452" y2="140" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- SPRING between hands (108 to 392) -->
+            <!-- coiled spring using zigzag path -->
+            <polyline points="
+                108,80
+                118,80 122,66 130,94 138,66 146,94 154,66 162,94 170,66 178,94
+                186,66 194,94 202,66 210,94 218,66 226,94 234,66 242,94
+                250,66 258,94 266,66 274,94 282,66 290,94 298,66 306,94
+                314,66 322,94 330,66 338,94 346,66 354,94 362,66 370,94
+                378,66 382,80 392,80"
+                fill="none" stroke="#e74c3c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+            <!-- Tension arrows: pointing toward centre of spring -->
+            <!-- Left T arrow: from x=108 pointing right toward centre, tip at x=144 -->
+            <line x1="108" y1="80" x2="141" y2="80" stroke="#3498db" stroke-width="2"/>
+            <polygon points="144,80 132,74 132,86" fill="#3498db"/>
+            <text x="130" y="60" font-size="11" fill="#2471a3" font-family="Georgia" font-style="italic">T</text>
+            <!-- Right T arrow: from x=392 pointing left toward centre, tip at x=356 -->
+            <line x1="392" y1="80" x2="359" y2="80" stroke="#3498db" stroke-width="2"/>
+            <polygon points="356,80 368,74 368,86" fill="#3498db"/>
+            <text x="358" y="60" font-size="11" fill="#2471a3" font-family="Georgia" font-style="italic">T</text>
+
+            <!-- outward force arrows on hands (36px) -->
+            <line x1="108" y1="80" x2="72" y2="80" stroke="#2c3e50" stroke-width="2"/>
+            <polygon points="69,80 81,74 81,86" fill="#2c3e50"/>
+            <line x1="392" y1="80" x2="428" y2="80" stroke="#2c3e50" stroke-width="2"/>
+            <polygon points="431,80 419,74 419,86" fill="#2c3e50"/>
+
+        </svg>
+        </div>
+
+        <p>
+            When two people pull a spring apart, they feel the spring trying to pull their hands back together.
+            So tension is pulling both ends of the spring towards the centre.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Modelling a string</h3>
+        <p>
+            In mechanics, a <strong>string</strong> (or <em>wire</em>, <em>rope</em>, <em>cable</em>) is
+            modelled as <em>light</em> (having negligible mass) and <em>inextensible</em> (it does not
+            stretch). The force exerted by a string is called its <strong>tension</strong>, and it always
+            acts along the string, <em>away from</em> the object it is attached to — strings can only
+            pull, never push.
+        </p>
+        <table class="force-table">
+            <tr><th>Assumption</th><th>What it means</th></tr>
+            <tr><td>Light</td><td>The weight of the string itself is ignored</td></tr>
+            <tr><td>Inextensible</td><td>The string does not stretch; its length is constant</td></tr>
+            <tr><td>Taut</td><td>If a string is taut it transmits tension; if slack, tension is zero</td></tr>
+        </table>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Simplifying the force diagram</h3>
+        <p>
+            An (ideal) string is inextensible. However, the tension behaves the same in a spring or string, in that the forces pull towards the centre.
+        </p>
+        <p>
+            Even though the tension from a spring or string acts inwards from both ends, we are normally only interested in the effect the tension has on one object, say a box being pulled. Often the force diagram will only show one tension, acting on the box, but still pulling to the centre of the string. This is to simplify the diagram and concentrate on one object at a time and only the forces acting on that one object.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Slack strings and horizontal tension</h3>
+        <p>
+            A string that is <strong>slack</strong> (loose, not pulled tight) has zero tension — it exerts no force on the object it is attached to. Only when a string is <strong>taut</strong> (pulled straight and tight) does it transmit a tension force.
+        </p>
+
+        <div class="diagram-row">
+            <!-- Slack string diagram -->
+            <div class="diagram-box">
+                <strong style="font-size:.9em; display:block; margin-bottom:10px;">Slack string — no tension</strong>
+                <svg width="220" height="120" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- ground -->
+                    <rect x="0" y="88" width="220" height="8" fill="#bdc3c7" rx="1"/>
+                    <!-- box -->
+                    <rect x="20" y="55" width="55" height="33" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="2" rx="3"/>
+                    <text x="47" y="76" text-anchor="middle" font-size="11" fill="#1a4f7a" font-family="Georgia">box</text>
+                    <!-- slack (wavy) string from right side of box -->
+                    <path d="M75,71 Q90,58 105,71 Q120,84 135,71 Q150,58 165,71"
+                          fill="none" stroke="#555" stroke-width="2" stroke-linecap="round"/>
+                    <!-- label -->
+                    <text x="120" y="105" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia" font-style="italic">slack string — T = 0</text>
+                </svg>
+            </div>
+
+            <!-- Taut string with force diagram -->
+            <div class="diagram-box">
+                <strong style="font-size:.9em; display:block; margin-bottom:10px;">Taut string — tension transmitted</strong>
+                <svg width="100%" height="130" viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrF2" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+                            <polygon points="0,0 10,5 0,10" fill="#3498db"/>
+                        </marker>
+                    </defs>
+                    <!-- ground -->
+                    <rect x="0" y="88" width="260" height="8" fill="#bdc3c7" rx="1"/>
+                    <!-- box -->
+                    <rect x="20" y="55" width="55" height="33" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="2" rx="3"/>
+                    <text x="47" y="76" text-anchor="middle" font-size="11" fill="#1a4f7a" font-family="Georgia">box</text>
+                    <!-- taut string -->
+                    <line x1="75" y1="71" x2="180" y2="71" stroke="#555" stroke-width="2"/>
+                    <!-- F arrow at far right end -->
+                    <line x1="180" y1="71" x2="220" y2="71" stroke="#3498db" stroke-width="2.5" marker-end="url(#arrF2)"/>
+                    <text x="196" y="64" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">F</text>
+                    <!-- label -->
+                    <text x="130" y="115" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia" font-style="italic">Force F pulling on end of taut string</text>
+                </svg>
+                <!-- duplicate diagram below -->
+                <svg width="100%" height="130" viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg" style="margin-top:12px;">
+                    <defs>
+                        <marker id="arrF2b" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+                            <polygon points="0,0 10,5 0,10" fill="#3498db"/>
+                        </marker>
+                    </defs>
+                    <!-- ground -->
+                    <rect x="0" y="88" width="260" height="8" fill="#bdc3c7" rx="1"/>
+                    <!-- box -->
+                    <rect x="20" y="55" width="55" height="33" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="2" rx="3"/>
+                    <text x="47" y="76" text-anchor="middle" font-size="11" fill="#1a4f7a" font-family="Georgia">box</text>
+                    <!-- taut string -->
+                    <line x1="75" y1="71" x2="180" y2="71" stroke="#555" stroke-width="2"/>
+                    <!-- F: thin grey dotted line (no arrowhead) -->
+                    <line x1="180" y1="71" x2="220" y2="71" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+                    <text x="196" y="64" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">F</text>
+                    <!-- T arrowhead moved 5px left -->
+                    <polygon points="110,71 98,65 98,77" fill="#e74c3c"/>
+                    <text x="100" y="62" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T</text>
+                    <!-- label -->
+                    <text x="130" y="115" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia" font-style="italic">Taut string: T = F</text>
+                </svg>
+            </div>
+        </div>
+
+        <p style="margin-top:10px;">
+            A force applied to a taut (fully pulled and straight) string causes the string to
+            <em>transmit the point of application of the force</em> to the end of the string
+            attached to the object being pulled.
+        </p>
+        <p style="margin-top:12px;">
+            Why do we do this? Because when analyzing a situation where we draw a force diagram, we want to consider each object separately and in turn. We need to consider all, and only, the forces acting directly on the object of interest. We can think of a string as a device for transferring a remote acting force to a force acting directly on the object we are interested in.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Tension in a string supporting a hanging object</h3>
+        <p>
+            If an object of mass \(m\) hangs in equilibrium from a single vertical string, the tension \(T\)
+            in the string must equal the weight of the object:
+        </p>
+        \[T = mg\]
+
+        <div style="text-align:center; margin: 20px 0;">
+        <svg width="160" height="230" viewBox="0 0 160 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- ceiling -->
+            <rect x="20" y="0" width="120" height="12" fill="#bdc3c7" rx="2"/>
+            <!-- hatching -->
+            <line x1="30" y1="0" x2="20" y2="12" stroke="#aaa" stroke-width="1"/>
+            <line x1="50" y1="0" x2="38" y2="12" stroke="#aaa" stroke-width="1"/>
+            <line x1="70" y1="0" x2="58" y2="12" stroke="#aaa" stroke-width="1"/>
+            <line x1="90" y1="0" x2="78" y2="12" stroke="#aaa" stroke-width="1"/>
+            <line x1="110" y1="0" x2="98" y2="12" stroke="#aaa" stroke-width="1"/>
+            <line x1="130" y1="0" x2="118" y2="12" stroke="#aaa" stroke-width="1"/>
+            <!-- string -->
+            <line x1="80" y1="12" x2="80" y2="70" stroke="#555" stroke-width="2"/>
+            <!-- object (box) -->
+            <rect x="50" y="70" width="60" height="50" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="2" rx="3"/>
+            <text x="80" y="100" text-anchor="middle" font-size="13" fill="#1a4f7a" font-family="Georgia">mass m</text>
+            <!-- T arrow: upward from top of box -->
+            <line x1="80" y1="70" x2="80" y2="22" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="80,19 74,31 86,31" fill="#e74c3c"/>
+            <text x="88" y="48" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T</text>
+            <!-- mg arrow: downward from bottom of box -->
+            <line x1="80" y1="120" x2="80" y2="185" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="80,188 74,176 86,176" fill="#2c3e50"/>
+            <text x="88" y="162" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">mg</text>
+        </svg>
+        </div>
+
+        <p>
+            If the object is supported by two strings at different angles, we resolve forces horizontally
+            and vertically and solve the resulting equations simultaneously.
+        </p>
+
+        <svg width="100%" height="210" viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+            <!-- ceiling -->
+            <rect x="0" y="0" width="380" height="18" fill="#bdc3c7"/>
+            <!-- hatching -->
+            <line x1="20" y1="0" x2="5" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="50" y1="0" x2="35" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="80" y1="0" x2="65" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="110" y1="0" x2="95" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="140" y1="0" x2="125" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="170" y1="0" x2="155" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="200" y1="0" x2="185" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="230" y1="0" x2="215" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="260" y1="0" x2="245" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="0" x2="275" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="320" y1="0" x2="305" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="350" y1="0" x2="335" y2="18" stroke="#aaa" stroke-width="1"/>
+            <line x1="380" y1="0" x2="365" y2="18" stroke="#aaa" stroke-width="1"/>
+            <!-- left string -->
+            <line x1="90" y1="18" x2="190" y2="110" stroke="#7f8c8d" stroke-width="2.5"/>
+            <!-- right string -->
+            <line x1="280" y1="18" x2="190" y2="110" stroke="#7f8c8d" stroke-width="2.5"/>
+            <!-- T1 arrowhead pointing away from m (toward ceiling), at ~40% along string -->
+            <polygon points="150,73 162,78 155,85" fill="#555"/>
+            <!-- T2 arrowhead on string: tip (228,71), base straddles string perpendicularly -->
+            <polygon points="228,71 224,84 216,77" fill="#555"/>
+            <!-- T1 label -->
+            <text x="112" y="68" font-size="12" fill="#555" font-family="Georgia" font-style="italic">T₁</text>
+            <!-- T2 label -->
+            <text x="243" y="68" font-size="12" fill="#555" font-family="Georgia" font-style="italic">T₂</text>
+            <!-- angle arc at left attachment (90,18): from horizontal right to string direction ~43° -->
+            <path d="M 112,18 A 22,22 0 0,1 106,33" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+            <!-- α label inside angle -->
+            <text x="100" y="27" font-size="11" fill="#c0392b" font-family="Georgia" font-style="italic">α</text>
+            <!-- angle arc at right attachment (280,18): from horizontal left to string direction ~43° -->
+            <path d="M 258,18 A 22,22 0 0,0 264,33" fill="none" stroke="#2471a3" stroke-width="1.5"/>
+            <!-- β label inside angle -->
+            <text x="264" y="30" font-size="11" fill="#2471a3" font-family="Georgia" font-style="italic">β</text>
+            <!-- mass box -->
+            <rect x="165" y="110" width="50" height="35" fill="#d5e8f5" stroke="#2c7bb5" stroke-width="2" rx="3"/>
+            <text x="190" y="132" text-anchor="middle" font-size="13" fill="#1a4f7a" font-family="Georgia">m</text>
+            <!-- mg arrow: line then inline downward polygon -->
+            <line x1="190" y1="145" x2="190" y2="192" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="190,196 184,184 196,184" fill="#2c3e50"/>
+            <text x="196" y="188" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">mg</text>
+        </svg>
+
+        <p>
+            Resolving horizontally: \(\;T_1 \cos\alpha = T_2 \cos\beta\)
+            <br>Resolving vertically: \(\;T_1 \sin\alpha + T_2 \sin\beta = mg\)
+        </p>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Rod supported by two strings</h4>
+        <p>
+            A uniform rod AB of length 4 m and mass 6 kg is suspended horizontally by two vertical
+            strings. String 1 is attached 0.5 m from A; String 2 is attached 0.5 m from B.
+            Find the tension in each string.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Diagram and known information</div>
+            Let \(T_1\) be the tension in String 1 (0.5 m from A) and \(T_2\) in String 2 (0.5 m from B, i.e. 3.5 m from A).
+            Weight \(W = 6g\) N acts at the midpoint, 2 m from A.
+        </div>
+
+        <button class="reveal-link" onclick="toggleDiagram('rod-diagram', this)">Reveal diagram ▸</button>
+        <div id="rod-diagram" style="display:none;">
+        <svg width="100%" height="185" viewBox="0 0 500 185" xmlns="http://www.w3.org/2000/svg">
+            <!-- ceiling -->
+            <rect x="0" y="0" width="500" height="15" fill="#bdc3c7"/>
+            <line x1="20" y1="0" x2="5" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="50" y1="0" x2="35" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="80" y1="0" x2="65" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="110" y1="0" x2="95" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="140" y1="0" x2="125" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="170" y1="0" x2="155" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="200" y1="0" x2="185" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="230" y1="0" x2="215" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="260" y1="0" x2="245" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="0" x2="275" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="320" y1="0" x2="305" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="350" y1="0" x2="335" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="380" y1="0" x2="365" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="410" y1="0" x2="395" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="440" y1="0" x2="425" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="470" y1="0" x2="455" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="500" y1="0" x2="485" y2="15" stroke="#aaa" stroke-width="1"/>
+            <!-- strings (vertical) -->
+            <line x1="90" y1="15" x2="90" y2="80" stroke="#555" stroke-width="2"/>
+            <line x1="390" y1="15" x2="390" y2="80" stroke="#555" stroke-width="2"/>
+            <!-- rod AB: x=40 to x=440, scaled 1m=100px -->
+            <rect x="40" y="80" width="400" height="12" fill="#d5c89a" stroke="#8d6e3f" stroke-width="2" rx="2"/>
+            <!-- end labels -->
+            <text x="28" y="93" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="444" y="93" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <!-- T1 arrow upward from rod -->
+            <line x1="90" y1="80" x2="90" y2="32" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="90,29 84,41 96,41" fill="#e74c3c"/>
+            <text x="96" y="58" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T₁</text>
+            <!-- T2 arrow upward from rod -->
+            <line x1="390" y1="80" x2="390" y2="32" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="390,29 384,41 396,41" fill="#3498db"/>
+            <text x="396" y="58" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">T₂</text>
+            <!-- Weight arrow downward from midpoint (x=240) -->
+            <line x1="240" y1="92" x2="240" y2="148" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="240,151 234,139 246,139" fill="#2c3e50"/>
+            <text x="246" y="140" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">6g N</text>
+            <!-- distance markers below rod -->
+            <!-- 0.5m: A to T1 -->
+            <line x1="40" y1="104" x2="90" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="40" y1="100" x2="40" y2="108" stroke="#888" stroke-width="1"/>
+            <line x1="90" y1="100" x2="90" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="65" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">0.5 m</text>
+            <!-- 1.5m: T1 to midpoint -->
+            <line x1="90" y1="104" x2="240" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="240" y1="100" x2="240" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="165" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1.5 m</text>
+            <!-- 1.5m: midpoint to T2 -->
+            <line x1="240" y1="104" x2="390" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="390" y1="100" x2="390" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="315" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1.5 m</text>
+            <!-- 0.5m: T2 to B -->
+            <line x1="390" y1="104" x2="440" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="440" y1="100" x2="440" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="415" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">0.5 m</text>
+            <!-- midpoint dot -->
+            <circle cx="240" cy="86" r="3" fill="#2c3e50"/>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 2 — Vertical equilibrium</div>
+            Sum of upward forces equals sum of downward forces.
+            <button class="reveal-link" onclick="toggleEq('rod-eq2', this)">Reveal equations ▸</button>
+            <div id="rod-eq2" style="display:none;">
+            \[T_1 + T_2 = 6g\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Moments about the String 1 attachment point</div>
+            Taking moments about the point where String 1 is attached (0.5 m from A) eliminates \(T_1\). At this point, \(T_2\) is 3.0 m away and the weight \(6g\) is 1.5 m away:
+            <button class="reveal-link" onclick="toggleEq('rod-eq3', this)">Reveal equations ▸</button>
+            <div id="rod-eq3" style="display:none;">
+            \[T_2 \times 3.0 = 6g \times 1.5\]
+            \[T_2 = \frac{9g}{3} = 3g \approx 29.4 \text{ N}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 4 — Find T₁</div>
+            <button class="reveal-link" onclick="toggleEq('rod-eq4', this)">Reveal equations ▸</button>
+            <div id="rod-eq4" style="display:none;">
+            \[T_1 = 6g - T_2 = 6g - 3g = 3g \approx 29.4 \text{ N}\]
+            </div>
+        </div>
+        <div class="key-result">
+            \(T_1 = T_2 = 3g \approx 29.4\) N. The two tensions are equal — as expected by symmetry, since both strings are 0.5 m from their respective ends and the weight acts at the midpoint.
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>Choosing where to take moments:</strong> Always try taking moments about the point
+        where an unknown force acts — that force then has zero moment and drops out of the equation,
+        giving you an equation in a single unknown.
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Rod supported by two asymmetric strings</h4>
+        <p>
+            A uniform rod AB of length 4 m and mass 6 kg is suspended horizontally by two vertical
+            strings. String 1 is attached 1 m from A; String 2 is attached 0.5 m from B.
+            Find the tension in each string.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Diagram and known information</div>
+            Let \(T_1\) be the tension in String 1 (1 m from A) and \(T_2\) in String 2 (0.5 m from B, i.e. 3.5 m from A).
+            Weight \(W = 6g\) N acts at the midpoint, 2 m from A.
+        </div>
+
+        <button class="reveal-link" onclick="toggleDiagram('rod2-diagram', this)">Reveal diagram ▸</button>
+        <div id="rod2-diagram" style="display:none;">
+        <svg width="100%" height="185" viewBox="0 0 500 185" xmlns="http://www.w3.org/2000/svg">
+            <!-- ceiling -->
+            <rect x="0" y="0" width="500" height="15" fill="#bdc3c7"/>
+            <line x1="20" y1="0" x2="5" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="50" y1="0" x2="35" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="80" y1="0" x2="65" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="110" y1="0" x2="95" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="140" y1="0" x2="125" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="170" y1="0" x2="155" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="200" y1="0" x2="185" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="230" y1="0" x2="215" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="260" y1="0" x2="245" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="0" x2="275" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="320" y1="0" x2="305" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="350" y1="0" x2="335" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="380" y1="0" x2="365" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="410" y1="0" x2="395" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="440" y1="0" x2="425" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="470" y1="0" x2="455" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="500" y1="0" x2="485" y2="15" stroke="#aaa" stroke-width="1"/>
+            <!-- strings: T1 at 1m from A (x=140), T2 at 3.5m from A (x=390) -->
+            <line x1="140" y1="15" x2="140" y2="80" stroke="#555" stroke-width="2"/>
+            <line x1="390" y1="15" x2="390" y2="80" stroke="#555" stroke-width="2"/>
+            <!-- rod AB: x=40 to x=440, scaled 1m=100px -->
+            <rect x="40" y="80" width="400" height="12" fill="#d5c89a" stroke="#8d6e3f" stroke-width="2" rx="2"/>
+            <!-- end labels -->
+            <text x="28" y="93" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="444" y="93" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <!-- T1 arrow upward at x=140 -->
+            <line x1="140" y1="80" x2="140" y2="32" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="140,29 134,41 146,41" fill="#e74c3c"/>
+            <text x="146" y="58" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T₁</text>
+            <!-- T2 arrow upward at x=390 -->
+            <line x1="390" y1="80" x2="390" y2="32" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="390,29 384,41 396,41" fill="#3498db"/>
+            <text x="396" y="58" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">T₂</text>
+            <!-- Weight arrow downward from midpoint (x=240) -->
+            <line x1="240" y1="92" x2="240" y2="148" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="240,151 234,139 246,139" fill="#2c3e50"/>
+            <text x="246" y="140" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">6g N</text>
+            <!-- distance markers -->
+            <!-- 1m: A to T1 -->
+            <line x1="40" y1="104" x2="140" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="40" y1="100" x2="40" y2="108" stroke="#888" stroke-width="1"/>
+            <line x1="140" y1="100" x2="140" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="90" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1.0 m</text>
+            <!-- 1m: T1 to midpoint -->
+            <line x1="140" y1="104" x2="240" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="240" y1="100" x2="240" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="190" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1.0 m</text>
+            <!-- 1.5m: midpoint to T2 -->
+            <line x1="240" y1="104" x2="390" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="390" y1="100" x2="390" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="315" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1.5 m</text>
+            <!-- 0.5m: T2 to B -->
+            <line x1="390" y1="104" x2="440" y2="104" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="440" y1="100" x2="440" y2="108" stroke="#888" stroke-width="1"/>
+            <text x="415" y="118" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">0.5 m</text>
+            <!-- midpoint dot -->
+            <circle cx="240" cy="86" r="3" fill="#2c3e50"/>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 2 — Vertical equilibrium</div>
+            Sum of upward forces equals sum of downward forces.
+            <button class="reveal-link" onclick="toggleEq('rod2-eq2', this)">Reveal equations ▸</button>
+            <div id="rod2-eq2" style="display:none;">
+            \[T_1 + T_2 = 6g\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Moments about the String 1 attachment point</div>
+            Taking moments about the point where String 1 is attached (1 m from A) eliminates \(T_1\). At this point, \(T_2\) is 2.5 m away and the weight \(6g\) is 1.0 m away:
+            <button class="reveal-link" onclick="toggleEq('rod2-eq3', this)">Reveal equations ▸</button>
+            <div id="rod2-eq3" style="display:none;">
+            \[T_2 \times 2.5 = 6g \times 1.0\]
+            \[T_2 = \frac{6g}{2.5} = 2.4g \approx 23.5 \text{ N}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 4 — Find T₁</div>
+            <button class="reveal-link" onclick="toggleEq('rod2-eq4', this)">Reveal equations ▸</button>
+            <div id="rod2-eq4" style="display:none;">
+            \[T_1 = 6g - T_2 = 6g - 2.4g = 3.6g \approx 35.3 \text{ N}\]
+            </div>
+        </div>
+        <div class="key-result">
+            \(T_1 \approx 35.3\) N, \(\quad T_2 \approx 23.5\) N. String 1 carries the greater tension because it is closer to the centre of gravity of the rod.
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('particles')">← Particles &amp; rods</button>
+        <button class="btn-primary" onclick="showSection('thrust')">Rods &amp; thrust →</button>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ RODS & THRUST ═══ -->
+<section id="thrust" class="section">
+
+    <div class="definitions-section">
+        <h3>Tension versus thrust</h3>
+        <p>
+            A light rod is a <em>two-force member</em>: it can only exert a force along its own length.
+            The direction of that force depends on whether the rod is being stretched or compressed.
+        </p>
+        <table class="force-table">
+            <tr><th>Condition</th><th>Force in rod</th><th>Rod is...</th></tr>
+            <tr><td>Rod being pulled apart</td><td>Tension \(T\) (pulling inward)</td><td>in <em>tension</em></td></tr>
+            <tr><td>Rod being pushed together</td><td>Thrust \(C\) (pushing outward)</td><td>in <em>compression</em> (thrust)</td></tr>
+        </table>
+        <p>
+            A string can only be in tension (it goes slack if compressed). A rod can sustain
+            both tension and thrust (compression), which is why rods are used in structural frameworks.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Rods in frameworks</h3>
+        <p>
+            A practical example of rods in a framework is a three-legged stool. Each leg is a light rod
+            that can carry a compressive force (thrust). The seat is supported by three legs; the weight
+            of the seat (and anyone sitting on it) must be balanced by the upward forces that the legs
+            exert on the seat.
+        </p>
+        <p>
+            The diagram below shows the forces acting on the <em>seat</em> of the stool. The three legs
+            push upward on the seat with equal forces \(S\), and the weight \(W\) of the seat acts
+            downward through its centre.
+        </p>
+
+        <!-- Stool seat force diagram: top-down view of seat with three leg contact points -->
+        <svg width="100%" height="260" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Stool seat: ellipse to give 3D perspective -->
+            <ellipse cx="210" cy="115" rx="130" ry="50" fill="#d5c89a" stroke="#8d6e3f" stroke-width="2.5"/>
+
+            <!-- Three leg attachment points on underside rim, 120° apart -->
+            <!-- Leg 1: top (210, 65) -->
+            <circle cx="210" cy="67" r="6" fill="#8d6e3f" stroke="#5d4e37" stroke-width="1.5"/>
+            <!-- Leg 2: bottom-left (120, 148) -->
+            <circle cx="121" cy="148" r="6" fill="#8d6e3f" stroke="#5d4e37" stroke-width="1.5"/>
+            <!-- Leg 3: bottom-right (299, 148) -->
+            <circle cx="299" cy="148" r="6" fill="#8d6e3f" stroke="#5d4e37" stroke-width="1.5"/>
+
+            <!-- S arrow upward from leg 1 attachment -->
+            <line x1="210" y1="67" x2="210" y2="22" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="210,19 204,31 216,31" fill="#3498db"/>
+            <text x="218" y="42" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">S</text>
+
+            <!-- S arrow upward from leg 2 attachment -->
+            <line x1="121" y1="148" x2="121" y2="103" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="121,100 115,112 127,112" fill="#3498db"/>
+            <text x="129" y="123" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">S</text>
+
+            <!-- S arrow upward from leg 3 attachment -->
+            <line x1="299" y1="148" x2="299" y2="103" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="299,100 293,112 305,112" fill="#3498db"/>
+            <text x="307" y="123" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">S</text>
+
+            <!-- W arrow downward from centre of seat -->
+            <line x1="210" y1="115" x2="210" y2="185" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="210,189 204,177 216,177" fill="#e74c3c"/>
+            <text x="218" y="178" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">W</text>
+
+            <!-- Centre dot -->
+            <circle cx="210" cy="115" r="3" fill="#e74c3c"/>
+
+            <!-- label -->
+            <text x="210" y="230" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">Forces on the seat of the stool</text>
+            <text x="210" y="248" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">(three equal upward leg forces S, weight W downward)</text>
+        </svg>
+
+        <p>
+            For the seat to be in vertical equilibrium:
+            \[3S = W\]
+            so each leg carries one-third of the total weight. Each leg is in <strong>thrust</strong>
+            (compression) — the seat pushes down on the leg, and the leg pushes back up on the seat.
+        </p>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Strut and tie</h4>
+        <p>
+            A light rod AB is hinged to a vertical wall at A. A light rod BC connects B to a point C
+            on the wall directly above A, with BC making an angle of 30° to the horizontal.
+            A load of 200 N hangs vertically from B. Find the thrust in AB and the tension in BC.
+            Draw a diagram showing the forces acting at B.
+        </p>
+
+        <button class="reveal-link" onclick="toggleDiagram('st-diagram', this)">Reveal diagram ▸</button>
+        <div id="st-diagram" style="display:none;">
+        <svg width="100%" height="240" viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+            <!-- wall -->
+            <rect x="0" y="0" width="45" height="240" fill="#d5d8dc"/>
+            <line x1="45" y1="0" x2="45" y2="240" stroke="#7f8c8d" stroke-width="2"/>
+            <line x1="0" y1="18" x2="45" y2="0"   stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="48" x2="45" y2="30"  stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="78" x2="45" y2="60"  stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="108" x2="45" y2="90" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="138" x2="45" y2="120" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="168" x2="45" y2="150" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="198" x2="45" y2="180" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="228" x2="45" y2="210" stroke="#aaa" stroke-width="1"/>
+
+            <!-- A: hinge on wall at (45, 175) -->
+            <!-- C: on wall above A at (45, 55) -->
+            <!-- B: free end of AB at (290, 175) -->
+
+            <!-- Rod AB: horizontal -->
+            <line x1="45" y1="175" x2="290" y2="175" stroke="#8d6e3f" stroke-width="5" stroke-linecap="round"/>
+            <!-- Rod BC: from B(290,175) to C(45,55), angle 30° -->
+            <line x1="290" y1="175" x2="45" y2="55" stroke="#8d6e3f" stroke-width="5" stroke-linecap="round"/>
+
+            <!-- Hinge circle at A -->
+            <circle cx="45" cy="175" r="8" fill="white" stroke="#34495e" stroke-width="2.5"/>
+            <!-- Pin circle at C -->
+            <circle cx="45" cy="55" r="8" fill="white" stroke="#34495e" stroke-width="2.5"/>
+            <!-- Joint circle at B -->
+            <circle cx="290" cy="175" r="7" fill="#f8f9fa" stroke="#34495e" stroke-width="2"/>
+
+            <!-- Labels -->
+            <text x="49" y="195" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="49" y="48"  font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
+            <text x="296" y="170" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+
+            <!-- Rod labels -->
+            <text x="165" y="168" text-anchor="middle" font-size="11" fill="#5d4e37" font-family="Georgia" font-style="italic">AB (strut)</text>
+            <text x="152" y="105" font-size="11" fill="#5d4e37" font-family="Georgia" font-style="italic">BC (tie)</text>
+
+            <!-- 30° angle arc: shifted 5px further left -->
+            <!-- arc centred at B(290,175), r=60: start on AB (230,175), end on BC (238,145) -->
+            <path d="M 226,175 A 60,60 0 0,1 234,145" fill="none" stroke="#888" stroke-width="1.5"/>
+            <text x="232" y="165" font-size="11" fill="#555" font-family="Georgia">30°</text>
+
+            <!-- FORCES AT B -->
+            <!-- Load 200N downward -->
+            <line x1="290" y1="175" x2="290" y2="218" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="290,221 284,209 296,209" fill="#2c3e50"/>
+            <text x="296" y="210" font-size="12" fill="#2c3e50" font-family="Georgia">200 N</text>
+
+            <!-- T: tension from B toward C, tip at (250,155) pointing upper-left along BC -->
+            <line x1="290" y1="175" x2="250" y2="155" stroke="#e74c3c" stroke-width="2.5"/>
+            <!-- arrowhead tip at (250,155), base corners 12px back + 6px perpendicular -->
+            <polygon points="250,155 263,155 258,166" fill="#e74c3c"/>
+            <text x="244" y="144" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T</text>
+
+            <!-- C_AB: thrust from rod AB pushing B rightward -->
+            <line x1="290" y1="175" x2="340" y2="175" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="343,175 331,169 331,181" fill="#3498db"/>
+            <text x="344" y="172" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">C<tspan baseline-shift="sub" font-size="9">AB</tspan></text>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 1 — Resolve at joint B</div>
+            Name the unknown forces and identify their directions at the joint.
+            <button class="reveal-link" onclick="toggleEq('st-eq1', this)">Reveal equations ▸</button>
+            <div id="st-eq1" style="display:none;">
+            Let \(T\) = tension in BC (along BC, at 30° above horizontal) and \(C_{AB}\) = thrust in AB (horizontal, pushing B away from wall).
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 2 — Vertical equilibrium at B</div>
+            The vertical component of the tension in BC must equal the downward load.
+            <button class="reveal-link" onclick="toggleEq('st-eq2', this)">Reveal equations ▸</button>
+            <div id="st-eq2" style="display:none;">
+            \[T\sin 30° = 200\]
+            \[T \times 0.5 = 200 \implies T = 400 \text{ N (tension in BC)}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Horizontal equilibrium at B</div>
+            The thrust in AB equals the horizontal component of the tension in BC.
+            <button class="reveal-link" onclick="toggleEq('st-eq3', this)">Reveal equations ▸</button>
+            <div id="st-eq3" style="display:none;">
+            \[C_{AB} = T\cos 30° = 400 \times \frac{\sqrt{3}}{2} = 200\sqrt{3} \approx 346 \text{ N (thrust in AB)}\]
+            </div>
+        </div>
+        <div class="key-result">
+            BC is in <strong>tension</strong> of 400 N; AB is in <strong>thrust</strong> (compression) of \(200\sqrt{3}\) N.
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('strings')">← Strings &amp; tension</button>
+        <button class="btn-primary" onclick="showSection('uniform-bar')">Non-uniform bar →</button>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ UNIFORM BAR ═══ -->
+<section id="uniform-bar" class="section">
+
+    <div class="definitions-section">
+        <h3>The uniform rod</h3>
+        <p>
+            A <strong>uniform rod</strong> has its mass distributed evenly along its length.
+            This means its <em>centre of gravity</em> (and thus the point through which its weight acts)
+            is at the <strong>midpoint</strong> of the rod.
+        </p>
+        <p>
+            A rod of length \(2l\) and mass \(m\) has its weight \(mg\) acting downward through the point
+            at distance \(l\) from each end.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Horizontal uniform bar on two supports</h3>
+        <p>
+            Consider a uniform horizontal bar of mass \(m\) and length \(L\),
+            supported by two vertical strings (or ropes/wires) attached at distances \(a\) and \(b\) from
+            the left-hand end, where \(a &lt; b\).
+        </p>
+
+        <svg width="100%" height="180" viewBox="0 0 520 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- ceiling -->
+            <rect x="0" y="0" width="520" height="15" fill="#bdc3c7"/>
+            <!-- strings -->
+            <line x1="130" y1="15" x2="130" y2="75" stroke="#7f8c8d" stroke-width="2"/>
+            <line x1="360" y1="15" x2="360" y2="75" stroke="#7f8c8d" stroke-width="2"/>
+            <!-- bar -->
+            <rect x="40" y="75" width="440" height="20" fill="#d5c89a" stroke="#8d6e3f" stroke-width="2" rx="3"/>
+            <!-- mg: downward inline polygon -->
+            <line x1="260" y1="95" x2="260" y2="138" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="260,142 254,130 266,130" fill="#2c3e50"/>
+            <text x="266" y="133" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">mg</text>
+            <!-- T1: upward inline polygon -->
+            <line x1="130" y1="75" x2="130" y2="33" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="130,30 124,42 136,42" fill="#e74c3c"/>
+            <text x="136" y="55" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T₁</text>
+            <!-- T2: upward inline polygon -->
+            <line x1="360" y1="75" x2="360" y2="33" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="360,30 354,42 366,42" fill="#3498db"/>
+            <text x="366" y="55" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">T₂</text>
+            <!-- end labels -->
+            <text x="31" y="90" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="483" y="90" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <!-- distance markers moved down 10px -->
+            <line x1="40" y1="160" x2="130" y2="160" stroke="#888" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <text x="82" y="158" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia" font-style="italic">a</text>
+            <line x1="130" y1="160" x2="360" y2="160" stroke="#888" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <text x="242" y="158" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia" font-style="italic">b − a</text>
+            <line x1="360" y1="160" x2="480" y2="160" stroke="#888" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <text x="418" y="158" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia" font-style="italic">L − b</text>
+            <!-- circles on dotted line below T1 and T2 -->
+            <circle cx="130" cy="160" r="4" fill="white" stroke="#888" stroke-width="1.5"/>
+            <circle cx="360" cy="160" r="4" fill="white" stroke="#888" stroke-width="1.5"/>
+        </svg>
+
+        <p>
+            With the bar in equilibrium, we write two equations:
+        </p>
+        \[\text{(↑) } \quad T_1 + T_2 = mg\]
+        \[\text{(Moments about A)} \quad T_1 \cdot a + T_2 \cdot b = mg \cdot \tfrac{L}{2}\]
+        <p>
+            It is most efficient to take moments about the point where one tension acts, to find the other directly.
+        </p>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Non-uniform bar</h4>
+        <p>
+            A non-uniform plank AB of length 5 m and mass 8 kg is supported by two strings attached
+            at A and at a point C, where C is 3 m from A. The plank rests horizontally. The tension
+            in the string at A is twice the tension in the string at C. Find the distance of the
+            centre of gravity, CG, from A.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Find values for tensions</div>
+            <button class="reveal-link" onclick="toggleEq('nub-eq1', this)">Reveal equations ▸</button>
+            <div id="nub-eq1" style="display:none;">
+            Let tension at C = \(T\), so tension at A = \(2T\).
+            </div>
+        </div>
+
+        <!-- Diagram: non-uniform plank AB, strings at A and C, CG unknown at x -->
+        <button class="reveal-link" onclick="toggleDiagram('nub-diagram', this)">Reveal diagram ▸</button>
+        <div id="nub-diagram" style="display:none;">
+        <svg width="100%" height="185" viewBox="0 0 500 185" xmlns="http://www.w3.org/2000/svg">
+            <!-- ceiling -->
+            <rect x="0" y="0" width="500" height="15" fill="#bdc3c7"/>
+            <line x1="20"  y1="0" x2="5"   y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="50"  y1="0" x2="35"  y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="80"  y1="0" x2="65"  y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="110" y1="0" x2="95"  y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="140" y1="0" x2="125" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="170" y1="0" x2="155" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="200" y1="0" x2="185" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="230" y1="0" x2="215" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="260" y1="0" x2="245" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="0" x2="275" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="320" y1="0" x2="305" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="350" y1="0" x2="335" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="380" y1="0" x2="365" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="410" y1="0" x2="395" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="440" y1="0" x2="425" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="470" y1="0" x2="455" y2="15" stroke="#aaa" stroke-width="1"/>
+            <line x1="500" y1="0" x2="485" y2="15" stroke="#aaa" stroke-width="1"/>
+            <!-- strings: scale 1m = 80px, A at x=40, B at x=440, C at x=40+3×80=280 -->
+            <line x1="40"  y1="15" x2="40"  y2="75" stroke="#555" stroke-width="2"/>
+            <line x1="280" y1="15" x2="280" y2="75" stroke="#555" stroke-width="2"/>
+            <!-- plank -->
+            <rect x="40" y="75" width="400" height="14" fill="#d5c89a" stroke="#8d6e3f" stroke-width="2" rx="2"/>
+            <!-- 2T arrow upward at A -->
+            <line x1="40" y1="75" x2="40" y2="33" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="40,30 34,42 46,42" fill="#e74c3c"/>
+            <text x="46" y="56" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">2T</text>
+            <!-- T arrow upward at C -->
+            <line x1="280" y1="75" x2="280" y2="33" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="280,30 274,42 286,42" fill="#3498db"/>
+            <text x="286" y="56" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">T</text>
+            <!-- 8g arrow downward from unknown CG position (x = unknown, shown as x from A) -->
+            <!-- show CG at x from A — represented with a question-mark position, dashed vertical -->
+            <line x1="120" y1="89" x2="120" y2="148" stroke="#2c3e50" stroke-width="2" stroke-dasharray="4,3"/>
+            <line x1="120" y1="89" x2="120" y2="140" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="120,152 114,140 126,140" fill="#2c3e50"/>
+            <text x="128" y="138" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">8g</text>
+            <!-- CG marker on bar -->
+            <circle cx="120" cy="82" r="4" fill="#2c3e50"/>
+            <text x="108" y="70" font-size="10" fill="#2c3e50" font-family="Georgia">CG</text>
+            <!-- end labels -->
+            <text x="28" y="95" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="444" y="95" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <text x="271" y="95" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
+            <!-- distance markers -->
+            <line x1="40"  y1="165" x2="120" y2="165" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="40"  y1="161" x2="40"  y2="169" stroke="#888" stroke-width="1"/>
+            <line x1="120" y1="161" x2="120" y2="169" stroke="#888" stroke-width="1"/>
+            <text x="80"  y="178" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia" font-style="italic">x m</text>
+            <line x1="40"  y1="155" x2="280" y2="155" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="280" y1="151" x2="280" y2="159" stroke="#888" stroke-width="1"/>
+            <text x="160" y="152" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia" font-style="italic">3 m</text>
+            <line x1="40"  y1="145" x2="440" y2="145" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="440" y1="141" x2="440" y2="149" stroke="#888" stroke-width="1"/>
+            <text x="240" y="142" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia" font-style="italic">5 m</text>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 2 — Vertical equilibrium</div>
+            Sum of upward forces equals sum of downward forces.
+            <button class="reveal-link" onclick="toggleEq('nub-eq2', this)">Reveal equations ▸</button>
+            <div id="nub-eq2" style="display:none;">
+            \[2T + T = 8g \implies T = \frac{8g}{3}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Moments about A (let CG be x from A)</div>
+            <button class="reveal-link" onclick="toggleEq('nub-eq3', this)">Reveal equations ▸</button>
+            <div id="nub-eq3" style="display:none;">
+            \[T \times 3 = 8g \times x\]
+            \[\frac{8g}{3} \times 3 = 8g \cdot x\]
+            \[8g = 8gx \implies x = 1 \text{ m}\]
+            </div>
+        </div>
+        <div class="key-result">
+            The centre of gravity is <strong>1 m from A</strong>.
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>Non-uniform rods:</strong> If the rod is described as <em>non-uniform</em>,
+        the centre of gravity is <em>not</em> at the midpoint and must be determined from the
+        equilibrium equations. It becomes an unknown to solve for.
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('thrust')">← Rods &amp; thrust</button>
+        <button class="btn-primary" onclick="showSection('hinges')">Hinges →</button>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ HINGES ═══ -->
+<section id="hinges" class="section">
+
+    <div class="definitions-section">
+        <h3>What is a hinge?</h3>
+        <p>
+            A <strong>hinge</strong> (or <em>pin joint</em>) attaches a rod to a fixed support (such as a wall)
+            in a way that allows free rotation. This means:
+        </p>
+        <ul style="margin: 10px 0 10px 25px; line-height:1.9;">
+            <li>A hinge can exert a reaction force in <em>any direction</em> — not just perpendicular to the rod.</li>
+            <li>A hinge cannot exert a moment (couple) — it offers no rotational resistance.</li>
+        </ul>
+        <p>
+            Because the direction of the hinge reaction is unknown, we represent it by two components:
+            a horizontal component \(H\) and a vertical component \(V\). Solving the equilibrium equations
+            determines both \(H\) and \(V\), from which the magnitude and direction of the reaction can be found.
+        </p>
+
+        <svg width="100%" height="200" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- wall -->
+            <rect x="0" y="0" width="35" height="200" fill="#d5d8dc"/>
+            <line x1="35" y1="0" x2="35" y2="200" stroke="#7f8c8d" stroke-width="2"/>
+            <!-- hatch marks -->
+            <line x1="0" y1="20" x2="35" y2="0" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="50" x2="35" y2="30" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="80" x2="35" y2="60" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="110" x2="35" y2="90" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="140" x2="35" y2="120" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="170" x2="35" y2="150" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="200" x2="35" y2="180" stroke="#aaa" stroke-width="1"/>
+            <!-- rod hinged at wall -->
+            <line x1="35" y1="100" x2="340" y2="100" stroke="#8d6e3f" stroke-width="6" stroke-linecap="round"/>
+            <!-- hinge circle -->
+            <circle cx="35" cy="100" r="9" fill="white" stroke="#34495e" stroke-width="2.5"/>
+            <!-- V arrow: line upward, inline upward polygon at tip -->
+            <line x1="35" y1="100" x2="35" y2="58" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="35,55 29,67 41,67" fill="#e74c3c"/>
+            <text x="40" y="75" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">V</text>
+            <!-- H arrow: keep marker-end for horizontal -->
+            <line x1="35" y1="100" x2="90" y2="100" stroke="#3498db" stroke-width="2.5" marker-end="url(#hArr2)"/>
+            <text x="60" y="94" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">H</text>
+            <!-- rod label -->
+            <text x="180" y="92" font-size="13" fill="#5d4e37" font-family="Georgia">uniform rod</text>
+            <!-- mg arrow: line downward, inline downward polygon at tip -->
+            <line x1="188" y1="100" x2="188" y2="158" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="188,162 182,150 194,150" fill="#2c3e50"/>
+            <text x="194" y="150" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">mg</text>
+            <!-- string at end -->
+            <line x1="340" y1="100" x2="340" y2="30" stroke="#7f8c8d" stroke-width="2"/>
+            <line x1="340" y1="30" x2="340" y2="5" stroke="#7f8c8d" stroke-width="2"/>
+            <!-- T arrow: inline upward polygon on string -->
+            <polygon points="340,38 334,50 346,50" fill="#555"/>
+            <text x="346" y="65" font-size="12" fill="#555" font-family="Georgia" font-style="italic">T</text>
+            <!-- wall at top for string -->
+            <rect x="310" y="0" width="60" height="12" fill="#bdc3c7"/>
+            <defs>
+                <marker id="hArr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M8,0 L0,4 L8,8" fill="none" stroke="#3498db" stroke-width="1.5" transform="rotate(180,4,4)"/>
+                </marker>
+            </defs>
+        </svg>
+
+        <p>
+            The hinge at the wall provides components \(H\) (horizontal) and \(V\) (vertical).
+            These are found by applying \(\sum F_x = 0\), \(\sum F_y = 0\), and \(\sum M = 0\).
+        </p>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Hinged rod with a string</h4>
+        <p>
+            A uniform horizontal rod AB of length 2 m and mass 5 kg is hinged to a wall at A.
+            The rod is held horizontal by a light string attached at B making an angle of 25° to
+            the rod and directed toward the wall. Find the tension in the string and the reaction at the hinge.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Forces acting on the rod</div>
+            Weight \(W = 5g\) N at midpoint (1 m from A). Tension \(T\) at B at 25° above horizontal toward the wall,
+            giving vertical component \(T\sin 25°\) upward and horizontal component \(T\cos 25°\) toward the wall.
+            Hinge reaction: \(H\) horizontal and \(V\) vertical at A.
+        </div>
+
+        <button class="reveal-link" onclick="toggleDiagram('hin-diagram', this)">Reveal diagram ▸</button>
+        <div id="hin-diagram" style="display:none;">
+        <svg width="100%" height="185" viewBox="0 0 440 185" xmlns="http://www.w3.org/2000/svg">
+            <!-- wall -->
+            <rect x="0" y="0" width="35" height="185" fill="#d5d8dc"/>
+            <line x1="35" y1="0" x2="35" y2="185" stroke="#7f8c8d" stroke-width="2"/>
+            <line x1="0" y1="18" x2="35" y2="0"   stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="48" x2="35" y2="30"  stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="78" x2="35" y2="60"  stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="108" x2="35" y2="90" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="138" x2="35" y2="120" stroke="#aaa" stroke-width="1"/>
+            <line x1="0" y1="168" x2="35" y2="150" stroke="#aaa" stroke-width="1"/>
+            <!-- rod AB: hinge at (35,95), B at (355,95) -->
+            <line x1="35" y1="95" x2="355" y2="95" stroke="#8d6e3f" stroke-width="6" stroke-linecap="round"/>
+            <!-- hinge circle at A -->
+            <circle cx="35" cy="95" r="9" fill="white" stroke="#34495e" stroke-width="2.5"/>
+            <!-- string: from B(355,95) at 25° above horizontal toward wall, attaches at ceiling (177,12) -->
+            <line x1="355" y1="95" x2="177" y2="12" stroke="#7f8c8d" stroke-width="2"/>
+            <!-- ceiling attachment point -->
+            <rect x="157" y="0" width="40" height="12" fill="#bdc3c7"/>
+            <!-- T force arrow at B along string direction, tip pointing toward wall -->
+            <!-- direction: (-cos25°, -sin25°) = (-0.906, -0.423); length 50px -->
+            <!-- T arrow doubled: base at B(355,95), tip at (267,53) -->
+            <line x1="355" y1="95" x2="267" y2="53" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="267,53 281,53 275,63" fill="#e74c3c"/>
+            <text x="295" y="60" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">T</text>
+            <!-- 25° angle arc at B, r=60 -->
+            <path d="M 295,95 A 60,60 0 0,1 301,70" fill="none" stroke="#888" stroke-width="1.5"/>
+            <text x="303" y="86" font-size="11" fill="#555" font-family="Georgia">25°</text>
+            <!-- V arrow upward at A -->
+            <line x1="35" y1="95" x2="35" y2="52" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="35,49 29,61 41,61" fill="#e74c3c"/>
+            <text x="40" y="70" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">V</text>
+            <!-- H arrow rightward at A -->
+            <line x1="35" y1="95" x2="85" y2="95" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="88,95 76,89 76,101" fill="#3498db"/>
+            <text x="56" y="89" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">H</text>
+            <!-- 5g arrow downward from midpoint (195,95) -->
+            <line x1="195" y1="95" x2="195" y2="148" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="195,151 189,139 201,139" fill="#2c3e50"/>
+            <text x="201" y="138" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">5g</text>
+            <!-- midpoint dot -->
+            <circle cx="195" cy="95" r="3" fill="#2c3e50"/>
+            <!-- distance markers -->
+            <line x1="35" y1="164" x2="195" y2="164" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="35"  y1="160" x2="35"  y2="168" stroke="#888" stroke-width="1"/>
+            <line x1="195" y1="160" x2="195" y2="168" stroke="#888" stroke-width="1"/>
+            <text x="115" y="178" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1 m</text>
+            <line x1="195" y1="164" x2="355" y2="164" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="355" y1="160" x2="355" y2="168" stroke="#888" stroke-width="1"/>
+            <text x="275" y="178" text-anchor="middle" font-size="10" fill="#888" font-family="Georgia">1 m</text>
+            <!-- labels -->
+            <text x="22" y="115" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="359" y="115" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <text x="183" y="84" font-size="11" fill="#555" font-family="Georgia">midpoint</text>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 2 — Moments about A (eliminates H and V)</div>
+            Only the perpendicular component of \(T\) (i.e. \(T\sin 25°\)) creates a moment about A.
+            <button class="reveal-link" onclick="toggleEq('hin-eq2', this)">Reveal equations ▸</button>
+            <div id="hin-eq2" style="display:none;">
+            \[T\sin 25° \times 2 = 5g \times 1\]
+            \[T = \frac{5g}{2\sin 25°} = \frac{5g}{2 \times 0.4226} \approx 58.0 \text{ N}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Vertical equilibrium</div>
+            Sum of upward forces equals sum of downward forces.
+            <button class="reveal-link" onclick="toggleEq('hin-eq3', this)">Reveal equations ▸</button>
+            <div id="hin-eq3" style="display:none;">
+            \[V + T\sin 25° = 5g\]
+            \[V = 5g - T\sin 25° = 5g - 2.5g = 2.5g \approx 24.5 \text{ N (upward)}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 4 — Horizontal equilibrium</div>
+            The horizontal component of \(T\) pulls the rod toward the wall; H is a force from the hinge acting on the rod to balance the horizontal component of T acting on the rod.
+            <button class="reveal-link" onclick="toggleEq('hin-eq4', this)">Reveal equations ▸</button>
+            <div id="hin-eq4" style="display:none;">
+            \[H = T\cos 25° = 58.0 \times 0.9063 \approx 52.6 \text{ N (rightward from hinge)}\]
+            </div>
+        </div>
+        <div class="key-result">
+            Tension \(T \approx 58.0\) N; hinge reaction components \(H \approx 52.6\) N (horizontal) and
+            \(V \approx 24.5\) N (vertical upward), giving magnitude \(\approx \sqrt{52.6^2 + 24.5^2} \approx 58.0\) N.
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>Inclined rod on a hinge:</strong> When the rod is not horizontal, the moment of the
+        weight about the hinge uses the <em>perpendicular</em> distance from the hinge to the line of
+        action of the weight. It is often easiest to resolve the weight into components along and
+        perpendicular to the rod and use the perpendicular component with the rod length.
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('uniform-bar')">← Non-uniform bar</button>
+        <button class="btn-primary" onclick="showSection('ladders')">Ladders →</button>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ LADDERS ═══ -->
+<section id="ladders" class="section">
+
+    <div class="definitions-section">
+        <h3>The ladder problem</h3>
+        <p>
+            A ladder leaning against a wall is one of the most common and important applications of moments
+            and equilibrium in mechanics. The typical set-up involves a uniform ladder of length \(2l\)
+            (or \(L\)) and mass \(m\), leaning against a smooth vertical wall and resting on a rough
+            horizontal floor, making an angle \(\theta\) with the floor.
+        </p>
+
+        <svg width="100%" height="260" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+            <!-- wall -->
+            <rect x="290" y="0" width="40" height="250" fill="#d5d8dc"/>
+            <line x1="290" y1="0" x2="290" y2="250" stroke="#7f8c8d" stroke-width="2"/>
+            <!-- hatching wall -->
+            <line x1="290" y1="15" x2="330" y2="0" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="45" x2="330" y2="28" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="75" x2="330" y2="58" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="105" x2="330" y2="88" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="135" x2="330" y2="118" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="165" x2="330" y2="148" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="195" x2="330" y2="178" stroke="#aaa" stroke-width="1"/>
+            <line x1="290" y1="225" x2="330" y2="208" stroke="#aaa" stroke-width="1"/>
+            <!-- floor -->
+            <rect x="0" y="245" width="380" height="15" fill="#bdc3c7"/>
+            <!-- hatching floor -->
+            <line x1="20" y1="245" x2="5" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="50" y1="245" x2="35" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="80" y1="245" x2="65" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="110" y1="245" x2="95" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="140" y1="245" x2="125" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="170" y1="245" x2="155" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="200" y1="245" x2="185" y2="260" stroke="#aaa" stroke-width="1"/>
+            <line x1="230" y1="245" x2="215" y2="260" stroke="#aaa" stroke-width="1"/>
+            <!-- ladder -->
+            <line x1="80" y1="245" x2="290" y2="50" stroke="#8d6e3f" stroke-width="6" stroke-linecap="round"/>
+            <!-- angle theta at base: arc radius 55px, touching floor and ladder lines -->
+            <path d="M 135,245 A 55,55 0 0,0 120,208" fill="none" stroke="#888" stroke-width="1.5"/>
+            <!-- θ label inside arc at bisector angle ~21.5°, radius ~28 from A -->
+            <text x="103" y="237" font-size="12" fill="#555" font-family="Georgia" font-style="italic">θ</text>
+            <!-- weight arrow at midpoint ~(185,148) — inline downward polygon -->
+            <line x1="185" y1="148" x2="185" y2="196" stroke="#2c3e50" stroke-width="2.5"/>
+            <polygon points="185,200 179,188 191,188" fill="#2c3e50"/>
+            <text x="191" y="185" font-size="12" fill="#2c3e50" font-family="Georgia" font-style="italic">mg</text>
+            <!-- Normal from floor (R) — inline upward polygon -->
+            <line x1="80" y1="245" x2="80" y2="203" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="80,200 74,212 86,212" fill="#e74c3c"/>
+            <text x="57" y="215" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">R</text>
+            <!-- Friction at floor (F) — label moved below arrow -->
+            <line x1="80" y1="245" x2="130" y2="245" stroke="#e67e22" stroke-width="2.5" marker-end="url(#fLad)"/>
+            <text x="100" y="258" font-size="12" fill="#d35400" font-family="Georgia" font-style="italic">F</text>
+            <!-- Normal from wall (S) -->
+            <line x1="290" y1="50" x2="240" y2="50" stroke="#3498db" stroke-width="2.5" marker-end="url(#sLad)"/>
+            <text x="255" y="44" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">S</text>
+            <!-- labels -->
+            <text x="62" y="245" text-anchor="middle" font-size="12" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="296" y="46" font-size="12" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <defs>
+                <marker id="fLad" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M8,0 L0,4 L8,8" fill="none" stroke="#e67e22" stroke-width="1.5" transform="rotate(180,4,4)"/>
+                </marker>
+                <marker id="sLad" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M8,0 L0,4 L8,8" fill="none" stroke="#3498db" stroke-width="1.5" transform="rotate(180,4,4)"/>
+                </marker>
+            </defs>
+        </svg>
+
+        <p>The four forces acting on the ladder are:</p>
+        <table class="force-table">
+            <tr><th>Force</th><th>Direction</th><th>Point of action</th></tr>
+            <tr><td>Weight \(mg\)</td><td>Vertically downward</td><td>Midpoint of ladder</td></tr>
+            <tr><td>Normal reaction \(R\)</td><td>Vertically upward</td><td>Base A (floor)</td></tr>
+            <tr><td>Friction \(F\)</td><td>Horizontal (toward wall)</td><td>Base A (floor)</td></tr>
+            <tr><td>Normal reaction \(S\)</td><td>Horizontal (away from wall)</td><td>Top B (wall — smooth)</td></tr>
+        </table>
+        <p>
+            The wall is <em>smooth</em>, so it can only push the ladder horizontally — no friction at B.
+            The floor is <em>rough</em>, providing both \(R\) (vertical) and \(F\) (horizontal friction) at A.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Equations of equilibrium for a ladder</h3>
+        <p>
+            Taking the length of the ladder as \(2l\) and the angle with the floor as \(\theta\):
+        </p>
+        \[\text{(↑)} \quad R = mg\]
+        \[\text{(→)} \quad F = S\]
+        \[\text{(Moments about A)} \quad S \cdot 2l\sin\theta = mg \cdot l\cos\theta\]
+        <p>Simplifying the moments equation:</p>
+        \[S = \frac{mg\cos\theta}{2\sin\theta} = \frac{mg}{2}\cot\theta\]
+        <p>
+            Since at the point of slipping \(F = \mu R\) (where \(\mu\) is the coefficient of friction),
+            and \(F = S\), the minimum angle at which the ladder can rest without slipping satisfies:
+        </p>
+        \[\mu R = \frac{mg}{2}\cot\theta \implies \mu mg = \frac{mg}{2}\cot\theta \implies \cot\theta = 2\mu \implies \tan\theta = \frac{1}{2\mu}\]
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Ladder with a person climbing</h4>
+        <p>
+            A uniform ladder of length 6 m and mass 20 kg leans against a smooth vertical wall on
+            rough horizontal ground, making an angle of 70° with the horizontal.
+            A person of mass 60 kg climbs the ladder. Find how far up the ladder the person can climb
+            before the ladder slips, given that the coefficient of friction at the ground is 0.35.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Set up forces</div>
+            Let the person be a distance \(d\) m up the ladder from the base.
+            Forces: \(R\) upward at base; \(F\) horizontal at base; \(S\) horizontal from wall at top.
+            Weights: \(20g\) at 3 m (midpoint); \(60g\) at distance \(d\) up the ladder.
+        </div>
+
+        <button class="reveal-link" onclick="toggleDiagram('lad-diagram', this)">Reveal diagram ▸</button>
+        <div id="lad-diagram" style="display:none;">
+        <svg width="100%" height="285" viewBox="0 0 360 285" xmlns="http://www.w3.org/2000/svg">
+            <!-- wall -->
+            <rect x="280" y="0" width="40" height="260" fill="#d5d8dc"/>
+            <line x1="280" y1="0" x2="280" y2="260" stroke="#7f8c8d" stroke-width="2"/>
+            <line x1="280" y1="15" x2="320" y2="0" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="40" x2="320" y2="25" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="65" x2="320" y2="50" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="90" x2="320" y2="75" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="115" x2="320" y2="100" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="140" x2="320" y2="125" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="165" x2="320" y2="150" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="190" x2="320" y2="175" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="215" x2="320" y2="200" stroke="#aaa" stroke-width="1"/>
+            <line x1="280" y1="240" x2="320" y2="225" stroke="#aaa" stroke-width="1"/>
+            <!-- floor -->
+            <rect x="0" y="258" width="285" height="14" fill="#bdc3c7"/>
+            <line x1="15" y1="258" x2="0"  y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="40" y1="258" x2="25" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="65" y1="258" x2="50" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="90" y1="258" x2="75" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="115" y1="258" x2="100" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="140" y1="258" x2="125" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="165" y1="258" x2="150" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="190" y1="258" x2="175" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="215" y1="258" x2="200" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="240" y1="258" x2="225" y2="272" stroke="#aaa" stroke-width="1"/>
+            <line x1="265" y1="258" x2="250" y2="272" stroke="#aaa" stroke-width="1"/>
+            <!-- ladder: A=(200,258) to B=(280,38), angle 70° -->
+            <line x1="200" y1="258" x2="280" y2="38" stroke="#8d6e3f" stroke-width="5" stroke-linecap="round"/>
+            <!-- θ arc at A, radius 40, from floor rightward up to ladder -->
+            <path d="M 240,258 A 40,40 0 0,0 214,220" fill="none" stroke="#888" stroke-width="1.5"/>
+            <!-- θ label inside arc at bisector ~35°, r≈20 from A -->
+            <text x="218" y="248" font-size="11" fill="#555" font-family="Georgia" font-style="italic">70°</text>
+            <!-- thin dotted line parallel to ladder from A to person, offset 8px left -->
+            <line x1="193" y1="258" x2="219" y2="185" stroke="#aaa" stroke-width="1" stroke-dasharray="3,3"/>
+            <!-- d label offset to left of dashed line -->
+            <text x="202" y="206" font-size="11" fill="#888" font-family="Georgia" font-style="italic">d</text>
+            <!-- Person marker at ~2m up (227,185) -->
+            <circle cx="227" cy="182" r="7" fill="#f0c080" stroke="#d4a055" stroke-width="1.5"/>
+            <!-- 60g arrow down from person -->
+            <line x1="227" y1="189" x2="227" y2="218" stroke="#2c3e50" stroke-width="2"/>
+            <polygon points="227,221 221,209 233,209" fill="#2c3e50"/>
+            <text x="233" y="212" font-size="11" fill="#2c3e50" font-family="Georgia" font-style="italic">60g</text>
+            <!-- midpoint dot at 3m (240,148) -->
+            <circle cx="240" cy="148" r="3" fill="#2c3e50"/>
+            <!-- 20g arrow down from midpoint -->
+            <line x1="240" y1="151" x2="240" y2="180" stroke="#2c3e50" stroke-width="2"/>
+            <polygon points="240,183 234,171 246,171" fill="#2c3e50"/>
+            <text x="246" y="174" font-size="11" fill="#2c3e50" font-family="Georgia" font-style="italic">20g</text>
+            <!-- R arrow upward at A -->
+            <line x1="200" y1="258" x2="200" y2="214" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="200,211 194,223 206,223" fill="#e74c3c"/>
+            <text x="180" y="230" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">R</text>
+            <!-- F arrow rightward at A — label below -->
+            <line x1="200" y1="258" x2="248" y2="258" stroke="#e67e22" stroke-width="2.5"/>
+            <polygon points="251,258 239,252 239,264" fill="#e67e22"/>
+            <text x="218" y="272" font-size="12" fill="#d35400" font-family="Georgia" font-style="italic">F</text>
+            <!-- S arrow leftward at B=(280,38) -->
+            <line x1="280" y1="38" x2="234" y2="38" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="231,38 243,32 243,44" fill="#3498db"/>
+            <text x="250" y="32" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">S</text>
+            <!-- A and B labels -->
+            <text x="185" y="256" font-size="12" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <text x="283" y="35" font-size="12" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 2 — Vertical equilibrium</div>
+            <button class="reveal-link" onclick="toggleEq('lad-eq2', this)">Reveal equations ▸</button>
+            <div id="lad-eq2" style="display:none;">
+            \[R = 20g + 60g = 80g \approx 784 \text{ N}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Limiting friction condition</div>
+            <button class="reveal-link" onclick="toggleEq('lad-eq3', this)">Reveal equations ▸</button>
+            <div id="lad-eq3" style="display:none;">
+            At the point of slipping: \(F = 0.35R = 0.35 \times 80g = 28g\)
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 4 — Horizontal equilibrium</div>
+            <button class="reveal-link" onclick="toggleEq('lad-eq4', this)">Reveal equations ▸</button>
+            <div id="lad-eq4" style="display:none;">
+            \[S = F = 28g\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 5 — Moments about base A</div>
+            <button class="reveal-link" onclick="toggleEq('lad-eq5', this)">Reveal equations ▸</button>
+            <div id="lad-eq5" style="display:none;">
+            \[S \times 6\sin 70° = 20g \times 3\cos 70° + 60g \times d\cos 70°\]
+            \[28g \times 6\sin 70° = \cos 70°(60g + 180gd)\]
+            Divide both sides by \(g\cos 70°\):
+            \[28 \times 6 \tan 70° = 60 + 180d\]
+            \[28 \times 6 \times 2.747 = 60 + 180d\]
+            \[461.5 = 60 + 180d\]
+            \[d = \frac{401.5}{180} \approx 2.23 \text{ m}\]
+            </div>
+        </div>
+        <div class="key-result">
+            The person can climb at most <strong>2.23 m</strong> up the ladder (to 3 s.f.) before it slips.
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>Person at top of ladder:</strong> If a person stands at the very top, the tendency to
+        slip increases greatly. The further up they go, the larger the clockwise moment about the base
+        and hence the larger the reaction \(S\) at the wall, requiring more friction at the base to
+        maintain equilibrium.
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('hinges')">← Hinges</button>
+        <button class="btn-primary" onclick="showSection('intro')">← Back to Introduction</button>
+    </div>
+</section>
+
+    </main>
+
+    <footer>
+        <p>Mechanics: Moments and Equilibrium</p>
+    </footer>
+</div>
+</body>
+</html>
