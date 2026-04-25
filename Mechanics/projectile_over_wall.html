@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projectile Over a Wall — Mechanics</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #f5f4f0;
+  color: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem 3rem;
+}
+.container {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 2rem 2.25rem;
+  max-width: 740px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+h1 {
+  font-size: 1.1rem;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+  color: #444;
+  text-transform: uppercase;
+  font-family: Arial, sans-serif;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.75rem;
+}
+.qcard {
+  background: #f9f8f5;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #e5e3de;
+}
+.lbl {
+  font-size: 0.68rem;
+  font-family: Arial, sans-serif;
+  color: #aaa;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.55rem;
+}
+#qtext {
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+}
+@media (max-width: 480px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
+.pcell {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  text-align: center;
+}
+.pcell-lbl {
+  font-size: 0.62rem;
+  font-family: Arial, sans-serif;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 2px;
+}
+.pcell-val {
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+.canvas-wrap {
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #dde;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: 300px;
+  background: #f9f9f7;
+}
+.rbox {
+  border-radius: 8px;
+  padding: 0.9rem 1.25rem;
+  margin-bottom: 1.25rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.clears { background: #eef7ef; border: 1px solid #9ed1a3; color: #235b27; }
+.noclr  { background: #fef0f0; border: 1px solid #f0b8b8; color: #8b2020; }
+.btnrow { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+button {
+  flex: 1;
+  font-family: Arial, sans-serif;
+  font-size: 0.88rem;
+  padding: 0.62rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+button:hover { background: #f0ede8; }
+#soln { display: none; }
+.solvhdr {
+  font-size: 0.68rem;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e0e0e0;
+}
+.step {
+  margin-bottom: 0.875rem;
+  padding: 0.875rem 1rem 0.875rem 1.1rem;
+  background: #f9f8f5;
+  border-radius: 6px;
+  border-left: 3px solid #cac6bd;
+}
+.stitle {
+  font-family: Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin-bottom: 0.45rem;
+}
+.sbody { font-size: 0.95rem; line-height: 1.9; }
+.ansbox {
+  background: #eef4fb;
+  border: 1px solid #b8d0ed;
+  border-radius: 6px;
+  padding: 0.9rem 1.1rem;
+  margin-top: 0.25rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.95rem;
+  color: #1a4a7a;
+  line-height: 1.6;
+}
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Mechanics — Projectile Over a Wall</h1>
+
+  <div class="qcard">
+    <div class="lbl">Question</div>
+    <p id="qtext"></p>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+
+  <div class="canvas-wrap"><canvas id="cvs"></canvas></div>
+
+  <div id="rbox" class="rbox"></div>
+
+  <div class="btnrow">
+    <button onclick="gen()">New question ↻</button>
+    <button onclick="toggleSoln()" id="sbtn">Show solution</button>
+  </div>
+
+  <div id="soln">
+    <div class="solvhdr">Worked Solution</div>
+    <div id="solvcon"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script>
+const G = 9.8;
+let cur = {};
+
+function rInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+function rStep(a, b, s) {
+  const n = Math.round((b - a) / s);
+  return +(a + Math.round(Math.random() * n) * s).toFixed(1);
+}
+
+function gen() {
+  const theta = rInt(10, 35);
+  const h0    = rStep(1.0, 3.0, 0.1);
+  const dh    = rStep(0.5, 1.0, 0.1);
+  const hw    = +(h0 + dh).toFixed(1);
+  const xw    = rInt(5, 15);
+  const u     = rInt(8, 18);
+
+  const tR = theta * Math.PI / 180;
+  const cosT = Math.cos(tR), sinT = Math.sin(tR);
+
+  const tw     = xw / (u * cosT);
+  const yw     = h0 + u * sinT * tw - 0.5 * G * tw * tw;
+  const disc   = u * u * sinT * sinT + 2 * G * h0;
+  const tLand  = (u * sinT + Math.sqrt(disc)) / G;
+  const xLand  = u * cosT * tLand;
+  const tPeak  = u * sinT / G;
+  const yPeak  = h0 + u * sinT * tPeak - 0.5 * G * tPeak * tPeak;
+  const vx     = u * cosT;
+  const vy     = u * sinT - G * tw;
+  const spd    = Math.sqrt(vx * vx + vy * vy);
+  const ang    = Math.atan2(Math.abs(vy), vx) * 180 / Math.PI;
+  const dir    = vy >= 0 ? 'above' : 'below';
+  const landsBefore = tLand < tw;
+  const clears      = !landsBefore && yw >= hw;
+
+  cur = { theta, h0, hw, xw, u, tw, yw, vx, vy, spd, ang, dir,
+          tLand, xLand, yPeak, clears, landsBefore, cosT, sinT };
+
+  document.getElementById('soln').style.display = 'none';
+  document.getElementById('sbtn').textContent = 'Show solution';
+
+  document.getElementById('qtext').innerHTML =
+    `A ball is projected from a height of ${h0}&thinsp;m above the ground at an angle of ` +
+    `${theta}° above the horizontal, with initial speed ${u}&thinsp;m&thinsp;s<sup>−1</sup>. ` +
+    `A wall of height ${hw}&thinsp;m stands at a horizontal distance of ${xw}&thinsp;m ` +
+    `from the point of projection. Determine whether the ball passes over the wall and, ` +
+    `if so, find the velocity of the ball as it clears the wall.`;
+
+  document.getElementById('pgrid').innerHTML = [
+    ['Launch height', h0 + ' m'],
+    ['Angle', theta + '°'],
+    ['Speed u', u + ' m/s'],
+    ['Wall distance', xw + ' m'],
+    ['Wall height', hw + ' m']
+  ].map(([l, v]) =>
+    `<div class="pcell"><span class="pcell-lbl">${l}</span><span class="pcell-val">${v}</span></div>`
+  ).join('');
+
+  const rb = document.getElementById('rbox');
+  if (clears) {
+    rb.className = 'rbox clears';
+    rb.innerHTML =
+      `<strong>✓ Ball clears the wall</strong><br>
+       Height at wall: ${yw.toFixed(3)} m &nbsp;·&nbsp; clearance above wall top: ${(yw - hw).toFixed(3)} m<br>
+       Speed as ball passes over wall: ${spd.toFixed(3)} m s⁻¹ at ${ang.toFixed(2)}° ${dir} the horizontal`;
+  } else if (landsBefore) {
+    rb.className = 'rbox noclr';
+    rb.innerHTML =
+      `<strong>✗ Ball lands before reaching the wall</strong><br>
+       Range: ${xLand.toFixed(2)} m &nbsp;·&nbsp; wall at: ${xw} m &nbsp;·&nbsp; falls ${(xw - xLand).toFixed(2)} m short`;
+  } else {
+    rb.className = 'rbox noclr';
+    rb.innerHTML =
+      `<strong>✗ Ball does not clear the wall</strong><br>
+       Height at wall position: ${yw.toFixed(3)} m &nbsp;·&nbsp; wall top: ${hw} m &nbsp;·&nbsp; ${(hw - yw).toFixed(3)} m too low`;
+  }
+
+  draw();
+}
+
+function draw() {
+  const c   = cur;
+  const cvs = document.getElementById('cvs');
+  const W   = Math.max(cvs.offsetWidth, 400);
+  const H   = 300;
+  cvs.width  = W;
+  cvs.height = H;
+  const ctx  = cvs.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  const ml = 58, mr = 30, mt = 24, mb = 44;
+  const pw = W - ml - mr, ph = H - mt - mb;
+
+  const xMax = Math.max(c.xLand, c.xw) * 1.22;
+  const yMax = (Math.max(c.yPeak, c.hw) + 0.4) * 1.25;
+
+  const tx = x => ml + (x / xMax) * pw;
+  const ty = y => H - mb - (y / yMax) * ph;
+
+  // Background
+  ctx.fillStyle = '#f9f9f7';
+  ctx.fillRect(0, 0, W, H);
+
+  // Ground shading
+  ctx.fillStyle = '#eae8e2';
+  ctx.fillRect(ml, ty(0), pw, H - mb - ty(0));
+
+  // Grid lines
+  ctx.strokeStyle = '#e4e2de';
+  ctx.lineWidth = 0.5;
+  const xStep = Math.max(1, Math.ceil(xMax / 7));
+  for (let x = xStep; x < xMax; x += xStep) {
+    ctx.beginPath(); ctx.moveTo(tx(x), mt); ctx.lineTo(tx(x), H - mb); ctx.stroke();
+  }
+  const rawYStep = yMax / 5;
+  const yStep = rawYStep >= 2 ? Math.round(rawYStep) : parseFloat(rawYStep.toFixed(1));
+  for (let y = yStep; y < yMax; y += yStep) {
+    ctx.beginPath(); ctx.moveTo(ml, ty(y)); ctx.lineTo(W - mr, ty(y)); ctx.stroke();
+  }
+
+  // Ground line
+  ctx.strokeStyle = '#888';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ml, ty(0)); ctx.lineTo(W - mr, ty(0)); ctx.stroke();
+
+  // y-axis
+  ctx.strokeStyle = '#ccc';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(ml, mt); ctx.lineTo(ml, H - mb); ctx.stroke();
+
+  // Axis tick labels
+  ctx.fillStyle = '#888';
+  ctx.font = '10px Arial';
+  ctx.textAlign = 'center';
+  for (let x = 0; x <= xMax; x += xStep) {
+    ctx.fillText(x, tx(x), H - mb + 14);
+    ctx.strokeStyle = '#bbb'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(tx(x), H - mb); ctx.lineTo(tx(x), H - mb + 4); ctx.stroke();
+  }
+  ctx.textAlign = 'right';
+  for (let y = 0; y <= yMax + 0.01; y += yStep) {
+    ctx.fillText(y.toFixed(1), ml - 5, ty(y) + 4);
+  }
+
+  // Axis labels
+  ctx.fillStyle = '#777';
+  ctx.font = '11px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('horizontal distance (m)', ml + pw / 2, H - 4);
+  ctx.save();
+  ctx.translate(13, mt + ph / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('height (m)', 0, 0);
+  ctx.restore();
+
+  // Launch-height dashed reference
+  ctx.setLineDash([3, 3]);
+  ctx.strokeStyle = '#c0b8a8';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(ml, ty(c.h0));
+  ctx.lineTo(tx(c.xw * 0.06), ty(c.h0));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // h0 annotation
+  ctx.fillStyle = '#999';
+  ctx.font = '10px Arial';
+  ctx.textAlign = 'right';
+  ctx.fillText('h₀=' + c.h0 + 'm', ml - 5, ty(c.h0) - 4);
+
+  // Wall
+  const wXc  = tx(c.xw);
+  const wThk = Math.max(5, pw * 0.016);
+  ctx.fillStyle = '#8B6F47';
+  ctx.fillRect(wXc - wThk / 2, ty(c.hw), wThk, ty(0) - ty(c.hw));
+  ctx.strokeStyle = '#5a4020';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(wXc - wThk / 2, ty(c.hw), wThk, ty(0) - ty(c.hw));
+
+  // Wall top label
+  ctx.fillStyle = '#6b4f28';
+  ctx.font = '10px Arial';
+  ctx.textAlign = 'left';
+  ctx.fillText(c.hw + 'm', wXc + wThk / 2 + 3, ty(c.hw) + 11);
+
+  // Trajectory
+  const nPts = 350;
+  ctx.beginPath();
+  ctx.strokeStyle = '#1a55cc';
+  ctx.lineWidth = 2.2;
+  let started = false;
+  for (let i = 0; i <= nPts; i++) {
+    const t = (i / nPts) * c.tLand * 1.01;
+    const x = c.u * c.cosT * t;
+    const y = c.h0 + c.u * c.sinT * t - 0.5 * G * t * t;
+    if (y < -0.1) break;
+    const cx = tx(x), cy = ty(Math.max(y, 0));
+    if (!started) { ctx.moveTo(cx, cy); started = true; }
+    else ctx.lineTo(cx, cy);
+  }
+  ctx.stroke();
+
+  // Launch dot
+  ctx.beginPath();
+  ctx.arc(tx(0), ty(c.h0), 5, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a55cc';
+  ctx.fill();
+
+  // Initial velocity arrow — project direction through each axis's pixel scale
+  // so the arrow is visually parallel to the trajectory regardless of axis aspect ratio
+  const arL  = Math.min(72, pw * 0.16);
+  const ax0  = tx(0), ay0 = ty(c.h0);
+  const scX  = pw / xMax;          // pixels per metre, horizontal axis
+  const scY  = ph / yMax;          // pixels per metre, vertical axis
+  const rawDx = c.cosT * scX;      // pixel-space x component
+  const rawDy = -c.sinT * scY;     // pixel-space y component (−ve = upward in canvas)
+  const mag   = Math.sqrt(rawDx * rawDx + rawDy * rawDy);
+  const adx0  = arL * rawDx / mag;
+  const ady0  = arL * rawDy / mag;
+  ctx.strokeStyle = '#444';
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(ax0, ay0);
+  ctx.lineTo(ax0 + adx0, ay0 + ady0);
+  ctx.stroke();
+  const a0 = Math.atan2(ady0, adx0);
+  ctx.fillStyle = '#444';
+  ctx.beginPath();
+  ctx.moveTo(ax0 + adx0, ay0 + ady0);
+  ctx.lineTo(ax0 + adx0 - 7 * Math.cos(a0 - 0.4), ay0 + ady0 - 7 * Math.sin(a0 - 0.4));
+  ctx.lineTo(ax0 + adx0 - 7 * Math.cos(a0 + 0.4), ay0 + ady0 - 7 * Math.sin(a0 + 0.4));
+  ctx.closePath();
+  ctx.fill();
+
+  // Pass-over green dot + velocity arrow, or red cross
+  if (c.clears) {
+    const px = tx(c.xw), py = ty(c.yw);
+    ctx.beginPath();
+    ctx.arc(px, py, 7, 0, 2 * Math.PI);
+    ctx.fillStyle = '#27a243';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const vLen   = 68;
+    const rawVdx = (c.vx / c.spd) * scX;
+    const rawVdy = -(c.vy / c.spd) * scY;
+    const vMag   = Math.sqrt(rawVdx * rawVdx + rawVdy * rawVdy);
+    const vdx    = vLen * rawVdx / vMag;
+    const vdy    = vLen * rawVdy / vMag;
+    ctx.strokeStyle = '#27a243';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px + vdx, py + vdy);
+    ctx.stroke();
+    const va = Math.atan2(vdy, vdx);
+    ctx.fillStyle = '#27a243';
+    ctx.beginPath();
+    ctx.moveTo(px + vdx, py + vdy);
+    ctx.lineTo(px + vdx - 8 * Math.cos(va - 0.4), py + vdy - 8 * Math.sin(va - 0.4));
+    ctx.lineTo(px + vdx - 8 * Math.cos(va + 0.4), py + vdy - 8 * Math.sin(va + 0.4));
+    ctx.closePath();
+    ctx.fill();
+  } else if (!c.landsBefore) {
+    const fx = tx(c.xw);
+    const fy = ty(Math.max(c.yw, 0.05));
+    ctx.strokeStyle = '#cc2222';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(fx - 7, fy - 7); ctx.lineTo(fx + 7, fy + 7);
+    ctx.moveTo(fx + 7, fy - 7); ctx.lineTo(fx - 7, fy + 7);
+    ctx.stroke();
+  }
+
+  // Legend
+  const lx = W - mr - 120, ly = mt + 5;
+  const lh = c.clears ? 62 : 48;
+  ctx.fillStyle = 'rgba(255,255,255,0.88)';
+  ctx.beginPath();
+  ctx.roundRect(lx, ly, 118, lh, 4);
+  ctx.fill();
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 0.5;
+  ctx.stroke();
+
+  ctx.font = '10px Arial';
+  ctx.textAlign = 'left';
+
+  ctx.strokeStyle = '#1a55cc'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(lx + 8, ly + 14); ctx.lineTo(lx + 26, ly + 14); ctx.stroke();
+  ctx.fillStyle = '#555'; ctx.fillText('trajectory', lx + 30, ly + 18);
+
+  ctx.fillStyle = '#8B6F47';
+  ctx.fillRect(lx + 11, ly + 26, 6, 11);
+  ctx.fillStyle = '#555'; ctx.fillText('wall', lx + 30, ly + 35);
+
+  if (c.clears) {
+    ctx.beginPath();
+    ctx.arc(lx + 14, ly + 50, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = '#27a243'; ctx.fill();
+    ctx.fillStyle = '#555'; ctx.fillText('clears here', lx + 30, ly + 54);
+  }
+}
+
+function toggleSoln() {
+  const el  = document.getElementById('soln');
+  const btn = document.getElementById('sbtn');
+  if (el.style.display === 'none' || !el.style.display) {
+    el.style.display = 'block';
+    btn.textContent = 'Hide solution';
+    buildSoln();
+  } else {
+    el.style.display = 'none';
+    btn.textContent = 'Show solution';
+  }
+}
+
+function buildSoln() {
+  const c = cur;
+
+  const cosV  = c.cosT.toFixed(4);
+  const sinV  = c.sinT.toFixed(4);
+  const ucosV = (c.u * c.cosT).toFixed(4);
+  const usinV = (c.u * c.sinT).toFixed(4);
+  const twV   = c.tw.toFixed(4);
+  const ywV   = c.yw.toFixed(4);
+  const vxV   = c.vx.toFixed(4);
+  const vyV   = c.vy.toFixed(4);
+  const spdV  = c.spd.toFixed(3);
+  const angV  = c.ang.toFixed(2);
+
+  let steps = [];
+
+  // Step 1: equations of motion
+  steps.push(['Set up the equations of motion',
+    `Taking the projection point as the origin for horizontal distance \\(x\\), with height \\(y\\) measured from the ground:
+     \\[x = u\\cos\\theta\\cdot t\\]
+     \\[y = h_0 + u\\sin\\theta\\cdot t - \\tfrac{1}{2}gt^2\\]
+     Here \\(h_0 = ${c.h0}\\text{ m}\\), \\(u = ${c.u}\\text{ m s}^{-1}\\), \\(\\theta = ${c.theta}^\\circ\\), \\(g = 9.8\\text{ m s}^{-2}\\).`]);
+
+  // Step 2: time to reach wall
+  steps.push(['Find the time for the ball to reach the wall',
+    `The wall is at \\(x = ${c.xw}\\text{ m}\\). Since horizontal velocity is constant:
+     \\[t_w = \\frac{x_w}{u\\cos\\theta} = \\frac{${c.xw}}{${c.u}\\times${cosV}} = \\frac{${c.xw}}{${ucosV}}\\]
+     \\[t_w = ${twV}\\text{ s}\\]`]);
+
+  if (c.landsBefore) {
+    // Step 3 (alternate): ball lands before wall
+    const discVal  = (c.u * c.u * c.sinT * c.sinT + 2 * G * c.h0).toFixed(4);
+    const sqrtDisc = Math.sqrt(c.u * c.u * c.sinT * c.sinT + 2 * G * c.h0).toFixed(4);
+    const tLV      = c.tLand.toFixed(4);
+    steps.push(['Check that the ball is still in flight at \\(x = ' + c.xw + '\\text{ m}\\)',
+      `Find the time of flight by setting \\(y = 0\\):
+       \\[0 = ${c.h0} + ${usinV}\\,t - 4.9t^2\\]
+       Using the quadratic formula (taking the positive root):
+       \\[t_{\\text{land}} = \\frac{${usinV} + \\sqrt{(${usinV})^2 + 2\\times9.8\\times${c.h0}}}{9.8}
+         = \\frac{${usinV} + \\sqrt{${discVal}}}{9.8}
+         = \\frac{${usinV} + ${sqrtDisc}}{9.8}\\]
+       \\[t_{\\text{land}} = ${tLV}\\text{ s}\\]
+       Since \\(t_{\\text{land}} = ${tLV}\\text{ s} < t_w = ${twV}\\text{ s}\\), the ball has already hit
+       the ground at \\(x = ${c.xLand.toFixed(3)}\\text{ m}\\) before it reaches the wall.
+       The ball does not clear the wall.`]);
+
+  } else {
+    // Step 3: height at wall
+    const term1 = (c.u * c.sinT * c.tw).toFixed(4);
+    const term2 = (4.9 * c.tw * c.tw).toFixed(4);
+    steps.push(['Find the height of the ball when \\(x = ' + c.xw + '\\text{ m}\\)',
+      `Substitute \\(t = t_w = ${twV}\\text{ s}\\) into the vertical equation:
+       \\[y_w = ${c.h0} + ${c.u}\\sin${c.theta}^\\circ\\times${twV} - 4.9\\times(${twV})^2\\]
+       \\[y_w = ${c.h0} + ${c.u}\\times${sinV}\\times${twV} - 4.9\\times${(c.tw * c.tw).toFixed(4)}\\]
+       \\[y_w = ${c.h0} + ${term1} - ${term2}\\]
+       \\[y_w = ${ywV}\\text{ m}\\]`]);
+
+    // Step 4: comparison
+    const cmpText = c.clears
+      ? `The top of the wall is at \\(h_w = ${c.hw}\\text{ m}\\). Since \\(y_w = ${ywV}\\text{ m} \\geq ${c.hw}\\text{ m}\\), the ball clears the wall with ${(c.yw - c.hw).toFixed(3)}&thinsp;m to spare.`
+      : `The top of the wall is at \\(h_w = ${c.hw}\\text{ m}\\). Since \\(y_w = ${ywV}\\text{ m} < ${c.hw}\\text{ m}\\), the ball does not reach the height of the wall top and fails to clear.`;
+    steps.push(['Compare height with wall top', cmpText]);
+
+    if (c.clears) {
+      // Step 5: velocity
+      const gtwV  = (G * c.tw).toFixed(4);
+      const vx2   = (c.vx * c.vx).toFixed(4);
+      const vy2   = (c.vy * c.vy).toFixed(4);
+      const v2    = (c.vx * c.vx + c.vy * c.vy).toFixed(4);
+      const absVy = Math.abs(c.vy).toFixed(4);
+      const riseOrFall = c.vy >= 0
+        ? 'The positive value of \\(v_y\\) indicates the ball is still rising as it passes over the wall.'
+        : 'The negative value of \\(v_y\\) indicates the ball is descending as it passes over the wall.';
+      steps.push(['Find the velocity as the ball passes over the wall',
+        `The horizontal component of velocity is constant throughout the motion:
+         \\[v_x = u\\cos${c.theta}^\\circ = ${c.u}\\times${cosV} = ${vxV}\\text{ m s}^{-1}\\]
+         The vertical component at time \\(t_w\\):
+         \\[v_y = u\\sin${c.theta}^\\circ - gt_w = ${usinV} - 9.8\\times${twV}\\]
+         \\[v_y = ${usinV} - ${gtwV} = ${vyV}\\text{ m s}^{-1}\\]
+         ${riseOrFall}
+         The speed is:
+         \\[v = \\sqrt{v_x^2 + v_y^2} = \\sqrt{(${vxV})^2+(${vyV})^2} = \\sqrt{${vx2}+${vy2}} = \\sqrt{${v2}}\\]
+         \\[v = ${spdV}\\text{ m s}^{-1}\\]
+         The direction of motion makes an angle with the horizontal:
+         \\[\\alpha = \\arctan\\!\\left(\\frac{|v_y|}{v_x}\\right) = \\arctan\\!\\left(\\frac{${absVy}}{${vxV}}\\right) = ${angV}^\\circ \\text{ ${c.dir} the horizontal}\\]`]);
+    }
+  }
+
+  // Render steps
+  let html = '';
+  steps.forEach(([title, body], i) => {
+    html += `<div class="step">
+      <div class="stitle">Step ${i + 1} — ${title}</div>
+      <div class="sbody">${body}</div>
+    </div>`;
+  });
+
+  // Conclusion
+  let concl = '';
+  if (c.clears) {
+    concl = `The ball clears the wall. Its speed as it passes over the wall is \\(${spdV}\\text{ m s}^{-1}\\)
+             at \\(${angV}^\\circ\\) ${c.dir} the horizontal.`;
+  } else if (c.landsBefore) {
+    concl = `The ball does not reach the wall. It lands at \\(x = ${c.xLand.toFixed(3)}\\text{ m}\\),
+             which is \\(${(c.xw - c.xLand).toFixed(3)}\\text{ m}\\) short of the wall at \\(x = ${c.xw}\\text{ m}\\).`;
+  } else {
+    concl = `The ball does not clear the wall. At \\(x = ${c.xw}\\text{ m}\\) the ball is at height
+             \\(${ywV}\\text{ m}\\), which is \\(${(c.hw - c.yw).toFixed(4)}\\text{ m}\\)
+             below the top of the wall at \\(${c.hw}\\text{ m}\\).`;
+  }
+  html += `<div class="ansbox"><strong>Conclusion: </strong>${concl}</div>`;
+
+  document.getElementById('solvcon').innerHTML = html;
+  renderMathInElement(document.getElementById('solvcon'), {
+    delimiters: [
+      { left: '\\[', right: '\\]', display: true },
+      { left: '\\(', right: '\\)', display: false }
+    ],
+    throwOnError: false
+  });
+}
+
+// Init — defer one frame so offsetWidth is available
+requestAnimationFrame(gen);
+window.addEventListener('resize', () => { if (cur.theta) draw(); });
+</script>
+</body>
+</html>

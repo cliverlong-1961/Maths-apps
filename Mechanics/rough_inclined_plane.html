@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rough Inclined Plane — Mechanics Practice</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f5f4f0;
+    color: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .container {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 2rem 2.25rem;
+    max-width: 680px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  h1 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    color: #444;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.75rem;
+  }
+  .question-card {
+    background: #f9f8f5;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e3de;
+  }
+  .question-label {
+    font-size: 0.7rem;
+    font-family: Arial, sans-serif;
+    color: #888;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  #question-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #1a1a1a;
+  }
+  #diagram {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto 1.5rem;
+  }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+  }
+  button {
+    flex: 1;
+    font-family: Arial, sans-serif;
+    font-size: 0.88rem;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button:hover { background: #f0ede8; }
+  button:active { background: #e8e4de; }
+
+  #solution { display: none; }
+
+  .solution-header {
+    font-size: 0.7rem;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #e0e0e0;
+  }
+  .step {
+    margin-bottom: 1rem;
+    padding: 0.9rem 1rem 0.9rem 1.1rem;
+    background: #f9f8f5;
+    border-radius: 6px;
+    border-left: 3px solid #c8c4bc;
+  }
+  .step-title {
+    font-family: Arial, sans-serif;
+    font-size: 0.72rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #777;
+    margin-bottom: 0.5rem;
+  }
+  .step-body {
+    font-size: 0.97rem;
+    line-height: 1.9;
+    color: #1a1a1a;
+  }
+  .answer-box {
+    background: #eef4fb;
+    border: 1px solid #b8d0ed;
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin-top: 0.5rem;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    color: #1a4a7a;
+    font-weight: bold;
+  }
+
+  .katex-display { overflow-x: auto; overflow-y: hidden; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Mechanics — Particle on a Rough Inclined Plane</h1>
+
+  <div class="question-card">
+    <div class="question-label">Question</div>
+    <p id="question-text"></p>
+  </div>
+
+  <svg id="diagram" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <div class="btn-row">
+    <button onclick="generateQuestion()">New question ↻</button>
+    <button onclick="toggleSolution()" id="sol-btn">Show solution</button>
+  </div>
+
+  <div id="solution">
+    <div class="solution-header">Worked Solution</div>
+    <div id="solution-content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script>
+let current = {};
+
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateQuestion() {
+  let theta, mu, valid = false;
+  const muOpts = [0.1, 0.2, 0.3, 0.4, 0.5];
+  while (!valid) {
+    theta = rand(20, 55);
+    mu = muOpts[Math.floor(Math.random() * muOpts.length)];
+    if (Math.tan(theta * Math.PI / 180) > mu + 0.06) valid = true;
+  }
+  const t = rand(2, 10);
+  const g = 9.8;
+  const tR = theta * Math.PI / 180;
+  const sinT = Math.sin(tR), cosT = Math.cos(tR);
+  const a = g * (sinT - mu * cosT);
+  const v = a * t;
+  current = { theta, mu, t, g, a, v, sinT, cosT };
+
+  document.getElementById('solution').style.display = 'none';
+  document.getElementById('sol-btn').textContent = 'Show solution';
+  document.getElementById('question-text').textContent =
+    `A particle is released from rest on a rough plane inclined at ${theta}° to the horizontal. ` +
+    `The coefficient of friction between the particle and the plane is ${mu}. ` +
+    `Find the speed of the particle after ${t} s.`;
+  drawDiagram(theta, tR, sinT, cosT);
+}
+
+function drawDiagram(theta, tR, sinT, cosT) {
+  const svg = document.getElementById('diagram');
+  const bx = 28, by = 205;
+  const sl = Math.min(172 / sinT, 300 / cosT, 290);
+  const apx = bx + sl * cosT, apy = by - sl * sinT;
+
+  const tp = 0.52;
+  const px = bx + sl * tp * cosT;
+  const py = by - sl * tp * sinT;
+  const ps = 12;
+  const al = Math.min(56, sl * 0.21);
+
+  const wTipX = px, wTipY = py + al;
+  const nTipX = px - al * sinT, nTipY = py - al * cosT;
+  const fTipX = px + al * cosT, fTipY = py - al * sinT;
+
+  const mkr = (id, col) =>
+    `<marker id="${id}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="${col}"/></marker>`;
+
+  svg.innerHTML = `<defs>
+    ${mkr('aw','#534AB7')} ${mkr('an','#0F6E56')} ${mkr('af','#993C1D')}
+  </defs>
+  <line x1="${bx}" y1="${by}" x2="${(apx+20).toFixed(1)}" y2="${by}"
+    stroke="#999" stroke-width="1.5"/>
+  <line x1="${bx}" y1="${by}" x2="${apx.toFixed(1)}" y2="${apy.toFixed(1)}"
+    stroke="#222" stroke-width="2.5"/>
+  <line x1="${apx.toFixed(1)}" y1="${apy.toFixed(1)}" x2="${apx.toFixed(1)}" y2="${by}"
+    stroke="#ccc" stroke-width="1" stroke-dasharray="5,3"/>
+  <path d="M ${bx+38},${by} A 38,38 0 0,0 ${(bx+38*cosT).toFixed(1)},${(by-38*sinT).toFixed(1)}"
+    fill="none" stroke="#999" stroke-width="1.3"/>
+  <text x="${bx+46}" y="${by-12}" font-size="14" fill="#555"
+    font-family="Georgia,serif" font-style="italic">${theta}°</text>
+  <rect x="${(px-ps).toFixed(1)}" y="${(py-ps).toFixed(1)}"
+    width="${2*ps}" height="${2*ps}" rx="2"
+    fill="#fff" stroke="#222" stroke-width="1.5"
+    transform="rotate(${-theta},${px.toFixed(1)},${py.toFixed(1)})"/>
+  <line x1="${px.toFixed(1)}" y1="${(py+2).toFixed(1)}"
+    x2="${wTipX.toFixed(1)}" y2="${(wTipY-6).toFixed(1)}"
+    stroke="#534AB7" stroke-width="2" marker-end="url(#aw)"/>
+  <text x="${(wTipX+6).toFixed(1)}" y="${((py+wTipY)/2+5).toFixed(1)}"
+    font-size="13" fill="#534AB7" font-style="italic" font-family="Georgia,serif">mg</text>
+  <line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}"
+    x2="${(nTipX+3.5*sinT).toFixed(1)}" y2="${(nTipY+3.5*cosT).toFixed(1)}"
+    stroke="#0F6E56" stroke-width="2" marker-end="url(#an)"/>
+  <text x="${(nTipX-18).toFixed(1)}" y="${(nTipY-5).toFixed(1)}"
+    font-size="13" fill="#0F6E56" font-style="italic" font-family="Georgia,serif">R</text>
+  <line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}"
+    x2="${(fTipX-3.5*cosT).toFixed(1)}" y2="${(fTipY+3.5*sinT).toFixed(1)}"
+    stroke="#993C1D" stroke-width="2" marker-end="url(#af)"/>
+  <text x="${(fTipX+5).toFixed(1)}" y="${(fTipY-5).toFixed(1)}"
+    font-size="13" fill="#993C1D" font-style="italic" font-family="Georgia,serif">F</text>`;
+}
+
+function toggleSolution() {
+  const sol = document.getElementById('solution');
+  const btn = document.getElementById('sol-btn');
+  if (sol.style.display === 'none' || sol.style.display === '') {
+    sol.style.display = 'block';
+    btn.textContent = 'Hide solution';
+    buildSolution();
+  } else {
+    sol.style.display = 'none';
+    btn.textContent = 'Show solution';
+  }
+}
+
+function buildSolution() {
+  const { theta, mu, t, g, a, v, sinT, cosT } = current;
+  const sV = sinT.toFixed(4);
+  const cV = cosT.toFixed(4);
+  const muC = (mu * cosT).toFixed(4);
+  const inner = (sinT - mu * cosT).toFixed(4);
+  const aV = a.toFixed(3);
+  const vV = v.toFixed(2);
+
+  const steps = [
+    ['Step 1 — Resolve forces perpendicular to the plane',
+     `Since there is no acceleration perpendicular to the plane, the normal reaction \\(R\\) balances the component of weight in that direction:
+      \\[R = mg\\cos ${theta}^\\circ\\]`],
+    ['Step 2 — Find the friction force',
+     `The particle slides down the plane, so kinetic friction acts up the plane. Using \\(F = \\mu R\\):
+      \\[F = ${mu}\\,mg\\cos ${theta}^\\circ\\]`],
+    ["Step 3 — Apply Newton's second law along the plane",
+     `Taking down the plane as positive, the resultant force along the plane is:
+      \\[ma = mg\\sin ${theta}^\\circ - F = mg\\sin ${theta}^\\circ - ${mu}\\,mg\\cos ${theta}^\\circ\\]
+      Dividing through by \\(m\\) (mass cancels):
+      \\[a = g\\bigl(\\sin ${theta}^\\circ - ${mu}\\cos ${theta}^\\circ\\bigr)\\]`],
+    ['Step 4 — Calculate the acceleration numerically',
+     `Substituting \\(g = 9.8\\text{ m s}^{-2}\\), \\(\\sin ${theta}^\\circ = ${sV}\\), \\(\\cos ${theta}^\\circ = ${cV}\\):
+      \\[a = 9.8\\bigl(${sV} - ${mu} \\times ${cV}\\bigr)\\]
+      \\[a = 9.8\\bigl(${sV} - ${muC}\\bigr) = 9.8 \\times ${inner}\\]
+      \\[a = ${aV}\\text{ m s}^{-2}\\]`],
+    ['Step 5 — Find speed using kinematics',
+     `The particle starts from rest so \\(u = 0\\). Using \\(v = u + at\\):
+      \\[v = 0 + ${aV} \\times ${t}\\]
+      \\[v = ${vV}\\text{ m s}^{-1}\\]`]
+  ];
+
+  let html = '';
+  steps.forEach(([title, content]) => {
+    html += `<div class="step">
+      <div class="step-title">${title}</div>
+      <div class="step-body">${content}</div>
+    </div>`;
+  });
+  html += `<div class="answer-box">Answer: \\(v = ${vV}\\text{ m s}^{-1}\\)</div>`;
+
+  document.getElementById('solution-content').innerHTML = html;
+  renderMathInElement(document.getElementById('solution-content'), {
+    delimiters: [
+      {left: '\\[', right: '\\]', display: true},
+      {left: '\\(', right: '\\)', display: false}
+    ],
+    throwOnError: false
+  });
+}
+
+generateQuestion();
+</script>
+</body>
+</html>
