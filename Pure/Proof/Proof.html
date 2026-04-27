@@ -579,7 +579,7 @@
 						
 						
                     </ul>
-                    <br>In a proof we need to be clear what rules and laws we are accepting as true. </p>
+                    <br><p>In a proof we need to be clear what rules and laws we are accepting as true. </p>
 					<p>If you study proof and logic more deeply, you will need to consider whether your "atoms" and your rules are
 					"complete" and "consistent". In building a house (or most houses) you won't get far without certain materials
 					such as wood, electrical cables or water pipes.
@@ -1661,214 +1661,7 @@
                 <h2>Available Proofs</h2>
                 
                 <div class="topic-grid">
-					<!--
-                    <article class="topic-card">
-                        <h3>Parity lemma</h3>
-                        <div class="formula">
-                            \[k^2 \text{ even} \Rightarrow k \text{ even}, \quad k \in \mathbb{Z}\]
-                        </div>
-                        <p class="description">
-                            The following property is a key part of the proof of the irrationality of \(\sqrt{2}\), but it is usually glossed over. It is covered here, with two different proof approaches, as a prelude to that famous proof. Although this is a proof about integers, it is an important proof about \(\sqrt{2}\), a real number.
-                        </p>
-                        <p class="description">
-                            <strong>Theorem.</strong> Let \(k \in \mathbb{Z}\). If \(k^2\) is even then \(k\) is even.
-                        </p>
-
-                        <p style="margin-top: 10px; font-weight: bold; color: #34495e;">Proof 1 — Contraposition</p>
-                        <span class="topic-link" id="proof-parity-contra-link" onclick="toggleProof('proof-parity-contra')">View Proof →</span>
-
-                        <div id="proof-parity-contra" class="proof-container">
-                            <div class="proof-header">Proof by Contraposition: If \(k\) is odd then \(k^2\) is odd</div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Strategy</div>
-                                <div class="step-content">
-                                    To prove \(k^2 \text{ even} \Rightarrow k \text{ even}\), we instead prove the contrapositive:
-                                    \[k \text{ odd} \Rightarrow k^2 \text{ odd}\]
-                                    These two statements are logically equivalent.
-                                </div>
-                                <div class="step-justification">A statement \(P \Rightarrow Q\) is logically equivalent to its contrapositive \(\neg Q \Rightarrow \neg P\)</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 1: Assume \(k\) is odd</div>
-                                <div class="step-content">
-                                    Since \(k\) is odd, there exists an integer \(m\) such that:
-                                    \[k = 2m + 1\]
-                                </div>
-                                <div class="step-justification">Definition of an odd integer</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 2: Compute \(k^2\)</div>
-                                <div class="step-content">
-                                    \[k^2 = (2m+1)^2 = 4m^2 + 4m + 1 = 2(2m^2 + 2m) + 1\]
-                                    Let \(n = 2m^2 + 2m\). Since \(m \in \mathbb{Z}\), we have \(n \in \mathbb{Z}\), so:
-                                    \[k^2 = 2n + 1\]
-                                </div>
-                                <div class="step-justification">Expanding and factoring; integers are closed under addition and multiplication</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 3: Conclude \(k^2\) is odd</div>
-                                <div class="step-content">
-                                    Since \(k^2 = 2n + 1\) for some integer \(n\), by definition \(k^2\) is odd.
-                                </div>
-                                <div class="step-justification">Definition of an odd integer</div>
-                            </div>
-
-                            <div class="proof-conclusion">
-                                <strong>Conclusion:</strong> We have shown \(k \text{ odd} \Rightarrow k^2 \text{ odd}\). By contraposition, \(k^2 \text{ even} \Rightarrow k \text{ even}\). ∎
-                            </div>
-                        </div>
-
-                        <p style="margin-top: 20px; font-weight: bold; color: #34495e;">Proof 2 — Contradiction</p>
-                        <span class="topic-link" id="proof-parity-absurd-link" onclick="toggleProof('proof-parity-absurd')">View Proof →</span>
-
-                        <div id="proof-parity-absurd" class="proof-container">
-                            <div class="proof-header">Proof by Contradiction: Let \(k \in \mathbb{Z}\). If \(k^2\) is even then \(k\) is even.</div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 1: Assumption</div>
-                                <div class="step-content">
-                                    Assume for the sake of contradiction that \(k^2\) is even but \(k\) is <em>not</em> even, i.e. \(k\) is odd.
-                                    <br><br>
-                                    Since \(k\) is odd, there exists an integer \(m\) such that:
-                                    \[k = 2m + 1\]
-                                </div>
-                                <div class="step-justification">We assume the hypothesis (\(k^2\) even) and the negation of the conclusion (\(k\) odd) simultaneously</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 2: Compute \(k^2\)</div>
-                                <div class="step-content">
-                                    \[k^2 = (2m + 1)^2 = 4m^2 + 4m + 1 = 2(2m^2 + 2m) + 1\]
-                                    Let \(n = 2m^2 + 2m \in \mathbb{Z}\), so:
-                                    \[k^2 = 2n + 1\]
-                                </div>
-                                <div class="step-justification">Expanding; integers are closed under addition and multiplication</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 3: Derive a contradiction</div>
-                                <div class="step-content">
-                                    From Step 2, \(k^2 = 2n + 1\), which means \(k^2\) is <em>odd</em>.
-                                    <br><br>
-                                    But we assumed \(k^2\) is <em>even</em>. A number cannot be both even and odd — this is a contradiction.
-                                </div>
-                                <div class="step-justification">Every integer is either even or odd, but not both</div>
-                            </div>
-
-                            <div class="proof-conclusion">
-                                <strong>Conclusion:</strong> The assumption that \(k\) is odd must be false. Therefore, if \(k^2\) is even, then \(k\) is even. ∎
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article class="topic-card">
-                        <h3>The irrationality of &radic;2</h3>
-                        <div class="formula">
-                            \[\sqrt{2} \notin \mathbb{Q}\]
-                        </div>
-                        <p class="description">
-                            This is the classic proof that has a long heritage. However, in my opinion it is introduced far too early in the study of proof,
-                            before more straightforward contradiction proofs have been understood, and an important detail, the parity lemma, is often glossed over.
-                            Remember on the number theory page there are different types of 'basic' numbers. We can think of numbers as used for counting or measuring things — different activities, but all relate to numbers.
-                            An idea from Ancient mathematics (maybe Arabic, Greek, Indian or other) is that every number corresponds to a point or length on a straight line.
-                            There is a type of number, the 'real' number (tricky to define rigorously),
-                            which we can think of as a set or collection of numbers that in a sense 'contains' the rational numbers but 'other' numbers too. These 'other' numbers, the 'irrational' numbers,
-                            were famously (allegedly?) rejected by the Ancient Greek mathematicians and philosophers — just search for the stories about this. Back to the maths.
-                            The purpose of this proof is to show that the number 2 has a square root that can be shown to 'exist' (the length of the hypotenuse of a right-angled triangle with two sides equal to 1),
-                            but &radic;2 can be shown to not be rational. Therefore, because &radic;2 'exists', it must be a different kind of number — an 'irrational number'.
-                        </p>
-
-                        <span class="topic-link" id="proof-irrat2-real-link" onclick="toggleProof('proof-irrat2-real')">View Proof →</span>
-
-                        <div id="proof-irrat2-real" class="proof-container">
-                            <div class="proof-header">Proof: \(\sqrt{2}\) is irrational, i.e. \(\sqrt{2} \notin \mathbb{Q}\)</div>
-				
-				     <div style="background:#fff3cd; border-left:4px solid #e67e22; border-radius:4px; padding:12px 16px; margin-bottom:18px;">
-                                <span style="font-weight:bold; color:#b7600a;">⚡ Proof by Contradiction</span>
-                                <span style="color:#7a4200;"> — We assume the opposite of what we want to prove and derive a logical impossibility. The contradiction shows the assumption must be false.</span>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 1: Assume (for contradiction) that \(\sqrt{2}\) is rational</div>
-                                <div class="step-content">
-                                    <div style="background:#fff8ec; border:1px dashed #e67e22; border-radius:4px; padding:10px; margin-bottom:10px; font-size:0.93em; color:#7a4200;">
-                                        <strong>Proof by contradiction in action:</strong> We assume the negation of our goal — that \(\sqrt{2}\) <em>is</em> rational — and aim to reach a contradiction.
-                                    </div>
-                                    By definition of a rational number, there exist integers \(p, q \in \mathbb{Z}\) with \(q \ne 0\) such that:
-                                    \[\sqrt{2} = \frac{p}{q}\]
-                                    Furthermore, we may assume this fraction is in its <em>lowest terms</em>, meaning \(p\) and \(q\) share no common factors — i.e. \(\gcd(p, q) = 1\).
-                                </div>
-                                <div class="step-justification">Every rational number can be written as a fraction in lowest terms</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 2: Square both sides</div>
-                                <div class="step-content">
-                                    Squaring both sides of \(\sqrt{2} = \dfrac{p}{q}\):
-                                    \[2 = \frac{p^2}{q^2}\]
-                                    Multiplying both sides by \(q^2\):
-                                    \[p^2 = 2q^2\]
-                                    Since the right-hand side is \(2 \times (\text{integer})\), we conclude that \(p^2\) is even.
-                                </div>
-                                <div class="step-justification">Algebraic manipulation; \(q \ne 0\) so multiplication is valid</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 3: Conclude that \(p\) is even</div>
-                                <div class="step-content">
-                                    We have shown \(p^2\) is even. We now need to conclude that \(p\) itself is even.
-                                    <div style="background:#e8f4fd; border-left:4px solid #2980b9; border-radius:4px; padding:10px; margin:10px 0; font-size:0.93em; color:#1a5276;">
-                                        <strong>🔑 Parity Lemma applied here:</strong> The parity lemma states that if \(k^2\) is even then \(k\) is even (for \(k \in \mathbb{Z}\)). Applying this with \(k = p\): since \(p^2\) is even, it follows that \(p\) is even.
-                                        <br><small style="color:#2471a3;">See the Parity Lemma proof card above for the full proof of this step.</small>
-                                    </div>
-                                    Therefore there exists an integer \(m\) such that:
-                                    \[p = 2m\]
-                                </div>
-                                <div class="step-justification">Parity Lemma: \(k^2 \text{ even} \Rightarrow k \text{ even}\)</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 4: Show that \(q\) is also even</div>
-                                <div class="step-content">
-                                    Substitute \(p = 2m\) into \(p^2 = 2q^2\):
-                                    \[(2m)^2 = 2q^2\]
-                                    \[4m^2 = 2q^2\]
-                                    \[q^2 = 2m^2\]
-                                    So \(q^2\) is even (it equals \(2 \times m^2\)).
-                                    <div style="background:#e8f4fd; border-left:4px solid #2980b9; border-radius:4px; padding:10px; margin:10px 0; font-size:0.93em; color:#1a5276;">
-                                        <strong>🔑 Parity Lemma applied again:</strong> Applying the parity lemma with \(k = q\): since \(q^2\) is even, it follows that \(q\) is even.
-                                    </div>
-                                    Therefore \(q\) is even.
-                                </div>
-                                <div class="step-justification">Parity Lemma applied a second time: \(q^2 \text{ even} \Rightarrow q \text{ even}\)</div>
-                            </div>
-
-                            <div class="proof-step">
-                                <div class="step-number">Step 5: Derive the contradiction</div>
-                                <div class="step-content">
-                                    <div style="background:#fff8ec; border:1px dashed #e67e22; border-radius:4px; padding:10px; margin-bottom:10px; font-size:0.93em; color:#7a4200;">
-                                        <strong>Proof by contradiction — the contradiction arrives:</strong> We now have everything needed to reach the impossibility.
-                                    </div>
-                                    We have shown that both \(p\) and \(q\) are even — meaning both are divisible by 2, so \(\gcd(p,q) \geq 2\).
-                                    <br><br>
-                                    But in Step 1 we assumed that \(\dfrac{p}{q}\) was in <em>lowest terms</em>, meaning \(\gcd(p, q) = 1\).
-                                    <br><br>
-                                    We have \(\gcd(p,q) \geq 2\) and \(\gcd(p,q) = 1\) simultaneously — this is a contradiction.
-                                </div>
-                                <div class="step-justification">A fraction in lowest terms cannot have both numerator and denominator divisible by 2</div>
-                            </div>
-
-                            <div class="proof-conclusion">
-                                <strong>Conclusion:</strong> Our assumption (from Step 1) that \(\sqrt{2} \in \mathbb{Q}\) must be false. Therefore \(\sqrt{2}\) is irrational, i.e. \(\sqrt{2} \notin \mathbb{Q}\). ∎
-                            </div>
-                        </div>
-                    </article>
-                </div>
-			-->
+				  </div>
                 <div style="margin-top: 30px; text-align: center;">
                     <p style="color: #7f8c8d; font-style: italic;">More real number proofs will be added to this collection over time.</p>
                     <p class="cta-text" style="flex-basis: 100%;">See also:</p>
@@ -2364,7 +2157,7 @@
                         <div id="proof-irrat2-real" class="proof-container">
                             <div class="proof-header">Proof: \(\sqrt{2}\) is irrational, i.e. \(\sqrt{2} \notin \mathbb{Q}\)</div>
 						
-                             Proof by Contradiction banner
+                             <!-- Proof by Contradiction banner -->
                             <div style="background:#fff3cd; border-left:4px solid #e67e22; border-radius:4px; padding:12px 16px; margin-bottom:18px;">
                                 <span style="font-weight:bold; color:#b7600a;">⚡ Proof by Contradiction</span>
                                 <span style="color:#7a4200;"> — We assume the opposite of what we want to prove and derive a logical impossibility. The contradiction shows the assumption must be false.</span>
