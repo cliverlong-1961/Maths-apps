@@ -3,35 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Pure Mathematics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #1a2340;
+            --ink: #0f1623;
+            --gold: #c9a84c;
+            --gold-light: #e8cb7a;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --muted: #8a9bb5;
+            --rule: rgba(201, 168, 76, 0.35);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
+            background-color: var(--ink);
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26,35,64,0.9) 0%, transparent 70%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            font-family: 'Crimson Pro', Georgia, serif;
         }
-        a {
-            display: block;
-            font-size: 24px;
-            margin: 20px;
+
+        .card {
+            background: linear-gradient(160deg, #1e2d4a 0%, #131d30 100%);
+            border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 4px;
+            padding: 52px 56px 44px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.04),
+                0 20px 60px rgba(0,0,0,0.5),
+                0 4px 16px rgba(0,0,0,0.3);
+            animation: fadeUp 0.6s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .eyebrow {
+            font-family: 'Crimson Pro', serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            opacity: 0.85;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--cream);
+            line-height: 1.15;
+            letter-spacing: 0.01em;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            font-weight: 300;
+            margin-bottom: 36px;
+            font-style: italic;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin-bottom: 32px;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .topic-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 16px;
+            border-radius: 3px;
             text-decoration: none;
-            color: #2c3e50;
+            color: var(--cream-dark);
+            font-size: 1.1rem;
+            font-weight: 400;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            transition: all 0.22s ease;
+            animation: fadeUp 0.6s ease both;
+            position: relative;
+            overflow: hidden;
         }
-        a:hover {
-            color: #007acc;
+
+        .topic-link::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: var(--gold);
+            transform: scaleY(0);
+            transition: transform 0.22s ease;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .topic-link:nth-child(1) { animation-delay: 0.08s; }
+        .topic-link:nth-child(2) { animation-delay: 0.14s; }
+        .topic-link:nth-child(3) { animation-delay: 0.20s; }
+        .topic-link:nth-child(4) { animation-delay: 0.26s; }
+        .topic-link:nth-child(5) { animation-delay: 0.32s; }
+
+        .topic-link:hover {
+            background: rgba(201,168,76,0.08);
+            border-color: rgba(201,168,76,0.2);
+            color: var(--cream);
+            transform: translateX(4px);
+        }
+
+        .topic-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .topic-icon {
+            font-size: 1.05rem;
+            opacity: 0.7;
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+        }
+
+        .topic-link:hover .topic-icon {
+            opacity: 1;
+        }
+
+        .back-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.88rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-style: normal;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--gold-light);
+        }
+
+        .back-arrow {
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover .back-arrow {
+            transform: translateX(-3px);
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Pure</h1>
-    <a href="Concavity/concavity.html">Concavity</a>
-    <a href="Alg_fract/algebraic-fractions.html">Algebraic Fractions</a>
-    <a href="https://exponent-react-app.vercel.app">Exponents</a>
-    <a href="Proof/Proof.html">Proof</a>
-    <a href="St_pts_and_2dn_deriv/Stationary-points.html">Stationary points</a>
-    <hr>
-    <a href="../index.html">⬅ Back to maths apps main menu</a>
-    
-  
+    <div class="card">
+        <p class="eyebrow">AS-Level</p>
+        <h1>Pure Mathematics</h1>
+        <p class="subtitle">Select a topic to begin</p>
+        <hr class="divider">
+
+        <nav>
+            <a class="topic-link" href="Concavity/concavity.html">
+                <span class="topic-icon">∪</span>
+                Concavity
+            </a>
+            <a class="topic-link" href="Alg_fract/algebraic-fractions.html">
+                <span class="topic-icon">⁄</span>
+                Algebraic Fractions
+            </a>
+            <a class="topic-link" href="https://exponent-react-app.vercel.app">
+                <span class="topic-icon">xⁿ</span>
+                Exponents
+            </a>
+            <a class="topic-link" href="Proof/Proof.html">
+                <span class="topic-icon">∴</span>
+                Proof
+            </a>
+            <a class="topic-link" href="St_pts_and_2dn_deriv/Stationary-points.html">
+                <span class="topic-icon">′</span>
+                Stationary Points
+            </a>
+        </nav>
+
+        <div class="back-section">
+            <a class="back-link" href="../index.html">
+                <span class="back-arrow">←</span>
+                Back to Maths Apps
+            </a>
+        </div>
+    </div>
 </body>
 </html>
