@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friction — AS Mechanics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+<style>
+  :root {
+    --cream: #f7f4ee;
+    --dark: #1c1c28;
+    --mid: #3a3a50;
+    --accent: #8b2635;
+    --accent2: #c4763a;
+    --rule: #c8c2b4;
+    --light-bg: #eeebe3;
+    --green: #2a6645;
+    --blue: #1e4d7a;
+    --shadow: 0 2px 16px rgba(28,28,40,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--cream);
+  }
+  header .subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a09880;
+    margin-top: 2px;
+  }
+  .header-left { display:flex; flex-direction:column; gap:0; }
+
+  /* ── Nav ── */
+  nav {
+    background: var(--dark);
+    border-top: 1px solid #2e2e42;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky; top: 64px; z-index: 99;
+  }
+  nav::-webkit-scrollbar { display:none; }
+  nav button {
+    background: none;
+    border: none;
+    color: #8a8aa0;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    cursor: pointer;
+    white-space: normal;
+    text-align: center;
+    width: 110px;
+    line-height: 1.25;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+  nav button:hover { color: var(--cream); }
+  nav button.active {
+    color: var(--cream);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Main content ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── Typography ── */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+  h2 .number {
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-family: 'Crimson Pro', serif;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 2rem 0 0.7rem;
+  }
+  h4 {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin: 1.5rem 0 0.5rem;
+  }
+  p { margin-bottom: 1rem; }
+  .hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+
+  /* ── Key result box ── */
+  .key-box {
+    background: var(--dark);
+    color: var(--cream);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 1.2rem 1.6rem;
+    margin: 1.8rem 0;
+    font-size: 1.05rem;
+  }
+  .key-box .key-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-style: normal;
+  }
+  .key-box p { margin-bottom: 0.4rem; color: var(--cream); }
+  .key-box p:last-child { margin-bottom: 0; }
+
+  /* ── Info box ── */
+  .info-box {
+    background: #e8f0e8;
+    border-left: 4px solid var(--green);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.4rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  .info-box strong { color: var(--green); }
+
+  .warn-box {
+    background: #fdf3e3;
+    border-left: 4px solid var(--accent2);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.4rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  .warn-box strong { color: var(--accent2); }
+
+  /* ── Worked Example ── */
+  .example {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    margin: 2rem 0;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .example-header {
+    background: var(--mid);
+    color: var(--cream);
+    padding: 0.7rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .example-header:hover { background: #2e2e44; }
+  .example-badge {
+    background: var(--accent);
+    color: white;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 3px;
+  }
+  .example-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+  }
+  .example-toggle {
+    margin-left: auto;
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+    color: #a09880;
+  }
+  .example.open .example-toggle { transform: rotate(180deg); }
+  .example-question {
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--rule);
+    font-style: italic;
+    background: #fafaf5;
+    font-size: 1rem;
+  }
+  .example-body {
+    padding: 1.4rem;
+    display: none;
+  }
+  .example.open .example-body { display: block; }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--accent);
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .step-content { flex: 1; }
+  .step-content p { margin-bottom: 0.3rem; }
+
+  .calc-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    background: var(--light-bg);
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    margin: 0.4rem 0;
+    display: inline-block;
+  }
+
+  .answer-line {
+    background: var(--dark);
+    color: #ffd700;
+    font-family: 'Crimson Pro', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.8rem;
+    display: inline-block;
+  }
+
+  /* ── SVG diagrams ── */
+  .diagram-wrap {
+    text-align: center;
+    margin: 1.4rem 0;
+  }
+  .diagram-wrap svg {
+    max-width: 100%;
+  }
+  .diagram-caption {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.4rem;
+  }
+
+  /* ── Questions ── */
+  .question {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.4rem;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow);
+  }
+  .question-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+  .question p { font-size: 1rem; margin-bottom: 0; }
+  .marks { font-size: 0.85rem; color: #888; font-style: italic; }
+
+  .reveal-btn {
+    background: none;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .reveal-btn:hover { background: var(--accent); color: white; }
+
+  .answer-reveal {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.95rem;
+  }
+  .answer-reveal.shown { display: block; }
+
+  /* ── Table ── */
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.95rem; }
+  th {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 0.5rem 0.9rem;
+    text-align: left;
+    font-family: 'Crimson Pro', serif;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+  td { padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); }
+  tr:hover td { background: #f0ede6; }
+
+  /* ── Intro page special ── */
+  .intro-lead {
+    font-size: 1.35rem;
+    font-style: italic;
+    color: var(--mid);
+    line-height: 1.5;
+    margin: 1.5rem 0;
+    padding-left: 1.4rem;
+    border-left: 3px solid var(--accent2);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  @media(max-width:640px) { .two-col { grid-template-columns:1fr; } }
+
+  .card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: var(--shadow);
+  }
+  .card h4 { margin-top: 0; }
+  .card p { font-size: 0.95rem; margin-bottom: 0; }
+
+  /* progress dots */
+  .progress-bar {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 2.5rem 0 1rem;
+  }
+  .progress-bar span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--rule);
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .progress-bar span.active { background: var(--accent); }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Friction</h1>
+    <span class="subtitle"></span>
+  </div>
+</header>
+
+<nav id="nav">
+  <button class="active" onclick="showSection(0)">Introduction</button>
+  <button onclick="showSection(1)" style="padding-left:16px;">Friction Law</button>
+  <button onclick="showSection(2)">Horizontal Plane<br>Problems</button>
+  <button onclick="showSection(3)">Inclined Plane<br>Problems</button>
+  <button onclick="showSection(4)">Angled Forces<br>Problems</button>
+  <button onclick="showSection(5)">Questions</button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SECTION 0 — INTRODUCTION
+════════════════════════════════════════ -->
+<section class="section active" id="s0">
+  <h2><span class="number">Section 1</span>Why Friction Matters</h2>
+  <hr class="hr">
+
+  <p class="intro-lead">"Why do objects <em>stop</em> moving?" — a more useful question than "why do they move?"</p>
+
+  <p>When we first study motion we naturally ask <em>what causes objects to move?</em> But this way of thinking made it hard for scientists to understand motion for centuries. A far more powerful question is:</p>
+
+  <p><strong>Why do objects stop moving?</strong></p>
+
+  <p>When you slide a book across a carpet it quickly stops. On an icy surface the same push sends it far further. On a perfectly smooth surface — in theory — it would never stop at all.</p>
+
+  <p>This leads to <strong>Newton's First Law</strong>: an object moving with constant velocity will continue to do so <em>unless a force acts on it</em>. The force that slows most everyday objects is <strong>friction</strong>.</p>
+
+  <p>Make sure you are familiar with <a href="https://maths-apps.crlong.uk/Mechanics/newtons-laws.html" target="_blank" style="color:var(--accent);text-decoration:underline;">Newton's Laws of Motion</a> before proceeding.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>🧊 Smooth surface</h4>
+      <p>Little friction → a moving object travels a long way (before stopping).</p>
+    </div>
+    <div class="card">
+      <h4>🪵 Rough surface</h4>
+      <p>Large friction → a moving object slows over a short distance. Friction always acts <em>opposite</em> to the direction of motion.</p>
+    </div>
+  </div>
+
+  <p>To determine the friction, think of the forces in the order: weight ($mg$), contact force ($R$), pulling external force ($P$), friction ($F$).</p>
+
+  <div class="diagram-wrap" style="margin-top:2rem;">
+    <svg id="forceAnimSVG" width="480" height="170" viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+      <defs>
+        <marker id="ag_a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/>
+        </marker>
+        <marker id="ar_a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/>
+        </marker>
+        <marker id="ab_a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/>
+        </marker>
+      </defs>
+      <!-- Ground — always visible -->
+      <line x1="20" y1="90" x2="460" y2="90" stroke="#888" stroke-width="2"/>
+      <g stroke="#bbb" stroke-width="1">
+        <line x1="20" y1="90" x2="10" y2="105"/> <line x1="50" y1="90" x2="40" y2="105"/>
+        <line x1="80" y1="90" x2="70" y2="105"/> <line x1="110" y1="90" x2="100" y2="105"/>
+        <line x1="140" y1="90" x2="130" y2="105"/> <line x1="170" y1="90" x2="160" y2="105"/>
+        <line x1="200" y1="90" x2="190" y2="105"/> <line x1="230" y1="90" x2="220" y2="105"/>
+        <line x1="260" y1="90" x2="250" y2="105"/> <line x1="290" y1="90" x2="280" y2="105"/>
+        <line x1="320" y1="90" x2="310" y2="105"/> <line x1="350" y1="90" x2="340" y2="105"/>
+        <line x1="380" y1="90" x2="370" y2="105"/> <line x1="410" y1="90" x2="400" y2="105"/>
+        <line x1="440" y1="90" x2="430" y2="105"/> <line x1="460" y1="90" x2="450" y2="105"/>
+      </g>
+      <!-- Block — always visible -->
+      <rect x="190" y="58" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1" rx="3"/>
+      <text x="215" y="78" text-anchor="middle" fill="#1c1c28" font-size="13">m</text>
+      <!-- mg — hidden initially -->
+      <g id="anim-mg" style="opacity:0;transition:opacity 0.4s ease;">
+        <line x1="240" y1="74" x2="240" y2="144" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ag_a)"/>
+        <text x="248" y="153" fill="#2a6645" font-size="13">mg</text>
+      </g>
+      <!-- R — hidden initially -->
+      <g id="anim-R" style="opacity:0;transition:opacity 0.4s ease;">
+        <line x1="250" y1="90" x2="250" y2="20" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ag_a)"/>
+        <text x="258" y="18" fill="#2a6645" font-size="13" font-style="italic">R</text>
+      </g>
+      <!-- P — hidden initially -->
+      <g id="anim-P" style="opacity:0;transition:opacity 0.4s ease;">
+        <line x1="290" y1="74" x2="340" y2="74" stroke="#8b2635" stroke-width="2" marker-end="url(#ar_a)"/>
+        <text x="345" y="78" fill="#8b2635" font-size="13" font-style="italic">P</text>
+      </g>
+      <!-- F — hidden initially -->
+      <g id="anim-F" style="opacity:0;transition:opacity 0.4s ease;">
+        <line x1="190" y1="90" x2="140" y2="90" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ab_a)"/>
+        <text x="123" y="85" fill="#1e4d7a" font-size="13" font-style="italic">F</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Forces on a block on a horizontal surface — watch each force appear in turn</div>
+  </div>
+  <script>
+  (function() {
+    function runAnim() {
+      var ids = ['anim-mg','anim-R','anim-P','anim-F'];
+      function hide() {
+        ids.forEach(function(id){ var el=document.getElementById(id); if(el) el.style.opacity='0'; });
+      }
+      function show(id) {
+        var el=document.getElementById(id); if(el) el.style.opacity='1';
+      }
+      function cycle() {
+        hide();
+        setTimeout(function(){ show('anim-mg');
+          setTimeout(function(){ show('anim-R');
+            setTimeout(function(){ show('anim-P');
+              setTimeout(function(){ show('anim-F');
+                setTimeout(cycle, 2000);
+              },1000);
+            },1000);
+          },1000);
+        },1000);
+      }
+      cycle();
+    }
+    if(document.readyState==='loading'){
+      document.addEventListener('DOMContentLoaded', runAnim);
+    } else {
+      runAnim();
+    }
+  })();
+  </script>
+
+  <h3>Two Key Situations. Their effect on size of friction force.</h3>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>Object in Motion</h4>
+      <p>Friction acts in the <em>opposite direction</em> to motion and equals its maximum value: $F = \mu R$</p>
+    </div>
+    <div class="card">
+      <h4>Object at Rest</h4>
+      <p>Friction for a stationary object subject to an external force is always equal to the external force (up to its maximum). It acts opposite to the direction the object <em>would</em> move <em>if the friction were not present</em>.</p>
+    </div>
+  </div>
+
+  <div class="diagram-wrap" style="margin-top:2rem;">
+    <svg width="480" height="170" viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+      <defs>
+        <marker id="ag_s" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/>
+        </marker>
+        <marker id="ar_s" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/>
+        </marker>
+        <marker id="ab_s" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/>
+        </marker>
+      </defs>
+      <!-- Ground line -->
+      <line x1="20" y1="90" x2="460" y2="90" stroke="#888" stroke-width="2"/>
+      <g stroke="#bbb" stroke-width="1">
+        <line x1="20" y1="90" x2="10" y2="105"/> <line x1="50" y1="90" x2="40" y2="105"/>
+        <line x1="80" y1="90" x2="70" y2="105"/> <line x1="110" y1="90" x2="100" y2="105"/>
+        <line x1="140" y1="90" x2="130" y2="105"/> <line x1="170" y1="90" x2="160" y2="105"/>
+        <line x1="200" y1="90" x2="190" y2="105"/> <line x1="230" y1="90" x2="220" y2="105"/>
+        <line x1="260" y1="90" x2="250" y2="105"/> <line x1="290" y1="90" x2="280" y2="105"/>
+        <line x1="320" y1="90" x2="310" y2="105"/> <line x1="350" y1="90" x2="340" y2="105"/>
+        <line x1="380" y1="90" x2="370" y2="105"/> <line x1="410" y1="90" x2="400" y2="105"/>
+        <line x1="440" y1="90" x2="430" y2="105"/> <line x1="460" y1="90" x2="450" y2="105"/>
+      </g>
+      <!-- Block -->
+      <rect x="190" y="58" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1" rx="3"/>
+      <text x="215" y="78" text-anchor="middle" fill="#1c1c28" font-size="13">m</text>
+      <!-- R arrow -->
+      <line x1="250" y1="90" x2="250" y2="20" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ag_s)"/>
+      <text x="258" y="18" fill="#2a6645" font-size="13" font-style="italic">R</text>
+      <!-- mg arrow -->
+      <line x1="240" y1="74" x2="240" y2="144" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ag_s)"/>
+      <text x="248" y="153" fill="#2a6645" font-size="13">mg</text>
+      <!-- P arrow -->
+      <line x1="290" y1="74" x2="340" y2="74" stroke="#8b2635" stroke-width="2" marker-end="url(#ar_s)"/>
+      <text x="345" y="78" fill="#8b2635" font-size="13" font-style="italic">P</text>
+      <!-- F arrow -->
+      <line x1="190" y1="90" x2="140" y2="90" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ab_s)"/>
+      <text x="123" y="85" fill="#1e4d7a" font-size="13" font-style="italic">F</text>
+    </svg>
+    <div class="diagram-caption">Forces on a block on a horizontal surface: normal contact force $R$, weight $mg$, applied force $P$ and friction $F$</div>
+  </div>
+
+  <div class="info-box">
+    <strong>Key principle:</strong> Friction always acts in the direction that opposes the <em>tendency to move</em>. If the block moves (or would move) to the right, friction acts to the left.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 1 — FRICTION LAW
+════════════════════════════════════════ -->
+<section class="section" id="s1">
+  <h2><span class="number">Section 2</span>The Friction Law</h2>
+  <hr class="hr">
+
+  <h3>The Coefficient of Friction</h3>
+  <p>The roughness between two surfaces is measured by the <strong>coefficient of friction</strong>, denoted by $\mu$ (pronounced "myoo").</p>
+
+  <table>
+    <tr><th>Surface condition</th><th>Typical $\mu$</th></tr>
+    <tr><td>Perfectly smooth (theoretical)</td><td>0</td></tr>
+    <tr><td>Ice on ice</td><td>≈ 0.03</td></tr>
+    <tr><td>Wood on wood</td><td>≈ 0.3 – 0.5</td></tr>
+    <tr><td>Rubber on concrete</td><td>≈ 0.7 – 0.8</td></tr>
+  </table>
+
+  <p>The rougher the surfaces, the larger $\mu$. For <em>smooth</em> surfaces in mechanics problems, $\mu = 0$.</p>
+
+  <h3>Maximum Friction Force</h3>
+  <p>The limiting (maximum) frictional force depends on two things:</p>
+  <ul style="margin-left:1.5rem;margin-bottom:1rem;">
+    <li>The <strong>normal contact force</strong> $R$ between the surfaces</li>
+    <li>The <strong>combined roughness resulting from the material of the surfaces in contact</strong> (i.e. $\mu$)</li>
+  </ul>
+
+  <div class="key-box">
+    <div class="key-title">The Friction Law</div>
+    <p>$$F_{\max} = \mu R$$</p>
+    <p>where $\mu$ is the coefficient of friction and $R$ is the normal contact force between the surfaces.</p>
+    <p>In general: $F \leq \mu R$. &nbsp; Equality holds when the object is moving or on the <em>point of moving</em>.</p>
+  </div>
+
+  <h3>Three States of a Block</h3>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin:1.5rem 0;">
+    <div class="card" style="border-top:3px solid var(--green);">
+      <h4 style="color:var(--green);">Stationary, no push</h4>
+      <p style="font-size:0.9rem;">No tendency to move. Friction force $F = 0$.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent2);">
+      <h4 style="color:var(--accent2);">Stationary, pushed</h4>
+      <p style="font-size:0.9rem;">Friction increases to match push, provided $F < \mu R$.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent);">
+      <h4 style="color:var(--accent);">Moving / limiting</h4>
+      <p style="font-size:0.9rem;">$F = \mu R$. Block accelerates if push exceeds $\mu R$.</p>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <strong>Watch out:</strong> "Limiting equilibrium" means the body is on the <em>point of moving</em>. It may be at rest <em>or</em> moving with constant velocity — in both cases $F = \mu R$.
+  </div>
+
+  <h3>Normal Contact Force on an Inclined Plane</h3>
+  <p>On a slope inclined at angle $\alpha$ to the horizontal, with no additional vertical forces:</p>
+  $$R = mg\cos\alpha$$
+  <p>so the maximum friction becomes:</p>
+  $$F_{\max} = \mu mg\cos\alpha$$
+
+  <div class="diagram-wrap">
+    <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+      <!-- slope -->
+      <polygon points="30,170 370,170 370,70" fill="#e8e4da" stroke="#888" stroke-width="1.5"/>
+      <!-- angle arc at left vertex, between horizontal and hypotenuse -->
+      <path d="M 55,170 A 25,25 0 0,0 54,163" stroke="#888" stroke-width="1" fill="none"/>
+      <!-- angle label: 5px right of previous position -->
+      <text x="75" y="164" font-size="13" fill="#666">α</text>
+      <!-- block: base on slope, white fill, dark outline -->
+      <rect x="210" y="79" width="48" height="30" fill="white" stroke="#1c1c28" stroke-width="1" rx="3" transform="rotate(-15.5,234,94)"/>
+      <text x="227" y="99" fill="#1c1c28" font-size="12" text-anchor="middle">m</text>
+      <!-- R arrow: perpendicular to slope, from base of block on slope -->
+      <line x1="238" y1="108" x2="221" y2="51" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ag2)"/>
+      <text x="208" y="46" fill="#2a6645" font-size="13" font-style="italic">R</text>
+      <!-- mg arrow: vertically down from block centre -->
+      <line x1="234" y1="94" x2="234" y2="162" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ag2)"/>
+      <text x="240" y="165" fill="#2a6645" font-size="12">mg</text>
+      <!-- F arrow: base at bottom-right corner of block (base meets up-slope edge), pointing up the plane -->
+      <line x1="261" y1="102" x2="309" y2="88" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ab2)"/>
+      <text x="291" y="82" fill="#1e4d7a" font-size="13" font-style="italic">F</text>
+
+      <defs>
+        <marker id="ag2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/>
+        </marker>
+        <marker id="ab2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/>
+        </marker>
+      </defs>
+      <text x="20" y="195" font-size="11" fill="#888" font-style="italic">R is perpendicular to the slope surface</text>
+    </svg>
+    <div class="diagram-caption">Block on a rough inclined plane. Friction $F$ acts up the slope if the block tends to slide down.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — HORIZONTAL PLANE
+════════════════════════════════════════ -->
+<section class="section" id="s2">
+  <h2><span class="number">Section 3</span>Horizontal Plane Problems</h2>
+  <hr class="hr">
+
+  <p>When a block rests on a horizontal surface with no vertical component of applied force, the normal contact force simply equals the weight:</p>
+  $$R = mg$$
+  <p>so $F_{\max} = \mu mg$.</p>
+
+  <div class="example" id="ex1">
+    <div class="example-header" onclick="toggleEx('ex1')">
+      <span class="example-badge">Example 1</span>
+      <span class="example-title">Block on rough horizontal ground — three applied forces</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A block of mass 5 kg lies on rough horizontal ground. The coefficient of friction between the block and the ground is 0.4. A horizontal force $P$ is applied to the block. Find the frictional force and the acceleration of the block when $P$ equals: (a) 10 N, (b) 19.6 N, (c) 30 N.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="155" viewBox="0 0 320 155" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex1g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex1r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex1b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker></defs><line x1="20" y1="100" x2="300" y2="100" stroke="#888" stroke-width="2"/><g stroke="#bbb" stroke-width="1"><line x1="30" y1="100" x2="20" y2="114"/><line x1="60" y1="100" x2="50" y2="114"/><line x1="90" y1="100" x2="80" y2="114"/><line x1="120" y1="100" x2="110" y2="114"/><line x1="150" y1="100" x2="140" y2="114"/><line x1="180" y1="100" x2="170" y2="114"/><line x1="210" y1="100" x2="200" y2="114"/><line x1="240" y1="100" x2="230" y2="114"/><line x1="270" y1="100" x2="260" y2="114"/><line x1="300" y1="100" x2="290" y2="114"/></g><rect x="110" y="68" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2"/><text x="138" y="89" fill="#1c1c28" font-style="italic" font-size="14">m</text><line x1="145" y1="100" x2="145" y2="28" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex1g)"/><text x="152" y="25" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="168" y1="84" x2="168" y2="148" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex1g)"/><text x="175" y="152" fill="#4a9e6a" font-size="13">mg</text><line x1="110" y1="100" x2="45" y2="100" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex1b)"/><text x="28" y="96" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="210" y1="84" x2="278" y2="84" stroke="#8b2635" stroke-width="2" marker-end="url(#ex1r)"/><text x="282" y="89" fill="#8b2635" font-size="13" font-style="italic">P</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: 5 kg block on rough horizontal surface</div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p><strong>Find the maximum (limiting) friction.</strong></p>
+          <p>Since the surface is horizontal with no vertical applied force: $R = mg = 5 \times 9.8 = 49\text{ N}$</p>
+          <div class="calc-line">F_max = μR = 0.4 × 49 = 19.6 N</div>
+        </div>
+      </div>
+      <hr class="hr">
+      <h4>Part (a) — P = 10 N</h4>
+      <div class="step">
+        <div class="step-num">a</div>
+        <div class="step-content">
+          <p>$P = 10\text{ N} < F_{\max} = 19.6\text{ N}$, so friction is enough to prevent motion.</p>
+          <p>Friction adjusts to balance $P$ exactly.</p>
+          <div class="answer-line">Friction = 10 N &nbsp;|&nbsp; Acceleration = 0</div>
+        </div>
+      </div>
+      <h4>Part (b) — P = 19.6 N</h4>
+      <div class="step">
+        <div class="step-num">b</div>
+        <div class="step-content">
+          <p>$P = 19.6\text{ N} = F_{\max}$. The block is in <em>limiting equilibrium</em> — on the point of moving.</p>
+          <div class="answer-line">Friction = 19.6 N &nbsp;|&nbsp; Acceleration = 0</div>
+        </div>
+      </div>
+      <h4>Part (c) — P = 30 N</h4>
+      <div class="step">
+        <div class="step-num">c</div>
+        <div class="step-content">
+          <p>$P = 30\text{ N} > F_{\max}$. The block moves; friction is at its limiting value 19.6 N.</p>
+          <p>Apply Newton's Second Law ($\rightarrow$):</p>
+          <div class="calc-line">30 − 19.6 = 5a</div>
+          <div class="calc-line">a = 10.4 ÷ 5 = 2.08 m s⁻²</div>
+          <div class="answer-line">Friction = 19.6 N &nbsp;|&nbsp; a = 2.1 m s⁻² (2 s.f.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex2">
+    <div class="example-header" onclick="toggleEx('ex2')">
+      <span class="example-badge">Example 2</span>
+      <span class="example-title">Sled pulled at 45° to the horizontal</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A sled of mass 10 kg is being pulled along a rough horizontal plane by a force $P$ that acts at an angle of 45° to the horizontal. The coefficient of friction is 0.1. Given that the sled accelerates at 0.3 m s⁻², find the value of $P$.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="155" viewBox="0 0 320 155" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex2g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex2r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex2b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker></defs><line x1="20" y1="100" x2="300" y2="100" stroke="#888" stroke-width="2"/><g stroke="#bbb" stroke-width="1"><line x1="30" y1="100" x2="20" y2="114"/><line x1="60" y1="100" x2="50" y2="114"/><line x1="90" y1="100" x2="80" y2="114"/><line x1="120" y1="100" x2="110" y2="114"/><line x1="150" y1="100" x2="140" y2="114"/><line x1="180" y1="100" x2="170" y2="114"/><line x1="210" y1="100" x2="200" y2="114"/><line x1="240" y1="100" x2="230" y2="114"/><line x1="270" y1="100" x2="260" y2="114"/><line x1="300" y1="100" x2="290" y2="114"/></g><rect x="110" y="68" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2"/><text x="138" y="89" fill="#1c1c28" font-style="italic" font-size="14">m</text><line x1="145" y1="100" x2="145" y2="28" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex2g)"/><text x="152" y="25" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="168" y1="84" x2="168" y2="148" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex2g)"/><text x="175" y="152" fill="#4a9e6a" font-size="13">mg</text><line x1="110" y1="100" x2="45" y2="100" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex2b)"/><text x="28" y="96" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="210" y1="84" x2="248" y2="45" stroke="#8b2635" stroke-width="2" marker-end="url(#ex2r)"/><text x="251" y="41" fill="#8b2635" font-size="13" font-style="italic">P</text><text x="224" y="80" fill="#8b2635" font-size="11">45°</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: sled on rough horizontal surface, force P at 45° above horizontal</div>
+      </div>
+      <div class="info-box" style="margin-bottom:1rem;">
+        <strong>Key idea:</strong> When a external force applied to an object has an upward component it <em>reduces</em> the normal contact force, which in turn reduces friction.
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p><strong>Resolve vertically</strong> (↑ positive):</p>
+          $$R + P\sin 45° = 10g$$
+          $$R = 98 - P\sin 45° = 98 - \frac{P}{\sqrt{2}} \quad \cdots (1)$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p><strong>Friction at limiting value</strong> (sled is accelerating):</p>
+          $$F = \mu R = 0.1\left(98 - \frac{P}{\sqrt{2}}\right)$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <p><strong>Resolve horizontally</strong> (→, $F = ma$):</p>
+          $$P\cos 45° - \mu R = 10 \times 0.3 = 3$$
+          $$\frac{P}{\sqrt{2}} - 0.1\!\left(98 - \frac{P}{\sqrt{2}}\right) = 3$$
+          $$\frac{P}{\sqrt{2}} + \frac{0.1P}{\sqrt{2}} - 9.8 = 3$$
+          $$P\!\left(\frac{1}{\sqrt{2}} + \frac{0.1}{\sqrt{2}}\right) = 12.8$$
+          $$P \cdot \frac{1.1}{\sqrt{2}} = 12.8$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="calc-line">P = 12.8 × √2 ÷ 1.1 = 16.45 N</div>
+          <div class="answer-line">P = 16.4 N (3 s.f.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — INCLINED PLANES
+════════════════════════════════════════ -->
+<section class="section" id="s3">
+  <h2><span class="number">Section 4</span>Rough Inclined Planes</h2>
+  <hr class="hr">
+
+  <h3>Setting Up the Equations</h3>
+  <p>For a particle on a slope inclined at $\alpha$ to the horizontal, resolve forces <strong>parallel</strong> and <strong>perpendicular</strong> to the slope:</p>
+
+  <div class="key-box">
+    <div class="key-title">Standard Results</div>
+    <p>Perpendicular to slope: $\quad R = mg\cos\alpha$</p>
+    <p>Parallel to slope (sliding down): $\quad mg\sin\alpha - F = ma$</p>
+    <p>Friction (moving): $\quad F = \mu R = \mu mg\cos\alpha$</p>
+  </div>
+
+  <div class="example" id="ex3">
+    <div class="example-header" onclick="toggleEx('ex3')">
+      <span class="example-badge">Example 3</span>
+      <span class="example-title">Particle sliding down a rough slope — find μ</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A particle of mass 2 kg is sliding down a rough slope inclined at 30° to the horizontal. The acceleration of the particle is 1 m s⁻². Find the coefficient of friction $\mu$ between the particle and the slope.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="150" viewBox="0 0 310 150" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex3g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex3r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex3b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="ex3d" markerWidth="14" markerHeight="6" refX="13" refY="3" orient="auto"><path d="M5,0 L5,6 L13,3 z" fill="#555"/><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><polygon points="20,140 220,25 220,140" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,140 A 25,25 0 0,0 41.7,127.5" stroke="#555" stroke-width="1" fill="none"/><text x="55" y="131" fill="#555" font-size="13" font-style="italic">30°</text><rect x="108" y="51" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-30,130,63)"/><text x="130" y="68" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-30,130,63)">m</text><line x1="130" y1="63" x2="105" y2="19" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex3g)"/><text x="92" y="15" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="130" y1="63" x2="130" y2="118" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex3g)"/><text x="137" y="126" fill="#4a9e6a" font-size="13">mg</text><line x1="130" y1="63" x2="175" y2="37" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex3b)"/><text x="179" y="33" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="90" y1="64" x2="47" y2="89" stroke="#555" stroke-width="2" marker-end="url(#ex3d)"/><text x="26" y="98" fill="#555" font-size="11">a = 1</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: particle sliding down rough 30° slope</div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p><strong>Resolve perpendicular to slope</strong> (no acceleration in this direction):</p>
+          $$R = 2g\cos 30° = 2 \times 9.8 \times \frac{\sqrt{3}}{2} = 16.97\ldots\text{ N}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p><strong>Particle is moving</strong>, so $F = \mu R$ (friction acts up the slope, opposing downward motion).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <p><strong>Resolve parallel to slope</strong> (↙ positive, direction of motion):</p>
+          $$2g\sin 30° - \mu R = 2 \times 1$$
+          $$9.8 - \mu(16.97) = 2$$
+          $$\mu = \frac{9.8 - 2}{16.97} = \frac{7.8}{16.97}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="calc-line">μ = 7.8 ÷ 16.97 ≈ 0.46</div>
+          <div class="answer-line">μ = 0.46 (2 s.f.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex4">
+    <div class="example-header" onclick="toggleEx('ex4')">
+      <span class="example-badge">Example 4</span>
+      <span class="example-title">Particle released on a rough slope — find acceleration and distance</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A particle is held at rest on a rough plane inclined at angle $\alpha$ to the horizontal, where $\tan\alpha = 0.75$. The coefficient of friction is 0.5. The particle is released and slides down the plane. Find: (a) the acceleration, (b) the distance travelled in the first 2 seconds.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="165" viewBox="0 0 310 165" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex4g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex4r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex4b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker></defs><polygon points="20,155 200,155 200,20" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,155 A 25,25 0 0,0 40.0,140.0" stroke="#555" stroke-width="1" fill="none"/><text x="50" y="146" fill="#555" font-size="13" font-style="italic">α</text><rect x="98" y="53" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-36.87,120,65)"/><text x="120" y="70" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-36.87,120,65)">m</text><line x1="120" y1="65" x2="89" y2="25" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex4g)"/><text x="76" y="21" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="120" y1="65" x2="120" y2="120" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex4g)"/><text x="127" y="128" fill="#4a9e6a" font-size="13">mg</text><line x1="120" y1="65" x2="161" y2="33" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex4b)"/><text x="165" y="29" fill="#1e4d7a" font-size="13" font-style="italic">F</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: particle on rough slope (tan α = 0.75), released from rest</div>
+      </div>
+      <div class="step">
+        <div class="step-num">★</div>
+        <div class="step-content">
+          <p><strong>Find trig values from tan α = 0.75 = 3/4.</strong> Use a 3-4-5 triangle:</p>
+          <div class="calc-line">sin α = 3/5 = 0.6 &nbsp;|&nbsp; cos α = 4/5 = 0.8</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p><strong>Perpendicular to slope:</strong></p>
+          $$R = mg\cos\alpha = 0.8mg$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p>Particle is sliding so $F = \mu R = 0.5 \times 0.8mg = 0.4mg$</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <p><strong>Parallel to slope</strong> (down the slope positive):</p>
+          $$mg\sin\alpha - F = ma$$
+          $$0.6mg - 0.4mg = ma$$
+          $$0.2g = a$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="calc-line">a = 0.2 × 9.8 = 1.96 m s⁻²</div>
+          <div class="answer-line">a = 2.0 m s⁻² (2 s.f.)</div>
+        </div>
+      </div>
+      <h4>Part (b) — Distance in 2 seconds</h4>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <p>Use $s = ut + \frac{1}{2}at^2$ with $u = 0$, $a = 0.2g$, $t = 2$:</p>
+          <div class="calc-line">s = 0 + ½ × 0.2 × 9.8 × 4 = 3.92 m</div>
+          <div class="answer-line">s = 3.9 m (2 s.f.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex5">
+    <div class="example-header" onclick="toggleEx('ex5')">
+      <span class="example-badge">Example 5</span>
+      <span class="example-title">Particle projected up a rough slope — deceleration and return speed</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A particle $P$ is projected up a rough plane inclined at angle $\alpha$ to the horizontal, where $\tan\alpha = \tfrac{3}{4}$. The coefficient of friction is $\tfrac{1}{3}$. The particle is projected from point $A$ with speed 20 m s⁻¹ and comes to instantaneous rest at point $B$. (a) Show the deceleration while moving up is $\tfrac{13g}{15}$. (b) Find $AB$. (c) Find the time from $A$ to $B$. (d) Find the speed when the particle returns to $A$.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="165" viewBox="0 -12 310 177" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex5v" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#333"/></marker><marker id="ex5g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex5r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex5b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker></defs><polygon points="20,155 200,155 200,20" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,155 A 25,25 0 0,0 40.0,140.0" stroke="#555" stroke-width="1" fill="none"/><text x="50" y="146" fill="#555" font-size="13" font-style="italic">α</text><rect x="98" y="53" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-36.87,120,65)"/><text x="120" y="70" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-36.87,120,65)">m</text><line x1="120" y1="65" x2="89" y2="25" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex5g)"/><text x="76" y="21" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="120" y1="65" x2="120" y2="120" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex5g)"/><text x="127" y="128" fill="#4a9e6a" font-size="13">mg</text><line x1="120" y1="65" x2="84" y2="92" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex5b)"/><text x="66" y="94" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="108" y1="27" x2="132" y2="9" stroke="#333" stroke-width="2" marker-end="url(#ex5v)"/><text x="135" y="6" fill="#333" font-size="12">u = 20</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: particle projected up rough slope — friction acts down the slope</div>
+      </div>
+      <div class="info-box"><strong>Note:</strong> $\tan\alpha = \tfrac{3}{4}$, so $\sin\alpha = \tfrac{3}{5}$, $\cos\alpha = \tfrac{4}{5}$.</div>
+
+      <h4>Part (a) — Deceleration going up</h4>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p>Perpendicular: $R = mg\cos\alpha = \tfrac{4}{5}mg$</p>
+          <p>Moving, so $F = \mu R = \tfrac{1}{3} \cdot \tfrac{4}{5}mg = \tfrac{4}{15}mg$</p>
+          <p><em>Going up</em>: both gravity component and friction act down the slope.</p>
+          $$-\frac{3mg}{5} - \frac{4mg}{15} = ma$$
+          $$-\frac{9g}{15} - \frac{4g}{15} = a$$
+          <div class="answer-line">a = −13g/15 &nbsp; (deceleration of 13g/15) ✓</div>
+        </div>
+      </div>
+      <h4>Part (b) — Distance AB</h4>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p>$u = 20$, $v = 0$, $a = -\tfrac{13g}{15}$. Use $v^2 = u^2 + 2as$:</p>
+          <div class="calc-line">0 = 400 + 2(−13×9.8/15)s</div>
+          <div class="calc-line">s = 400 ÷ (26×9.8/15) = 400 ÷ 16.987 ≈ 23.5 m</div>
+          <div class="answer-line">AB ≈ 24 m (2 s.f.)</div>
+        </div>
+      </div>
+      <h4>Part (c) — Time A to B</h4>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <p>Use $v = u + at$:</p>
+          <div class="calc-line">0 = 20 − (13×9.8/15)t</div>
+          <div class="calc-line">t = 20 ÷ 8.493 ≈ 2.35 s</div>
+          <div class="answer-line">t ≈ 2.4 s (2 s.f.)</div>
+        </div>
+      </div>
+      <h4>Part (d) — Speed returning to A</h4>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <p><em>Coming down</em>: gravity acts down the slope, friction now acts <em>up</em> the slope (opposing downward motion).</p>
+          $$\frac{3mg}{5} - \frac{4mg}{15} = ma_{\text{down}}$$
+          $$\frac{9g}{15} - \frac{4g}{15} = \frac{5g}{15} = \frac{g}{3}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <p>From $B$ with $u=0$, $a = g/3$, $s = AB \approx 23.5$ m. Use $v^2 = 2as$:</p>
+          <div class="calc-line">v² = 2 × (9.8/3) × 23.5 = 153.3</div>
+          <div class="calc-line">v = √153.3 ≈ 12.4 m s⁻¹</div>
+          <div class="answer-line">Speed at A ≈ 12 m s⁻¹ (2 s.f.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — ANGLED FORCES
+════════════════════════════════════════ -->
+<section class="section" id="s4">
+  <h2><span class="number">Section 5</span>Forces at Angles &amp; Static Particles</h2>
+  <hr class="hr">
+
+  <p>When a force is applied at an angle (not parallel to the surface), its vertical component affects the normal contact force $R$, which in turn changes the maximum friction.</p>
+
+  <div class="warn-box">
+    <strong>Remember:</strong> Always use the <em>normal contact force</em> $R$, not the weight, when calculating $F_{\max} = \mu R$.
+  </div>
+
+  <div class="example" id="ex6">
+    <div class="example-header" onclick="toggleEx('ex6')">
+      <span class="example-badge">Example 6</span>
+      <span class="example-title">Maximum force before slipping — horizontal then angled</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A mass of 8 kg rests on a rough horizontal plane with $\mu = 0.5$. Find the maximum force $P$ that can be applied without causing motion if: (a) $P$ is horizontal, (b) $P$ acts at 60° above the horizontal.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="155" viewBox="0 0 320 155" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex6g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex6r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex6b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker></defs><line x1="20" y1="100" x2="300" y2="100" stroke="#888" stroke-width="2"/><g stroke="#bbb" stroke-width="1"><line x1="30" y1="100" x2="20" y2="114"/><line x1="60" y1="100" x2="50" y2="114"/><line x1="90" y1="100" x2="80" y2="114"/><line x1="120" y1="100" x2="110" y2="114"/><line x1="150" y1="100" x2="140" y2="114"/><line x1="180" y1="100" x2="170" y2="114"/><line x1="210" y1="100" x2="200" y2="114"/><line x1="240" y1="100" x2="230" y2="114"/><line x1="270" y1="100" x2="260" y2="114"/><line x1="300" y1="100" x2="290" y2="114"/></g><rect x="110" y="68" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2"/><text x="138" y="89" fill="#1c1c28" font-style="italic" font-size="14">m</text><line x1="145" y1="100" x2="145" y2="28" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex6g)"/><text x="152" y="25" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="168" y1="84" x2="168" y2="148" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex6g)"/><text x="175" y="152" fill="#4a9e6a" font-size="13">mg</text><line x1="110" y1="100" x2="45" y2="100" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex6b)"/><text x="28" y="96" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="210" y1="84" x2="278" y2="84" stroke="#8b2635" stroke-width="2" marker-end="url(#ex6r)"/><text x="282" y="89" fill="#8b2635" font-size="13" font-style="italic">P</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: 8 kg mass on rough horizontal plane</div>
+      </div>
+      <h4>Part (a) — Horizontal force</h4>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p>$R = 8g = 78.4\text{ N}$ &nbsp; (no vertical component from $P$)</p>
+          <p>Limiting: $F = \mu R = 0.5 \times 78.4 = 39.2\text{ N}$</p>
+          <p>Equilibrium: $P = F$</p>
+          <div class="answer-line">P_max = 39 N (2 s.f.)</div>
+        </div>
+      </div>
+      <h4>Part (b) — Force at 60° above horizontal</h4>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p>Vertical: $R + P\sin 60° = 8g \;\Rightarrow\; R = 8g - P\sin 60°$</p>
+          <p>Limiting friction: $F = 0.5(8g - P\sin 60°)$</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <p>Horizontal equilibrium: $P\cos 60° = F$</p>
+          $$P\cos 60° = 0.5(8g - P\sin 60°)$$
+          $$P\cos 60° + 0.5P\sin 60° = 0.5 \times 8g = 4g$$
+          $$P(\cos 60° + 0.5\sin 60°) = 4g$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="calc-line">P = 4g ÷ (cos60° + 0.5sin60°)</div>
+          <div class="calc-line">P = 39.2 ÷ (0.5 + 0.433) = 39.2 ÷ 0.933</div>
+          <div class="answer-line">P = 42 N (2 s.f.)</div>
+        </div>
+      </div>
+      <div class="info-box">
+        The upward component of $P$ reduces $R$, so friction also reduces — meaning a larger $P$ is needed to reach the limit of friction. Hence the answer in (b) is larger than in (a).
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex7">
+    <div class="example-header" onclick="toggleEx('ex7')">
+      <span class="example-badge">Example 7</span>
+      <span class="example-title">Particle on inclined plane — force up line of greatest slope</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A particle of mass 1.5 kg rests in equilibrium on a rough plane inclined at 25° to the horizontal, under the action of a force $X$ N acting up the line of greatest slope. The particle is on the point of moving <em>up</em> the plane. The coefficient of friction is 0.25. Find: (a) the normal contact force, (b) the value of $X$.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="165" viewBox="0 0 310 165" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex7g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex7r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex7b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker></defs><polygon points="20,155 240,155 240,52" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,155 A 25,25 0 0,0 42.7,144.4" stroke="#555" stroke-width="1" fill="none"/><text x="60" y="146" fill="#555" font-size="13" font-style="italic">25°</text><rect x="118" y="74" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-25,140,86)"/><text x="140" y="91" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-25,140,86)">m</text><line x1="140" y1="86" x2="118" y2="40" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex7g)"/><text x="105" y="36" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="140" y1="86" x2="140" y2="141" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex7g)"/><text x="147" y="149" fill="#4a9e6a" font-size="13">mg</text><line x1="140" y1="86" x2="187" y2="64" stroke="#8b2635" stroke-width="2" marker-end="url(#ex7r)"/><text x="191" y="60" fill="#8b2635" font-size="13" font-style="italic">X</text><line x1="140" y1="86" x2="99" y2="105" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex7b)"/><text x="81" y="107" fill="#1e4d7a" font-size="13" font-style="italic">F</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: particle in limiting equilibrium on 25° slope, force X up slope, friction F down slope</div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p><strong>Perpendicular to slope:</strong></p>
+          $$R = 1.5g\cos 25°$$
+          <div class="calc-line">R = 1.5 × 9.8 × cos25° = 13.3 N</div>
+          <div class="answer-line">R = 13.3 N</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p>On the point of moving <em>up</em>, so friction acts <em>down</em> the slope (opposing upward tendency).</p>
+          <p>$F = \mu R = 0.25 \times 13.3 = 3.325\text{ N}$</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <p><strong>Parallel to slope</strong> (up positive, equilibrium):</p>
+          $$X - 1.5g\sin 25° - \mu R = 0$$
+          $$X = 1.5g\sin 25° + 0.25(13.3)$$
+          <div class="calc-line">X = 1.5×9.8×sin25° + 3.325 = 6.21 + 3.325</div>
+          <div class="answer-line">X = 9.54 N (3 s.f.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex8">
+    <div class="example-header" onclick="toggleEx('ex8')">
+      <span class="example-badge">Example 8</span>
+      <span class="example-title">Particle sliding down slope pulled back by force P</span>
+      <span class="example-toggle">▾</span>
+    </div>
+    <div class="example-question">
+      A particle of mass 2 kg is sliding down a rough slope inclined at 20° to the horizontal. A force $P$ acts parallel to the slope and attempts to pull the particle <em>up</em> the slope. The acceleration is 0.2 m s⁻² down the slope. The coefficient of friction is 0.3. Find $P$.
+    </div>
+    <div class="example-body">
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="165" viewBox="0 0 310 165" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="ex8g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="ex8r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="ex8b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="ex8d" markerWidth="14" markerHeight="6" refX="13" refY="3" orient="auto"><path d="M5,0 L5,6 L13,3 z" fill="#555"/><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><polygon points="20,155 240,155 240,75" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,155 A 25,25 0 0,0 43.5,146.4" stroke="#555" stroke-width="1" fill="none"/><text x="60" y="146" fill="#555" font-size="13" font-style="italic">20°</text><rect x="108" y="90" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-20,130,102)"/><text x="130" y="107" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-20,130,102)">m</text><line x1="130" y1="102" x2="112" y2="55" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex8g)"/><text x="99" y="51" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="130" y1="102" x2="130" y2="152" stroke="#4a9e6a" stroke-width="2" marker-end="url(#ex8g)"/><text x="137" y="160" fill="#4a9e6a" font-size="13">mg</text><line x1="127" y1="116" x2="169" y2="101" stroke="#1e4d7a" stroke-width="2" marker-end="url(#ex8b)"/><text x="172" y="106" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="135" y1="99" x2="183" y2="81" stroke="#8b2635" stroke-width="2" marker-end="url(#ex8r)"/><text x="187" y="77" fill="#8b2635" font-size="13" font-style="italic">P</text><line x1="90" y1="98" x2="43" y2="114" stroke="#555" stroke-width="2" marker-end="url(#ex8d)"/><text x="22" y="123" fill="#555" font-size="11">a=0.2</text>
+        </svg>
+        <div class="diagram-caption">Force diagram: particle sliding down rough 20° slope, friction F and applied force P both acting up slope</div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <p>Perpendicular: $R = 2g\cos 20° = 18.42\text{ N}$</p>
+          <p>Particle moving down, so friction acts up: $F = 0.3 \times 18.42 = 5.53\text{ N}$</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <p>Resolve down the slope ($a = 0.2$ m s⁻² down):</p>
+          $$2g\sin 20° - F - P = 2 \times 0.2$$
+          $$6.70 - 5.53 - P = 0.4$$
+          <div class="calc-line">P = 6.70 − 5.53 − 0.40 = 0.77 N</div>
+          <div class="answer-line">P = 0.77 N</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 5 — QUESTIONS
+════════════════════════════════════════ -->
+<section class="section" id="s5">
+  <h2><span class="number">Section 6</span>Practice Questions</h2>
+  <hr class="hr">
+  <p>Attempt each question before revealing the answer. Use $g = 9.8\text{ m s}^{-2}$.</p>
+
+  <!-- Q1 -->
+  <div class="question">
+    <div class="question-num">Question 1 <span class="marks">— 3 marks</span></div>
+    <p>A block of mass 4 kg rests on a rough horizontal table. A force of 6 N acts on the block at an angle of 30° below the horizontal. The block is on the point of slipping. Find the value of the coefficient of friction $\mu$.</p>
+    
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="165" viewBox="0 0 320 165" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="q1g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="q1r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="q1b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="q1k" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><line x1="20" y1="100" x2="300" y2="100" stroke="#888" stroke-width="2"/><g stroke="#bbb" stroke-width="1"><line x1="30" y1="100" x2="20" y2="114"/><line x1="60" y1="100" x2="50" y2="114"/><line x1="90" y1="100" x2="80" y2="114"/><line x1="120" y1="100" x2="110" y2="114"/><line x1="150" y1="100" x2="140" y2="114"/><line x1="180" y1="100" x2="170" y2="114"/><line x1="210" y1="100" x2="200" y2="114"/><line x1="240" y1="100" x2="230" y2="114"/><line x1="270" y1="100" x2="260" y2="114"/></g><rect x="110" y="68" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2"/><text x="160" y="89" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle">m</text><line x1="160" y1="100" x2="160" y2="28" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q1g)"/><text x="167" y="25" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="168" y1="84" x2="168" y2="148" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q1g)"/><text x="175" y="152" fill="#4a9e6a" font-size="13">mg</text><line x1="110" y1="100" x2="45" y2="100" stroke="#1e4d7a" stroke-width="2" marker-end="url(#q1b)"/><text x="28" y="96" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="210" y1="84" x2="257" y2="111" stroke="#8b2635" stroke-width="2" marker-end="url(#q1r)"/><text x="261" y="119" fill="#8b2635" font-size="13" font-style="italic">P</text><text x="220" y="90" fill="#8b2635" font-size="11">30°</text>
+        </svg>
+        <div class="diagram-caption">Q1: 4 kg block on rough horizontal table — 6 N force at 30° below horizontal</div>
+      </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Solution</button>
+    <div class="answer-reveal">
+      <p><strong>Resolve vertically:</strong> $R = 4g + 6\sin 30° = 39.2 + 3 = 42.2\text{ N}$</p>
+      <p><strong>Limiting friction:</strong> $F = \mu R$ and $F = 6\cos 30° = 5.196\text{ N}$</p>
+      <p>$\mu = \dfrac{5.196}{42.2}$</p>
+      <div class="answer-line">μ = 0.12 (2 s.f.)</div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question">
+    <div class="question-num">Question 2 <span class="marks">— 4 marks</span></div>
+    <p>A book of mass 2 kg slides down a rough plane inclined at 20° to the horizontal. The acceleration of the book is 1.5 m s⁻². Find the coefficient of friction between the book and the plane.</p>
+    
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="160" viewBox="0 0 310 160" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="q2g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="q2r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="q2b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="q2k" markerWidth="14" markerHeight="6" refX="13" refY="3" orient="auto"><path d="M5,0 L5,6 L13,3 z" fill="#555"/><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><polygon points="20,145 240,145 240,58" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,145 A 25,25 0 0,0 43.5,136.4" stroke="#555" stroke-width="1" fill="none"/><text x="60" y="136" fill="#555" font-size="13" font-style="italic">20°</text><rect x="108" y="74" width="44" height="26" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-20,130,87)"/><text x="130" y="92" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-20,130,87)">m</text><line x1="130" y1="90" x2="112" y2="43" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q2g)"/><text x="98" y="39" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="130" y1="90" x2="130" y2="145" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q2g)"/><text x="137" y="153" fill="#4a9e6a" font-size="13">mg</text><line x1="130" y1="90" x2="176" y2="72" stroke="#1e4d7a" stroke-width="2" marker-end="url(#q2b)"/><text x="180" y="68" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="90" y1="102" x2="39" y2="122" stroke="#555" stroke-width="2" marker-end="url(#q2k)"/><text x="20" y="132" fill="#555" font-size="11">a = 1.5</text>
+        </svg>
+        <div class="diagram-caption">Q2: Book sliding down rough 20° slope — find coefficient of friction</div>
+      </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Solution</button>
+    <div class="answer-reveal">
+      <p><strong>Perpendicular:</strong> $R = 2g\cos 20° = 18.42\text{ N}$</p>
+      <p><strong>Parallel (down slope):</strong> $2g\sin 20° - \mu R = 2 \times 1.5$</p>
+      <p>$6.704 - 18.42\mu = 3$</p>
+      <p>$18.42\mu = 3.704$</p>
+      <div class="answer-line">μ = 0.20 (2 s.f.)</div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question">
+    <div class="question-num">Question 3 <span class="marks">— 5 marks</span></div>
+    <p>A force of 30 N pulls a particle of mass 6 kg up a rough slope inclined at 15° to the horizontal. The force acts along the slope. Given that the particle moves at <em>constant speed</em>, find the magnitude of the frictional force and the coefficient of friction.</p>
+    
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="162" viewBox="0 0 320 162" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="q3g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="q3r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="q3b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="q3k" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><polygon points="20,150 250,150 250,87" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,150 A 25,25 0 0,0 44.1,143.5" stroke="#555" stroke-width="1" fill="none"/><text x="65" y="146" fill="#555" font-size="13" font-style="italic">15°</text><rect x="113" y="94" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-15,135,106)"/><text x="135" y="111" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-15,135,106)">m</text><line x1="135" y1="106" x2="122" y2="57" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q3g)"/><text x="108" y="53" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="135" y1="106" x2="135" y2="161" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q3g)"/><text x="142" y="169" fill="#4a9e6a" font-size="13">6g</text><line x1="135" y1="106" x2="188" y2="91" stroke="#8b2635" stroke-width="2" marker-end="url(#q3r)"/><text x="192" y="87" fill="#8b2635" font-size="13" font-style="italic">P</text><line x1="135" y1="106" x2="91" y2="117" stroke="#1e4d7a" stroke-width="2" marker-end="url(#q3b)"/><text x="73" y="120" fill="#1e4d7a" font-size="13" font-style="italic">F</text>
+        </svg>
+        <div class="diagram-caption">Q3: 6 kg particle pulled up rough 15° slope at constant speed by force P</div>
+      </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Solution</button>
+    <div class="answer-reveal">
+      <p><strong>Constant speed ⟹ zero acceleration ⟹ resultant force = 0.</strong></p>
+      <p><strong>Perpendicular:</strong> $R = 6g\cos 15° = 56.77\text{ N}$</p>
+      <p><strong>Parallel:</strong> $30 - 6g\sin 15° - F_r = 0$</p>
+      <p>$F_r = 30 - 6 \times 9.8 \times \sin 15° = 30 - 15.22 = 14.78\text{ N}$</p>
+      <p>$\mu = F_r / R = 14.78 / 56.77$</p>
+      <div class="answer-line">Friction = 14.8 N &nbsp;|&nbsp; μ = 0.26 (2 s.f.)</div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question">
+    <div class="question-num">Question 4 <span class="marks">— 5 marks</span></div>
+    <p>A boy of mass 40 kg slides from rest down a straight slide of length 5 m. The slide is inclined at 20° to the horizontal. The coefficient of friction between the boy and the slide is 0.1. Find: (a) the acceleration of the boy, (b) the speed of the boy at the bottom of the slide.</p>
+    
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="168" viewBox="0 0 320 168" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="q4g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="q4r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="q4b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="q4k" markerWidth="14" markerHeight="6" refX="13" refY="3" orient="auto"><path d="M5,0 L5,6 L13,3 z" fill="#555"/><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker><marker id="q4ks" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto-start-reverse"><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><polygon points="20,155 250,155 250,68" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 45,155 A 25,25 0 0,0 43.5,146.4" stroke="#555" stroke-width="1" fill="none"/><text x="60" y="146" fill="#555" font-size="13" font-style="italic">20°</text><rect x="113" y="85" width="44" height="26" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-20,135,98)"/><text x="135" y="103" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-20,135,98)">40kg</text><line x1="135" y1="98" x2="117" y2="51" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q4g)"/><text x="103" y="47" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="135" y1="98" x2="135" y2="153" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q4g)"/><text x="142" y="161" fill="#4a9e6a" font-size="13">mg</text><line x1="135" y1="98" x2="181" y2="80" stroke="#1e4d7a" stroke-width="2" marker-end="url(#q4b)"/><text x="185" y="76" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="95" y1="108" x2="44" y2="128" stroke="#555" stroke-width="2" marker-end="url(#q4k)"/><text x="28" y="138" fill="#555" font-size="11" font-style="italic">a</text><text x="100" y="138" fill="#555" font-size="11">5 m</text>
+        </svg>
+        <div class="diagram-caption">Q4: Boy sliding down rough 20° slide of length 5 m</div>
+      </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Solution</button>
+    <div class="answer-reveal">
+      <p><strong>Perpendicular:</strong> $R = 40g\cos 20° = 368.2\text{ N}$</p>
+      <p><strong>Friction:</strong> $F = 0.1 \times 368.2 = 36.82\text{ N}$</p>
+      <p><strong>Parallel (down):</strong> $40g\sin 20° - 36.82 = 40a$</p>
+      <p>$134.0 - 36.82 = 40a \;\Rightarrow\; a = 2.43\text{ m s}^{-2}$</p>
+      <p><strong>Speed:</strong> $v^2 = 2 \times 2.43 \times 5 = 24.3 \;\Rightarrow\; v = 4.93\text{ m s}^{-1}$</p>
+      <div class="answer-line">a = 2.4 m s⁻² &nbsp;|&nbsp; v = 4.9 m s⁻¹ (2 s.f.)</div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question">
+    <div class="question-num">Question 5 <span class="marks">— 7 marks</span></div>
+    <p>A particle of mass 0.5 kg is being pulled up a rough slope inclined at 30° to the horizontal by a force of 5 N. The force acts at 30° above the slope. The coefficient of friction is 0.1. Calculate the acceleration of the particle.</p>
+    
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="310" height="168" viewBox="0 0 310 168" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="q5g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="q5r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="q5b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="q5k" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><polygon points="20,155 220,155 220,42" fill="#e8e4da" stroke="#888" stroke-width="1.5"/><path d="M 55,155 A 25,25 0 0,0 51.7,142.5" stroke="#555" stroke-width="1" fill="none"/><text x="60" y="146" fill="#555" font-size="13" font-style="italic">30°</text><rect x="98" y="69" width="44" height="24" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2" transform="rotate(-30,120,81)"/><text x="120" y="86" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(-30,120,81)">m</text><line x1="120" y1="85" x2="95" y2="41" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q5g)"/><text x="81" y="37" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="120" y1="85" x2="120" y2="140" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q5g)"/><text x="127" y="148" fill="#4a9e6a" font-size="13">mg</text><line x1="120" y1="85" x2="147" y2="37" stroke="#8b2635" stroke-width="2" marker-end="url(#q5r)"/><text x="151" y="33" fill="#8b2635" font-size="13" font-style="italic">P</text><line x1="120" y1="85" x2="85" y2="105" stroke="#1e4d7a" stroke-width="2" marker-end="url(#q5b)"/><text x="67" y="108" fill="#1e4d7a" font-size="13" font-style="italic">F</text><text x="134" y="77" fill="#8b2635" font-size="11">30°</text>
+        </svg>
+        <div class="diagram-caption">Q5: 0.5 kg particle pulled up rough 30° slope — force of 5 N at 30° above the slope</div>
+      </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Solution</button>
+    <div class="answer-reveal">
+      <p><strong>Perpendicular to slope:</strong></p>
+      <p>$R + 5\sin 30° = 0.5g\cos 30°$</p>
+      <p>$R = 0.5 \times 9.8 \times \frac{\sqrt{3}}{2} - 2.5 = 4.243 - 2.5 = 1.743\text{ N}$</p>
+      <p><strong>Friction (accelerating):</strong> $F = 0.1 \times 1.743 = 0.174\text{ N}$</p>
+      <p><strong>Parallel to slope (up positive):</strong></p>
+      <p>$5\cos 30° - 0.5g\sin 30° - 0.174 = 0.5a$</p>
+      <p>$4.330 - 2.450 - 0.174 = 0.5a$</p>
+      <p>$1.706 = 0.5a$</p>
+      <div class="answer-line">a = 3.41 m s⁻² up the slope</div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question">
+    <div class="question-num">Question 6 <span class="marks">— 6 marks</span></div>
+    <p>A 5 kg body lying on a rough horizontal surface has a coefficient of friction of $\tfrac{1}{7}$ with the surface. A vertical downward force of 14 N acts on the body in addition to its weight. A horizontal force also acts. Determine whether the body moves if the horizontal force is (a) 6 N, (b) 9 N, (c) 12 N, and find the acceleration in each case where movement occurs.</p>
+    
+      <div class="diagram-wrap" style="margin:1rem 0 1.5rem;">
+        <svg width="320" height="182" viewBox="0 0 320 182" xmlns="http://www.w3.org/2000/svg" font-family="'Crimson Pro',serif">
+          <defs><marker id="q6g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a9e6a"/></marker><marker id="q6r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b2635"/></marker><marker id="q6b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1e4d7a"/></marker><marker id="q6k" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#555"/></marker></defs><line x1="20" y1="110" x2="300" y2="110" stroke="#888" stroke-width="2"/><g stroke="#bbb" stroke-width="1"><line x1="30" y1="110" x2="20" y2="124"/><line x1="60" y1="110" x2="50" y2="124"/><line x1="90" y1="110" x2="80" y2="124"/><line x1="120" y1="110" x2="110" y2="124"/><line x1="150" y1="110" x2="140" y2="124"/><line x1="180" y1="110" x2="170" y2="124"/><line x1="210" y1="110" x2="200" y2="124"/><line x1="240" y1="110" x2="230" y2="124"/><line x1="270" y1="110" x2="260" y2="124"/></g><rect x="110" y="78" width="100" height="32" fill="white" stroke="#1c1c28" stroke-width="1.5" rx="2"/><text x="160" y="99" fill="#1c1c28" font-size="13" font-style="italic" text-anchor="middle">m</text><line x1="160" y1="110" x2="160" y2="30" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q6g)"/><text x="167" y="27" fill="#4a9e6a" font-size="13" font-style="italic">R</text><line x1="160" y1="78" x2="160" y2="165" stroke="#4a9e6a" stroke-width="2" marker-end="url(#q6g)"/><text x="167" y="172" fill="#4a9e6a" font-size="13">mg</text><line x1="110" y1="110" x2="45" y2="110" stroke="#1e4d7a" stroke-width="2" marker-end="url(#q6b)"/><text x="25" y="106" fill="#1e4d7a" font-size="13" font-style="italic">F</text><line x1="210" y1="94" x2="278" y2="94" stroke="#8b2635" stroke-width="2" marker-end="url(#q6r)"/><text x="282" y="99" fill="#8b2635" font-size="13" font-style="italic">P</text><line x1="175" y1="28" x2="175" y2="78" stroke="#555" stroke-width="2" marker-end="url(#q6k)"/><text x="182" y="25" fill="#555" font-size="11">14N</text>
+        </svg>
+        <div class="diagram-caption">Q6: 5 kg body on rough horizontal surface — extra 14 N downward force, horizontal force P</div>
+      </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Solution</button>
+    <div class="answer-reveal">
+      <p>$R = 5g + 14 = 49 + 14 = 63\text{ N}$</p>
+      <p>$F_{\max} = \tfrac{1}{7} \times 63 = 9\text{ N}$</p>
+      <p><strong>(a) 6 N:</strong> $6 < 9$ → body remains at rest. Friction = 6 N.</p>
+      <p><strong>(b) 9 N:</strong> $9 = F_{\max}$ → body in limiting equilibrium (no acceleration). Friction = 9 N.</p>
+      <p><strong>(c) 12 N:</strong> $12 > 9$ → body moves. $F = ma$: $12 - 9 = 5a$</p>
+      <div class="answer-line">(a) rest &nbsp;|&nbsp; (b) limiting equilibrium &nbsp;|&nbsp; (c) a = 0.6 m s⁻²</div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<script>
+  function showSection(i) {
+    document.querySelectorAll('.section').forEach((s,idx) => s.classList.toggle('active', idx===i));
+    document.querySelectorAll('nav button').forEach((b,idx) => b.classList.toggle('active', idx===i));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function toggleEx(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function reveal(btn) {
+    const box = btn.nextElementSibling;
+    box.classList.toggle('shown');
+    btn.textContent = box.classList.contains('shown') ? 'Hide Solution' : 'Show Solution';
+  }
+
+  // Open first example on each section by default
+  document.addEventListener('DOMContentLoaded', () => {
+    // re-render KaTeX if needed
+    if(window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters:[
+          {left:'$$',right:'$$',display:true},
+          {left:'$',right:'$',display:false}
+        ]
+      });
+    }
+  });
+</script>
+</body>
+</html>
