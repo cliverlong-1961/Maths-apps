@@ -751,7 +751,7 @@
 
 				<div class="definitions-section">
                     <h3>Fundamental properties of integers</h3>
-                    <p style="margin-bottom: 15px;">
+                    <div style="margin-bottom: 15px;">
 						Some proofs are about integers, or positive integers. 
 						Some of the rules/properties listed above no longer apply or need to be modified as the 
 						starting point for proofs about integers.
@@ -761,7 +761,7 @@
 						<br><br>
 						<p style="color:blue">Most of the algebraic properties of real numbers and integers are the same.</p>
 						<p style="color:red">The key differences between the properties of integers and real numbers are highlighted in red below.</p>
-					</p>
+					</div>
                 
                <!-- close div removed -->
 
@@ -781,7 +781,7 @@
                                     <li>\(a - b\) is an integer</li>
                                     <li>\(a \times b\) is an integer</li>
                                 </ul>
-                                <em><p style="color:red">Note: division is not closed in integers, since \(1 \div 2 = 0.5\), which is not an integer.</p></em>
+                                <p style="color:red"><em>Note: division is not closed in integers, since \(1 \div 2 = 0.5\), which is not an integer.</em></p>
                             </div>
                         </div>
 
@@ -1098,8 +1098,12 @@
                             \[a^3 + b^3 \equiv (a + b)(a^2 - ab + b^2)\]
                         </div>
                         <p class="description">Factorization of the sum of two perfect cubes.</p>
-                        <span class="topic-link">View Proof summary →</span>
-                    
+                        
+						<span class="topic-link"
+								id="proof-sum-two-cubes-link"
+								onclick="toggleProof('proof-sum-two-cubes')">
+								View Proof summary →
+						</span>
 
                         
                         <div id="proof-sum-two-cubes" class="proof-container">
@@ -1123,7 +1127,13 @@
                             \[(a - b)^2 \equiv a^2 - 2ab + b^2\]
                         </div>
                         <p class="description">Expansion of the square of a binomial difference.</p>
-                        <span class="topic-link">View Proof summary →</span>
+
+
+						<span class="topic-link"
+								id="proof-square-diffn-link"
+								onclick="toggleProof('proof-square-diffn')">
+								View Proof summary →
+						</span>
 
                         
                         <div id="proof-square-diffn" class="proof-container">
