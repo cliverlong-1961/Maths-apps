@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Force Diagram Builder — A-Level Mechanics</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #e8ecf0;
+  color: #2c3e50;
+  min-height: 100vh;
+  user-select: none;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+  color: white;
+  padding: 16px 28px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  position: relative;
+}
+header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 0.3px;
+  margin-bottom: 3px;
+}
+header p {
+  font-size: 0.83rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* ── SCENARIO BAR ── */
+.scenario-bar {
+  background: #2471a3;
+  padding: 9px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: white;
+  font-size: 0.88rem;
+  flex-wrap: wrap;
+  border-bottom: 2px solid #1a5c8a;
+}
+.scenario-bar label { font-weight: bold; white-space: nowrap; }
+.scenario-bar select {
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 4px;
+  background: white;
+  color: #1a3a5c;
+  cursor: pointer;
+  min-width: 280px;
+  font-weight: bold;
+}
+
+/* ── LAYOUT ── */
+.main-layout {
+  display: flex;
+  max-width: 1080px;
+  margin: 20px auto;
+  padding: 0 16px;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* ── PALETTE ── */
+.palette-panel {
+  width: 162px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #cdd5df;
+  padding: 14px 11px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+}
+.palette-panel h2 {
+  font-size: 0.92rem;
+  color: #1a3a5c;
+  border-bottom: 2px solid #1a3a5c;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+}
+.palette-hint {
+  font-size: 0.72rem;
+  color: #8a95a0;
+  line-height: 1.4;
+  margin-bottom: 11px;
+}
+
+.force-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  margin-bottom: 7px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: grab;
+  background: #f6f8fa;
+  transition: box-shadow 0.15s, transform 0.12s, opacity 0.2s;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  -webkit-user-drag: none;
+}
+.force-chip:last-child { margin-bottom: 0; }
+.force-chip:hover:not(.used) {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+  transform: translateY(-1px);
+}
+.force-chip.used { opacity: 0.32; pointer-events: none; }
+.chip-name { font-weight: bold; }
+
+.remove-note {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 0.7rem;
+  color: #aaa;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── DIAGRAM PANEL ── */
+.diagram-panel {
+  flex: 1;
+  min-width: 0;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #cdd5df;
+  padding: 20px 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+}
+
+.scenario-desc {
+  background: #eaf4fb;
+  border-left: 4px solid #2471a3;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.87rem;
+  line-height: 1.6;
+}
+.scenario-desc .stitle {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #1a3a5c;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.svg-wrapper {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  border: 1px solid #dde3ea;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fafbfc;
+}
+#diagram-svg { width: 100%; height: auto; display: block; }
+
+/* SVG interactivity */
+.placed-g { cursor: pointer; }
+.placed-g .hit-area { stroke: transparent; stroke-width: 16; fill: none; }
+.placed-g:hover .arrow-line { stroke-width: 3.5 !important; }
+
+.controls {
+  display: flex;
+  gap: 9px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: Georgia, serif;
+  font-size: 0.87rem;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 0.2px;
+  transition: filter 0.15s, transform 0.1s;
+}
+.btn:hover  { filter: brightness(1.1); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-check  { background: #27ae60; color: white; }
+.btn-reset  { background: #e67e22; color: white; }
+.btn-hint   { background: #2980b9; color: white; }
+
+/* ── FEEDBACK ── */
+#feedback {
+  margin-top: 14px;
+  padding: 12px 15px;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  line-height: 1.95;
+  display: none;
+}
+#feedback.success { background: #eafaf1; border: 1px solid #27ae60; display: block; }
+#feedback.error   { background: #fdedec; border: 1px solid #e74c3c; display: block; }
+#feedback.info    { background: #eaf4fb; border: 1px solid #2980b9; display: block; }
+.fb-ok   { color: #1e8449; }
+.fb-bad  { color: #c0392b; }
+.fb-miss { color: #7d6608; }
+.fb-expl { color: #1a4a2a; font-style: italic; margin-top: 6px; padding-top: 8px; border-top: 1px solid #a9dfbf; display: block; }
+
+/* ── DIRECTION PICKER ── */
+#picker {
+  position: fixed;
+  background: white;
+  border: 2px solid #2471a3;
+  border-radius: 10px;
+  padding: 14px 15px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.22);
+  z-index: 1000;
+  min-width: 215px;
+  max-width: 275px;
+  display: none;
+  animation: pickerIn 0.15s ease;
+}
+@keyframes pickerIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+#picker.open { display: block; }
+.picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+#picker-force-name {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+#picker-close {
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  cursor: pointer;
+  color: #bbb;
+  line-height: 1;
+  padding: 0 3px;
+  transition: color 0.1s;
+}
+#picker-close:hover { color: #e74c3c; }
+.picker-sub {
+  font-size: 0.76rem;
+  color: #999;
+  margin-bottom: 9px;
+}
+.dir-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 11px;
+  margin: 4px 0;
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  background: #f2f6fb;
+  border: 1px solid #c8d6e5;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  color: #2c3e50;
+}
+.dir-btn:hover { background: #d4e9f7; border-color: #2471a3; }
+
+/* ── DRAG GHOST ── */
+#ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-family: Georgia, serif;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.32);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  display: none;
+  transition: none;
+}
+#ghost.active { display: block; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .main-layout { flex-direction: column; padding: 0 10px; }
+  .palette-panel { width: 100%; }
+  #palette-forces { display: flex; flex-wrap: wrap; gap: 6px; }
+  .force-chip { margin-bottom: 0; flex: 1 0 calc(50% - 6px); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Force Diagram Builder</h1>
+  <p>Drag forces onto the object · choose a direction · check your diagram</p>
+</header>
+
+<div class="scenario-bar">
+  <label for="sel">Scenario:</label>
+  <select id="sel">
+    <option value="inclined">1 — Block on a Rough Inclined Plane</option>
+    <option value="lift">2 — Block in an Accelerating Lift</option>
+    <option value="sliding">3 — Block Sliding on a Rough Horizontal Surface</option>
+  </select>
+</div>
+
+<div class="main-layout">
+
+  <aside class="palette-panel">
+    <h2>Force Palette</h2>
+    <p class="palette-hint">Drag a force arrow onto the shaded object in the diagram</p>
+    <div id="palette-forces"></div>
+    <p class="remove-note">Click a placed arrow to remove it</p>
+  </aside>
+
+  <main class="diagram-panel">
+    <div class="scenario-desc" id="desc"></div>
+    <div class="svg-wrapper">
+      <svg id="diagram-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Single arrowhead: fill inherits stroke colour via context-stroke -->
+          <marker id="ah" markerWidth="7" markerHeight="5"
+                  refX="6.5" refY="2.5" orient="auto">
+            <polygon points="0 0, 7 2.5, 0 5" fill="context-stroke"/>
+          </marker>
+          <!-- For static diagram arrows (red accel indicator etc.) -->
+          <marker id="ah-red" markerWidth="7" markerHeight="5"
+                  refX="6.5" refY="2.5" orient="auto">
+            <polygon points="0 0, 7 2.5, 0 5" fill="#e74c3c"/>
+          </marker>
+          <pattern id="hatch" width="7" height="7"
+                   patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="7" stroke="#aaa" stroke-width="1.2"/>
+          </pattern>
+        </defs>
+        <g id="static-layer"></g>
+        <g id="arrows-layer"></g>
+      </svg>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-check" id="btn-check">✓ Check Diagram</button>
+      <button class="btn btn-reset" id="btn-reset">↺ Reset</button>
+      <button class="btn btn-hint"  id="btn-hint">💡 Hint</button>
+    </div>
+    <div id="feedback"></div>
+  </main>
+
+</div>
+
+<!-- Floating direction picker -->
+<div id="picker">
+  <div class="picker-head">
+    <span id="picker-force-name"></span>
+    <button id="picker-close">✕</button>
+  </div>
+  <p class="picker-sub">Choose the direction of this force:</p>
+  <div id="picker-dirs"></div>
+</div>
+
+<!-- Drag ghost label -->
+<div id="ghost"></div>
+
+<script>
+'use strict';
+
+// ══════════════════════════════════════════════════════════
+//  FORCE COLOURS
+// ══════════════════════════════════════════════════════════
+const COLORS = {
+  'Weight':           '#c0392b',
+  'Normal Reaction':  '#27ae60',
+  'Friction':         '#e67e22',
+  'Tension':          '#8e44ad',
+  'Applied Force':    '#2980b9',
+  'Air Resistance':   '#7f8c8d',
+  'Thrust':           '#16a085',
+};
+const ALL_FORCES = Object.keys(COLORS);
+
+// SVG viewport
+const VW = 500, VH = 400;
+// Arrow length in SVG user units
+const AL = 84;
+
+// ══════════════════════════════════════════════════════════
+//  SCENARIO DEFINITIONS
+// ══════════════════════════════════════════════════════════
+/*
+  Angle convention (SVG coords, y increases downward):
+    0°   = right
+    90°  = down
+    180° = left
+    270° = up
+
+  Inclined plane at 30° (slope rises to the right):
+    Up the slope   = cos 330° = +0.866, sin 330° = –0.5  → right & up  ✓
+    Down the slope = cos 150° = –0.866, sin 150° = +0.5  → left & down ✓
+    Normal (away)  = cos 240° = –0.5,   sin 240° = –0.866 → left & up  ✓
+*/
+const SCENARIOS = {
+
+  inclined: {
+    title: 'Block on a Rough Inclined Plane',
+    desc:  'A block rests <strong>stationary</strong> on a rough plane inclined at 30° to the horizontal. Draw <em>all</em> the forces acting on the block.',
+    hint:  'There are exactly <strong>3 forces</strong> acting on the block. One acts vertically, one is perpendicular to the slope surface, and one acts along the slope.',
+    oc:    { x: 250, y: 218 },   // object centre in SVG coords
+    dz:    54,                    // drop-zone radius (px in SVG units)
+    dirs: [
+      { label: 'Vertically downward',                        a:  90 },
+      { label: 'Vertically upward',                          a: 270 },
+      { label: 'Up the slope',                               a: 330 },
+      { label: 'Down the slope',                             a: 150 },
+      { label: 'Perpendicular to slope (away from surface)', a: 240 },
+      { label: 'Perpendicular to slope (into surface)',      a:  60 },
+    ],
+    answer: [
+      { force: 'Weight',          dir: 'Vertically downward'                        },
+      { force: 'Normal Reaction', dir: 'Perpendicular to slope (away from surface)' },
+      { force: 'Friction',        dir: 'Up the slope'                               },
+    ],
+    expl: '<strong>Weight</strong> acts vertically downward through the centre of mass. <strong>Normal Reaction</strong> acts perpendicular to the slope surface, directed away from it. Since the block is stationary on a rough slope, <strong>Friction</strong> acts <em>up</em> the slope, preventing it from sliding down.',
+    drawSVG: drawInclinedPlane,
+  },
+
+  lift: {
+    title: 'Block in an Accelerating Lift',
+    desc:  'A block of mass <em>m</em> rests on the floor of a lift that is <strong>accelerating upward</strong>. Draw all the forces acting on the block.',
+    hint:  'There are exactly <strong>2 forces</strong> acting on the block — one gravitational force from the Earth and one contact force from the lift floor.',
+    oc:    { x: 250, y: 260 },
+    dz:    58,
+    dirs: [
+      { label: 'Vertically downward', a:  90 },
+      { label: 'Vertically upward',   a: 270 },
+      { label: 'Horizontally right',  a:   0 },
+      { label: 'Horizontally left',   a: 180 },
+    ],
+    answer: [
+      { force: 'Weight',          dir: 'Vertically downward' },
+      { force: 'Normal Reaction', dir: 'Vertically upward'   },
+    ],
+    expl: '<strong>Weight</strong> (= <em>mg</em>) acts vertically downward. The lift floor exerts a <strong>Normal Reaction</strong> vertically upward. Since the lift accelerates upward, by Newton\'s second law N − mg = ma, so N &gt; mg. There are no horizontal forces on the block.',
+    drawSVG: drawLift,
+  },
+
+  sliding: {
+    title: 'Block Sliding on a Rough Horizontal Surface',
+    desc:  'A block slides to the <strong>right</strong> along a rough horizontal surface with no driving force. Draw all the forces acting on the block.',
+    hint:  'There are exactly <strong>3 forces</strong> acting on the block. Remember that kinetic friction always opposes the direction of motion.',
+    oc:    { x: 250, y: 250 },
+    dz:    62,
+    dirs: [
+      { label: 'Vertically downward', a:  90 },
+      { label: 'Vertically upward',   a: 270 },
+      { label: 'Horizontally right',  a:   0 },
+      { label: 'Horizontally left',   a: 180 },
+    ],
+    answer: [
+      { force: 'Weight',          dir: 'Vertically downward' },
+      { force: 'Normal Reaction', dir: 'Vertically upward'   },
+      { force: 'Friction',        dir: 'Horizontally left'   },
+    ],
+    expl: '<strong>Weight</strong> acts vertically downward. <strong>Normal Reaction</strong> from the surface acts vertically upward. <strong>Friction</strong> (kinetic) acts horizontally to the <em>left</em>, opposing the rightward motion. With no driving force, the block decelerates.',
+    drawSVG: drawSlidingBlock,
+  },
+
+};
+
+// ══════════════════════════════════════════════════════════
+//  SVG DIAGRAM DRAWING FUNCTIONS
+//  Each returns an SVG string for the static diagram layer.
+//  Slope geometry for inclined plane:
+//    base (70, 330) → tip (430, 123)   run=360, rise=207 → angle=30.0°
+// ══════════════════════════════════════════════════════════
+
+function drawInclinedPlane({ x: cx, y: cy }) {
+  // Angle arc at (70,330): from horizontal to slope direction
+  // Arc start: (70+58, 330) = (128, 330)
+  // Arc end  : (70+58·cos(-30°), 330+58·sin(-30°)) = (70+50.2, 330-29) = (120.2, 301)
+  return `
+    <!-- ground hatch and line -->
+    <rect x="50" y="330" width="405" height="22" fill="url(#hatch)"/>
+    <line x1="50" y1="330" x2="455" y2="330" stroke="#666" stroke-width="2"/>
+
+    <!-- slope triangle -->
+    <polygon points="70,330 430,330 430,123"
+             fill="#d8dde4" stroke="#777" stroke-width="1.8"/>
+
+    <!-- vertical right wall hatch -->
+    <rect x="416" y="123" width="22" height="207" fill="url(#hatch)"/>
+
+    <!-- 30° angle arc and label -->
+    <path d="M 128,330 A 58,58 0 0,0 120.2,301"
+          fill="none" stroke="#444" stroke-width="1.6"/>
+    <text x="107" y="322" font-size="14" fill="#333"
+          font-style="italic" font-family="Georgia,serif">30°</text>
+
+    <!-- drop-zone indicator ring (hidden until drag) -->
+    <circle id="dzr" cx="${cx}" cy="${cy}" r="54"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- block (rotated −30° to lie on slope) -->
+    <rect x="${cx - 32}" y="${cy - 18}" width="64" height="36"
+          transform="rotate(-30,${cx},${cy})"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="3"/>
+    <text x="${cx}" y="${cy + 1}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="15" font-weight="bold"
+          font-family="Georgia,serif"
+          transform="rotate(-30,${cx},${cy})">m</text>
+  `;
+}
+
+function drawLift({ x: cx, y: cy }) {
+  return `
+    <!-- cable brackets -->
+    <line x1="193" y1="20" x2="193" y2="80" stroke="#666" stroke-width="3"/>
+    <line x1="307" y1="20" x2="307" y2="80" stroke="#666" stroke-width="3"/>
+    <line x1="173" y1="20" x2="327" y2="20" stroke="#666" stroke-width="4"/>
+
+    <!-- lift car -->
+    <rect x="90" y="80" width="320" height="248" fill="none"
+          stroke="#888" stroke-width="2.5" rx="5"/>
+
+    <!-- floor and ceiling bands -->
+    <rect x="90"  y="80"  width="320" height="15"
+          fill="#c5d4e8" stroke="#888" stroke-width="1.5"/>
+    <rect x="90"  y="305" width="320" height="15"
+          fill="#c5d4e8" stroke="#888" stroke-width="1.5"/>
+
+    <!-- upward acceleration arrow -->
+    <line x1="445" y1="278" x2="445" y2="148"
+          stroke="#e74c3c" stroke-width="2.5" marker-end="url(#ah-red)"/>
+    <text x="456" y="218" fill="#e74c3c" font-size="13"
+          font-style="italic" font-family="Georgia,serif">a ↑</text>
+
+    <!-- drop-zone ring -->
+    <circle id="dzr" cx="${cx}" cy="${cy}" r="58"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- block sitting on lift floor -->
+    <rect x="${cx - 60}" y="${cy - 38}" width="120" height="76"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="5"/>
+    <text x="${cx}" y="${cy + 2}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="16" font-weight="bold"
+          font-family="Georgia,serif">m</text>
+  `;
+}
+
+function drawSlidingBlock({ x: cx, y: cy }) {
+  return `
+    <!-- ground hatch and line -->
+    <rect x="50" y="298" width="405" height="22" fill="url(#hatch)"/>
+    <line x1="50" y1="298" x2="455" y2="298" stroke="#666" stroke-width="2"/>
+
+    <!-- velocity arrow to the right -->
+    <line x1="358" y1="${cy}" x2="445" y2="${cy}"
+          stroke="#e74c3c" stroke-width="2.5" marker-end="url(#ah-red)"/>
+    <text x="400" y="${cy - 10}" text-anchor="middle" fill="#e74c3c"
+          font-size="13" font-style="italic" font-family="Georgia,serif">v</text>
+
+    <!-- drop-zone ring -->
+    <circle id="dzr" cx="${cx}" cy="${cy}" r="62"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- block -->
+    <rect x="${cx - 66}" y="${cy - 44}" width="132" height="88"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="5"/>
+    <text x="${cx}" y="${cy + 2}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="16" font-weight="bold"
+          font-family="Georgia,serif">m</text>
+  `;
+}
+
+// ══════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════
+let curKey   = 'inclined';
+let placed   = [];     // [ { force, dir, angle } ]
+let dragData = null;   // { force } while dragging
+let hinting  = false;
+
+// ══════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════
+function init() {
+  buildPalette();
+  loadScenario('inclined');
+
+  document.getElementById('sel').addEventListener('change', e => {
+    loadScenario(e.target.value);
+  });
+  document.getElementById('btn-check').addEventListener('click', checkAnswer);
+  document.getElementById('btn-reset').addEventListener('click', reset);
+  document.getElementById('btn-hint').addEventListener('click', toggleHint);
+  document.getElementById('picker-close').addEventListener('click', closePicker);
+
+  // Arrow removal via event delegation
+  document.getElementById('arrows-layer').addEventListener('click', e => {
+    const g = e.target.closest('[data-idx]');
+    if (!g) return;
+    placed.splice(parseInt(g.dataset.idx), 1);
+    renderArrows();
+    refreshPalette();
+    clearFeedback();
+  });
+
+  // Global mouse handlers for drag
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup',   onMouseUp);
+}
+
+// ══════════════════════════════════════════════════════════
+//  PALETTE
+// ══════════════════════════════════════════════════════════
+function buildPalette() {
+  const cont = document.getElementById('palette-forces');
+  cont.innerHTML = '';
+  ALL_FORCES.forEach(f => {
+    const col = COLORS[f];
+    const fid = 'ca-' + f.replace(/\s+/g, '_');
+    const chip = document.createElement('div');
+    chip.className = 'force-chip';
+    chip.dataset.force = f;
+    chip.style.borderColor = col;
+    chip.innerHTML = `
+      <svg width="28" height="14" viewBox="0 0 28 14" style="flex-shrink:0">
+        <defs>
+          <marker id="${fid}" markerWidth="7" markerHeight="5"
+                  refX="6.5" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="${col}"/>
+          </marker>
+        </defs>
+        <line x1="2" y1="7" x2="20" y2="7" stroke="${col}" stroke-width="2.5"
+              marker-end="url(#${fid})"/>
+      </svg>
+      <span class="chip-name" style="color:${col}">${f}</span>`;
+    chip.addEventListener('mousedown',  e => startDrag(e, f));
+    chip.addEventListener('touchstart', e => startDragTouch(e, f), { passive: false });
+    cont.appendChild(chip);
+  });
+}
+
+function refreshPalette() {
+  const used = new Set(placed.map(p => p.force));
+  document.querySelectorAll('.force-chip').forEach(el => {
+    el.classList.toggle('used', used.has(el.dataset.force));
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  SCENARIO LOADING
+// ══════════════════════════════════════════════════════════
+function loadScenario(key) {
+  curKey  = key;
+  placed  = [];
+  hinting = false;
+
+  const s = SCENARIOS[key];
+  document.getElementById('desc').innerHTML =
+    `<span class="stitle">${s.title}</span>${s.desc}`;
+  document.getElementById('static-layer').innerHTML = s.drawSVG(s.oc);
+  document.getElementById('arrows-layer').innerHTML = '';
+  clearFeedback();
+  closePicker();
+  refreshPalette();
+}
+
+// ══════════════════════════════════════════════════════════
+//  DRAG — MOUSE
+// ══════════════════════════════════════════════════════════
+function startDrag(e, force) {
+  e.preventDefault();
+  if (placed.find(p => p.force === force)) return;
+  dragData = { force };
+  const g = document.getElementById('ghost');
+  g.textContent = force;
+  g.style.background = COLORS[force];
+  g.classList.add('active');
+  moveGhost(e.clientX, e.clientY);
+  setDropZoneVisible(true);
+}
+
+function onMouseMove(e) {
+  if (!dragData) return;
+  moveGhost(e.clientX, e.clientY);
+}
+
+function onMouseUp(e) {
+  if (!dragData) return;
+  endDrag(e.clientX, e.clientY);
+}
+
+function moveGhost(cx, cy) {
+  const g = document.getElementById('ghost');
+  g.style.left = cx + 'px';
+  g.style.top  = cy + 'px';
+}
+
+function endDrag(cx, cy) {
+  document.getElementById('ghost').classList.remove('active');
+  setDropZoneVisible(false);
+  const force = dragData.force;
+  dragData = null;
+  if (isOverDropZone(cx, cy)) showPicker(cx, cy, force);
+}
+
+// ══════════════════════════════════════════════════════════
+//  DRAG — TOUCH
+// ══════════════════════════════════════════════════════════
+function startDragTouch(e, force) {
+  e.preventDefault();
+  if (placed.find(p => p.force === force)) return;
+  dragData = { force };
+  const t = e.touches[0];
+  const g = document.getElementById('ghost');
+  g.textContent = force;
+  g.style.background = COLORS[force];
+  g.classList.add('active');
+  moveGhost(t.clientX, t.clientY);
+  setDropZoneVisible(true);
+
+  const el = e.currentTarget;
+  function onTM(ev) {
+    ev.preventDefault();
+    const tt = ev.touches[0];
+    moveGhost(tt.clientX, tt.clientY);
+  }
+  function onTE(ev) {
+    document.getElementById('ghost').classList.remove('active');
+    setDropZoneVisible(false);
+    const tt = ev.changedTouches[0];
+    const force2 = dragData ? dragData.force : null;
+    dragData = null;
+    if (force2 && isOverDropZone(tt.clientX, tt.clientY)) {
+      showPicker(tt.clientX, tt.clientY, force2);
+    }
+    el.removeEventListener('touchmove',   onTM);
+    el.removeEventListener('touchend',    onTE);
+    el.removeEventListener('touchcancel', onTE);
+  }
+  el.addEventListener('touchmove',   onTM, { passive: false });
+  el.addEventListener('touchend',    onTE);
+  el.addEventListener('touchcancel', onTE);
+}
+
+// ══════════════════════════════════════════════════════════
+//  DROP ZONE
+// ══════════════════════════════════════════════════════════
+function setDropZoneVisible(show) {
+  const el = document.getElementById('dzr');
+  if (el) el.style.opacity = show ? '1' : '0';
+}
+
+function isOverDropZone(clientX, clientY) {
+  const svg  = document.getElementById('diagram-svg');
+  const rect = svg.getBoundingClientRect();
+  const sx   = (clientX - rect.left)  * (VW / rect.width);
+  const sy   = (clientY - rect.top)   * (VH / rect.height);
+  const s    = SCENARIOS[curKey];
+  const dx   = sx - s.oc.x, dy = sy - s.oc.y;
+  return Math.hypot(dx, dy) <= s.dz;
+}
+
+// ══════════════════════════════════════════════════════════
+//  DIRECTION PICKER
+// ══════════════════════════════════════════════════════════
+function showPicker(clientX, clientY, force) {
+  const s = SCENARIOS[curKey];
+  const nameEl = document.getElementById('picker-force-name');
+  nameEl.textContent = force;
+  nameEl.style.color = COLORS[force];
+
+  const dirsEl = document.getElementById('picker-dirs');
+  dirsEl.innerHTML = '';
+  s.dirs.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className   = 'dir-btn';
+    btn.textContent = d.label;
+    btn.addEventListener('click', () => placeForce(force, d.label, d.a));
+    dirsEl.appendChild(btn);
+  });
+
+  const picker = document.getElementById('picker');
+  picker.classList.add('open');
+
+  // Position near drop point, keep within viewport
+  const pw = picker.offsetWidth  || 245;
+  const ph = picker.offsetHeight || 230;
+  let lx = clientX + 18;
+  let ly = clientY - 14;
+  if (lx + pw > window.innerWidth  - 8) lx = clientX - pw - 18;
+  if (ly + ph > window.innerHeight - 8) ly = window.innerHeight - ph - 8;
+  if (ly < 6) ly = 6;
+  picker.style.left = lx + 'px';
+  picker.style.top  = ly + 'px';
+}
+
+function closePicker() {
+  document.getElementById('picker').classList.remove('open');
+}
+
+// ══════════════════════════════════════════════════════════
+//  PLACE / REMOVE FORCES
+// ══════════════════════════════════════════════════════════
+function placeForce(force, dir, angle) {
+  closePicker();
+  placed.push({ force, dir, angle });
+  renderArrows();
+  refreshPalette();
+  clearFeedback();
+}
+
+// ══════════════════════════════════════════════════════════
+//  RENDER ARROWS
+// ══════════════════════════════════════════════════════════
+function renderArrows() {
+  const { oc } = SCENARIOS[curKey];
+  const ox = oc.x, oy = oc.y;
+  const layer = document.getElementById('arrows-layer');
+
+  layer.innerHTML = placed.map((p, i) => {
+    const rad = p.angle * Math.PI / 180;
+    const ex  = ox + AL * Math.cos(rad);
+    const ey  = oy + AL * Math.sin(rad);
+    const col = COLORS[p.force] || '#555';
+
+    // Label: 20px beyond arrowhead
+    const lx = ox + (AL + 20) * Math.cos(rad);
+    const ly = oy + (AL + 20) * Math.sin(rad);
+
+    // Text alignment based on direction
+    const cosA = Math.cos(rad), sinA = Math.sin(rad);
+    const anchor = cosA >  0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
+    const base   = sinA >  0.2 ? 'hanging'
+                 : sinA < -0.2 ? 'auto'
+                 : 'middle';
+
+    return `<g class="placed-g" data-idx="${i}">
+      <title>Click to remove: ${p.force}</title>
+      <line class="arrow-line"
+            x1="${ox}" y1="${oy}" x2="${ex}" y2="${ey}"
+            stroke="${col}" stroke-width="2.6"
+            marker-end="url(#ah)"/>
+      <text x="${lx}" y="${ly}"
+            fill="${col}" font-size="11" font-weight="bold"
+            font-family="Georgia,serif"
+            text-anchor="${anchor}" dominant-baseline="${base}">${p.force}</text>
+      <line class="hit-area"
+            x1="${ox}" y1="${oy}" x2="${ex}" y2="${ey}"/>
+    </g>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+//  CHECK ANSWER
+// ══════════════════════════════════════════════════════════
+function checkAnswer() {
+  hinting = false;
+  const s = SCENARIOS[curKey];
+
+  if (placed.length === 0) {
+    showFeedback('error',
+      '<p>No forces have been placed yet. Drag force arrows onto the object first.</p>');
+    return;
+  }
+
+  let allOk = true;
+  const lines = [];
+
+  // Check for each required force
+  for (const ans of s.answer) {
+    const p = placed.find(x => x.force === ans.force);
+    if (!p) {
+      lines.push(`<div class="fb-miss">⚠ <strong>${ans.force}</strong> is missing from your diagram.</div>`);
+      allOk = false;
+    } else if (p.dir !== ans.dir) {
+      lines.push(`<div class="fb-bad">✗ <strong>${ans.force}</strong>: wrong direction.`
+               + ` <em>(Correct: ${ans.dir})</em></div>`);
+      allOk = false;
+    } else {
+      lines.push(`<div class="fb-ok">✓ <strong>${ans.force}</strong>: correct.</div>`);
+    }
+  }
+
+  // Check for extra forces not needed
+  for (const p of placed) {
+    if (!s.answer.find(a => a.force === p.force)) {
+      lines.push(`<div class="fb-bad">✗ <strong>${p.force}</strong>`
+               + ` is not needed in this scenario.</div>`);
+      allOk = false;
+    }
+  }
+
+  const head = allOk
+    ? '<p><strong>🎉 Excellent — all forces correctly placed!</strong></p>'
+    : '<p><strong>Not quite right. See details below:</strong></p>';
+
+  const expl = allOk
+    ? `<span class="fb-expl">${s.expl}</span>`
+    : '';
+
+  showFeedback(allOk ? 'success' : 'error', head + lines.join('') + expl);
+}
+
+// ══════════════════════════════════════════════════════════
+//  RESET / HINT
+// ══════════════════════════════════════════════════════════
+function reset() {
+  placed = [];
+  hinting = false;
+  renderArrows();
+  refreshPalette();
+  clearFeedback();
+  closePicker();
+}
+
+function toggleHint() {
+  if (hinting) {
+    clearFeedback();
+    hinting = false;
+  } else {
+    showFeedback('info',
+      `<p>💡 <strong>Hint:</strong> ${SCENARIOS[curKey].hint}</p>`);
+    hinting = true;
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  FEEDBACK HELPERS
+// ══════════════════════════════════════════════════════════
+function showFeedback(type, html) {
+  const el = document.getElementById('feedback');
+  el.className = type;
+  el.innerHTML = html;
+}
+function clearFeedback() {
+  const el = document.getElementById('feedback');
+  el.className = '';
+  el.innerHTML = '';
+}
+
+// ══════════════════════════════════════════════════════════
+//  START
+// ══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
