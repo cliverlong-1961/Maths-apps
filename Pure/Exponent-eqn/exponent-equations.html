@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exponential Equations — AS Applied Mathematics</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+:root {
+  --navy: #1a3a6b;
+  --navy-dark: #122a50;
+  --gold: #c9a227;
+  --gold-light: #f5e9b8;
+  --bg: #f7f7f4;
+  --card: #ffffff;
+  --text: #1a1a2e;
+  --muted: #556080;
+  --border: #cdd3e0;
+  --step-bg: #f0f3fa;
+  --step-border: #ccd3eb;
+  --answer-bg: #fdf6dc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────── */
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 1.5rem 2rem 1.25rem;
+  border-bottom: 4px solid var(--gold);
+  text-align: center;
+}
+header h1 {
+  font-size: 1.55rem;
+  font-weight: normal;
+  letter-spacing: 0.04em;
+}
+header .subtitle {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  color: #9fb2cc;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.03em;
+}
+
+/* ── Layout ──────────────────────────────────────── */
+.container {
+  max-width: 680px;
+  margin: 2rem auto;
+  padding: 0 1.25rem 3rem;
+}
+
+/* ── Cards ───────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 2px 10px rgba(26,58,107,0.07);
+  margin-bottom: 1.5rem;
+}
+.card-question { border-top: 4px solid var(--navy); }
+.card-solution { border-top: 4px solid var(--gold); display: none; }
+.card-solution.visible { display: block; }
+
+.card-label {
+  font-family: Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+}
+.card-question .card-label { color: var(--navy); }
+.card-solution .card-label { color: #8a6c00; }
+
+/* ── Equation display ────────────────────────────── */
+.eq-box {
+  background: #f2f4fb;
+  border: 1px solid #d0d8f0;
+  border-radius: 4px;
+  padding: 1.6rem 1.5rem;
+  text-align: center;
+  overflow-x: auto;
+  margin-bottom: 0.85rem;
+}
+.eq-task {
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.eq-main { font-size: 1.25rem; line-height: 1.6; }
+.eq-hint {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  font-family: Arial, sans-serif;
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 0.55rem 1.6rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
+  border: 2px solid;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-show {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.btn-show:hover { background: var(--navy-dark); border-color: var(--navy-dark); }
+
+.btn-new {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+.btn-new:hover { background: #edf0fa; }
+
+/* ── Solution steps ──────────────────────────────── */
+.steps { display: flex; flex-direction: column; gap: 0.85rem; }
+
+.step {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: 0 0.9rem;
+  align-items: start;
+}
+
+.step-num {
+  width: 2.1rem;
+  height: 2.1rem;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.step-body {
+  background: var(--step-bg);
+  border: 1px solid var(--step-border);
+  border-radius: 4px;
+  padding: 0.7rem 1rem 0.85rem;
+}
+
+.step-desc {
+  font-family: Arial, sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.step-math {
+  overflow-x: auto;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* ── Answer box ──────────────────────────────────── */
+.answer-box {
+  margin-top: 1.4rem;
+  padding: 1.1rem 1.5rem;
+  background: var(--answer-bg);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  text-align: center;
+}
+.answer-label {
+  font-family: Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a5c00;
+  margin-bottom: 0.5rem;
+}
+.answer-math { font-size: 1.25rem; overflow-x: auto; }
+
+/* ── Divider ─────────────────────────────────────── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.2rem 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Exponential Equations</h1>
+  <div class="subtitle">Solve equations of the form &thinsp;a<sup>f(x)</sup> = b<sup>g(x)</sup>&thinsp; &nbsp;|&nbsp; AS Applied Mathematics</div>
+</header>
+
+<div class="container">
+
+  <!-- Question card -->
+  <div class="card card-question">
+    <div class="card-label">Question</div>
+    <div class="eq-box">
+      <div class="eq-task">Find the value of x</div>
+      <div class="eq-main" id="eq-display"></div>
+    </div>
+    <div class="eq-hint" id="eq-hint"></div>
+    <div class="btn-row">
+      <button class="btn btn-show" id="show-btn" onclick="toggleSolution()">Show Solution</button>
+      <button class="btn btn-new" onclick="newQuestion()">New Question</button>
+    </div>
+  </div>
+
+  <!-- Solution card -->
+  <div class="card card-solution" id="solution-card">
+    <div class="card-label">Worked Solution</div>
+    <div class="steps" id="solution-steps"></div>
+    <div class="answer-box">
+      <div class="answer-label">Answer</div>
+      <div class="answer-math" id="answer-display"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- KaTeX (synchronous load, no defer) -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script>
+
+/* ─── KaTeX helpers ──────────────────────────────── */
+function tex(latex, display) {
+  try {
+    return katex.renderToString(latex, {
+      throwOnError: false,
+      displayMode: !!display
+    });
+  } catch (e) { return latex; }
+}
+
+/* ─── Maths utilities ────────────────────────────── */
+function gcd(a, b) {
+  a = Math.abs(a); b = Math.abs(b);
+  while (b) { var t = b; b = a % b; a = t; }
+  return a || 1;
+}
+
+function simplify(num, den) {
+  if (den === 0) return { n: NaN, d: 1 };
+  if (num === 0) return { n: 0, d: 1 };
+  var g = gcd(Math.abs(num), Math.abs(den));
+  var n = num / g, d = den / g;
+  if (d < 0) { n = -n; d = -d; }
+  return { n: n, d: d };
+}
+
+// Render a fraction as LaTeX — simplified form
+function fracTeX(num, den) {
+  var f = simplify(num, den);
+  if (f.d === 1) return String(f.n);
+  if (f.n < 0) return '-\\dfrac{' + Math.abs(f.n) + '}{' + f.d + '}';
+  return '\\dfrac{' + f.n + '}{' + f.d + '}';
+}
+
+// Render px + q as LaTeX string
+function linTeX(p, q) {
+  if (p === 0 && q === 0) return '0';
+  var s = '';
+  if (p !== 0) {
+    if (p === 1) s += 'x';
+    else if (p === -1) s += '-x';
+    else s += String(p) + 'x';
+  }
+  if (q > 0)       s += (p !== 0 ? ' + ' + q : String(q));
+  else if (q < 0)  s += (p !== 0 ? ' - ' + Math.abs(q) : String(q));
+  return s;
+}
+
+// Render coefficient × x: handles ±1 cleanly
+function coeffXTeX(c) {
+  if (c === 1)  return 'x';
+  if (c === -1) return '-x';
+  return String(c) + 'x';
+}
+
+/* ─── Problem generation ─────────────────────────── */
+function randInt(lo, hi) {
+  return Math.floor(Math.random() * (hi - lo + 1)) + lo;
+}
+function randNZ(lo, hi) {
+  var v;
+  do { v = randInt(lo, hi); } while (v === 0);
+  return v;
+}
+
+var current = null;
+
+function generate() {
+  var a, n, p, q, r, s, tries = 0;
+  do {
+    a = randInt(2, 7);
+    n = randInt(2, 3);
+    p = randNZ(-4, 4);
+    q = randInt(-4, 4);
+    r = randNZ(-4, 4);
+    s = randInt(-4, 4);
+    tries++;
+    if (tries > 2000) break;
+  } while (p === n * r);   // require unique solution
+
+  var b = Math.pow(a, n);
+  var nr  = n * r;
+  var ns  = n * s;
+  var num = ns - q;         // numerator of solution
+  var den = p - nr;         // denominator of solution
+
+  return { a, b, n, p, q, r, s, nr, ns, num, den };
+}
+
+/* ─── Render question ────────────────────────────── */
+function renderQuestion(pr) {
+  var fx = linTeX(pr.p, pr.q);
+  var gx = linTeX(pr.r, pr.s);
+  var eqStr = pr.a + '^{' + fx + '} = ' + pr.b + '^{' + gx + '}';
+  document.getElementById('eq-display').innerHTML = tex(eqStr, true);
+  document.getElementById('eq-hint').innerHTML =
+    'where ' + tex('a = ' + pr.a) + ' and ' + tex('b = ' + pr.b);
+}
+
+/* ─── Build solution HTML ────────────────────────── */
+function buildSolution(pr) {
+  var { a, b, n, p, q, r, s, nr, ns, num, den } = pr;
+
+  var fx = linTeX(p, q);
+  var gx = linTeX(r, s);
+
+  // Expanded form: nrx + ns
+  var expandedRHS = linTeX(nr, ns);
+
+  // Collected: (p-nr)x = ns-q  → den · x = num
+  var lhsTeX = coeffXTeX(den);  // e.g. "5x", "-3x", "x"
+  var rhsTeX = String(num);
+
+  // Final answer
+  var ansTeX = fracTeX(num, den);
+  var f = simplify(num, den);
+
+  // Show unsimplified → simplified only if different
+  var rawFrac = num + '}{' + den;
+  var showBothFracs = (f.d !== 1) && (gcd(Math.abs(num), Math.abs(den)) > 1 ||
+                       den < 0);
+
+  var steps = [
+    {
+      desc: 'Express <em>b</em> as a power of <em>a</em>',
+      math: String(b) + ' = ' + a + '^{' + n + '}' +
+            '\\qquad \\text{so} \\qquad n = ' + n
+    },
+    {
+      desc: 'Substitute into the right-hand side',
+      math: a + '^{' + fx + '} = \\left(' + a + '^{' + n + '}\\right)^{' + gx + '}'
+    },
+    {
+      desc: 'Apply the index law ' + tex('(a^m)^n = a^{mn}'),
+      math: a + '^{' + fx + '} = ' + a + '^{' + n + '(' + gx + ')}'
+    },
+    {
+      desc: 'Since ' + tex(a + ' > 1') + ', the bases are equal so equate the exponents',
+      math: fx + ' = ' + n + '(' + gx + ')'
+    },
+    {
+      desc: 'Expand the right-hand side',
+      math: fx + ' = ' + expandedRHS
+    },
+    {
+      desc: 'Collect <em>x</em>-terms on the left and constants on the right',
+      math: lhsTeX + ' = ' + rhsTeX
+    },
+    {
+      desc: showBothFracs
+        ? 'Divide both sides by ' + tex(String(den)) + ' and simplify'
+        : 'Divide both sides by ' + tex(String(den)),
+      math: showBothFracs
+        ? 'x = \\dfrac{' + rawFrac + '} = ' + ansTeX
+        : 'x = ' + ansTeX
+    }
+  ];
+
+  var html = '';
+  steps.forEach(function(step, i) {
+    html +=
+      '<div class="step">' +
+        '<div class="step-num">' + (i + 1) + '</div>' +
+        '<div class="step-body">' +
+          '<div class="step-desc">' + step.desc + '</div>' +
+          '<div class="step-math">' + tex(step.math, true) + '</div>' +
+        '</div>' +
+      '</div>';
+  });
+
+  document.getElementById('solution-steps').innerHTML = html;
+  document.getElementById('answer-display').innerHTML =
+    tex('x = ' + ansTeX);
+}
+
+/* ─── UI actions ─────────────────────────────────── */
+var solutionVisible = false;
+
+function toggleSolution() {
+  solutionVisible = !solutionVisible;
+  var card = document.getElementById('solution-card');
+  var btn  = document.getElementById('show-btn');
+  if (solutionVisible) {
+    card.classList.add('visible');
+    btn.textContent = 'Hide Solution';
+  } else {
+    card.classList.remove('visible');
+    btn.textContent = 'Show Solution';
+  }
+}
+
+function newQuestion() {
+  current = generate();
+  renderQuestion(current);
+  buildSolution(current);
+  // Hide solution
+  solutionVisible = true;
+  toggleSolution();  // this will flip it to false → hide
+}
+
+/* ─── Initialise ─────────────────────────────────── */
+newQuestion();
+
+</script>
+</body>
+</html>
