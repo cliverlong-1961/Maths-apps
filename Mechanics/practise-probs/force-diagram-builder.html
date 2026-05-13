@@ -293,7 +293,19 @@ header p {
 }
 #ghost.active { display: block; }
 
-/* ── RESPONSIVE ── */
+/* ── DIAGRAM NOTE ── */
+#diagram-note {
+  display: none;
+  color: #c0392b;
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  padding: 7px 12px;
+  border-left: 3px solid #c0392b;
+  background: #fdf2f2;
+  border-radius: 0 5px 5px 0;
+}
 @media (max-width: 680px) {
   .main-layout { flex-direction: column; padding: 0 10px; }
   .palette-panel { width: 100%; }
@@ -315,6 +327,9 @@ header p {
     <option value="inclined">1 — Block on a Rough Inclined Plane</option>
     <option value="lift">2 — Block in an Accelerating Lift</option>
     <option value="sliding">3 — Block Sliding on a Rough Horizontal Surface</option>
+    <option value="resolved">4a — Resolving a Pulling Force (α above horizontal)</option>
+    <option value="resolved_below">4b — Resolving a Pushing/Pulling Force (α below horizontal)</option>
+    <option value="connected">5 — Two Masses on a String (Ceiling + Hanging Mass)</option>
   </select>
 </div>
 
@@ -329,6 +344,7 @@ header p {
 
   <main class="diagram-panel">
     <div class="scenario-desc" id="desc"></div>
+    <div id="diagram-note"></div>
     <div class="svg-wrapper">
       <svg id="diagram-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -368,7 +384,7 @@ header p {
     <span id="picker-force-name"></span>
     <button id="picker-close">✕</button>
   </div>
-  <p class="picker-sub">Choose the direction of this force:</p>
+  <p class="picker-sub" id="picker-sub">Choose the direction of this force:</p>
   <div id="picker-dirs"></div>
 </div>
 
@@ -389,8 +405,12 @@ const COLORS = {
   'Applied Force':    '#2980b9',
   'Air Resistance':   '#7f8c8d',
   'Thrust':           '#16a085',
+  'F cos α':          '#1abc9c',
+  'F sin α':          '#9b59b6',
+  'T₁':               '#d35400',
+  'T₂':               '#2980b9',
 };
-const ALL_FORCES = Object.keys(COLORS);
+const ALL_FORCES = ['Weight','Normal Reaction','Friction','Tension','Applied Force','Air Resistance','Thrust'];
 
 // SVG viewport
 const VW = 500, VH = 400;
@@ -418,7 +438,7 @@ const SCENARIOS = {
     title: 'Block on a Rough Inclined Plane',
     desc:  'A block rests <strong>stationary</strong> on a rough plane inclined at 30° to the horizontal. Draw <em>all</em> the forces acting on the block.',
     hint:  'There are exactly <strong>3 forces</strong> acting on the block. One acts vertically, one is perpendicular to the slope surface, and one acts along the slope.',
-    oc:    { x: 250, y: 218 },   // object centre in SVG coords
+    oc:    { x: 250, y: 206 },   // object centre — bottom edge sits on slope
     dz:    54,                    // drop-zone radius (px in SVG units)
     dirs: [
       { label: 'Vertically downward',                        a:  90 },
@@ -478,6 +498,105 @@ const SCENARIOS = {
     drawSVG: drawSlidingBlock,
   },
 
+  resolved: {
+    title: 'Resolving a Pulling Force at Angle α',
+    desc:  'A block rests on a rough horizontal surface. An external force <strong>F</strong> is applied at angle <em>α</em> above the horizontal, pulling the block to the right. Resolve <strong>F</strong> into its components <strong>parallel</strong> and <strong>perpendicular</strong> to the surface by dragging the correct arrows onto the block.',
+    hint:  'The component <strong>parallel</strong> to the surface (horizontal) equals F&nbsp;cos&nbsp;α — choose the direction the block is being pulled. The component <strong>perpendicular</strong> to the surface (vertical) equals F&nbsp;sin&nbsp;α — since α is above the horizontal, which way does this component act relative to the surface?',
+    oc:    { x: 250, y: 250 },
+    dz:    62,
+    palette: ['F cos α', 'F sin α'],
+    dirs: [
+      { label: 'Parallel to surface — to the right',               a:   0 },
+      { label: 'Parallel to surface — to the left',                a: 180 },
+      { label: 'Perpendicular to surface — upward (away from surface)',   a: 270 },
+      { label: 'Perpendicular to surface — downward (into surface)',      a:  90 },
+    ],
+    answer: [
+      { force: 'F cos α', dir: 'Parallel to surface — to the right'               },
+      { force: 'F sin α', dir: 'Perpendicular to surface — upward (away from surface)' },
+    ],
+    expl: 'Since <strong>F</strong> acts at angle α <em>above</em> the horizontal: the component <strong>parallel</strong> to the surface is <strong>F&thinsp;cos&thinsp;α</strong>, acting to the right (in the direction of the applied force\'s horizontal projection). The component <strong>perpendicular</strong> to the surface is <strong>F&thinsp;sin&thinsp;α</strong>, acting <em>upward</em>, away from the surface — this reduces the normal reaction: N = mg − F sin α.',
+    drawSVG: drawResolvedForce,
+  },
+
+  resolved_below: {
+    title: 'Resolving a Force at Angle α Below the Horizontal',
+    desc:  'A block rests on a rough horizontal surface. An external force <strong>F</strong> is applied at angle <em>α</em> <strong>below</strong> the horizontal, pushing the block to the right and into the surface. Resolve <strong>F</strong> into its components <strong>parallel</strong> and <strong>perpendicular</strong> to the surface by dragging the correct arrows onto the block.',
+    hint:  'The component <strong>parallel</strong> to the surface is F&nbsp;cos&nbsp;α — in the direction the block is pushed horizontally. The component <strong>perpendicular</strong> to the surface is F&nbsp;sin&nbsp;α — since the force is directed <em>below</em> the horizontal, does this component push towards or away from the surface?',
+    oc:    { x: 250, y: 230 },
+    dz:    62,
+    palette: ['F cos α', 'F sin α'],
+    dirs: [
+      { label: 'Parallel to surface — to the right',                      a:   0 },
+      { label: 'Parallel to surface — to the left',                       a: 180 },
+      { label: 'Perpendicular to surface — upward (away from surface)',    a: 270 },
+      { label: 'Perpendicular to surface — downward (into surface)',       a:  90 },
+    ],
+    answer: [
+      { force: 'F cos α', dir: 'Parallel to surface — to the right'                },
+      { force: 'F sin α', dir: 'Perpendicular to surface — downward (into surface)' },
+    ],
+    expl: 'Since <strong>F</strong> acts at angle α <em>below</em> the horizontal: the component <strong>parallel</strong> to the surface is <strong>F&thinsp;cos&thinsp;α</strong>, acting to the right. The component <strong>perpendicular</strong> to the surface is <strong>F&thinsp;sin&thinsp;α</strong>, acting <em>downward</em> — into the surface. This increases the normal reaction: N = mg + F sin α.',
+    drawSVG: drawResolvedForceBelow,
+  },
+
+  connected: {
+    title: 'Two Masses Suspended on a String',
+    desc:  'Mass <strong>m₁</strong> hangs from a ceiling by a light inextensible string. Mass <strong>m₂</strong> is supported directly below m₁ by a second light string. The system is in <strong>equilibrium</strong>. Draw <em>all</em> forces acting on <strong>each</strong> mass — drag arrows onto <em>m₁</em> and <em>m₂</em> separately.',
+    hint:  '<strong>m₁</strong> has three forces: its own weight downward, the ceiling tension T₁ upward, and the lower string tension T₂ pulling it downward. <strong>m₂</strong> has two forces: its own weight downward and T₂ upward.',
+    expl:  'On <strong>m₁</strong>: Weight (= m₁g) acts down; <strong>T₁</strong> acts up (ceiling string); <strong>T₂</strong> acts down (the lower string pulls m₁ toward m₂). On <strong>m₂</strong>: Weight (= m₂g) acts down; <strong>T₂</strong> acts up. In equilibrium: T₁ = (m₁ + m₂)g and T₂ = m₂g.',
+    palette: ['Weight', 'T₁', 'T₂'],
+    diagramNote: 'The weight forces should act through the centre of the objects but have been moved slightly to the left of the centre of the masses to avoid arrow overlap and make the diagram clearer.',
+    bodies: [
+      {
+        id:    'm1',
+        label: 'm₁',
+        oc:    { x: 250, y: 189 },
+        dz:    48,
+        forceXOffset:    { 'Weight': -15 },
+        forceYOffset:    { 'T₁': -28, 'T₂': 28 },
+        forceLabelOverride: {
+          'Weight': { lx: -10, ly: 0, anchor: 'end'   },
+          'T₁':    { lx:  10, ly: 0, anchor: 'start' },
+          'T₂':    { lx:  10, ly: 0, anchor: 'start' },
+        },
+        forceArrowLen:   { 'T₁': 37, 'T₂': 34 },
+        dirs: [
+          { label: 'Vertically downward', a:  90 },
+          { label: 'Vertically upward',   a: 270 },
+        ],
+        answer: [
+          { force: 'Weight', dir: 'Vertically downward' },
+          { force: 'T₁',    dir: 'Vertically upward'   },
+          { force: 'T₂',    dir: 'Vertically downward' },
+        ],
+      },
+      {
+        id:    'm2',
+        label: 'm₂',
+        oc:    { x: 250, y: 359 },
+        dz:    48,
+        forceXOffset:    { 'Weight': -15 },
+        forceYOffset:    { 'T₂': -28 },
+        forceLabelOverride: {
+          'Weight': { lx: -10, ly: 0, anchor: 'end'   },
+          'T₂':    { lx:  10, ly: 0, anchor: 'start' },
+        },
+        forceArrowLen:   { 'T₂': 34 },
+        dirs: [
+          { label: 'Vertically downward', a:  90 },
+          { label: 'Vertically upward',   a: 270 },
+        ],
+        answer: [
+          { force: 'Weight', dir: 'Vertically downward' },
+          { force: 'T₂',    dir: 'Vertically upward'   },
+        ],
+      },
+    ],
+    drawSVG: drawConnectedMasses,
+    viewH:   490,
+  },
+
 };
 
 // ══════════════════════════════════════════════════════════
@@ -487,7 +606,8 @@ const SCENARIOS = {
 //    base (70, 330) → tip (430, 123)   run=360, rise=207 → angle=30.0°
 // ══════════════════════════════════════════════════════════
 
-function drawInclinedPlane({ x: cx, y: cy }) {
+function drawInclinedPlane(s) {
+  const { x: cx, y: cy } = s.oc;
   // Angle arc at (70,330): from horizontal to slope direction
   // Arc start: (70+58, 330) = (128, 330)
   // Arc end  : (70+58·cos(-30°), 330+58·sin(-30°)) = (70+50.2, 330-29) = (120.2, 301)
@@ -527,7 +647,8 @@ function drawInclinedPlane({ x: cx, y: cy }) {
   `;
 }
 
-function drawLift({ x: cx, y: cy }) {
+function drawLift(s) {
+  const { x: cx, y: cy } = s.oc;
   return `
     <!-- cable brackets -->
     <line x1="193" y1="20" x2="193" y2="80" stroke="#666" stroke-width="3"/>
@@ -566,7 +687,8 @@ function drawLift({ x: cx, y: cy }) {
   `;
 }
 
-function drawSlidingBlock({ x: cx, y: cy }) {
+function drawSlidingBlock(s) {
+  const { x: cx, y: cy } = s.oc;
   return `
     <!-- ground hatch and line -->
     <rect x="50" y="298" width="405" height="22" fill="url(#hatch)"/>
@@ -591,6 +713,186 @@ function drawSlidingBlock({ x: cx, y: cy }) {
           text-anchor="middle" dominant-baseline="middle"
           fill="white" font-size="16" font-weight="bold"
           font-family="Georgia,serif">m</text>
+  `;
+}
+
+function drawResolvedForce(s) {
+  const { x: cx, y: cy } = s.oc;
+  // Force F shown at 30° above horizontal (illustrated; labelled α throughout).
+  // Geometry (all relative to block centre cx, cy):
+  //   F tip     : cx + 90·cos 30° ≈ cx+78,  cy − 90·sin 30° = cy−45
+  //   arc start : cx+80, cy          (on horizontal reference, outside block edge cx+66)
+  //   arc end   : cx + 80·cos 30° ≈ cx+69,  cy − 80·sin 30° = cy−40
+  // Arc: M (cx+80,cy) A 80,80 0 0,0 (cx+69,cy−40)  — small CCW arc (30°)
+  const ftx = Math.round(cx + 78);   // F arrow tip x
+  const fty = Math.round(cy - 45);   // F arrow tip y
+  const aex = Math.round(cx + 69);   // arc end x
+  const aey = Math.round(cy - 40);   // arc end y
+
+  return `
+    <!-- ground hatch and line -->
+    <rect x="50" y="${cy + 48}" width="405" height="22" fill="url(#hatch)"/>
+    <line x1="50" y1="${cy + 48}" x2="455" y2="${cy + 48}" stroke="#666" stroke-width="2"/>
+
+    <!-- Force F: drawn first so block paints over the inner portion, leaving arrowhead visible -->
+    <line x1="${cx}" y1="${cy}" x2="${ftx}" y2="${fty}"
+          stroke="#c0392b" stroke-width="2.5" marker-end="url(#ah-red)"/>
+
+    <!-- drop-zone ring -->
+    <circle id="dzr" cx="${cx}" cy="${cy}" r="62"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- block (painted after F line, so it hides the inner segment of F) -->
+    <rect x="${cx - 66}" y="${cy - 44}" width="132" height="88"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="5"/>
+    <text x="${cx}" y="${cy + 2}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="16" font-weight="bold"
+          font-family="Georgia,serif">m</text>
+
+    <!-- horizontal dashed reference tick (right of block, painted over block edge) -->
+    <line x1="${cx + 66}" y1="${cy}" x2="${cx + 92}" y2="${cy}"
+          stroke="#888" stroke-width="1.5" stroke-dasharray="5 3"/>
+
+    <!-- angle arc α: radius 80, from horizontal reference to F direction -->
+    <!-- M (cx+80, cy) A 80,80 0 0,0 (cx+69, cy−40)  — 30° CCW in screen coords = upward -->
+    <path d="M ${cx + 80},${cy} A 80,80 0 0,0 ${aex},${aey}"
+          fill="none" stroke="#555" stroke-width="1.6"/>
+
+    <!-- α label at ~−15° (midpoint of arc), radius 90 -->
+    <text x="${cx + 89}" y="${cy - 21}"
+          font-size="14" fill="#444" font-style="italic"
+          font-family="Georgia,serif">α</text>
+
+    <!-- F label just beyond arrowhead -->
+    <text x="${ftx + 5}" y="${fty - 6}"
+          fill="#c0392b" font-size="15" font-weight="bold" font-style="italic"
+          font-family="Georgia,serif">F</text>
+  `;
+}
+
+function drawResolvedForceBelow(s) {
+  const { x: cx, y: cy } = s.oc;
+  // Force F at 30° BELOW horizontal (illustrated; labelled α throughout).
+  // cy = 230 (set in scenario oc) so the downward-angled arrow stays
+  // comfortably above the ground line (cy + 68 = 298).
+  //
+  // F tip    : cx + 90·cos30° ≈ cx+78,  cy + 90·sin30° = cy+45  (down-right)
+  // arc start: cx+80, cy          (horizontal ref, outside block edge cx+66)
+  // arc end  : cx + 80·cos30° ≈ cx+69,  cy + 80·sin30° = cy+40  (down-right)
+  // Arc direction: CLOCKWISE (sweep=1) from horizontal ref downward to F
+  const ftx = Math.round(cx + 78);   // F tip x
+  const fty = Math.round(cy + 45);   // F tip y  (downward)
+  const aex = Math.round(cx + 69);   // arc end x
+  const aey = Math.round(cy + 40);   // arc end y (downward)
+
+  return `
+    <!-- ground: cy+68 = 298 when cy=230 -->
+    <rect x="50" y="${cy + 68}" width="405" height="22" fill="url(#hatch)"/>
+    <line x1="50" y1="${cy + 68}" x2="455" y2="${cy + 68}" stroke="#666" stroke-width="2"/>
+
+    <!-- F arrow going down-right (painted first; block covers the inner segment) -->
+    <line x1="${cx}" y1="${cy}" x2="${ftx}" y2="${fty}"
+          stroke="#c0392b" stroke-width="2.5" marker-end="url(#ah-red)"/>
+
+    <!-- drop-zone ring -->
+    <circle id="dzr" cx="${cx}" cy="${cy}" r="62"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- block (painted after F so block hides the arrow's inner portion) -->
+    <rect x="${cx - 66}" y="${cy - 44}" width="132" height="88"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="5"/>
+    <text x="${cx}" y="${cy + 2}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="16" font-weight="bold"
+          font-family="Georgia,serif">m</text>
+
+    <!-- horizontal dashed reference tick (right of block edge) -->
+    <line x1="${cx + 66}" y1="${cy}" x2="${cx + 92}" y2="${cy}"
+          stroke="#888" stroke-width="1.5" stroke-dasharray="5 3"/>
+
+    <!-- angle arc α: radius 80, CLOCKWISE from horizontal down to F direction -->
+    <path d="M ${cx + 80},${cy} A 80,80 0 0,1 ${aex},${aey}"
+          fill="none" stroke="#555" stroke-width="1.6"/>
+
+    <!-- α label at ~+15° below horizontal (midpoint of arc), radius 90 -->
+    <text x="${cx + 89}" y="${cy + 25}"
+          font-size="14" fill="#444" font-style="italic"
+          font-family="Georgia,serif">α</text>
+
+    <!-- F label just beyond arrowhead -->
+    <text x="${ftx + 5}" y="${fty + 14}"
+          fill="#c0392b" font-size="15" font-weight="bold" font-style="italic"
+          font-family="Georgia,serif">F</text>
+  `;
+}
+
+function drawConnectedMasses(s) {
+  // Layout (500×400 SVG):
+  //   Ceiling:  y=25–40
+  //   T₁ string: (250,40) → (250,120)
+  //   m₁ box:   centre (250,148), half-w=38, half-h=28  → y=120–176
+  //   T₂ string: (250,176) → (250,252)
+  //   m₂ box:   centre (250,280), half-w=38, half-h=28  → y=252–308
+  const [b0, b1] = s.bodies;   // m₁, m₂
+  const c1x = b0.oc.x, c1y = b0.oc.y;   // 250, 148
+  const c2x = b1.oc.x, c2y = b1.oc.y;   // 250, 280
+  const hw = 38, hh = 28;                // half-width, half-height of each box
+
+  return `
+    <!-- ceiling hatch and underside line -->
+    <rect x="90" y="15" width="320" height="22" fill="url(#hatch)"/>
+    <line x1="90" y1="37" x2="410" y2="37" stroke="#666" stroke-width="2"/>
+
+    <!-- T₁ string: ceiling to top of m₁ -->
+    <line x1="${c1x}" y1="37" x2="${c1x}" y2="${c1y - hh}"
+          stroke="#555" stroke-width="2"/>
+
+    <!-- T₂ string: bottom of m₁ to top of m₂ -->
+    <line x1="${c2x}" y1="${c1y + hh}" x2="${c2x}" y2="${c2y - hh}"
+          stroke="#555" stroke-width="2"/>
+
+    <!-- T₁ label beside upper string -->
+    <text x="${c1x + 30}" y="${Math.round((37 + c1y - hh) / 2)}"
+          fill="#d35400" font-size="14" font-weight="bold" font-style="italic"
+          font-family="Georgia,serif">T₁</text>
+
+    <!-- T₂ label beside lower string -->
+    <text x="${c2x + 30}" y="${Math.round((c1y + hh + c2y - hh) / 2)}"
+          fill="#2980b9" font-size="14" font-weight="bold" font-style="italic"
+          font-family="Georgia,serif">T₂</text>
+
+    <!-- drop-zone ring for m₁ -->
+    <circle id="dzr0" cx="${c1x}" cy="${c1y}" r="${b0.dz}"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- drop-zone ring for m₂ -->
+    <circle id="dzr1" cx="${c2x}" cy="${c2y}" r="${b1.dz}"
+            fill="rgba(36,113,163,0.1)" stroke="#2471a3" stroke-width="1.8"
+            stroke-dasharray="6 3" opacity="0"
+            style="transition:opacity 0.18s;pointer-events:none"/>
+
+    <!-- m₁ box -->
+    <rect x="${c1x - hw}" y="${c1y - hh}" width="${hw * 2}" height="${hh * 2}"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="4"/>
+    <text x="${c1x}" y="${c1y + 1}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="15" font-weight="bold"
+          font-family="Georgia,serif">m₁</text>
+
+    <!-- m₂ box -->
+    <rect x="${c2x - hw}" y="${c2y - hh}" width="${hw * 2}" height="${hh * 2}"
+          fill="#4a86b8" stroke="#2471a3" stroke-width="2" rx="4"/>
+    <text x="${c2x}" y="${c2y + 1}"
+          text-anchor="middle" dominant-baseline="middle"
+          fill="white" font-size="15" font-weight="bold"
+          font-family="Georgia,serif">m₂</text>
   `;
 }
 
@@ -636,11 +938,13 @@ function init() {
 //  PALETTE
 // ══════════════════════════════════════════════════════════
 function buildPalette() {
+  const s = SCENARIOS[curKey];
+  const forcesToShow = s.palette || ALL_FORCES;
   const cont = document.getElementById('palette-forces');
   cont.innerHTML = '';
-  ALL_FORCES.forEach(f => {
+  forcesToShow.forEach(f => {
     const col = COLORS[f];
-    const fid = 'ca-' + f.replace(/\s+/g, '_');
+    const fid = 'ca-' + f.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, 'x');
     const chip = document.createElement('div');
     chip.className = 'force-chip';
     chip.dataset.force = f;
@@ -663,10 +967,21 @@ function buildPalette() {
   });
 }
 
+// Returns true when the chip should be greyed-out (all required placements done).
+function isForceFullyUsed(force) {
+  const s = SCENARIOS[curKey];
+  const timesPlaced = placed.filter(p => p.force === force).length;
+  if (s.bodies) {
+    const timesNeeded = s.bodies.reduce((n, b) =>
+      n + b.answer.filter(a => a.force === force).length, 0);
+    return timesPlaced >= timesNeeded;
+  }
+  return timesPlaced >= 1;
+}
+
 function refreshPalette() {
-  const used = new Set(placed.map(p => p.force));
   document.querySelectorAll('.force-chip').forEach(el => {
-    el.classList.toggle('used', used.has(el.dataset.force));
+    el.classList.toggle('used', isForceFullyUsed(el.dataset.force));
   });
 }
 
@@ -681,10 +996,22 @@ function loadScenario(key) {
   const s = SCENARIOS[key];
   document.getElementById('desc').innerHTML =
     `<span class="stitle">${s.title}</span>${s.desc}`;
-  document.getElementById('static-layer').innerHTML = s.drawSVG(s.oc);
+  // Update SVG viewport height per scenario (default 400)
+  document.getElementById('diagram-svg')
+    .setAttribute('viewBox', `0 0 ${VW} ${s.viewH || VH}`);
+  const noteEl = document.getElementById('diagram-note');
+  if (s.diagramNote) {
+    noteEl.textContent = s.diagramNote;
+    noteEl.style.display = 'block';
+  } else {
+    noteEl.textContent = '';
+    noteEl.style.display = 'none';
+  }
+  document.getElementById('static-layer').innerHTML = s.drawSVG(s);
   document.getElementById('arrows-layer').innerHTML = '';
   clearFeedback();
   closePicker();
+  buildPalette();
   refreshPalette();
 }
 
@@ -693,7 +1020,7 @@ function loadScenario(key) {
 // ══════════════════════════════════════════════════════════
 function startDrag(e, force) {
   e.preventDefault();
-  if (placed.find(p => p.force === force)) return;
+  if (isForceFullyUsed(force)) return;
   dragData = { force };
   const g = document.getElementById('ghost');
   g.textContent = force;
@@ -724,7 +1051,8 @@ function endDrag(cx, cy) {
   setDropZoneVisible(false);
   const force = dragData.force;
   dragData = null;
-  if (isOverDropZone(cx, cy)) showPicker(cx, cy, force);
+  const hit = getBodyForCoords(cx, cy);
+  if (hit) showPicker(cx, cy, force, hit.body, hit.idx);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -732,7 +1060,7 @@ function endDrag(cx, cy) {
 // ══════════════════════════════════════════════════════════
 function startDragTouch(e, force) {
   e.preventDefault();
-  if (placed.find(p => p.force === force)) return;
+  if (isForceFullyUsed(force)) return;
   dragData = { force };
   const t = e.touches[0];
   const g = document.getElementById('ghost');
@@ -754,8 +1082,9 @@ function startDragTouch(e, force) {
     const tt = ev.changedTouches[0];
     const force2 = dragData ? dragData.force : null;
     dragData = null;
-    if (force2 && isOverDropZone(tt.clientX, tt.clientY)) {
-      showPicker(tt.clientX, tt.clientY, force2);
+    if (force2) {
+      const hit = getBodyForCoords(tt.clientX, tt.clientY);
+      if (hit) showPicker(tt.clientX, tt.clientY, force2, hit.body, hit.idx);
     }
     el.removeEventListener('touchmove',   onTM);
     el.removeEventListener('touchend',    onTE);
@@ -770,43 +1099,61 @@ function startDragTouch(e, force) {
 //  DROP ZONE
 // ══════════════════════════════════════════════════════════
 function setDropZoneVisible(show) {
-  const el = document.getElementById('dzr');
-  if (el) el.style.opacity = show ? '1' : '0';
+  // matches id="dzr" (single-body) and id="dzr0", "dzr1" … (multi-body)
+  document.querySelectorAll('[id^="dzr"]').forEach(el => {
+    el.style.opacity = show ? '1' : '0';
+  });
 }
 
-function isOverDropZone(clientX, clientY) {
+// Returns { body, idx } for the body the pointer is over, or null.
+// For single-body scenarios body === the scenario object, idx === -1.
+function getBodyForCoords(clientX, clientY) {
   const svg  = document.getElementById('diagram-svg');
   const rect = svg.getBoundingClientRect();
-  const sx   = (clientX - rect.left)  * (VW / rect.width);
-  const sy   = (clientY - rect.top)   * (VH / rect.height);
+  const svgH = svg.viewBox.baseVal.height;   // live value — changes per scenario
+  const sx   = (clientX - rect.left) * (VW  / rect.width);
+  const sy   = (clientY - rect.top)  * (svgH / rect.height);
   const s    = SCENARIOS[curKey];
-  const dx   = sx - s.oc.x, dy = sy - s.oc.y;
-  return Math.hypot(dx, dy) <= s.dz;
+
+  if (s.bodies) {
+    for (let i = 0; i < s.bodies.length; i++) {
+      const b = s.bodies[i];
+      if (Math.hypot(sx - b.oc.x, sy - b.oc.y) <= b.dz) return { body: b, idx: i };
+    }
+    return null;
+  }
+  // Single-body
+  if (Math.hypot(sx - s.oc.x, sy - s.oc.y) <= s.dz) return { body: s, idx: -1 };
+  return null;
 }
 
 // ══════════════════════════════════════════════════════════
 //  DIRECTION PICKER
 // ══════════════════════════════════════════════════════════
-function showPicker(clientX, clientY, force) {
-  const s = SCENARIOS[curKey];
+function showPicker(clientX, clientY, force, body, bodyIdx) {
   const nameEl = document.getElementById('picker-force-name');
   nameEl.textContent = force;
   nameEl.style.color = COLORS[force];
 
+  // Sub-heading: show which body is being assigned when multi-body
+  const subEl = document.getElementById('picker-sub');
+  subEl.textContent = (bodyIdx >= 0 && body.label)
+    ? `Direction of this force on ${body.label}:`
+    : 'Choose the direction of this force:';
+
   const dirsEl = document.getElementById('picker-dirs');
   dirsEl.innerHTML = '';
-  s.dirs.forEach(d => {
+  body.dirs.forEach(d => {
     const btn = document.createElement('button');
     btn.className   = 'dir-btn';
     btn.textContent = d.label;
-    btn.addEventListener('click', () => placeForce(force, d.label, d.a));
+    btn.addEventListener('click', () => placeForce(force, d.label, d.a, bodyIdx));
     dirsEl.appendChild(btn);
   });
 
   const picker = document.getElementById('picker');
   picker.classList.add('open');
 
-  // Position near drop point, keep within viewport
   const pw = picker.offsetWidth  || 245;
   const ph = picker.offsetHeight || 230;
   let lx = clientX + 18;
@@ -825,9 +1172,9 @@ function closePicker() {
 // ══════════════════════════════════════════════════════════
 //  PLACE / REMOVE FORCES
 // ══════════════════════════════════════════════════════════
-function placeForce(force, dir, angle) {
+function placeForce(force, dir, angle, bodyIdx) {
   closePicker();
-  placed.push({ force, dir, angle });
+  placed.push({ force, dir, angle, bodyIdx });
   renderArrows();
   refreshPalette();
   clearFeedback();
@@ -837,26 +1184,51 @@ function placeForce(force, dir, angle) {
 //  RENDER ARROWS
 // ══════════════════════════════════════════════════════════
 function renderArrows() {
-  const { oc } = SCENARIOS[curKey];
-  const ox = oc.x, oy = oc.y;
+  const s     = SCENARIOS[curKey];
   const layer = document.getElementById('arrows-layer');
 
   layer.innerHTML = placed.map((p, i) => {
+    // Determine origin: multi-body uses the body's oc; single-body uses scenario oc
+    let ox, oy;
+    if (p.bodyIdx >= 0 && s.bodies) {
+      const b = s.bodies[p.bodyIdx];
+      const xOff = (b.forceXOffset && b.forceXOffset[p.force]) || 0;
+      const yOff = (b.forceYOffset && b.forceYOffset[p.force]) || 0;
+      ox = b.oc.x + xOff; oy = b.oc.y + yOff;
+    } else {
+      ox = s.oc.x; oy = s.oc.y;
+    }
+
     const rad = p.angle * Math.PI / 180;
-    const ex  = ox + AL * Math.cos(rad);
-    const ey  = oy + AL * Math.sin(rad);
+    // Per-force arrow length override (forceArrowLen on the body), else global AL
+    const arrLen = (p.bodyIdx >= 0 && s.bodies && s.bodies[p.bodyIdx].forceArrowLen)
+      ? (s.bodies[p.bodyIdx].forceArrowLen[p.force] ?? AL)
+      : AL;
+    const ex  = ox + arrLen * Math.cos(rad);
+    const ey  = oy + arrLen * Math.sin(rad);
     const col = COLORS[p.force] || '#555';
 
-    // Label: 20px beyond arrowhead
-    const lx = ox + (AL + 20) * Math.cos(rad);
-    const ly = oy + (AL + 20) * Math.sin(rad);
+    // Label position: use forceLabelOverride (offset from arrowhead) if defined,
+    // otherwise fall back to 20px beyond the arrowhead along the arrow direction.
+    let lx, ly, anchor, base;
+    const labelOvr = (p.bodyIdx >= 0 && s.bodies)
+      ? (s.bodies[p.bodyIdx].forceLabelOverride || {})[p.force]
+      : undefined;
 
-    // Text alignment based on direction
-    const cosA = Math.cos(rad), sinA = Math.sin(rad);
-    const anchor = cosA >  0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    const base   = sinA >  0.2 ? 'hanging'
-                 : sinA < -0.2 ? 'auto'
-                 : 'middle';
+    if (labelOvr) {
+      lx     = ex + labelOvr.lx;
+      ly     = ey + labelOvr.ly;
+      anchor = labelOvr.anchor ?? 'end';
+      base   = 'middle';
+    } else {
+      lx = ox + (arrLen + 20) * Math.cos(rad);
+      ly = oy + (arrLen + 20) * Math.sin(rad);
+      const cosA = Math.cos(rad), sinA = Math.sin(rad);
+      anchor = cosA >  0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
+      base   = sinA >  0.2 ? 'hanging'
+             : sinA < -0.2 ? 'auto'
+             : 'middle';
+    }
 
     return `<g class="placed-g" data-idx="${i}">
       <title>Click to remove: ${p.force}</title>
@@ -887,10 +1259,50 @@ function checkAnswer() {
     return;
   }
 
+  // ── Multi-body scenario ──────────────────────────────────
+  if (s.bodies) {
+    let allOk = true;
+    const lines = [];
+
+    s.bodies.forEach((b, idx) => {
+      const bodyPlaced = placed.filter(p => p.bodyIdx === idx);
+      lines.push(`<p style="margin-top:7px"><strong>Forces on ${b.label}:</strong></p>`);
+
+      for (const ans of b.answer) {
+        const p = bodyPlaced.find(x => x.force === ans.force);
+        if (!p) {
+          lines.push(`<div class="fb-miss">⚠ <strong>${ans.force}</strong> is missing.</div>`);
+          allOk = false;
+        } else if (p.dir !== ans.dir) {
+          lines.push(`<div class="fb-bad">✗ <strong>${ans.force}</strong>: wrong direction.`
+                   + ` <em>(Correct: ${ans.dir})</em></div>`);
+          allOk = false;
+        } else {
+          lines.push(`<div class="fb-ok">✓ <strong>${ans.force}</strong>: correct.</div>`);
+        }
+      }
+      // Extra forces placed on this body that aren't needed
+      for (const p of bodyPlaced) {
+        if (!b.answer.find(a => a.force === p.force)) {
+          lines.push(`<div class="fb-bad">✗ <strong>${p.force}</strong>`
+                   + ` is not needed on ${b.label}.</div>`);
+          allOk = false;
+        }
+      }
+    });
+
+    const head = allOk
+      ? '<p><strong>🎉 Excellent — all forces correctly placed on both masses!</strong></p>'
+      : '<p><strong>Not quite right. See details below:</strong></p>';
+    const expl = allOk ? `<span class="fb-expl">${s.expl}</span>` : '';
+    showFeedback(allOk ? 'success' : 'error', head + lines.join('') + expl);
+    return;
+  }
+
+  // ── Single-body scenario (original logic) ───────────────
   let allOk = true;
   const lines = [];
 
-  // Check for each required force
   for (const ans of s.answer) {
     const p = placed.find(x => x.force === ans.force);
     if (!p) {
@@ -905,7 +1317,6 @@ function checkAnswer() {
     }
   }
 
-  // Check for extra forces not needed
   for (const p of placed) {
     if (!s.answer.find(a => a.force === p.force)) {
       lines.push(`<div class="fb-bad">✗ <strong>${p.force}</strong>`
@@ -917,11 +1328,7 @@ function checkAnswer() {
   const head = allOk
     ? '<p><strong>🎉 Excellent — all forces correctly placed!</strong></p>'
     : '<p><strong>Not quite right. See details below:</strong></p>';
-
-  const expl = allOk
-    ? `<span class="fb-expl">${s.expl}</span>`
-    : '';
-
+  const expl = allOk ? `<span class="fb-expl">${s.expl}</span>` : '';
   showFeedback(allOk ? 'success' : 'error', head + lines.join('') + expl);
 }
 
