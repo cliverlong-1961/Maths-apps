@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implicit Differentiation — AS/A Mathematics</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+:root {
+  --navy:       #1a3a6b;
+  --navy-dark:  #122a50;
+  --gold:       #c9a227;
+  --gold-light: #f5e9b8;
+  --bg:         #f7f7f4;
+  --card:       #ffffff;
+  --text:       #1a1a2e;
+  --muted:      #556080;
+  --border:     #cdd3e0;
+  --step-bg:    #f0f3fa;
+  --step-bord:  #ccd3eb;
+  --hi-bg:      #fdf6dc;
+  --hi-bord:    #c9a227;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia,'Times New Roman',serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+header {
+  background: var(--navy); color: #fff;
+  padding: 1.5rem 2rem 1.25rem;
+  border-bottom: 4px solid var(--gold);
+  text-align: center;
+}
+header h1 { font-size: 1.55rem; font-weight: normal; letter-spacing: .04em; }
+header .sub { margin-top: .35rem; font-size: .86rem; color: #9fb2cc; font-family: Arial,sans-serif; letter-spacing: .03em; }
+
+.container { max-width: 720px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.75rem 2rem;
+  box-shadow: 0 2px 10px rgba(26,58,107,.07); margin-bottom: 1.5rem;
+}
+.card-q  { border-top: 4px solid var(--navy); }
+.card-sol { border-top: 4px solid var(--gold); display: none; }
+.card-sol.visible { display: block; }
+
+.card-label {
+  font-family: Arial,sans-serif; font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; margin-bottom: 1.3rem;
+}
+.card-q   .card-label { color: var(--navy); }
+.card-sol .card-label { color: #8a6c00; }
+
+.eq-box {
+  background: #f2f4fb; border: 1px solid #d0d8f0;
+  border-radius: 4px; padding: 1.6rem 1.5rem;
+  text-align: center; overflow-x: auto; margin-bottom: .8rem;
+}
+.eq-task {
+  font-family: Arial,sans-serif; font-size: .8rem; color: var(--muted);
+  margin-bottom: .55rem; letter-spacing: .04em; text-transform: uppercase;
+}
+.eq-main { font-size: 1.2rem; line-height: 1.7; }
+.eq-meta { text-align: center; font-size: .88rem; color: var(--muted); font-family: Arial,sans-serif; }
+
+.btn-row { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+.btn {
+  padding: .55rem 1.6rem; font-family: Arial,sans-serif; font-size: .88rem;
+  font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  border-radius: 3px; cursor: pointer; transition: background .15s, transform .08s; border: 2px solid;
+}
+.btn:active { transform: scale(.97); }
+.btn-show { background: var(--navy); color: #fff; border-color: var(--navy); }
+.btn-show:hover { background: var(--navy-dark); border-color: var(--navy-dark); }
+.btn-new  { background: transparent; color: var(--navy); border-color: var(--navy); }
+.btn-new:hover { background: #edf0fa; }
+
+/* steps */
+.steps { display: flex; flex-direction: column; gap: 1rem; }
+.step  { display: grid; grid-template-columns: 2.2rem 1fr; gap: 0 .9rem; align-items: start; }
+.step-num {
+  width: 2.1rem; height: 2.1rem; background: var(--navy); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: Arial,sans-serif; font-size: .78rem; font-weight: 700; flex-shrink: 0; margin-top: .15rem;
+}
+.step-body { background: var(--step-bg); border: 1px solid var(--step-bord); border-radius: 4px; padding: .75rem 1rem .9rem; }
+.step-desc { font-family: Arial,sans-serif; font-size: .82rem; color: var(--muted); margin-bottom: .55rem; line-height: 1.45; }
+.step-math { overflow-x: auto; font-size: 1rem; line-height: 1.9; }
+
+.hi-box {
+  margin-top: 1.4rem; padding: 1.1rem 1.5rem;
+  background: var(--hi-bg); border: 2px solid var(--hi-bord); border-radius: 4px;
+}
+.hi-label {
+  font-family: Arial,sans-serif; font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: #7a5c00; margin-bottom: .35rem;
+}
+.hi-box .step-math { font-size: 1.1rem; }
+
+.note-tag {
+  display: inline-block; background: #e8edf9; color: var(--navy);
+  font-family: Arial,sans-serif; font-size: .75rem; font-weight: 700;
+  letter-spacing: .07em; padding: .18rem .65rem; border-radius: 3px;
+  text-transform: uppercase; margin-bottom: .45rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Implicit Differentiation</h1>
+  <div class="sub">Curve &thinsp;<em>ax</em><sup>j</sup> &plusmn; <em>by</em><sup>k</sup> = <em>c</em> &nbsp;|&nbsp; Express d<em>y</em>/d<em>x</em> as a function of <em>x</em> and as a function of <em>y</em> &nbsp;|&nbsp; AS/A Mathematics</div>
+</header>
+
+<div class="container">
+
+  <div class="card card-q">
+    <div class="card-label">Question</div>
+    <div class="eq-box">
+      <div class="eq-task">A curve is defined implicitly. Find d<em>y</em>/d<em>x</em></div>
+      <div class="eq-main" id="eq-display"></div>
+    </div>
+    <div class="eq-meta" id="eq-meta"></div>
+    <div class="btn-row">
+      <button class="btn btn-show" id="show-btn" onclick="toggleSolution()">Show Solution</button>
+      <button class="btn btn-new" onclick="newQuestion()">New Question</button>
+    </div>
+  </div>
+
+  <div class="card card-sol" id="sol-card">
+    <div class="card-label">Worked Solution</div>
+    <div class="steps" id="sol-steps"></div>
+    <div class="hi-box" id="summary-box"></div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+/* ─── KaTeX ─────────────────────────────────── */
+function tex(s, disp) {
+  try { return katex.renderToString(s, { throwOnError: false, displayMode: !!disp }); }
+  catch(e) { return s; }
+}
+/* Display math: wraps any multi-line string in aligned so \\ is valid */
+function texD(s) {
+  if (s.includes('\\\\'))
+    return tex('\\begin{aligned}' + s + '\\end{aligned}', true);
+  return tex(s, true);
+}
+
+/* ─── Math helpers ───────────────────────────── */
+function randInt(lo, hi) { return Math.floor(Math.random()*(hi-lo+1))+lo; }
+function randNZ(lo, hi)  { let v; do { v=randInt(lo,hi); } while(!v); return v; }
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){var t=b;b=a%b;a=t;} return a||1; }
+
+/* coeff * var^pow → LaTeX */
+function T(c, v, p) {
+  if (c===0) return '0';
+  const vp = p===0 ? '' : p===1 ? v : v+'^{'+p+'}';
+  if (!vp) return String(c);
+  if (c===1)  return vp;
+  if (c===-1) return '-'+vp;
+  return String(c)+vp;
+}
+
+/* coeff*var^pow + const → LaTeX (variable term first) */
+function E(cv, co, v, p) {
+  const t = co!==0 ? T(co,v,p) : '';
+  if (!t && cv===0) return '0';
+  if (!t) return String(cv);
+  if (cv===0) return t;
+  if (cv>0) return t+' + '+String(cv);
+  return t+' - '+String(Math.abs(cv));
+}
+
+/* Simplify integer fraction: returns {n, d} with d>0 */
+function SF(num, den) {
+  if (!den) return {n:num, d:1};
+  const g = gcd(Math.abs(num), Math.abs(den));
+  let n=num/g, d=den/g;
+  if (d<0){n=-n; d=-d;}
+  return {n, d};
+}
+
+/* \dfrac{a}{b} */
+function DF(a, b) { return '\\dfrac{'+a+'}{'+b+'}'; }
+
+/* base^{p/q}: handles p=0 (→1) and p=q (→base) */
+function PF(base, p, q) {
+  if (p===0) return '1';
+  if (p===q) return base;
+  return base+'^{\\frac{'+p+'}{'+q+'}}';
+}
+
+/*
+  innerFrac: renders (c_val - coeff·var^pow) / denom
+  as \left(\dfrac{...}{...}\right), flipping sign if denom<0
+*/
+function IF(c_val, coeff, v, p, denom) {
+  let nc=-coeff, cc=c_val, d=denom;
+  if (d<0) { nc=-nc; cc=-cc; d=-d; }
+  return '\\left('+DF(E(cc,nc,v,p), String(d))+'\\right)';
+}
+
+/* ─── Problem generation ──────────────────────── */
+function generate() {
+  return {
+    A: randNZ(-6,6),   // coefficient of x^j
+    B: randNZ(-6,6),   // coefficient of y^k (signed; sign gives +/-)
+    j: randInt(1,3),
+    k: randInt(1,3),
+    c: randInt(-4,4)
+  };
+}
+
+/* ─── Curve display ───────────────────────────── */
+/* Ax^j + By^k = c, displayed with explicit +/- */
+function curveTeX(A,B,j,k,c) {
+  const t1 = T(A,'x',j);
+  const t2 = T(Math.abs(B),'y',k);
+  const op = B>0 ? ' + ' : ' - ';
+  return t1+op+t2+' = '+String(c);
+}
+
+/* ─── Core dy/dx forms ────────────────────────── */
+/*
+  After implicit differentiation:
+    d/dx(Ax^j) = jA·x^{j-1}
+    d/dx(By^k) = kB·y^{k-1}·(dy/dx)
+  So: jA·x^{j-1} + kB·y^{k-1}·(dy/dx) = 0
+  dy/dx = -(jA)·x^{j-1} / (kB·y^{k-1})
+*/
+
+/* dy/dx simplified, as a function of BOTH x and y */
+function dydxXY(A,B,j,k) {
+  const jA=j*A, kB=k*B;
+  const s = SF(-jA, kB);
+  const np=j-1, dp=k-1;
+  const numStr = np===0 ? String(s.n) : T(s.n,'x',np);
+  const denStr = dp===0 ? String(s.d) : T(s.d,'y',dp);
+  if (np===0 && dp===0) {
+    const r=SF(s.n,s.d);
+    return r.d===1 ? String(r.n) : DF(String(r.n),String(r.d));
+  }
+  if (dp===0) return s.d===1 ? numStr : DF(numStr, String(s.d));
+  if (np===0) return DF(String(s.n), denStr);
+  return DF(numStr, denStr);
+}
+
+/* dy/dx as function of x only — null if already pure x (k=1) */
+function dydxX(A,B,j,k,c) {
+  if (k===1) return null;                        // already pure x
+  const jA=j*A, kB=k*B, s=SF(-jA,kB);
+  const np=j-1, dp=k-1;
+  const bracket = IF(c,A,'x',j,B);             // (c-Ax^j)/B
+  const ySubst  = PF(bracket, dp, k);           // y^{k-1}
+  const numStr  = np===0 ? String(s.n) : T(s.n,'x',np);
+  const denStr  = s.d===1 ? ySubst : String(s.d)+'\\cdot '+ySubst;
+  return DF(numStr, denStr);
+}
+
+/* dy/dx as function of y only — null if already pure y (j=1) */
+function dydxY(A,B,j,k,c) {
+  if (j===1) return null;                        // already pure y
+  const jA=j*A, kB=k*B, s=SF(-jA,kB);
+  const np=j-1, dp=k-1;
+  const bracket = IF(c,B,'y',k,A);             // (c-By^k)/A
+  const xSubst  = PF(bracket, np, j);           // x^{j-1}
+  const numPart = s.n===1 ? xSubst : s.n===-1 ? '-'+xSubst : String(s.n)+'\\cdot '+xSubst;
+  const denStr  = dp===0 ? String(s.d) : T(s.d,'y',dp);
+  return DF(numPart, denStr);
+}
+
+/* ─── Build worked solution steps ─────────────── */
+function buildSteps(pr) {
+  const {A,B,j,k,c} = pr;
+  const jA=j*A, kB=k*B;
+  const np=j-1, dp=k-1;
+  const dyd = '\\dfrac{\\mathrm{d}y}{\\mathrm{d}x}';
+
+  const steps = [];
+
+  /* ── Step 1: Differentiate both sides ─── */
+  {
+    // Show: curve → differentiated form = 0
+    const Babs = Math.abs(B);
+    const kBabs = Math.abs(kB);
+
+    // d/dx(Ax^j) term: T(jA, 'x', j-1)
+    const dxStr = T(jA,'x',np);
+
+    // d/dx(By^k) · dy/dx displayed as |kB|y^{k-1}·dy/dx with explicit ±
+    let dyPiece;
+    if (dp===0 && kBabs===1) dyPiece = dyd;
+    else if (dp===0)         dyPiece = String(kBabs)+'\\,'+dyd;
+    else if (kBabs===1)      dyPiece = T(1,'y',dp)+'\\,'+dyd;
+    else                     dyPiece = T(kBabs,'y',dp)+'\\cdot '+dyd;
+
+    const op2 = kB>=0 ? ' + ' : ' - ';
+
+    const line1 = curveTeX(A,B,j,k,c);
+    const line2 = dxStr + op2 + dyPiece + ' = 0';
+
+    let desc = 'Differentiate both sides with respect to \\(x\\). ';
+    desc += k===1
+      ? 'The \\(y\\) term differentiates directly since \\(k=1\\).'
+      : 'Apply the <strong>chain rule</strong> to the \\(y^k\\) term: \\(\\dfrac{\\mathrm{d}}{\\mathrm{d}x}(y^k) = k\\,y^{k-1}\\dfrac{\\mathrm{d}y}{\\mathrm{d}x}\\).';
+
+    steps.push({ desc, math: line1+'\\\\ \\Downarrow \\\\ '+line2 });
+  }
+
+  /* ── Step 2: Rearrange for dy/dx (x and y form) ── */
+  {
+    const kBabs = Math.abs(kB);
+    // LHS of rearrangement: ±kBy^{k-1}·dy/dx = -jAx^{j-1}
+    let lhsPiece;
+    if (dp===0 && kBabs===1) lhsPiece = (kB>0?'':'-')+dyd;
+    else if (dp===0)         lhsPiece = String(kB)+'\\,'+dyd;
+    else if (kBabs===1)      lhsPiece = (kB>0?'':'-')+T(1,'y',dp)+'\\,'+dyd;
+    else                     lhsPiece = T(kB,'y',dp)+'\\cdot '+dyd;
+
+    const rhsStr = T(-jA,'x',np);  // -jA·x^{j-1}
+
+    // Direct result before simplification
+    const rawNum = T(-jA,'x',np);
+    const rawDen = T(kB,'y',dp);  // kB·y^{k-1}
+
+    const xyForm = dydxXY(A,B,j,k);
+    const s = SF(-jA,kB);
+    const needsSimp = (s.n !== -jA) || (s.d !== kB);
+
+    let mathLines = lhsPiece+' = '+rhsStr;
+
+    // Raw fraction
+    if (dp===0 && np===0) {
+      // constant
+      mathLines += '\\\\ '+dyd+' = '+DF(rawNum, String(kB));
+    } else if (dp===0) {
+      mathLines += '\\\\ '+dyd+' = '+DF(rawNum, String(kB));
+    } else if (np===0) {
+      mathLines += '\\\\ '+dyd+' = '+DF(rawNum, rawDen);
+    } else {
+      mathLines += '\\\\ '+dyd+' = '+DF(rawNum, rawDen);
+    }
+
+    // Simplified form (if different)
+    if (needsSimp) {
+      mathLines += ' = '+xyForm;
+    }
+
+    let desc = 'Collect the \\(\\dfrac{\\mathrm{d}y}{\\mathrm{d}x}\\) term and divide. ';
+    if (j===1 && k===1) desc += 'Since both powers are 1 the gradient is constant.';
+    else if (j===1) desc += 'Since \\(j=1\\) the result contains no \\(x\\), so \\(\\dfrac{dy}{dx}\\) is already a function of \\(y\\) only.';
+    else if (k===1) desc += 'Since \\(k=1\\) the result contains no \\(y\\), so \\(\\dfrac{dy}{dx}\\) is already a function of \\(x\\) only.';
+    else desc += 'This gives \\(\\dfrac{dy}{dx}\\) as a function of <em>both</em> \\(x\\) and \\(y\\).';
+
+    steps.push({ desc, math: mathLines, tagged: 'function of x and y' });
+  }
+
+  /* ── Step 3: Function of x only ─── */
+  {
+    const xyForm = dydxXY(A,B,j,k);
+    const xForm  = dydxX(A,B,j,k,c);
+
+    if (xForm===null) {
+      // k=1: already pure x
+      steps.push({
+        desc: 'Since \\(k=1\\), the derivative contains no \\(y\\) — it is already expressed purely in terms of \\(x\\).',
+        math: dyd+' = '+xyForm,
+        tagged: 'function of x'
+      });
+    } else {
+      // Show the substitution: By^k = c-Ax^j → y^k = ... → y^{k-1} = ...
+      const bracket = IF(c,A,'x',j,B);
+      const yKTeX  = DF(E(c,-A,'x',j), String(B));   // (c-Ax^j)/B un-bracketed for "y^k = ..."
+      // But actually use the sign-corrected version
+      // innerFrac gives us the bracketed version; we want un-bracketed for "y^k = " line
+      let nc=-A, cc=c, dd=B;
+      if (dd<0){nc=-nc; cc=-cc; dd=-dd;}
+      const yKRHS = DF(E(cc,nc,'x',j), String(dd));
+
+      const yKLine  = T(1,'y',k)+' = '+yKRHS;
+      const yK1Line = T(1,'y',dp)+' = '+PF(bracket, dp, k);
+
+      const desc = 'From the original equation, express \\(y^{k-1}\\) in terms of \\(x\\), then substitute into the expression for \\(\\dfrac{dy}{dx}\\).';
+      const math = T(B,'y',k)+' = '+E(c,-A,'x',j)
+          +'\\\\ \\Rightarrow \\quad '+yKLine
+          +'\\\\ \\Rightarrow \\quad '+yK1Line
+          +'\\\\ \\therefore \\quad '+dyd+' = '+xForm;
+      steps.push({ desc, math, tagged: 'function of x' });
+    }
+  }
+
+  /* ── Step 4: Function of y only ─── */
+  {
+    const xyForm = dydxXY(A,B,j,k);
+    const yForm  = dydxY(A,B,j,k,c);
+
+    if (yForm===null) {
+      // j=1: already pure y
+      steps.push({
+        desc: 'Since \\(j=1\\), the derivative contains no \\(x\\) — it is already expressed purely in terms of \\(y\\).',
+        math: dyd+' = '+xyForm,
+        tagged: 'function of y'
+      });
+    } else {
+      const bracket = IF(c,B,'y',k,A);
+      let nc=-B, cc=c, dd=A;
+      if (dd<0){nc=-nc; cc=-cc; dd=-dd;}
+      const xJRHS = DF(E(cc,nc,'y',k), String(dd));
+
+      const xJLine  = T(1,'x',j)+' = '+xJRHS;
+      const xJ1Line = T(1,'x',np)+' = '+PF(bracket, np, j);
+
+      const desc = 'From the original equation, express \\(x^{j-1}\\) in terms of \\(y\\), then substitute into the expression for \\(\\dfrac{dy}{dx}\\).';
+      const math = T(A,'x',j)+' = '+E(c,-B,'y',k)
+          +'\\\\ \\Rightarrow \\quad '+xJLine
+          +'\\\\ \\Rightarrow \\quad '+xJ1Line
+          +'\\\\ \\therefore \\quad '+dyd+' = '+yForm;
+      steps.push({ desc, math, tagged: 'function of y' });
+    }
+  }
+
+  return steps;
+}
+
+/* ─── Render ──────────────────────────────────── */
+function renderQ(pr) {
+  const {A,B,j,k,c} = pr;
+  document.getElementById('eq-display').innerHTML =
+    tex(curveTeX(A,B,j,k,c), true);
+  document.getElementById('eq-meta').innerHTML =
+    'where ' + tex('A='+A+',\\; B='+B+',\\; j='+j+',\\; k='+k+',\\; c='+c);
+}
+
+function renderSol(pr) {
+  const steps = buildSteps(pr);
+  const {A,B,j,k,c} = pr;
+  const dyd = '\\dfrac{\\mathrm{d}y}{\\mathrm{d}x}';
+  const xyF = dydxXY(A,B,j,k);
+  const xF  = dydxX(A,B,j,k,c) || xyF;
+  const yF  = dydxY(A,B,j,k,c) || xyF;
+
+  let html = '';
+  steps.forEach(function(s, i) {
+    const tagHTML = s.tagged
+      ? '<span class="note-tag">'+s.tagged+'</span><br>'
+      : '';
+    html +=
+      '<div class="step">'
+        +'<div class="step-num">'+(i+1)+'</div>'
+        +'<div class="step-body">'
+          +'<div class="step-desc">'+s.desc+'</div>'
+          +tagHTML
+          +'<div class="step-math">'
+            +texD(s.math)
+          +'</div>'
+        +'</div>'
+      +'</div>';
+  });
+  document.getElementById('sol-steps').innerHTML = html;
+
+  // Render any \(...\) / \[...\] in step descriptions
+  renderMathInElement(document.getElementById('sol-steps'), {
+    delimiters: [
+      { left: '\\(', right: '\\)', display: false },
+      { left: '\\[', right: '\\]', display: true  }
+    ],
+    throwOnError: false
+  });
+
+  // Summary box
+  const jA=j*A, kB=k*B;
+  const isConst = (j===1&&k===1);
+  let summaryMath;
+  if (isConst) {
+    summaryMath = dyd+' = '+xyF+' \\quad (\\text{constant})';
+  } else {
+    summaryMath =
+      '\\text{In terms of }x\\text{ and }y:\\quad '+dyd+' = '+xyF
+      +'\\\\[1em]'
+      +'\\text{In terms of }x\\text{ only:}\\hphantom{y}\\quad '+dyd+' = '+xF
+      +'\\\\[1em]'
+      +'\\text{In terms of }y\\text{ only:}\\hphantom{x}\\quad '+dyd+' = '+yF;
+  }
+
+  document.getElementById('summary-box').innerHTML =
+    '<div class="hi-label">Summary of results</div>'
+    +'<div class="step-math">'+texD(summaryMath)+'</div>';
+}
+
+/* ─── UI ──────────────────────────────────────── */
+var current = null;
+var shown   = false;
+
+function toggleSolution() {
+  shown = !shown;
+  document.getElementById('sol-card').classList.toggle('visible', shown);
+  document.getElementById('show-btn').textContent = shown ? 'Hide Solution' : 'Show Solution';
+}
+
+function newQuestion() {
+  current = generate();
+  renderQ(current);
+  renderSol(current);
+  if (shown) { shown = true; toggleSolution(); }  // hide if visible
+}
+
+newQuestion();
+</script>
+</body>
+</html>
