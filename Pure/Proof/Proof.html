@@ -1758,22 +1758,364 @@
                 <h2>Available Proofs</h2>
                 
                 <div class="topic-grid">
-                    <article class="topic-card disabled">
-                        <h3>Pythagorean Theorem</h3>
+                    <article class="topic-card">
+                        <h3>Adjacent angles on a straight line</h3>
                         <div class="formula">
-                            \[a^2 + b^2 = c^2\]
+                            \[\alpha + \beta = 180°\]
                         </div>
-                        <p class="description">In a right triangle, the square of the hypotenuse equals the sum of squares of the other two sides.</p>
-                        <button class="topic-link">Coming Soon</button>
+                        <p class="description">Adjacent angles formed by a straight line standing on a base always sum to two right angles.</p>
+                        <h4 style="font-size: 1.05em; font-weight: normal; font-style: italic; color: #34495e; margin: 14px 0 8px;">Preliminaries</h4>
+                        <p style="font-size: 0.95em; line-height: 1.7; margin: 12px 0;">There are some basic definitions or properties of objects that we accept as true to be our starting point for the proof. One task is to make these definitions or properties as simple as possible. These are as follows:</p>
+                        <ul style="font-size: 0.95em; margin-left: 20px; line-height: 1.7; margin-bottom: 12px;">
+                            <li style="margin-bottom: 8px;">Adjacent angles on a straight line formed by a straight line standing on the base, if those angles are equal, they are both a right angle (notice no mention of 90 degrees).</li>
+                            <li>If an angle is split by a straight line from the vertex, the sum of the two created angles is equal to the size of the original angle. This is equivalent to: if two adjacent angles of any size are placed adjacent to each other, with the same vertex, the resulting angle is equal in size to the sum of the two angles.</li>
+                        </ul>
+                        <p style="font-size: 0.95em; line-height: 1.7; margin-bottom: 12px;">Let us accept we "know" what an "angle" is.</p>
+                        <span class="topic-link" id="proof-adjacent-angles-link" onclick="toggleProof('proof-adjacent-angles')">View Proof →</span>
+
+                        <div id="proof-adjacent-angles" class="proof-container">
+                            <div class="proof-header">Proof: Adjacent angles on a straight line sum to two right angles</div>
+
+                            <!-- Two side-by-side diagrams -->
+                            <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin: 20px 0;">
+
+                                <!-- Diagram 1: Definition of right angle -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Horizontal base line -->
+                                        <line x1="20" y1="110" x2="180" y2="110" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Vertical line from midpoint -->
+                                        <line x1="100" y1="110" x2="100" y2="20" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Right angle symbol LEFT (between vertical and left horizontal) -->
+                                        <polyline points="100,110 88,110 88,98 100,98" fill="none" stroke="#2c3e50" stroke-width="1.8"/>
+                                        <!-- Right angle symbol RIGHT (between vertical and right horizontal) -->
+                                        <polyline points="100,110 112,110 112,98 100,98" fill="none" stroke="#2c3e50" stroke-width="1.8"/>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; font-style: italic; margin-top: -12px;">Definition of right angle</p>
+                                </div>
+
+                                <!-- Diagram 2: Adjacent angles on a straight line -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Horizontal base line -->
+                                        <line x1="20" y1="110" x2="180" y2="110" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Oblique line at 37° from base, vertex at (100,110) -->
+                                        <!-- cos(37°)≈0.799, sin(37°)≈0.602; tip at (100+72*0.799, 110-72*0.602) = (157,67) -->
+                                        <line x1="100" y1="110" x2="157" y2="67" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Arc for α (143°, left side):
+                                             Start on left base: (100-32, 110) = (68, 110)
+                                             End on slope at radius 32: (100+32*0.799, 110-32*0.602) = (126, 91)
+                                             sweep=1 (clockwise on screen) draws the arc upward above the baseline through the obtuse angle -->
+                                        <path d="M 68,110 A 32,32 0 0,1 126,91" fill="none" stroke="#e74c3c" stroke-width="1.6"/>
+                                        <!-- Arc for β (37°, right side):
+                                             Start on slope at radius 32: (126, 91)
+                                             End on right base: (100+32, 110) = (132, 110)
+                                             sweep=1 (clockwise on screen) draws the short arc in the acute angle -->
+                                        <path d="M 126,91 A 32,32 0 0,1 132,110" fill="none" stroke="#3498db" stroke-width="1.6"/>
+                                        <!-- Label α (left/obtuse angle) -->
+                                        <text x="61" y="91" font-size="14" fill="#e74c3c" font-family="Georgia, serif">&#945;</text>
+                                        <!-- Label β (right/acute angle) -->
+                                        <text x="119" y="107" font-size="14" fill="#3498db" font-family="Georgia, serif">&#946;</text>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; font-style: italic; margin-top: -12px;">Adjacent angles on a straight line</p>
+                                </div>
+
+                            </div>
+
+                            <!-- Proof steps -->
+                            <div class="proof-step">
+                                <div class="step-number">Step 1</div>
+                                <div class="step-content">
+                                    A straight line erected on another straight line where the angles created are equal — each new angle is a right angle, and the angle of a straight line is two right angles.
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2</div>
+                                <div class="step-content">
+                                    If we raise a straight line on a base so the angles created are <em>not</em> equal, then since the angle on a straight line is still two right angles, the adjacent angles on a straight line always add up to two right angles.
+                                </div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Adjacent angles formed by any straight line standing on a base always sum to two right angles, regardless of whether or not those angles are equal. ∎
+                            </div>
+                        </div>
                     </article>
 
-                    <article class="topic-card disabled">
+                    <article class="topic-card">
+                        <h3>Opposite Angles Theorem</h3>
+                        <div class="formula">
+                            \[\alpha = \gamma \quad \text{and} \quad \beta = \delta\]
+                        </div>
+                        <p class="description">When two straight lines intersect, the opposite angles formed are equal.</p>
+                        <h4 style="font-size: 1.05em; font-weight: normal; font-style: italic; color: #34495e; margin: 14px 0 8px;">Preliminaries</h4>
+                        <p style="font-size: 0.95em; line-height: 1.7; margin: 12px 0;">This proof uses only one previously established result:</p>
+                        <ul style="font-size: 0.95em; margin-left: 20px; line-height: 1.7; margin-bottom: 12px;">
+                            <li><strong>Adjacent angles on a straight line</strong> (proved above): a straight line standing on a base creates two adjacent angles that sum to two right angles (180°).</li>
+                        </ul>
+                        <span class="topic-link" id="proof-opposite-angles-link" onclick="toggleProof('proof-opposite-angles')">View Proof →</span>
+
+                        <div id="proof-opposite-angles" class="proof-container">
+                            <div class="proof-header">Proof: Opposite angles formed by two intersecting straight lines are equal</div>
+
+                            <!-- Two side-by-side diagrams -->
+                            <!-- Lines: A(200,70)–O(110,85)–B(20,100) and C(155,15)–O(110,85)–D(65,155)  -->
+                            <!-- Direction angles from O (screen clockwise): A≈351°, B≈171°, C≈303°, D≈123° -->
+                            <!-- Four angles (clockwise): α=C→A=48°(red), β=A→D=132°(blue), γ=D→B=48°(red), δ=B→C=132°(blue) -->
+                            <!-- Arc endpoints at r=22: A(132,82), C(122,67), B(88,88), D(98,103) -->
+                            <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin: 20px 0;">
+
+                                <!-- Diagram 1: Two intersecting lines with all four labelled angles -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Line 1: A–O–B -->
+                                        <line x1="200" y1="70" x2="20" y2="100" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Line 2: C–O–D -->
+                                        <line x1="155" y1="15" x2="65" y2="155" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Arc α (red, C→A, 48°, clockwise): r=22 -->
+                                        <path d="M 122,67 A 22,22 0 0,1 132,82" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Arc β (blue, A→D, 132°, clockwise): r=22 -->
+                                        <path d="M 132,82 A 22,22 0 0,1 98,103" fill="none" stroke="#3498db" stroke-width="1.8"/>
+                                        <!-- Arc γ (red, D→B, 48°, clockwise): r=22 -->
+                                        <path d="M 98,103 A 22,22 0 0,1 88,88" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Arc δ (blue, B→C, 132°, clockwise): r=22 -->
+                                        <path d="M 88,88 A 22,22 0 0,1 122,67" fill="none" stroke="#3498db" stroke-width="1.8"/>
+                                        <!-- Vertex labels -->
+                                        <text x="206" y="70" font-size="13" fill="#2c3e50" font-family="Georgia, serif">A</text>
+                                        <text x="10" y="102" font-size="13" fill="#2c3e50" font-family="Georgia, serif">B</text>
+                                        <text x="157" y="13" font-size="13" fill="#2c3e50" font-family="Georgia, serif">C</text>
+                                        <text x="58" y="162" font-size="13" fill="#2c3e50" font-family="Georgia, serif">D</text>
+                                        <text x="100" y="80" font-size="13" fill="#2c3e50" font-family="Georgia, serif">O</text>
+                                        <!-- Angle labels -->
+                                        <text x="135" y="65" font-size="13" fill="#e74c3c" font-family="Georgia, serif">&#945;</text>
+                                        <text x="128" y="114" font-size="13" fill="#3498db" font-family="Georgia, serif">&#946;</text>
+                                        <text x="76" y="103" font-size="13" fill="#e74c3c" font-family="Georgia, serif">&#947;</text>
+                                        <text x="89" y="57" font-size="13" fill="#3498db" font-family="Georgia, serif">&#948;</text>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; font-style: italic; margin-top: -12px;">Two straight lines crossing at O</p>
+                                </div>
+
+                                <!-- Diagram 2: Proof — adjacent angle pairs -->
+                                <!-- Shows α, β, γ only. β is shared: α+β=180° along CD; β+γ=180° along AB -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Line 1: A–O–B -->
+                                        <line x1="200" y1="70" x2="20" y2="100" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Line 2: C–O–D -->
+                                        <line x1="155" y1="15" x2="65" y2="155" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Arc α (red): OA stands on CD → α+β=180° -->
+                                        <path d="M 122,67 A 22,22 0 0,1 132,82" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Arc β (blue): shared between both straight-line relationships -->
+                                        <path d="M 132,82 A 22,22 0 0,1 98,103" fill="none" stroke="#3498db" stroke-width="1.8"/>
+                                        <!-- Arc γ (red): OD stands on AB → β+γ=180° -->
+                                        <path d="M 98,103 A 22,22 0 0,1 88,88" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Annotations: label which straight line each pair spans -->
+                                        <text x="168" y="38" font-size="10" fill="#888" font-family="Georgia, serif">&#945;+&#946;=180°</text>
+                                        <text x="168" y="49" font-size="10" fill="#888" font-family="Georgia, serif">(line CD)</text>
+                                        <text x="15" y="118" font-size="10" fill="#888" font-family="Georgia, serif">&#946;+&#947;=180°</text>
+                                        <text x="15" y="129" font-size="10" fill="#888" font-family="Georgia, serif">(line AB)</text>
+                                        <!-- Vertex labels -->
+                                        <text x="206" y="70" font-size="13" fill="#2c3e50" font-family="Georgia, serif">A</text>
+                                        <text x="10" y="102" font-size="13" fill="#2c3e50" font-family="Georgia, serif">B</text>
+                                        <text x="157" y="13" font-size="13" fill="#2c3e50" font-family="Georgia, serif">C</text>
+                                        <text x="58" y="162" font-size="13" fill="#2c3e50" font-family="Georgia, serif">D</text>
+                                        <text x="100" y="80" font-size="13" fill="#2c3e50" font-family="Georgia, serif">O</text>
+                                        <!-- Angle labels -->
+                                        <text x="135" y="65" font-size="13" fill="#e74c3c" font-family="Georgia, serif">&#945;</text>
+                                        <text x="128" y="114" font-size="13" fill="#3498db" font-family="Georgia, serif">&#946;</text>
+                                        <text x="76" y="103" font-size="13" fill="#e74c3c" font-family="Georgia, serif">&#947;</text>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; font-style: italic; margin-top: -12px;">Adjacent angle pairs at O</p>
+                                </div>
+
+                            </div>
+
+                            <!-- Proof steps -->
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Apply the adjacent angles result to line CD</div>
+                                <div class="step-content">
+                                    CD is a straight line. Ray OA stands on line CD at O, dividing it into two adjacent angles:
+                                    \[\alpha + \beta = 180° \quad \text{...[1]}\]
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Apply the adjacent angles result to line AB</div>
+                                <div class="step-content">
+                                    AB is a straight line. Ray OD stands on line AB at O, dividing it into two adjacent angles:
+                                    \[\beta + \gamma = 180° \quad \text{...[2]}\]
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Equate and cancel</div>
+                                <div class="step-content">
+                                    Both [1] and [2] equal 180°, so:
+                                    \[\alpha + \beta = \beta + \gamma\]
+                                    Subtracting \(\beta\) from both sides:
+                                    \[\alpha = \gamma\]
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 4: The remaining opposite pair</div>
+                                <div class="step-content">
+                                    By the same argument — applying the adjacent angles result to line AB (giving \(\alpha + \delta = 180°\)) and to line CD (giving \(\delta + \gamma = 180°\)) — it follows that:
+                                    \[\beta = \delta\]
+                                </div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> When two straight lines intersect, both pairs of opposite angles are equal: \(\alpha = \gamma\) and \(\beta = \delta\). ∎
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="topic-card">
                         <h3>Sum of Triangle Angles</h3>
                         <div class="formula">
                             \[\alpha + \beta + \gamma = 180°\]
                         </div>
-                        <p class="description">The sum of the interior angles of any triangle equals 180 degrees.</p>
-                        <button class="topic-link">Coming Soon</button>
+                        <p class="description">The interior angles of any triangle sum to two right angles.</p>
+                        <h4 style="font-size: 1.05em; font-weight: normal; font-style: italic; color: #34495e; margin: 14px 0 8px;">Preliminaries</h4>
+                        <p style="font-size: 0.95em; line-height: 1.7; margin: 12px 0;">This proof builds on the following results and definitions, each accepted as either proved or axiomatic:</p>
+                        <ul style="font-size: 0.95em; margin-left: 20px; line-height: 1.7; margin-bottom: 12px;">
+                            <li style="margin-bottom: 8px;"><strong>Adjacent angles on a straight line</strong> (proved above): a straight line standing on a base creates two adjacent angles that sum to two right angles.</li>
+                            <li style="margin-bottom: 8px;"><strong>Parallel lines:</strong> two lines in the same plane that never meet however far they are extended.</li>
+                            <li style="margin-bottom: 8px;"><strong>Parallel postulate</strong> (accepted without proof): through any point not on a given line, there is exactly one line parallel to the given line.</li>
+                            <li><strong>Alternate interior angles:</strong> when a straight line (transversal) crosses two parallel lines, the alternate interior angles — on opposite sides of the transversal and between the parallel lines — are equal.</li>
+                        </ul>
+                        <span class="topic-link" id="proof-triangle-angles-link" onclick="toggleProof('proof-triangle-angles')">View Proof →</span>
+
+                        <div id="proof-triangle-angles" class="proof-container">
+                            <div class="proof-header">Proof: The interior angles of a triangle sum to two right angles</div>
+
+                            <!-- Two side-by-side diagrams -->
+                            <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin: 20px 0;">
+
+                                <!-- Diagram 1: Triangle ABC with labelled angles -->
+                                <!-- Vertices: A=(105,22), B=(22,152), C=(198,152) -->
+                                <!-- AB direction from A: screen angle ≈123°  AC direction from A: ≈54° -->
+                                <!-- BA direction from B: ≈303°  CA direction from C: ≈234° -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Triangle sides -->
+                                        <line x1="105" y1="22" x2="22" y2="152" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <line x1="105" y1="22" x2="198" y2="152" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <line x1="22" y1="152" x2="198" y2="152" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Arc α at A (green): counterclockwise from AB-side pt to AC-side pt
+                                             r=20; AB pt=(94,39); AC pt=(117,38) -->
+                                        <path d="M 94,39 A 20,20 0 0,0 117,38" fill="none" stroke="#27ae60" stroke-width="1.8"/>
+                                        <!-- Arc β at B (red): counterclockwise from BC-side pt to BA-side pt
+                                             r=20; BC pt=(42,152); BA pt=(33,135) -->
+                                        <path d="M 42,152 A 20,20 0 0,0 33,135" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Arc γ at C (blue): clockwise from CB-side pt to CA-side pt
+                                             r=20; CB pt=(178,152); CA pt=(186,136) -->
+                                        <path d="M 178,152 A 20,20 0 0,1 186,136" fill="none" stroke="#3498db" stroke-width="1.8"/>
+                                        <!-- Vertex labels -->
+                                        <text x="105" y="14" font-size="13" fill="#2c3e50" font-family="Georgia, serif" text-anchor="middle">A</text>
+                                        <text x="10" y="160" font-size="13" fill="#2c3e50" font-family="Georgia, serif" text-anchor="middle">B</text>
+                                        <text x="210" y="160" font-size="13" fill="#2c3e50" font-family="Georgia, serif" text-anchor="middle">C</text>
+                                        <!-- Angle labels -->
+                                        <text x="102" y="54" font-size="13" fill="#27ae60" font-family="Georgia, serif" text-anchor="middle">&#945;</text>
+                                        <text x="47" y="136" font-size="13" fill="#e74c3c" font-family="Georgia, serif">&#946;</text>
+                                        <text x="170" y="137" font-size="13" fill="#3498db" font-family="Georgia, serif">&#947;</text>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; font-style: italic; margin-top: -12px;">Triangle ABC</p>
+                                </div>
+
+                                <!-- Diagram 2: Parallel line DE through A -->
+                                <!-- Three arcs at A fill the straight angle DAE exactly:
+                                     alt-β spans 180°→123° (57°), α spans 123°→54° (69°), alt-γ spans 54°→0° (54°); total=180° -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Parallel line DE through A (dashed) -->
+                                        <line x1="5" y1="22" x2="215" y2="22" stroke="#95a5a6" stroke-width="1.8" stroke-dasharray="4,3"/>
+                                        <!-- Triangle sides -->
+                                        <line x1="105" y1="22" x2="22" y2="152" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <line x1="105" y1="22" x2="198" y2="152" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <line x1="22" y1="152" x2="198" y2="152" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Double tick marks on DE indicating parallel to BC -->
+                                        <line x1="55" y1="17" x2="55" y2="27" stroke="#7f8c8d" stroke-width="1.5"/>
+                                        <line x1="59" y1="17" x2="59" y2="27" stroke="#7f8c8d" stroke-width="1.5"/>
+                                        <!-- Double tick marks on BC -->
+                                        <line x1="95" y1="147" x2="95" y2="157" stroke="#7f8c8d" stroke-width="1.5"/>
+                                        <line x1="99" y1="147" x2="99" y2="157" stroke="#7f8c8d" stroke-width="1.5"/>
+                                        <!-- Arc alt-β at A (red): counterclockwise from D-side (89,22) to AB-side (96,35), r=16 -->
+                                        <path d="M 89,22 A 16,16 0 0,0 96,35" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Arc α at A (green): counterclockwise from AB-side (96,35) to AC-side (114,35), r=16 -->
+                                        <path d="M 96,35 A 16,16 0 0,0 114,35" fill="none" stroke="#27ae60" stroke-width="1.8"/>
+                                        <!-- Arc alt-γ at A (blue): counterclockwise from AC-side (114,35) to E-side (121,22), r=16 -->
+                                        <path d="M 114,35 A 16,16 0 0,0 121,22" fill="none" stroke="#3498db" stroke-width="1.8"/>
+                                        <!-- Arc β at B (red): same as diagram 1 -->
+                                        <path d="M 42,152 A 20,20 0 0,0 33,135" fill="none" stroke="#e74c3c" stroke-width="1.8"/>
+                                        <!-- Arc γ at C (blue): same as diagram 1 -->
+                                        <path d="M 178,152 A 20,20 0 0,1 186,136" fill="none" stroke="#3498db" stroke-width="1.8"/>
+                                        <!-- Vertex and endpoint labels -->
+                                        <text x="105" y="14" font-size="13" fill="#2c3e50" font-family="Georgia, serif" text-anchor="middle">A</text>
+                                        <text x="10" y="160" font-size="13" fill="#2c3e50" font-family="Georgia, serif" text-anchor="middle">B</text>
+                                        <text x="210" y="160" font-size="13" fill="#2c3e50" font-family="Georgia, serif" text-anchor="middle">C</text>
+                                        <text x="5" y="18" font-size="12" fill="#7f8c8d" font-family="Georgia, serif" text-anchor="middle">D</text>
+                                        <text x="215" y="18" font-size="12" fill="#7f8c8d" font-family="Georgia, serif" text-anchor="middle">E</text>
+                                        <!-- Angle labels at A -->
+                                        <text x="84" y="32" font-size="12" fill="#e74c3c" font-family="Georgia, serif">&#946;</text>
+                                        <text x="103" y="47" font-size="12" fill="#27ae60" font-family="Georgia, serif" text-anchor="middle">&#945;</text>
+                                        <text x="122" y="32" font-size="12" fill="#3498db" font-family="Georgia, serif">&#947;</text>
+                                        <!-- Angle labels at B and C -->
+                                        <text x="47" y="136" font-size="13" fill="#e74c3c" font-family="Georgia, serif">&#946;</text>
+                                        <text x="170" y="137" font-size="13" fill="#3498db" font-family="Georgia, serif">&#947;</text>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; font-style: italic; margin-top: -12px;">Line DE through A, parallel to BC</p>
+                                </div>
+
+                            </div>
+
+                            <!-- Proof steps -->
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Construct a line through A parallel to BC</div>
+                                <div class="step-content">
+                                    Draw line DE through vertex A parallel to the base BC. By the parallel postulate such a line exists and is unique.
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Identify the first pair of alternate interior angles</div>
+                                <div class="step-content">
+                                    Line AB is a transversal crossing the parallel lines DE and BC. The angle <span style="color:#e74c3c;">\(\angle DAB\)</span> (at A, between AD and AB) and the angle <span style="color:#e74c3c;">\(\beta\)</span> (at B, between BA and BC) are alternate interior angles. Therefore:
+                                    \[\angle DAB = \beta\]
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Identify the second pair of alternate interior angles</div>
+                                <div class="step-content">
+                                    Line AC is a transversal crossing the parallel lines DE and BC. The angle <span style="color:#3498db;">\(\angle EAC\)</span> (at A, between AE and AC) and the angle <span style="color:#3498db;">\(\gamma\)</span> (at C, between CA and CB) are alternate interior angles. Therefore:
+                                    \[\angle EAC = \gamma\]
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 4: Apply the straight line result</div>
+                                <div class="step-content">
+                                    The angles \(\angle DAB\), \(\alpha\), and \(\angle EAC\) together make up the straight line DAE at point A. By the result proved for adjacent angles on a straight line:
+                                    \[\angle DAB + \alpha + \angle EAC = \text{two right angles}\]
+                                </div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 5: Substitute and conclude</div>
+                                <div class="step-content">
+                                    Substituting \(\angle DAB = \beta\) from Step 2 and \(\angle EAC = \gamma\) from Step 3:
+                                    \[\beta + \alpha + \gamma = \text{two right angles}\]
+                                    That is: \[\alpha + \beta + \gamma = 180°\]
+                                </div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> The interior angles of any triangle sum to two right angles (180°). The parallel postulate guarantees the construction works for any triangle, so the result holds universally. ∎
+                            </div>
+                        </div>
                     </article>
 
                     <article class="topic-card disabled">
