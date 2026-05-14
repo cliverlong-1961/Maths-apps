@@ -13,27 +13,35 @@
   --navy:#1a3a6b;--navy2:#122a50;--gold:#c9a227;--goldf:#f5e9b8;
   --bg:#f0f3fa;--card:#fff;--text:#1a1a2e;--muted:#5a6280;--border:#cdd3e0;
   --teal:#0f6e56;--red:#a32d2d;--purple:#533bb7;--cyan:#0e6a6a;
+  --orange:#b85c00;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
 /* ── HEADER ── */
 header{background:linear-gradient(135deg,#0d1e3d 0%,#1a3a6b 100%);color:#fff;padding:1.6rem 1.5rem 0;border-bottom:3px solid var(--gold);}
-.hdr-top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;}
+.hdr-top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem;}
 .hdr-top h1{font-size:1.55rem;font-weight:normal;letter-spacing:.04em;}
 .badge{background:var(--gold);color:#000;font-family:Arial,sans-serif;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:3px;letter-spacing:.08em;}
 .hdr-top p{font-family:Arial,sans-serif;font-size:.85rem;color:#9fb2cc;margin-left:auto;}
+
+/* ── PROGRESS DOTS ── */
+.progress-row{display:flex;align-items:center;gap:.35rem;padding:.4rem 0 .6rem;flex-wrap:wrap;}
+.pdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.35);cursor:pointer;transition:background .2s,border-color .2s;position:relative;}
+.pdot.visited{background:var(--gold);border-color:var(--gold);}
+.pdot:hover::after{content:attr(data-label);position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#000c;color:#fff;font-family:Arial;font-size:.7rem;padding:2px 6px;border-radius:3px;white-space:nowrap;pointer-events:none;}
+.prog-label{font-family:Arial;font-size:.72rem;color:#9fb2cc;margin-right:.3rem;}
 
 /* ── NAV ── */
 nav{display:flex;gap:0;overflow-x:auto;padding-bottom:0;}
 nav::-webkit-scrollbar{height:4px;}
 nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);}
-.nb{background:transparent;color:#9fb2cc;border:none;padding:.55rem .9rem;font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.05em;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;text-transform:uppercase;}
+.nb{background:transparent;color:#9fb2cc;border:none;padding:.5rem .8rem;font-family:Arial,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.04em;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;text-transform:uppercase;}
 .nb:hover{color:#fff;}
 .nb.on{color:var(--gold);border-bottom-color:var(--gold);}
 
 /* ── MAIN ── */
-.container{max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 3rem;}
+.container{max-width:880px;margin:0 auto;padding:1.5rem 1.25rem 3rem;}
 .module{display:none;}
 .module.on{display:block;}
 
@@ -47,8 +55,7 @@ nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);}
 .q-intro{margin-top:.5rem;font-family:Arial,sans-serif;font-size:.85rem;color:var(--muted);}
 
 /* ── CANVAS BOX ── */
-.cbox{background:#fff;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:.9rem;cursor:grab;}
-.cbox:active{cursor:grabbing;}
+.cbox{background:#fff;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:.9rem;}
 canvas{display:block;width:100%;}
 
 /* ── CONTROLS ── */
@@ -60,10 +67,13 @@ canvas{display:block;width:100%;}
 .btn-outline:hover{background:var(--bg);}
 .btn-gold{background:var(--gold);color:#000;border:2px solid var(--gold);}
 .btn-gold:hover{filter:brightness(1.08);}
+.btn-teal{background:var(--teal);color:#fff;border:2px solid var(--teal);}
+.btn-teal:hover{filter:brightness(1.1);}
 
 /* ── BIG NUMBER ── */
-.big-num{font-family:Georgia,serif;font-size:2.6rem;text-align:center;color:var(--navy);margin:.5rem 0;letter-spacing:.05em;}
+.big-num{font-family:Georgia,serif;font-size:2.4rem;text-align:center;color:var(--navy);margin:.5rem 0;letter-spacing:.05em;}
 .big-num span{color:var(--gold);}
+.big-num sub{font-size:1.2rem;}
 
 /* ── STATUS LINE ── */
 .status{font-family:Arial,sans-serif;font-size:.84rem;color:var(--muted);text-align:center;margin:.4rem 0;}
@@ -93,32 +103,76 @@ canvas{display:block;width:100%;}
 .slider-row input[type=range]{flex:1;}
 .slider-val{min-width:3.5rem;text-align:right;font-weight:700;color:var(--navy);}
 
-/* ── CHALLENGE CARDS ── */
+/* ── CHALLENGE / MISTAKE CARDS ── */
 .challenges{margin-top:1.5rem;}
-.challenges h3{font-family:Arial,sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;}
+.challenges h3,.mistakes h3{font-family:Arial,sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;}
+.mistakes{margin-top:1rem;}
 .ccard{border:1.5px solid var(--border);border-radius:6px;margin-bottom:.6rem;overflow:hidden;}
-.ccard-q{background:var(--bg);padding:.7rem 1rem;cursor:pointer;font-family:Arial,sans-serif;font-size:.88rem;font-weight:700;color:var(--navy);display:flex;justify-content:space-between;align-items:center;}
-.ccard-q::after{content:'▶';font-size:.7rem;transition:transform .2s;}
+.ccard.mistake{border-color:#e8b4b4;}
+.ccard-q{background:var(--bg);padding:.7rem 1rem;cursor:pointer;font-family:Arial,sans-serif;font-size:.88rem;font-weight:700;color:var(--navy);display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.ccard.mistake .ccard-q{background:#fff5f5;color:var(--red);}
+.ccard-q::after{content:'▶';font-size:.7rem;flex-shrink:0;transition:transform .2s;}
 .ccard-q.open::after{transform:rotate(90deg);}
 .ccard-a{display:none;padding:.7rem 1rem;font-size:.9rem;line-height:1.6;background:#fff;border-top:1px solid var(--border);}
+.ccard.mistake .ccard-a{background:#fff8f8;}
 .ccard-q.open + .ccard-a{display:block;}
-
-/* ── SECTION DIVIDER ── */
-.sdiv{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
 
 /* ── NOTE BOX ── */
 .note{background:#eef2ff;border-left:4px solid var(--purple);padding:.8rem 1rem;border-radius:0 6px 6px 0;margin:1rem 0;font-size:.9rem;line-height:1.6;}
+.note.teal{background:#e6f6f1;border-color:var(--teal);}
+.note.red{background:#fdf0f0;border-color:var(--red);}
 
-/* ── SERIES TABLE ── */
-.series-out{font-family:Arial,sans-serif;font-size:.88rem;margin:.8rem 0;}
-.series-row{display:flex;gap:1.2rem;padding:.35rem 0;border-bottom:1px solid var(--border);}
-.series-row:first-child{font-weight:700;color:var(--navy);}
-.col-n{width:3rem;}
-.col-t{width:8rem;}
-.col-s{width:8rem;font-weight:700;}
-.col-bar{flex:1;}
-.bar-inner{height:14px;background:var(--teal);border-radius:2px;transition:width .3s;}
-.bar-inner.neg{background:var(--red);}
+/* ── STEP-THROUGH (Module 6) ── */
+.step-display{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0;align-items:center;font-family:Arial;font-size:.9rem;}
+.term-chip{background:var(--navy);color:#fff;padding:.15rem .5rem;border-radius:3px;font-size:.82rem;}
+.term-chip.neg{background:var(--red);}
+
+/* ── SERIES BAR (step-through) ── */
+.sbar-wrap{background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.8rem;margin:.8rem 0;}
+.sbar-track{height:30px;background:#eee;border-radius:4px;position:relative;overflow:hidden;}
+.sbar-fill{height:100%;background:var(--teal);border-radius:4px;transition:width .4s;}
+.sbar-label{font-family:Arial;font-size:.82rem;margin-top:.4rem;text-align:center;color:var(--navy);font-weight:700;}
+
+/* ── SUMMARY MODULE ── */
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1rem 0;}
+.sum-card{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1rem 1.2rem;}
+.sum-card h3{font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;}
+.sum-card p,.sum-card li{font-size:.88rem;line-height:1.7;}
+.sum-card ul{padding-left:1.1rem;}
+.flow-box{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1.2rem;margin:1rem 0;}
+.flow-box h3{font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:1rem;}
+.flow-step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:.8rem;}
+.flow-num{background:var(--navy);color:#fff;font-family:Arial;font-size:.8rem;font-weight:700;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.flow-text{font-size:.9rem;line-height:1.55;}
+.flow-text strong{color:var(--navy);}
+.sdiv{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:560px){.two-col{grid-template-columns:1fr;}}
+
+/* ── BOTTOM MODULE NAV ── */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 0 .5rem;border-top:1px solid var(--border);margin-top:2.5rem;gap:1rem;}
+.mod-nav-info{font-family:Arial;font-size:.8rem;color:var(--muted);text-align:center;flex:1;}
+.mod-nav .btn{min-width:90px;}
+
+/* ── FIBONACCI SPIRAL ── */
+.fib-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;}
+@media(max-width:520px){.fib-grid{grid-template-columns:1fr;}}
+
+/* ── PI ACCURACY BAR ── */
+.pi-bar-wrap{background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.8rem;margin:.8rem 0;}
+.pi-bar-track{height:22px;background:#eee;border-radius:4px;position:relative;overflow:hidden;}
+.pi-bar-fill{height:100%;background:var(--purple);border-radius:4px;transition:width .3s;}
+.pi-bar-label{font-family:Arial;font-size:.82rem;margin-top:.4rem;text-align:center;color:var(--navy);font-weight:700;}
+
+/* ── TELESCOPING ── */
+.tele-row{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin:.5rem 0;font-family:Arial;font-size:.88rem;}
+.tele-chip{padding:.2rem .5rem;border-radius:3px;border:1.5px solid;font-weight:700;font-size:.8rem;}
+.tele-chip.pos{background:#e6f6f1;border-color:var(--teal);color:var(--teal);}
+.tele-chip.neg{background:#fdf0f0;border-color:var(--red);color:var(--red);}
+.tele-chip.cancel{background:#eee;border-color:#bbb;color:#bbb;text-decoration:line-through;opacity:.55;}
+.tele-chip.remain{background:var(--goldf);border-color:var(--gold);color:var(--navy);}
 </style>
 </head>
 <body>
@@ -129,116 +183,143 @@ canvas{display:block;width:100%;}
   <span class="badge">AS / A-Level Prep</span>
   <p>From counting to convergence — step by step</p>
 </div>
+<div class="progress-row">
+  <span class="prog-label">Progress:</span>
+  <div class="pdot" id="pd1" data-label="1 Number Line" onclick="go(1)"></div>
+  <div class="pdot" id="pd2" data-label="2 Approaching Zero" onclick="go(2)"></div>
+  <div class="pdot" id="pd3" data-label="3 The 0/0 Problem" onclick="go(3)"></div>
+  <div class="pdot" id="pd4" data-label="4 What is a Limit?" onclick="go(4)"></div>
+  <div class="pdot" id="pd5" data-label="5 Sequences" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="6 Infinite Series" onclick="go(6)"></div>
+  <div class="pdot" id="pd7" data-label="7 Why Convergence?" onclick="go(7)"></div>
+  <div class="pdot" id="pd8" data-label="8 Tests" onclick="go(8)"></div>
+  <div class="pdot" id="pd9" data-label="9 Bouncing Ball" onclick="go(9)"></div>
+  <div class="pdot" id="pd10" data-label="10 Koch Snowflake" onclick="go(10)"></div>
+  <div class="pdot" id="pd11" data-label="11 Density of Fractions" onclick="go(11)"></div>
+  <div class="pdot" id="pd12" data-label="12 Calculator Lies" onclick="go(12)"></div>
+  <div class="pdot" id="pd13" data-label="13 Paradoxes" onclick="go(13)"></div>
+  <div class="pdot" id="pd15" data-label="14 Fibonacci" onclick="go(15)"></div>
+  <div class="pdot" id="pd16" data-label="15 π from Series" onclick="go(16)"></div>
+  <div class="pdot" id="pd17" data-label="16 Telescoping" onclick="go(17)"></div>
+  <div class="pdot" id="pd14" data-label="Summary" onclick="go(14)"></div>
+</div>
 <nav id="nav">
-  <button class="nb on" data-m="1" onclick="go(1)">1&hairsp; Number&nbsp;Line</button>
-  <button class="nb" data-m="2" onclick="go(2)">2&hairsp; Approaching&nbsp;Zero</button>
-  <button class="nb" data-m="3" onclick="go(3)">3&hairsp; The&nbsp;0/0&nbsp;Problem</button>
-  <button class="nb" data-m="4" onclick="go(4)">4&hairsp; What&nbsp;is&nbsp;a&nbsp;Limit?</button>
-  <button class="nb" data-m="5" onclick="go(5)">5&hairsp; Sequences</button>
-  <button class="nb" data-m="6" onclick="go(6)">6&hairsp; Infinite&nbsp;Series</button>
-  <button class="nb" data-m="7" onclick="go(7)">7&hairsp; Why&nbsp;Convergence?</button>
-  <button class="nb" data-m="8" onclick="go(8)">8&hairsp; Tests</button>
-  <button class="nb" data-m="9" onclick="go(9)">&#8734;&hairsp; Paradoxes</button>
+  <button class="nb on" data-m="1" onclick="go(1)">1&hairsp;Number&nbsp;Line</button>
+  <button class="nb" data-m="2" onclick="go(2)">2&hairsp;Approaching&nbsp;Zero</button>
+  <button class="nb" data-m="3" onclick="go(3)">3&hairsp;The&nbsp;0/0&nbsp;Problem</button>
+  <button class="nb" data-m="4" onclick="go(4)">4&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
+  <button class="nb" data-m="5" onclick="go(5)">5&hairsp;Sequences</button>
+  <button class="nb" data-m="6" onclick="go(6)">6&hairsp;Infinite&nbsp;Series</button>
+  <button class="nb" data-m="7" onclick="go(7)">7&hairsp;Why&nbsp;Convergence?</button>
+  <button class="nb" data-m="8" onclick="go(8)">8&hairsp;Tests</button>
+  <button class="nb" data-m="9" onclick="go(9)">9&hairsp;Bouncing&nbsp;Ball</button>
+  <button class="nb" data-m="10" onclick="go(10)">10&hairsp;Snowflake</button>
+  <button class="nb" data-m="11" onclick="go(11)">11&hairsp;Fractions</button>
+  <button class="nb" data-m="12" onclick="go(12)">12&hairsp;Calculator&nbsp;Lies</button>
+  <button class="nb" data-m="13" onclick="go(13)">&#8734;&hairsp;Paradoxes</button>
+  <button class="nb" data-m="15" onclick="go(15)">14&hairsp;Fibonacci</button>
+  <button class="nb" data-m="16" onclick="go(16)">15&hairsp;&pi;&nbsp;Series</button>
+  <button class="nb" data-m="17" onclick="go(17)">16&hairsp;Telescoping</button>
+  <button class="nb" data-m="14" onclick="go(14)">&#9654;&hairsp;Summary</button>
 </nav>
 </header>
 
 <div class="container">
 
-<!-- ══════════════════ MODULE 1 ══════════════════ -->
+<!-- ═══ MODULE 1: NUMBER LINE ═══ -->
 <section class="module on" id="mod1">
 <div class="mhdr"><div class="mtag">Module 1</div><h2>The Endless Number Line</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> Integers never end. No matter how large a number you name,
-  you can always add one more. Infinity is <em>not</em> a number — it describes an unending process.
-  <div class="q-intro">→ Drag the number line left/right. Then press <em>Start Counting</em> and watch what happens.</div>
+  <strong>Core idea:</strong> Integers never end. No matter how large a number you name, you can always add one more.
+  Infinity is <em>not</em> a number — it describes an unending process.
+  <div class="q-intro">→ Drag the number line. Press <em>Start Counting</em> and watch what happens.</div>
 </div>
 <div class="cbox"><canvas id="c1nl" height="80"></canvas></div>
 <div class="ctrls">
-  <button class="btn btn-solid" onclick="m1StartCount()">Start Counting</button>
-  <button class="btn btn-outline" onclick="m1StopCount()">Stop</button>
-  <button class="btn btn-outline" onclick="m1ResetCount()">Reset</button>
-  <span style="margin-left:auto;font-family:Arial;font-size:.82rem;color:var(--muted)">Drag the line above ↑</span>
+  <button class="btn btn-solid" onclick="m1Start()">Start Counting</button>
+  <button class="btn btn-outline" onclick="m1Stop()">Stop</button>
+  <button class="btn btn-outline" onclick="m1Reset()">Reset</button>
+  <span style="margin-left:auto;font-family:Arial;font-size:.82rem;color:var(--muted)">Drag ↑</span>
 </div>
 <div class="big-num">n = <span id="m1n">1</span></div>
-<div class="status" id="m1status">Will this process ever stop?</div>
-<div class="challenges">
-  <h3>Think about it</h3>
+<div class="status" id="m1st">Will this process ever stop?</div>
+<div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the largest integer?</div>
-  <div class="ccard-a">There is no largest integer. For any integer \(N\), the integer \(N+1\) is larger. The process of adding 1 never terminates — this is what mathematicians mean when they say the integers are <em>infinite</em>.</div></div>
+  <div class="ccard-a">There is no largest integer. For any integer \(N\), the integer \(N+1\) is larger. The process never terminates — this is what "infinite" means.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is infinity a number?</div>
-  <div class="ccard-a">No. \(\infty\) is not a real number — it is a concept describing an unending process or an unbounded quantity. You cannot substitute \(\infty\) into arithmetic operations the way you can substitute a real number. Expressions like \(\infty - \infty\) or \(\frac{\infty}{\infty}\) are <em>indeterminate</em> and have no single value.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are there different "sizes" of infinity?</div>
-  <div class="ccard-a">Yes — Georg Cantor showed this in the 19th century. The integers and the rational numbers are both "countably infinite" (the same size), but the real numbers form a strictly larger "uncountably infinite" set. There are infinitely many different sizes of infinity!</div></div>
+  <div class="ccard-a">No. \(\infty\) is not a real number. Expressions like \(\infty - \infty\) or \(\frac{\infty}{\infty}\) are <em>indeterminate</em> — they have no single value. Infinity describes a process or a limit, not a quantity you can substitute into arithmetic.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are there different sizes of infinity?</div>
+  <div class="ccard-a">Yes — Cantor showed this in the 19th century. The integers and rationals are "countably infinite" (\(\aleph_0\)), but the real numbers are a strictly larger "uncountably infinite" set. See Module 11 for more on this idea.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 2 ══════════════════ -->
+<!-- ═══ MODULE 2: APPROACHING ZERO ═══ -->
 <section class="module" id="mod2">
 <div class="mhdr"><div class="mtag">Module 2</div><h2>Approaching Zero</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A sequence can get arbitrarily close to zero without ever equalling zero.
-  "Getting closer and closer" is a precise process, not a vague idea.
-  <div class="q-intro">→ Choose a sequence below and adjust \(n\) to watch the terms shrink.</div>
+  Different sequences approach zero at very different speeds — which matters enormously for series.
+  <div class="q-intro">→ Use the tabs below to explore different sequences, or compare them all in the Race tab.</div>
 </div>
 <div class="stabs">
   <button class="stab on" onclick="s2tab(this,'s2a')">1/n</button>
   <button class="stab" onclick="s2tab(this,'s2b')">1/n²</button>
   <button class="stab" onclick="s2tab(this,'s2c')">rⁿ (|r|&lt;1)</button>
+  <button class="stab" onclick="s2tab(this,'s2r')">&#127939; Race</button>
 </div>
+
 <div class="spanel on" id="s2a">
   <div class="fdisp">\(a_n = \dfrac{1}{n}\)</div>
-  <div class="slider-row">
-    <label>n =</label>
-    <input type="range" id="s2a-sl" min="1" max="200" value="1" oninput="s2update('a')">
-    <span class="slider-val" id="s2a-val">1</span>
-  </div>
-  <div class="big-num">\(a_n\) = <span id="s2a-res">1.000000</span></div>
+  <div class="slider-row"><label>n =</label><input type="range" id="s2a-sl" min="1" max="200" value="1" oninput="s2upd('a')"><span class="slider-val" id="s2a-v">1</span></div>
+  <div class="big-num">\(a_n\) = <span id="s2a-r">1.000000</span></div>
   <div class="status" id="s2a-st">Getting smaller, but never reaching zero.</div>
-  <div class="cbox"><canvas id="c2a" height="160"></canvas></div>
+  <div class="cbox"><canvas id="c2a" height="150"></canvas></div>
 </div>
 <div class="spanel" id="s2b">
   <div class="fdisp">\(a_n = \dfrac{1}{n^2}\)</div>
-  <div class="slider-row">
-    <label>n =</label>
-    <input type="range" id="s2b-sl" min="1" max="200" value="1" oninput="s2update('b')">
-    <span class="slider-val" id="s2b-val">1</span>
-  </div>
-  <div class="big-num">\(a_n\) = <span id="s2b-res">1.000000</span></div>
+  <div class="slider-row"><label>n =</label><input type="range" id="s2b-sl" min="1" max="200" value="1" oninput="s2upd('b')"><span class="slider-val" id="s2b-v">1</span></div>
+  <div class="big-num">\(a_n\) = <span id="s2b-r">1.000000</span></div>
   <div class="status" id="s2b-st">Decreasing faster than 1/n.</div>
-  <div class="cbox"><canvas id="c2b" height="160"></canvas></div>
+  <div class="cbox"><canvas id="c2b" height="150"></canvas></div>
 </div>
 <div class="spanel" id="s2c">
-  <div class="fdisp">\(a_n = r^n\), &nbsp;\(|r| &lt; 1\)</div>
-  <div class="slider-row">
-    <label>r =</label>
-    <input type="range" id="s2c-r" min="-99" max="99" value="50" oninput="s2update('c')">
-    <span class="slider-val" id="s2c-rval">0.50</span>
-  </div>
-  <div class="slider-row">
-    <label>n =</label>
-    <input type="range" id="s2c-sl" min="1" max="60" value="1" oninput="s2update('c')">
-    <span class="slider-val" id="s2c-val">1</span>
-  </div>
-  <div class="big-num">\(a_n\) = <span id="s2c-res">0.500000</span></div>
+  <div class="fdisp">\(a_n = r^n\), &ensp;\(|r|&lt;1\)</div>
+  <div class="slider-row"><label>r =</label><input type="range" id="s2c-r" min="-99" max="99" value="50" oninput="s2upd('c')"><span class="slider-val" id="s2c-rv">0.50</span></div>
+  <div class="slider-row"><label>n =</label><input type="range" id="s2c-sl" min="1" max="60" value="1" oninput="s2upd('c')"><span class="slider-val" id="s2c-v">1</span></div>
+  <div class="big-num">\(a_n\) = <span id="s2c-r">0.500000</span></div>
   <div class="status" id="s2c-st">Geometric decay toward zero.</div>
-  <div class="cbox"><canvas id="c2c" height="160"></canvas></div>
+  <div class="cbox"><canvas id="c2c" height="150"></canvas></div>
 </div>
-<div class="challenges">
-  <h3>Think about it</h3>
+<div class="spanel" id="s2r">
+  <div class="concept" style="background:#eef2ff;border-color:var(--purple);">
+    All three sequences plotted together. Notice how \(1/n^2\) and \(r^n\) pull away from \(1/n\) — yet all three approach zero.
+  </div>
+  <div class="slider-row"><label>r =</label><input type="range" id="s2r-r" min="1" max="95" value="70" oninput="drawRace()"><span class="slider-val" id="s2r-rv">0.70</span></div>
+  <div class="cbox"><canvas id="c2race" height="200"></canvas></div>
+  <div style="display:flex;gap:1.5rem;font-family:Arial;font-size:.85rem;justify-content:center;margin:.5rem 0;">
+    <span><span style="display:inline-block;width:14px;height:3px;background:var(--navy);vertical-align:middle;"></span> 1/n</span>
+    <span><span style="display:inline-block;width:14px;height:3px;background:var(--teal);vertical-align:middle;"></span> 1/n²</span>
+    <span><span style="display:inline-block;width:14px;height:3px;background:var(--red);vertical-align:middle;"></span> rⁿ</span>
+  </div>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does 1/n ever equal zero?</div>
-  <div class="ccard-a">No. For any finite positive integer \(n\), \(\frac{1}{n} > 0\). The sequence <em>approaches</em> zero as \(n \to \infty\), which we write \(\frac{1}{n} \to 0\), but no term in the sequence actually equals zero.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Which shrinks faster: 1/n or 1/n²?</div>
-  <div class="ccard-a">\(\frac{1}{n^2}\) shrinks much faster. For example, at \(n=100\): \(\frac{1}{100} = 0.01\) but \(\frac{1}{100^2} = 0.0001\). Formally, \(\frac{1/n^2}{1/n} = \frac{1}{n} \to 0\), so \(1/n^2\) is said to be of smaller order than \(1/n\).</div></div>
+  <div class="ccard-a">No. For any finite positive integer \(n\), \(\frac{1}{n}>0\). The sequence <em>approaches</em> zero as \(n\to\infty\) but no term equals zero.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the speed of decay matter?</div>
+  <div class="ccard-a">Because "terms → 0" is not enough to guarantee a series converges. \(\sum 1/n\) diverges even though \(1/n\to0\), while \(\sum 1/n^2\) converges. The <em>rate</em> at which terms shrink determines whether the sum stays finite. See Module 6.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "Since 1/n gets smaller and smaller, it must eventually reach zero."</div>
+  <div class="ccard-a">This confuses a <em>limit</em> with a <em>value attained</em>. \(\frac{1}{n}\to0\) means we can make \(\frac{1}{n}\) as small as we wish — but for any finite \(n\), \(\frac{1}{n}\) is strictly positive. Only the limit, not any term, equals zero.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 3 ══════════════════ -->
+<!-- ═══ MODULE 3: 0/0 PROBLEM ═══ -->
 <section class="module" id="mod3">
 <div class="mhdr"><div class="mtag">Module 3</div><h2>The 0/0 Problem</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> \(\frac{0}{0}\) is <em>indeterminate</em> — it has no single value.
-  But the <em>limit</em> of a ratio \(\frac{f(x)}{g(x)}\) as both \(f \to 0\) and \(g \to 0\)
-  can be anything. The key is <em>how fast</em> each part approaches zero.
+  <strong>Core idea:</strong> \(\frac{0}{0}\) is <em>indeterminate</em>. The limit of a ratio \(\frac{f(x)}{g(x)}\) as both \(f,g\to0\) can be anything — it depends entirely on <em>how fast</em> each approaches zero.
 </div>
 <div class="stabs">
   <button class="stab on" onclick="s3tab(this,'s3a')">sin x / x</button>
@@ -246,262 +327,268 @@ canvas{display:block;width:100%;}
   <button class="stab" onclick="s3tab(this,'s3c')">x / x²</button>
 </div>
 <div class="spanel on" id="s3a">
-  <div class="fdisp">\(\displaystyle\lim_{x \to 0} \frac{\sin x}{x}\)</div>
-  <div class="slider-row">
-    <label>\(x\) =</label>
-    <input type="range" id="s3a-sl" min="1" max="200" value="100" oninput="s3update('a')">
-    <span class="slider-val" id="s3a-xval">—</span>
-  </div>
+  <div class="fdisp">\(\displaystyle\lim_{x\to0}\frac{\sin x}{x} = 1\)</div>
+  <div class="slider-row"><span class="slider-val" style="text-align:left">x = <span id="s3a-xv">—</span></span><input type="range" id="s3a-sl" min="1" max="200" value="100" oninput="s3upd('a')"><span class="slider-val">x &rarr; 0</span></div>
   <div class="big-num">ratio = <span id="s3a-res">—</span></div>
-  <div class="status converge">The ratio → 1 as x → 0, even though both numerator and denominator → 0.</div>
+  <div class="status converge">Both numerator and denominator → 0, yet the ratio → 1.</div>
   <div class="cbox"><canvas id="c3a" height="180"></canvas></div>
 </div>
 <div class="spanel" id="s3b">
-  <div class="fdisp">\(\displaystyle\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1}(x+1) = 2\)</div>
-  <div class="slider-row">
-    <label>\(x\) =</label>
-    <input type="range" id="s3b-sl" min="1" max="200" value="150" oninput="s3update('b')">
-    <span class="slider-val" id="s3b-xval">—</span>
-  </div>
+  <div class="fdisp">\(\displaystyle\lim_{x\to1}\frac{x^2-1}{x-1} = \lim_{x\to1}(x+1) = 2\)</div>
+  <div class="slider-row"><span class="slider-val" style="text-align:left">x = <span id="s3b-xv">—</span></span><input type="range" id="s3b-sl" min="1" max="200" value="150" oninput="s3upd('b')"><span class="slider-val">x &rarr; 1</span></div>
   <div class="big-num">ratio = <span id="s3b-res">—</span></div>
-  <div class="status converge">Cancel the factor \((x-1)\) — the hole disappears and the limit equals 2.</div>
+  <div class="status converge">Cancel the factor (x−1); the "hole" disappears and the limit = 2.</div>
   <div class="cbox"><canvas id="c3b" height="180"></canvas></div>
 </div>
 <div class="spanel" id="s3c">
-  <div class="fdisp">\(\displaystyle\lim_{x \to 0} \frac{x}{x^2} = \lim_{x \to 0} \frac{1}{x} \to \infty\)</div>
-  <div class="slider-row">
-    <label>\(x\) =</label>
-    <input type="range" id="s3c-sl" min="1" max="200" value="100" oninput="s3update('c')">
-    <span class="slider-val" id="s3c-xval">—</span>
-  </div>
+  <div class="fdisp">\(\displaystyle\lim_{x\to0}\frac{x}{x^2}=\lim_{x\to0}\frac{1}{x}\to\infty\)</div>
+  <div class="slider-row"><span class="slider-val" style="text-align:left">x = <span id="s3c-xv">—</span></span><input type="range" id="s3c-sl" min="1" max="200" value="100" oninput="s3upd('c')"><span class="slider-val">x &rarr; 0</span></div>
   <div class="big-num">ratio = <span id="s3c-res">—</span></div>
-  <div class="status diverge">Here the denominator wins — the ratio blows up to ∞.</div>
+  <div class="status diverge">The denominator wins — the ratio blows up to ∞.</div>
 </div>
-<div class="challenges">
-  <h3>Think about it</h3>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why is 0/0 called "indeterminate"?</div>
-  <div class="ccard-a">Because different limits of the form \(\frac{f(x)}{g(x)}\) where \(f,g\to 0\) can give any value — zero, a finite non-zero number, or infinity. The symbol \(\frac{0}{0}\) by itself carries no information about what the limit is; you must examine the specific functions involved.</div></div>
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why is 0/0 "indeterminate"?</div>
+  <div class="ccard-a">Because \(\frac{0}{0}\) alone carries no information. As we saw above, limits of the form \(\frac{f}{g}\) with \(f,g\to0\) can equal any value — or be infinite. The symbol \(\frac{0}{0}\) is meaningless without knowing the specific functions.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What other indeterminate forms exist?</div>
-  <div class="ccard-a">The classic indeterminate forms are: \(\frac{0}{0}\), \(\frac{\infty}{\infty}\), \(0 \cdot \infty\), \(\infty - \infty\), \(0^0\), \(1^\infty\), and \(\infty^0\). Each requires careful analysis — usually L'Hôpital's rule or algebraic manipulation — to find the limit.</div></div>
+  <div class="ccard-a">The seven classical forms: \(\frac{0}{0},\frac{\infty}{\infty},0\cdot\infty,\infty-\infty,0^0,1^\infty,\infty^0\). Each requires careful analysis — algebraic manipulation or L'Hôpital's rule — to evaluate.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "Both top and bottom go to zero, so the limit is zero."</div>
+  <div class="ccard-a">Completely wrong. \(\lim_{x\to0}\frac{\sin x}{x}=1\), not zero. You cannot substitute the limits of numerator and denominator separately when both are zero — the answer depends on how they compare. Always check for a factorisation or use L'Hôpital.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 4 ══════════════════ -->
+<!-- ═══ MODULE 4: WHAT IS A LIMIT? ═══ -->
 <section class="module" id="mod4">
 <div class="mhdr"><div class="mtag">Module 4</div><h2>What is a Limit?</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> We write \(\lim_{n \to \infty} a_n = L\) and say <em>the limit of \(a_n\) is \(L\)</em>
-  if we can make \(a_n\) as close to \(L\) as we wish by taking \(n\) sufficiently large.
-  This is made precise by the \(\varepsilon\text{-}N\) definition.
+  <strong>Core idea:</strong> We say \(\lim_{n\to\infty}a_n = L\) if we can make \(a_n\) as close to \(L\) as we like by taking \(n\) large enough. The green band below shows the tolerance \(\varepsilon\) around \(L=0\).
+  <div class="q-intro">→ Drag the \(\varepsilon\) slider. Watch how many red points fall outside the band — and find the threshold \(N\).</div>
 </div>
 <div class="fdisp">
-  \(\displaystyle \lim_{n\to\infty} a_n = L \iff \forall\,\varepsilon > 0,\ \exists\, N \in \mathbb{N} :\ n > N \Rightarrow |a_n - L| < \varepsilon\)
+  \(\displaystyle\lim_{n\to\infty}a_n = L \iff \forall\,\varepsilon>0,\ \exists\,N:\ n>N\Rightarrow|a_n-L|<\varepsilon\)
 </div>
-<div class="concept" style="background:#eef2ff;border-color:var(--purple);">
-  <strong>In plain English:</strong> No matter how small a "tolerance" \(\varepsilon\) you specify around \(L\),
-  all terms of the sequence <em>after</em> some index \(N\) must lie within that tolerance.
+<div class="stabs">
+  <button class="stab on" onclick="s4tab(this,'s4a')">1/n → 0</button>
+  <button class="stab" onclick="s4tab(this,'s4b')">1/n² → 0</button>
+  <button class="stab" onclick="s4tab(this,'s4c')">(−1)ⁿ/n → 0</button>
 </div>
-<div class="slider-row" style="margin-top:1rem;">
-  <label>\(\varepsilon\) =</label>
-  <input type="range" id="m4eps" min="1" max="100" value="30" oninput="m4update()">
-  <span class="slider-val" id="m4epsval">0.30</span>
+<div class="spanel on" id="s4a">
+  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4a-eps" min="1" max="100" value="30" oninput="m4draw('a')"><span class="slider-val" id="m4a-ev">0.30</span></div>
+  <div class="cbox"><canvas id="c4a" height="220"></canvas></div>
+  <div class="status" id="m4a-st"></div>
 </div>
-<div class="cbox"><canvas id="c4" height="220"></canvas></div>
-<div class="status" id="m4status">All terms inside the ε-band after N.</div>
-<div class="challenges">
-  <h3>Think about it</h3>
+<div class="spanel" id="s4b">
+  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4b-eps" min="1" max="100" value="30" oninput="m4draw('b')"><span class="slider-val" id="m4b-ev">0.30</span></div>
+  <div class="cbox"><canvas id="c4b" height="220"></canvas></div>
+  <div class="status" id="m4b-st"></div>
+</div>
+<div class="spanel" id="s4c">
+  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4c-eps" min="1" max="100" value="30" oninput="m4draw('c')"><span class="slider-val" id="m4c-ev">0.30</span></div>
+  <div class="cbox"><canvas id="c4c" height="220"></canvas></div>
+  <div class="status" id="m4c-st"></div>
+</div>
+<div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does the limit have to be reached?</div>
-  <div class="ccard-a">No. The limit \(L\) is the value the sequence <em>approaches</em>, not necessarily a value the sequence attains. For example, \(a_n = \frac{1}{n}\) has limit 0 but never equals 0.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Can a sequence fail to have a limit?</div>
-  <div class="ccard-a">Yes. A sequence diverges if it grows without bound (e.g. \(a_n = n\)), or if it oscillates without settling (e.g. \(a_n = (-1)^n\)). Only sequences that eventually "settle down" near a single value possess a limit.</div></div>
+  <div class="ccard-a">No. \(a_n=\frac{1}{n}\) has limit 0 but never equals 0. The limit is the value the sequence <em>approaches</em>, not a value it necessarily attains.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What happens if ε is halved?</div>
+  <div class="ccard-a">For \(a_n=1/n\), halving \(\varepsilon\) doubles \(N\) (since \(N\approx 1/\varepsilon\)). For \(a_n=1/n^2\), \(N\) only grows like \(\sqrt{1/\varepsilon}\) — a much more modest increase. Faster-decaying sequences need smaller \(N\) for the same tolerance.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The sequence equals its limit eventually."</div>
+  <div class="ccard-a">Not in general. For \(a_n=1/n\), no term ever equals 0. The definition says the terms get <em>arbitrarily close</em> — not that they arrive. (Some sequences do eventually reach their limit, e.g. a constant sequence, but this is the exception.)</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 5 ══════════════════ -->
+<!-- ═══ MODULE 5: SEQUENCES ═══ -->
 <section class="module" id="mod5">
 <div class="mhdr"><div class="mtag">Module 5</div><h2>Sequences</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> A sequence is an ordered list of numbers \(a_1, a_2, a_3, \ldots\)
-  defined by a formula or recurrence. A sequence <em>converges</em> if its terms approach a finite limit;
-  otherwise it <em>diverges</em>.
+  <strong>Core idea:</strong> A sequence \(a_1,a_2,a_3,\ldots\) converges if its terms settle towards a finite limit. Otherwise it diverges — either by growing without bound, or by oscillating.
 </div>
 <div class="stabs">
   <button class="stab on" onclick="s5tab(this,'s5a')">Arithmetic</button>
   <button class="stab" onclick="s5tab(this,'s5b')">Geometric</button>
   <button class="stab" onclick="s5tab(this,'s5c')">Oscillating</button>
-  <button class="stab" onclick="s5tab(this,'s5d')">Mixed</button>
+  <button class="stab" onclick="s5tab(this,'s5d')">sin(n)/n</button>
 </div>
-
 <div class="spanel on" id="s5a">
-  <div class="fdisp">\(a_n = a + (n-1)d\)</div>
-  <div class="slider-row"><label>First term \(a\)</label><input type="range" id="s5a-a" min="-20" max="20" value="2" oninput="s5draw('a')"><span class="slider-val" id="s5a-aval">2</span></div>
-  <div class="slider-row"><label>Common difference \(d\)</label><input type="range" id="s5a-d" min="-10" max="10" value="3" oninput="s5draw('a')"><span class="slider-val" id="s5a-dval">3</span></div>
-  <div class="status diverge" id="s5a-st">Diverges (unless d = 0).</div>
-  <div class="cbox"><canvas id="c5a" height="160"></canvas></div>
+  <div class="fdisp">\(a_n = a+(n-1)d\)</div>
+  <div class="slider-row"><label>First term \(a\)</label><input type="range" id="s5a-a" min="-20" max="20" value="2" oninput="s5draw('a')"><span class="slider-val" id="s5a-av">2</span></div>
+  <div class="slider-row"><label>Common difference \(d\)</label><input type="range" id="s5a-d" min="-10" max="10" value="3" oninput="s5draw('a')"><span class="slider-val" id="s5a-dv">3</span></div>
+  <div class="status" id="s5a-st">d ≠ 0: diverges.</div>
+  <div class="cbox"><canvas id="c5a" height="150"></canvas></div>
 </div>
-
 <div class="spanel" id="s5b">
-  <div class="fdisp">\(a_n = a \cdot r^{n-1}\)</div>
-  <div class="slider-row"><label>First term \(a\)</label><input type="range" id="s5b-a" min="-20" max="20" value="10" oninput="s5draw('b')"><span class="slider-val" id="s5b-aval">10</span></div>
-  <div class="slider-row"><label>Common ratio \(r\) × 0.1</label><input type="range" id="s5b-r" min="-19" max="19" value="5" oninput="s5draw('b')"><span class="slider-val" id="s5b-rval">0.5</span></div>
+  <div class="fdisp">\(a_n = a\cdot r^{n-1}\)</div>
+  <div class="slider-row"><label>First term \(a\)</label><input type="range" id="s5b-a" min="-20" max="20" value="10" oninput="s5draw('b')"><span class="slider-val" id="s5b-av">10</span></div>
+  <div class="slider-row"><label>Ratio \(r\times0.1\)</label><input type="range" id="s5b-r" min="-19" max="19" value="5" oninput="s5draw('b')"><span class="slider-val" id="s5b-rv">0.5</span></div>
   <div class="status" id="s5b-st">|r| &lt; 1: converges to 0.</div>
-  <div class="cbox"><canvas id="c5b" height="160"></canvas></div>
+  <div class="cbox"><canvas id="c5b" height="150"></canvas></div>
 </div>
-
 <div class="spanel" id="s5c">
-  <div class="fdisp">\(a_n = r \cdot (-1)^n\)</div>
-  <div class="slider-row"><label>Amplitude \(r\)</label><input type="range" id="s5c-r" min="1" max="20" value="8" oninput="s5draw('c')"><span class="slider-val" id="s5c-rval">8</span></div>
+  <div class="fdisp">\(a_n = A\cdot(-1)^n\)</div>
+  <div class="slider-row"><label>Amplitude \(A\)</label><input type="range" id="s5c-a" min="1" max="20" value="8" oninput="s5draw('c')"><span class="slider-val" id="s5c-av">8</span></div>
   <div class="status diverge">Oscillates — no limit exists.</div>
-  <div class="cbox"><canvas id="c5c" height="160"></canvas></div>
+  <div class="cbox"><canvas id="c5c" height="150"></canvas></div>
 </div>
-
 <div class="spanel" id="s5d">
   <div class="fdisp">\(a_n = \dfrac{\sin n}{n}\)</div>
-  <div class="status converge">Oscillates but converges to 0 (squeeze theorem).</div>
-  <div class="cbox"><canvas id="c5d" height="160"></canvas></div>
+  <div class="status converge">Oscillates but converges to 0 (squeeze theorem: \(-\frac{1}{n}\le\frac{\sin n}{n}\le\frac{1}{n}\)).</div>
+  <div class="cbox"><canvas id="c5d" height="150"></canvas></div>
 </div>
-
-<div class="challenges">
-  <h3>Think about it</h3>
+<div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does a bounded sequence always converge?</div>
-  <div class="ccard-a">No. The sequence \(a_n = (-1)^n\) is bounded (\(|a_n| = 1\) for all \(n\)) but does not converge because it oscillates between \(+1\) and \(-1\). However, a <em>bounded monotone</em> sequence always converges — this is the Monotone Convergence Theorem.</div></div>
+  <div class="ccard-a">No. \(a_n=(-1)^n\) is bounded but diverges. However, a <em>bounded monotone</em> sequence always converges — this is the Monotone Convergence Theorem, a cornerstone of analysis.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">When does a geometric sequence converge?</div>
-  <div class="ccard-a">A geometric sequence \(a_n = a \cdot r^{n-1}\) converges if and only if \(|r| &lt; 1\) (in which case \(a_n \to 0\)) or \(a = 0\). If \(|r| \geq 1\) and \(a \neq 0\), the sequence diverges.</div></div>
+  <div class="ccard-a">\(a_n=ar^{n-1}\) converges iff \(|r|&lt;1\) (then \(a_n\to0\)) or \(a=0\). If \(|r|>1\) and \(a\ne0\) it diverges to \(\pm\infty\); if \(r=-1\) and \(a\ne0\) it oscillates.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The sequence (−1)ⁿ is bounded, so it must converge."</div>
+  <div class="ccard-a">Being bounded is <em>necessary</em> for convergence but not <em>sufficient</em>. \((-1)^n\) is bounded by \(\pm1\) yet oscillates forever. You also need the sequence to be <em>eventually monotone</em> (or use some other test) to conclude convergence.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 6 ══════════════════ -->
+<!-- ═══ MODULE 6: INFINITE SERIES ═══ -->
 <section class="module" id="mod6">
 <div class="mhdr"><div class="mtag">Module 6</div><h2>Infinite Series</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> An infinite series is the "sum" of all terms of a sequence:
-  \(\displaystyle S = \sum_{n=1}^{\infty} a_n\). We define this via partial sums
-  \(S_N = \sum_{n=1}^{N} a_n\). The series converges if \(S_N \to L\) as \(N \to \infty\).
+  <strong>Core idea:</strong> An infinite series \(\sum_{n=1}^\infty a_n\) is defined via partial sums \(S_N=\sum_{n=1}^N a_n\).
+  The series converges if \(S_N\to L\) as \(N\to\infty\).
+  <div class="q-intro">→ Use <em>Step Through</em> to add one term at a time and watch the sum build up.</div>
 </div>
 <div class="stabs">
-  <button class="stab on" onclick="s6tab(this,'s6a')">Geometric (|r|&lt;1)</button>
+  <button class="stab on" onclick="s6tab(this,'s6a')">Geometric</button>
   <button class="stab" onclick="s6tab(this,'s6b')">Harmonic</button>
   <button class="stab" onclick="s6tab(this,'s6c')">Alternating</button>
 </div>
 
+<!-- Geometric with step-through -->
 <div class="spanel on" id="s6a">
-  <div class="fdisp">\(\displaystyle\sum_{n=0}^{\infty} ar^n = \frac{a}{1-r}, \quad |r|<1\)</div>
-  <div class="slider-row"><label>a =</label><input type="range" id="s6a-a" min="1" max="20" value="10" oninput="s6draw('a')"><span class="slider-val" id="s6a-aval">10</span></div>
-  <div class="slider-row"><label>r × 0.1 =</label><input type="range" id="s6a-r" min="1" max="9" value="5" oninput="s6draw('a')"><span class="slider-val" id="s6a-rval">0.5</span></div>
-  <div class="big-num">S = <span id="s6a-sum">20.00</span> &nbsp;<span style="font-size:1rem;color:var(--muted)">(exact: <span id="s6a-exact">20.00</span>)</span></div>
+  <div class="fdisp">\(\displaystyle\sum_{n=0}^\infty ar^n=\frac{a}{1-r},\quad|r|&lt;1\)</div>
+  <div class="slider-row"><label>a =</label><input type="range" id="s6a-a" min="1" max="20" value="10" oninput="s6aReset()"><span class="slider-val" id="s6a-av">10</span></div>
+  <div class="slider-row"><label>r =</label><input type="range" id="s6a-r" min="1" max="9" value="5" oninput="s6aReset()"><span class="slider-val" id="s6a-rv">0.5</span></div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="s6aStep()">&#43; Add next term</button>
+    <button class="btn btn-solid" onclick="s6aFill()">Fill to 30</button>
+    <button class="btn btn-outline" onclick="s6aReset()">Reset</button>
+  </div>
+  <div class="step-display" id="s6a-chips"></div>
+  <div class="sbar-wrap">
+    <div style="font-family:Arial;font-size:.8rem;color:var(--muted);margin-bottom:.4rem;">Progress to exact sum:</div>
+    <div class="sbar-track"><div class="sbar-fill" id="s6a-bar" style="width:0%"></div></div>
+    <div class="sbar-label" id="s6a-blab">S = 0 &nbsp;|&nbsp; Exact = —</div>
+  </div>
+  <div class="big-num">S<sub>N</sub> = <span id="s6a-sum">0</span></div>
   <div class="status converge" id="s6a-st">Converges.</div>
-  <div class="cbox"><canvas id="c6a" height="180"></canvas></div>
+  <div class="cbox"><canvas id="c6a" height="170"></canvas></div>
 </div>
 
 <div class="spanel" id="s6b">
-  <div class="fdisp">\(\displaystyle\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \cdots\)</div>
-  <div class="slider-row"><label>Terms N =</label><input type="range" id="s6b-n" min="1" max="200" value="20" oninput="s6draw('b')"><span class="slider-val" id="s6b-nval">20</span></div>
+  <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\frac{1}{n}=1+\frac{1}{2}+\frac{1}{3}+\cdots\)</div>
+  <div class="slider-row"><label>Terms N =</label><input type="range" id="s6b-n" min="1" max="500" value="20" oninput="s6draw('b')"><span class="slider-val" id="s6b-nv">20</span></div>
   <div class="big-num">S<sub>N</sub> = <span id="s6b-sum">—</span></div>
   <div class="status diverge">The harmonic series DIVERGES — slowly but inevitably.</div>
-  <div class="cbox"><canvas id="c6b" height="180"></canvas></div>
+  <div class="note red">It takes over 10,000 terms for the harmonic series to exceed 10. It diverges, but extraordinarily slowly — a trap for intuition!</div>
+  <div class="cbox"><canvas id="c6b" height="170"></canvas></div>
 </div>
 
 <div class="spanel" id="s6c">
-  <div class="fdisp">\(\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \cdots = \ln 2\)</div>
-  <div class="slider-row"><label>Terms N =</label><input type="range" id="s6c-n" min="1" max="200" value="20" oninput="s6draw('c')"><span class="slider-val" id="s6c-nval">20</span></div>
-  <div class="big-num">S<sub>N</sub> = <span id="s6c-sum">—</span> &nbsp;<span style="font-size:1rem;color:var(--muted)">(ln 2 ≈ 0.6931)</span></div>
-  <div class="status converge">Alternating harmonic series CONVERGES (by alternating series test).</div>
-  <div class="cbox"><canvas id="c6c" height="180"></canvas></div>
+  <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\frac{(-1)^{n+1}}{n}=1-\frac{1}{2}+\frac{1}{3}-\cdots=\ln2\)</div>
+  <div class="slider-row"><label>Terms N =</label><input type="range" id="s6c-n" min="1" max="300" value="20" oninput="s6draw('c')"><span class="slider-val" id="s6c-nv">20</span></div>
+  <div class="big-num">S<sub>N</sub> = <span id="s6c-sum">—</span> <span style="font-size:1rem;color:var(--muted)">(ln 2 ≈ 0.6931)</span></div>
+  <div class="status converge">Alternating harmonic series CONVERGES (by the Alternating Series Test).</div>
+  <div class="cbox"><canvas id="c6c" height="170"></canvas></div>
 </div>
-<div class="challenges">
-  <h3>Think about it</h3>
+
+<div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">If the terms → 0, does the series converge?</div>
-  <div class="ccard-a">Not necessarily! The harmonic series \(\sum \frac{1}{n}\) is the classic counterexample: its terms \(\frac{1}{n} \to 0\) but the series still diverges. Terms approaching zero is a <em>necessary</em> condition for convergence, but not <em>sufficient</em>.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the sum of the geometric series \(\sum_{n=0}^\infty \left(\frac{1}{2}\right)^n\)?</div>
-  <div class="ccard-a">Using the formula \(\frac{a}{1-r}\) with \(a=1, r=\frac{1}{2}\): \(\frac{1}{1-\frac{1}{2}} = 2\). This is Zeno's paradox in a formula — infinitely many positive terms sum to a finite value!</div></div>
+  <div class="ccard-a">Not necessarily. The harmonic series \(\sum 1/n\) is the classic counterexample. Terms → 0 is only a <em>necessary</em> condition; the harmonic series fails the comparison test against \(\sum 1/2, \sum 1/4, \ldots\)</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the sum \(\sum_{n=0}^\infty(1/2)^n\)?</div>
+  <div class="ccard-a">Using \(\frac{a}{1-r}\) with \(a=1, r=1/2\): the sum is \(\frac{1}{1-1/2}=2\). Infinitely many positive terms summing to a finite value — this is what convergence really means.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The terms of the harmonic series go to zero, so it must converge."</div>
+  <div class="ccard-a">This is the single most common error in series. Terms going to zero is necessary but NOT sufficient. The harmonic series diverges despite \(1/n\to0\). Always apply a proper convergence test — never rely on this alone.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 7 ══════════════════ -->
+<!-- ═══ MODULE 7: WHY CONVERGENCE MATTERS ═══ -->
 <section class="module" id="mod7">
 <div class="mhdr"><div class="mtag">Module 7</div><h2>Why Convergence Matters</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> Convergent series let us compute exact values — like \(\pi\), \(e\), and \(\ln 2\) — 
-  as infinite sums. They underpin calculus, Fourier analysis, and much of modern mathematics and physics.
+  <strong>Core idea:</strong> Convergent series let us compute exact values of \(\pi\), \(e\), \(\ln 2\) and the standard functions. They underpin calculus, Fourier analysis, and much of modern mathematics.
 </div>
 <table class="tbl">
   <tr><th>Series</th><th>Sum</th><th>Behaviour</th></tr>
-  <tr><td>\(\sum_{n=0}^\infty \frac{x^n}{n!}\)</td><td>\(e^x\)</td><td class="converge">Converges ∀ x</td></tr>
-  <tr><td>\(\sum_{n=0}^\infty \frac{(-1)^n x^{2n+1}}{(2n+1)!}\)</td><td>\(\sin x\)</td><td class="converge">Converges ∀ x</td></tr>
-  <tr><td>\(\sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{(2n)!}\)</td><td>\(\cos x\)</td><td class="converge">Converges ∀ x</td></tr>
-  <tr><td>\(\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n} x^n\)</td><td>\(\ln(1+x)\)</td><td class="converge">Converges for \(-1 < x \le 1\)</td></tr>
-  <tr><td>\(\sum_{n=0}^\infty x^n\)</td><td>\(\frac{1}{1-x}\)</td><td class="converge">Converges for \(|x|<1\)</td></tr>
-  <tr><td>\(\sum_{n=1}^\infty \frac{1}{n}\)</td><td>—</td><td class="diverge">Diverges</td></tr>
-  <tr><td>\(\sum_{n=1}^\infty \frac{1}{n^2}\)</td><td>\(\frac{\pi^2}{6}\)</td><td class="converge">Converges (Basel problem)</td></tr>
+  <tr><td>\(\sum_{n=0}^\infty\frac{x^n}{n!}\)</td><td>\(e^x\)</td><td class="converge">Converges ∀ x</td></tr>
+  <tr><td>\(\sum_{n=0}^\infty\frac{(-1)^n x^{2n+1}}{(2n+1)!}\)</td><td>\(\sin x\)</td><td class="converge">Converges ∀ x</td></tr>
+  <tr><td>\(\sum_{n=0}^\infty\frac{(-1)^n x^{2n}}{(2n)!}\)</td><td>\(\cos x\)</td><td class="converge">Converges ∀ x</td></tr>
+  <tr><td>\(\sum_{n=1}^\infty\frac{(-1)^{n+1}x^n}{n}\)</td><td>\(\ln(1+x)\)</td><td class="converge">Converges, \(-1&lt;x\le1\)</td></tr>
+  <tr><td>\(\sum_{n=0}^\infty x^n\)</td><td>\(\frac{1}{1-x}\)</td><td class="converge">Converges, \(|x|&lt;1\)</td></tr>
+  <tr><td>\(\sum_{n=1}^\infty\frac{1}{n}\)</td><td>—</td><td class="diverge">Diverges</td></tr>
+  <tr><td>\(\sum_{n=1}^\infty\frac{1}{n^2}\)</td><td>\(\dfrac{\pi^2}{6}\)</td><td class="converge">Converges (Basel problem)</td></tr>
 </table>
-<div class="note">
-  <strong>Taylor/Maclaurin series:</strong> Many standard functions can be expressed as power series. 
-  The key insight is that if a function is "smooth enough", it equals its Taylor series within its radius of convergence.
-  This is how calculators compute \(\sin\), \(\cos\), \(e^x\) etc. — by summing finite partial sums.
-</div>
-<div class="challenges">
-  <h3>Think about it</h3>
+<div class="note"><strong>Taylor/Maclaurin series:</strong> If a function is smooth enough, it equals its Taylor series within its radius of convergence. Calculators use finite partial sums to evaluate \(\sin\), \(\cos\), \(e^x\) — see Module 12 for a live demonstration.</div>
+<div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the Basel problem?</div>
-  <div class="ccard-a">The Basel problem asks for the exact value of \(\sum_{n=1}^\infty \frac{1}{n^2} = 1 + \frac{1}{4} + \frac{1}{9} + \cdots\). Euler solved it in 1734, showing the answer is \(\frac{\pi^2}{6} \approx 1.6449\). The appearance of \(\pi\) in a sum involving only integers was astounding.</div></div>
+  <div class="ccard-a">Euler (1734) proved \(\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}\approx1.6449\). The appearance of \(\pi\) in a sum over integers was astonishing. The proof uses the fact that \(\sin x\) can be written as an infinite product over its zeros.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does e appear everywhere?</div>
-  <div class="ccard-a">Euler's number \(e = \sum_{n=0}^\infty \frac{1}{n!} = 1 + 1 + \frac{1}{2} + \frac{1}{6} + \cdots \approx 2.718\). It arises naturally as the base of natural logarithms, in compound interest, in differential equations, and throughout probability theory — because the exponential function \(e^x\) is its own derivative.</div></div>
+  <div class="ccard-a">\(e=\sum_{n=0}^\infty\frac{1}{n!}\approx2.718\). It arises as the base of natural logarithms, in compound interest, differential equations, and probability — because \(e^x\) is the unique function equal to its own derivative.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 8 ══════════════════ -->
+<!-- ═══ MODULE 8: TESTS ═══ -->
 <section class="module" id="mod8">
 <div class="mhdr"><div class="mtag">Module 8</div><h2>Convergence Tests</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> Given a series \(\sum a_n\), how do we tell if it converges?
-  A toolkit of tests covers most cases you'll meet at A-level and beyond.
+  <strong>Core idea:</strong> A toolkit of tests determines convergence for most series you'll meet. The new <em>p-series</em> tab shows a clean boundary between convergence and divergence.
 </div>
 <div class="stabs">
-  <button class="stab on" onclick="s8tab(this,'s8a')">Divergence Test</button>
-  <button class="stab" onclick="s8tab(this,'s8b')">Ratio Test</button>
+  <button class="stab on" onclick="s8tab(this,'s8a')">Divergence</button>
+  <button class="stab" onclick="s8tab(this,'s8b')">Ratio</button>
   <button class="stab" onclick="s8tab(this,'s8c')">Comparison</button>
-  <button class="stab" onclick="s8tab(this,'s8d')">Alt. Series</button>
+  <button class="stab" onclick="s8tab(this,'s8d')">Alternating</button>
+  <button class="stab" onclick="s8tab(this,'s8p')">p-Series</button>
 </div>
 
 <div class="spanel on" id="s8a">
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Divergence Test (nth-term test)</h3>
-  <div class="fdisp">\(\text{If } \lim_{n\to\infty} a_n \neq 0, \text{ then } \sum a_n \text{ diverges.}\)</div>
-  <div class="note"><strong>Warning:</strong> If \(a_n \to 0\), the test is <em>inconclusive</em> — the series might converge (geometric) or diverge (harmonic). The test only proves divergence.</div>
+  <div class="fdisp">If \(\displaystyle\lim_{n\to\infty}a_n\) &ne; 0, then \(\displaystyle\sum a_n\) diverges.</div>
+  <div class="note red"><strong>Warning:</strong> If \(a_n\to0\) the test is <em>inconclusive</em> — the series might still diverge (harmonic). This test only proves divergence.</div>
   <table class="tbl">
     <tr><th>Series</th><th>\(\lim a_n\)</th><th>Conclusion</th></tr>
     <tr><td>\(\sum n\)</td><td>\(\infty\)</td><td class="diverge">Diverges</td></tr>
-    <tr><td>\(\sum \frac{n}{n+1}\)</td><td>\(1 \neq 0\)</td><td class="diverge">Diverges</td></tr>
-    <tr><td>\(\sum \frac{1}{n}\)</td><td>\(0\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
-    <tr><td>\(\sum \frac{1}{n^2}\)</td><td>\(0\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
+    <tr><td>\(\sum\frac{n}{n+1}\)</td><td>1 &ne; 0</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\sum\frac{1}{n}\)</td><td>\(0\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
+    <tr><td>\(\sum\frac{1}{n^2}\)</td><td>\(0\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
   </table>
 </div>
 
 <div class="spanel" id="s8b">
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Ratio Test (D'Alembert)</h3>
-  <div class="fdisp">\(L = \lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|\)</div>
-  <div style="font-family:Arial;font-size:.9rem;line-height:1.8;margin:1rem 0;">
-    • \(L < 1\) → Series <span style="color:var(--teal);font-weight:700">converges absolutely</span><br>
-    • \(L > 1\) → Series <span style="color:var(--red);font-weight:700">diverges</span><br>
-    • \(L = 1\) → <span style="color:var(--muted)">Test inconclusive</span>
+  <div class="fdisp">\(L=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|\)</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    \(L&lt;1\) → <span style="color:var(--teal);font-weight:700">converges</span> &emsp; \(L>1\) → <span style="color:var(--red);font-weight:700">diverges</span> &emsp; \(L=1\) → <span style="color:var(--muted)">inconclusive</span>
   </div>
   <table class="tbl">
     <tr><th>Series</th><th>\(L\)</th><th>Conclusion</th></tr>
-    <tr><td>\(\sum \frac{1}{n!}\)</td><td>\(0\)</td><td class="converge">Converges (→ e)</td></tr>
-    <tr><td>\(\sum \frac{2^n}{n!}\)</td><td>\(0\)</td><td class="converge">Converges</td></tr>
-    <tr><td>\(\sum n \cdot 2^n\)</td><td>\(2\)</td><td class="diverge">Diverges</td></tr>
-    <tr><td>\(\sum \frac{1}{n}\)</td><td>\(1\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
+    <tr><td>\(\sum\frac{1}{n!}\)</td><td>\(0\)</td><td class="converge">Converges (→ e)</td></tr>
+    <tr><td>\(\sum n\cdot2^n\)</td><td>\(2\)</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\sum\frac{1}{n}\)</td><td>\(1\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
   </table>
 </div>
 
 <div class="spanel" id="s8c">
-  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Comparison Test</h3>
-  <div class="fdisp">\(0 \le a_n \le b_n\text{ for all large }n\)</div>
-  <div style="font-family:Arial;font-size:.9rem;line-height:1.8;margin:1rem 0;">
-    • If \(\sum b_n\) converges → \(\sum a_n\) <span style="color:var(--teal);font-weight:700">converges</span><br>
-    • If \(\sum a_n\) diverges → \(\sum b_n\) <span style="color:var(--red);font-weight:700">diverges</span>
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Comparison &amp; Limit Comparison Tests</h3>
+  <div class="fdisp">\(0\le a_n\le b_n\)</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    \(\sum b_n\) converges \(\Rightarrow\) \(\sum a_n\) <span style="color:var(--teal);font-weight:700">converges</span><br>
+    \(\sum a_n\) diverges \(\Rightarrow\) \(\sum b_n\) <span style="color:var(--red);font-weight:700">diverges</span>
   </div>
-  <div class="note"><strong>Limit comparison test:</strong> If \(\lim_{n\to\infty}\frac{a_n}{b_n} = c > 0\) (finite), then \(\sum a_n\) and \(\sum b_n\) either both converge or both diverge.</div>
+  <div class="note"><strong>Limit Comparison:</strong> If \(\lim_{n\to\infty}\frac{a_n}{b_n}=c>0\) (finite), \(\sum a_n\) and \(\sum b_n\) have the same behaviour.</div>
   <table class="tbl">
-    <tr><th>\(a_n\)</th><th>Compared to</th><th>Conclusion</th></tr>
+    <tr><th>\(a_n\)</th><th>Compared with</th><th>Conclusion</th></tr>
     <tr><td>\(\frac{1}{n^2+1}\)</td><td>\(\frac{1}{n^2}\) (conv.)</td><td class="converge">Converges</td></tr>
     <tr><td>\(\frac{1}{\sqrt{n}-1}\)</td><td>\(\frac{1}{\sqrt{n}}\) (div.)</td><td class="diverge">Diverges</td></tr>
   </table>
@@ -509,471 +596,1451 @@ canvas{display:block;width:100%;}
 
 <div class="spanel" id="s8d">
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Alternating Series Test (Leibniz)</h3>
-  <div class="fdisp">\(\sum (-1)^{n+1} b_n\) where \(b_n > 0\)</div>
-  <div style="font-family:Arial;font-size:.9rem;line-height:1.8;margin:1rem 0;">
-    Converges if both:<br>
-    1. \(b_{n+1} \le b_n\) (terms decrease monotonically)<br>
-    2. \(\lim_{n\to\infty} b_n = 0\)
+  <div class="fdisp">\(\sum(-1)^{n+1}b_n,\quad b_n>0\)</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    Converges if: &ensp;1. \(b_{n+1}\le b_n\) &ensp;2. \(b_n\to0\)
   </div>
   <table class="tbl">
     <tr><th>Series</th><th>Conclusion</th></tr>
-    <tr><td>\(\sum \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \cdots\)</td><td class="converge">Converges to ln 2</td></tr>
-    <tr><td>\(\sum \frac{(-1)^{n+1}}{n^2} = 1 - \frac{1}{4} + \frac{1}{9} - \cdots\)</td><td class="converge">Converges to π²/12</td></tr>
-    <tr><td>\(\sum \frac{(-1)^n n}{n+1}\)</td><td class="diverge">Diverges (terms ↛ 0)</td></tr>
+    <tr><td>\(\sum\frac{(-1)^{n+1}}{n}\)</td><td class="converge">Converges to ln 2</td></tr>
+    <tr><td>\(\sum\frac{(-1)^{n+1}}{n^2}\)</td><td class="converge">Converges to π²/12</td></tr>
+    <tr><td>\(\sum\frac{(-1)^n n}{n+1}\)</td><td class="diverge">Diverges (terms ↛ 0)</td></tr>
   </table>
+</div>
+
+<div class="spanel" id="s8p">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">The p-Series Test</h3>
+  <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\frac{1}{n^p}\) converges if \(p>1\), diverges if \(p\le1\)</div>
+  <div class="note teal"><strong>The boundary at p = 1 is sharp.</strong> The harmonic series (\(p=1\)) diverges; the Basel series (\(p=2\)) converges. Drag the slider to see the partial sum behaviour change dramatically near \(p=1\).</div>
+  <div class="slider-row"><label>\(p =\)</label><input type="range" id="s8p-p" min="20" max="300" value="100" oninput="drawPseries()"><span class="slider-val" id="s8p-pv">1.00</span></div>
+  <div class="cbox"><canvas id="c8p" height="190"></canvas></div>
+  <div class="big-num">S<sub>500</sub> ≈ <span id="s8p-sum">—</span></div>
+  <div class="status" id="s8p-st"></div>
+</div>
+
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The ratio test always works."</div>
+  <div class="ccard-a">When \(L=1\) the ratio test is inconclusive — this happens for \(p\)-series, for example. When the ratio test fails, try comparison, the \(p\)-series test, or the alternating series test instead.</div></div>
 </div>
 </section>
 
-<!-- ══════════════════ MODULE 9 ══════════════════ -->
+<!-- ═══ MODULE 9: BOUNCING BALL ═══ -->
 <section class="module" id="mod9">
-<div class="mhdr"><div class="mtag">Module 9</div><h2>Infinity Paradoxes</h2></div>
+<div class="mhdr"><div class="mtag">Module 9</div><h2>Bouncing Ball</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> Infinity leads to results that feel paradoxical but are mathematically precise.
-  Understanding these paradoxes deepens intuition for limits, series, and the foundations of analysis.
+  <strong>Core idea:</strong> A ball dropped from height \(h\) bouncing to fraction \(r\) of its height each time travels
+  a total distance that is a geometric series. Even though it bounces infinitely many times, the total distance is finite!
+</div>
+<div class="fdisp">
+  \(\text{Total distance} = h + 2h r + 2h r^2 + \cdots = h\cdot\dfrac{1+r}{1-r}\)
+</div>
+<div class="slider-row"><label>Drop height \(h\) (m)</label><input type="range" id="bb-h" min="1" max="50" value="20" oninput="bbUpdate()"><span class="slider-val" id="bb-hv">20</span></div>
+<div class="slider-row"><label>Bounce fraction \(r\)</label><input type="range" id="bb-r" min="10" max="95" value="70" oninput="bbUpdate()"><span class="slider-val" id="bb-rv">0.70</span></div>
+<div class="ctrls">
+  <button class="btn btn-solid" onclick="bbAnimate()">▶ Animate</button>
+  <button class="btn btn-outline" onclick="bbStop()">■ Stop</button>
+  <button class="btn btn-outline" onclick="bbReset()">↺ Reset</button>
+</div>
+<div class="two-col">
+  <div><div class="cbox"><canvas id="c9ball" height="280"></canvas></div></div>
+  <div><div class="cbox"><canvas id="c9bars" height="280"></canvas></div></div>
+</div>
+<div class="big-num">Total distance = <span id="bb-total">—</span> m</div>
+<div class="status converge" id="bb-st">Infinitely many bounces, finite total distance.</div>
+<div class="note teal">The ball bounces <strong>infinitely many times</strong> yet comes to rest in a <strong>finite time</strong> — because each bounce takes proportionally less time, just like Zeno's paradox.</div>
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the series converge even though there are infinitely many bounces?</div>
+  <div class="ccard-a">Each successive bounce travels \(r\) times the distance of the previous one, with \(r&lt;1\). So the distances form a geometric series \(h, 2hr, 2hr^2,\ldots\) which converges to \(h\cdot\frac{1+r}{1-r}\) when \(|r|&lt;1\). Infinitely many positive terms can still sum to a finite value.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What happens as r → 1?</div>
+  <div class="ccard-a">As \(r\to1^-\), the total distance \(h\cdot\frac{1+r}{1-r}\to\infty\). A "perfectly elastic" ball (\(r=1\)) bounces forever and travels infinite distance. This is why \(|r|&lt;1\) is essential for convergence.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 10: KOCH SNOWFLAKE ═══ -->
+<section class="module" id="mod10">
+<div class="mhdr"><div class="mtag">Module 10</div><h2>The Koch Snowflake</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> A fractal where the perimeter grows without bound at each step — yet the area it encloses converges to a finite value.
+  Two series, one divergent and one convergent, living in the same picture.
+  <div class="q-intro">→ Drag the iteration slider to build the snowflake step by step.</div>
+</div>
+<div class="slider-row"><label>Iteration</label><input type="range" id="kk-iter" min="0" max="6" value="0" oninput="drawKoch()"><span class="slider-val" id="kk-iv">0</span></div>
+<div class="cbox"><canvas id="c10" height="300"></canvas></div>
+<div class="two-col" style="margin-top:.8rem;">
+  <div style="text-align:center;">
+    <div style="font-family:Arial;font-size:.8rem;color:var(--muted);margin-bottom:.3rem;">Perimeter (side = 1)</div>
+    <div class="big-num" style="font-size:1.8rem;">P = <span id="kk-perim">3</span></div>
+    <div class="status diverge" id="kk-pst">Grows without bound: P → ∞</div>
+  </div>
+  <div style="text-align:center;">
+    <div style="font-family:Arial;font-size:.8rem;color:var(--muted);margin-bottom:.3rem;">Area (initial triangle = 1)</div>
+    <div class="big-num" style="font-size:1.8rem;">A = <span id="kk-area">1</span></div>
+    <div class="status converge" id="kk-ast">Converges to 8/5 of original</div>
+  </div>
+</div>
+<div class="note"><strong>How the perimeter diverges:</strong> At each step, every edge is replaced by 4 edges each \(\frac{1}{3}\) as long. So the total length is multiplied by \(\frac{4}{3}\) each time. Since \(\frac{4}{3}>1\), the perimeter grows as \(3\cdot\left(\frac{4}{3}\right)^n\to\infty\).
+<br><br><strong>How the area converges:</strong> The extra area added at step \(n\) is \(3\cdot4^{n-1}\) triangles each with area \(\frac{1}{9^n}\), giving a geometric series that converges.</div>
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Can a finite area have an infinite perimeter?</div>
+  <div class="ccard-a">Yes — the Koch snowflake is the classic example. The enclosed area converges to \(\frac{8}{5}\) of the original triangle's area, while the perimeter grows without bound. This shows that area and perimeter can behave completely independently.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 11: DENSITY OF FRACTIONS ═══ -->
+<section class="module" id="mod11">
+<div class="mhdr"><div class="mtag">Module 11</div><h2>Density of Fractions</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> Between any two different fractions (rational numbers) there is always another fraction. This property is called <em>density</em>. Yet the rationals, despite being everywhere, are in some sense "smaller" than the real numbers.
+  <div class="q-intro">→ Click "Find Middle" to zoom in between two fractions. You can keep going forever.</div>
+</div>
+<div class="ctrls">
+  <button class="btn btn-solid" onclick="fracZoom()">&#128269; Zoom in (find middle)</button>
+  <button class="btn btn-outline" onclick="fracReset()">&#8635; Reset</button>
+</div>
+<div class="cbox"><canvas id="c11" height="120"></canvas></div>
+<div id="frac-info" style="font-family:Arial;font-size:.9rem;text-align:center;margin:.8rem 0;line-height:1.7;"></div>
+<div class="note">
+  <strong>The mediant:</strong> Given fractions \(\frac{p}{q}\) and \(\frac{r}{s}\), their mediant \(\frac{p+r}{q+s}\) always lies strictly between them. This gives a constructive way to find a rational between any two rationals.
+</div>
+<div class="fdisp">\(\frac{p}{q} < \frac{p+r}{q+s} < \frac{r}{s}\quad\text{when}\quad\frac{p}{q}<\frac{r}{s}\)</div>
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">If the rationals are dense, how can there be "gaps"?</div>
+  <div class="ccard-a">The rationals are dense on the real line — between any two rationals there is another. Yet \(\sqrt{2}\), \(\pi\), and \(e\) are irrational; they are not rational numbers. The irrationals fill the "gaps" between rationals and, surprisingly, there are far more irrationals than rationals (both are infinite, but different sizes of infinity — see Module 1).</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Can we list all rational numbers?</div>
+  <div class="ccard-a">Yes — Cantor showed the rationals are "countably infinite": you can pair them one-to-one with the natural numbers. The trick is to list them diagonally across a grid of \(\frac{p}{q}\) values. The real numbers cannot be listed this way — they are uncountably infinite.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
+<section class="module" id="mod12">
+<div class="mhdr"><div class="mtag">Module 12</div><h2>Calculator Lies</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). It approximates it using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
 </div>
 <div class="stabs">
-  <button class="stab on" onclick="s9tab(this,'s9a')">Zeno's Paradox</button>
-  <button class="stab" onclick="s9tab(this,'s9b')">Hilbert's Hotel</button>
-  <button class="stab" onclick="s9tab(this,'s9c')">Grandi's Series</button>
+  <button class="stab on" onclick="s12tab(this,'s12a')">sin x</button>
+  <button class="stab" onclick="s12tab(this,'s12b')">cos x</button>
+  <button class="stab" onclick="s12tab(this,'s12c')">eˣ</button>
 </div>
 
-<div class="spanel on" id="s9a">
-  <div class="mhdr" style="margin-top:.5rem;"><h2 style="font-size:1.2rem;">Zeno's Dichotomy Paradox</h2></div>
-  <div class="concept">
-    To cross a room you must first cross half of it, then half of what remains, then half again… 
-    There are <em>infinitely many</em> steps. How can you ever arrive?
+<div class="spanel on" id="s12a">
+  <div class="fdisp">\(\sin x = x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \dfrac{x^7}{7!} + \cdots\)</div>
+  <div class="slider-row"><label>Terms \(k\) =</label><input type="range" id="t12a" min="1" max="12" value="1" oninput="draw12('a')"><span class="slider-val" id="t12a-v">1</span></div>
+  <div class="big-num">Error at \(x=\pi/2\): <span id="t12a-err">—</span></div>
+  <div class="cbox"><canvas id="c12a" height="200"></canvas></div>
+</div>
+<div class="spanel" id="s12b">
+  <div class="fdisp">\(\cos x = 1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \dfrac{x^6}{6!} + \cdots\)</div>
+  <div class="slider-row"><label>Terms \(k\) =</label><input type="range" id="t12b" min="1" max="12" value="1" oninput="draw12('b')"><span class="slider-val" id="t12b-v">1</span></div>
+  <div class="big-num">Error at \(x=\pi/2\): <span id="t12b-err">—</span></div>
+  <div class="cbox"><canvas id="c12b" height="200"></canvas></div>
+</div>
+<div class="spanel" id="s12c">
+  <div class="fdisp">\(e^x = 1 + x + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \cdots\)</div>
+  <div class="slider-row"><label>Terms \(k\) =</label><input type="range" id="t12c" min="1" max="15" value="1" oninput="draw12('c')"><span class="slider-val" id="t12c-v">1</span></div>
+  <div class="big-num">Error at \(x=3\): <span id="t12c-err">—</span></div>
+  <div class="cbox"><canvas id="c12c" height="200"></canvas></div>
+</div>
+<div class="note"><strong>Why does it work?</strong> The error after \(k\) terms of the Taylor series for \(\sin x\) is no larger than \(\frac{|x|^{2k+1}}{(2k+1)!}\), which \(\to0\) as \(k\to\infty\) for any fixed \(x\). Convergence guarantees the approximation can be made as accurate as needed.</div>
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does a single-term approximation fail far from zero?</div>
+  <div class="ccard-a">Near \(x=0\), the Taylor series converges quickly because \(x^n\to0\) fast. Far from zero (large \(x\)), the early terms \(x^n/n!\) can be large before the factorial eventually dominates — you need more terms to overcome this initial growth. This is why calculators use range reduction: they first map any \(x\) to a small interval near 0, then apply the series.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 13: PARADOXES ═══ -->
+<section class="module" id="mod13">
+<div class="mhdr"><div class="mtag">Module 13</div><h2>Infinity Paradoxes</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> Infinity leads to results that feel paradoxical but are mathematically precise. Understanding these paradoxes deepens intuition for limits, series, and the real number system.
+</div>
+<div class="stabs">
+  <button class="stab on" onclick="s13tab(this,'s13a')">Zeno's Paradox</button>
+  <button class="stab" onclick="s13tab(this,'s13b')">Hilbert's Hotel</button>
+  <button class="stab" onclick="s13tab(this,'s13c')">Grandi's Series</button>
+  <button class="stab" onclick="s13tab(this,'s13d')">0.999… = 1?</button>
+</div>
+
+<div class="spanel on" id="s13a">
+  <div class="concept">To cross a room you must first cross half, then half of what remains, then half again…
+  Infinitely many steps — yet you always arrive.</div>
+  <div class="fdisp">\(\dfrac{1}{2}+\dfrac{1}{4}+\dfrac{1}{8}+\cdots=\displaystyle\sum_{n=1}^\infty\frac{1}{2^n}=1\)</div>
+  <div class="ctrls">
+    <button class="btn btn-solid" onclick="zenoAnim()">&#9654; Build step by step</button>
+    <button class="btn btn-outline" onclick="zenoReset()">&#8635; Reset</button>
   </div>
-  <div class="fdisp">\(\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \cdots = \sum_{n=1}^\infty \frac{1}{2^n} = 1\)</div>
-  <div class="cbox"><canvas id="c9a" height="120"></canvas></div>
-  <div class="note">
-    <strong>Resolution:</strong> An infinite number of steps need not take infinite time if each step takes proportionally less time. The geometric series \(\sum_{n=1}^\infty \frac{1}{2^n} = 1\) converges — infinitely many terms sum to a finite value. Zeno's error was assuming infinitely many steps must take infinite time.
+  <div class="cbox"><canvas id="c13z" height="130"></canvas></div>
+  <div class="big-num">Sum so far: <span id="zeno-sum">0</span></div>
+  <div class="note">The geometric series converges because each step is \(\frac{1}{2}\) the previous. Zeno's error was assuming infinitely many steps must take infinite time. In mathematics, infinitely many terms can sum to a finite value — and in physics, each step takes half the time of the previous, so the total time is also finite.</div>
+</div>
+
+<div class="spanel" id="s13b">
+  <div class="concept">Imagine a hotel with infinitely many rooms, all occupied. Can it take a new guest?</div>
+  <div class="note teal"><strong>Yes!</strong> Move the guest in room \(n\) to room \(n+1\). Room 1 is now free. In fact, the hotel can accommodate infinitely many new guests by moving room \(n\) to room \(2n\), freeing all odd-numbered rooms. This shows \(\infty+1=\infty\) and \(\infty+\infty=\infty\) for countable sets.</div>
+  <div class="fdisp">\(|\mathbb{N}|=|\mathbb{Z}|=|\mathbb{Q}|=\aleph_0\quad\text{(all countably infinite)}\)</div>
+  <div class="note red"><strong>But:</strong> Cantor proved you <em>cannot</em> accommodate uncountably many guests — the real numbers cannot be paired one-to-one with the rooms. There is a strictly larger infinity \(\aleph_1=2^{\aleph_0}\).</div>
+</div>
+
+<div class="spanel" id="s13c">
+  <div class="concept">\(S=1-1+1-1+1-\cdots\) — what is the sum?</div>
+  <div class="cbox"><canvas id="c13g" height="150"></canvas></div>
+  <div class="note red"><strong>The series diverges</strong> by the standard definition: partial sums oscillate between 0 and 1, never converging. Some summation methods (Cesàro, Abel) assign the value \(\frac{1}{2}\), but these are extensions of ordinary summation, not the definition taught at A-level.</div>
+</div>
+
+<div class="spanel" id="s13d">
+  <div class="concept">Is \(0.\overline{9}=0.9999\ldots\) exactly equal to 1, or just very close?</div>
+  <div class="fdisp">\(0.\overline{9}=\displaystyle\sum_{n=1}^\infty\frac{9}{10^n}=\frac{9/10}{1-1/10}=1\)</div>
+  <div class="note teal"><strong>They are the same number.</strong> \(0.\overline{9}\) and \(1\) are two different decimal representations of the same real number, just as \(\frac{1}{2}=\frac{2}{4}\). The apparent paradox comes from treating an infinite decimal as if it "never quite reaches" its limit — but the limit <em>is</em> the number.</div>
+  <div class="note" style="margin-top:.8rem;"><strong>Algebraic proof:</strong> Let \(x=0.\overline{9}\). Then \(10x=9.\overline{9}=9+x\), so \(9x=9\), giving \(x=1\).</div>
+  <div class="challenges" style="margin-top:1rem;"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is there a number between 0.999… and 1?</div>
+    <div class="ccard-a">No — because they are the same number! If two real numbers are different, you can always find a number between them (the rationals are dense). The fact that you cannot find anything between \(0.\overline{9}\) and \(1\) is precisely why they must be equal.</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ MODULE 14: SUMMARY ═══ -->
+<section class="module" id="mod14">
+<div class="mhdr"><div class="mtag">Summary</div><h2>Summary &amp; Revision</h2></div>
+<div class="concept">
+  A concise reference for all the key results and tests covered in this app. Use this as a revision checklist.
+</div>
+<div class="sum-grid">
+  <div class="sum-card">
+    <h3>Sequences — key facts</h3>
+    <ul>
+      <li>Arithmetic: diverges unless \(d=0\)</li>
+      <li>Geometric: converges iff \(|r|&lt;1\) (limit 0)</li>
+      <li>Bounded + monotone → converges</li>
+      <li>\((-1)^n\): bounded but diverges</li>
+      <li>\(\sin(n)/n \to 0\) (squeeze theorem)</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Series — key results</h3>
+    <ul>
+      <li>Geometric: \(\sum ar^n = \frac{a}{1-r}\), \(|r|&lt;1\)</li>
+      <li>Harmonic \(\sum 1/n\): diverges</li>
+      <li>Basel \(\sum 1/n^2 = \pi^2/6\)</li>
+      <li>Alt. harmonic \(\sum(-1)^{n+1}/n = \ln2\)</li>
+      <li>\(p\)-series: converges iff \(p>1\)</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Taylor series</h3>
+    <ul>
+      <li>\(e^x = \sum x^n/n!\), all \(x\)</li>
+      <li>\(\sin x = \sum (-1)^n x^{2n+1}/(2n+1)!\), all \(x\)</li>
+      <li>\(\cos x = \sum (-1)^n x^{2n}/(2n)!\), all \(x\)</li>
+      <li>\(\ln(1+x) = \sum (-1)^{n+1} x^n/n\), \(|x|\le1\)</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Indeterminate forms</h3>
+    <ul>
+      <li>\(0/0,\ \infty/\infty,\ 0\cdot\infty\)</li>
+      <li>\(\infty-\infty,\ 0^0,\ 1^\infty,\ \infty^0\)</li>
+      <li>Use factorisation or L'Hôpital</li>
+      <li>\(\lim_{x\to0}\sin x/x = 1\)</li>
+    </ul>
   </div>
 </div>
 
-<div class="spanel" id="s9b">
-  <div class="mhdr" style="margin-top:.5rem;"><h2 style="font-size:1.2rem;">Hilbert's Infinite Hotel</h2></div>
-  <div class="concept">
-    Imagine a hotel with infinitely many rooms, all occupied. Can it accommodate a new guest?
+<div class="flow-box">
+  <h3>Which convergence test to use?</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Check \(a_n\to0\).</strong> If not → diverges immediately (divergence test). If yes → continue.</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Is it a geometric series \(\sum ar^n\)?</strong> If yes → converges iff \(|r|&lt;1\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Is it a \(p\)-series \(\sum 1/n^p\)?</strong> If yes → converges iff \(p>1\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Does it contain factorials or exponentials?</strong> Try the <strong>ratio test</strong>. If \(L=1\), try another test.</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Does it look like a known series?</strong> Try <strong>comparison</strong> or <strong>limit comparison</strong>.</div></div>
+  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>Does it alternate?</strong> Try the <strong>alternating series test</strong> (check terms decrease to 0).</div></div>
+</div>
+
+<div class="sum-grid">
+  <div class="sum-card">
+    <h3>Top misconceptions</h3>
+    <ul>
+      <li>\(a_n\to0\) does NOT mean \(\sum a_n\) converges</li>
+      <li>Bounded does NOT mean convergent</li>
+      <li>Ratio test with \(L=1\) is inconclusive</li>
+      <li>\(\infty\) is not a real number</li>
+      <li>\(0.\overline{9}=1\) exactly</li>
+    </ul>
   </div>
-  <div class="note">
-    <strong>Yes!</strong> Move every guest from room \(n\) to room \(n+1\). Room 1 is now free. 
-    In fact, the hotel can accommodate infinitely many new guests: move guest in room \(n\) to room \(2n\), 
-    freeing all odd-numbered rooms for the new arrivals. This illustrates that \(\infty + 1 = \infty\) and \(\infty + \infty = \infty\) for countably infinite sets.
+  <div class="sum-card">
+    <h3>Real-world connections</h3>
+    <ul>
+      <li>Bouncing ball → geometric series</li>
+      <li>Koch snowflake → fractal geometry</li>
+      <li>Calculator functions → Taylor series</li>
+      <li>Zeno's paradox → limits</li>
+      <li>Signal processing → Fourier series</li>
+    </ul>
   </div>
-  <div class="fdisp">\(|\mathbb{N}| = |\mathbb{N} \cup \{0\}| = |\mathbb{Z}| = |\mathbb{Q}| = \aleph_0\)</div>
-  <div class="note">
-    <strong>Cantor's insight:</strong> Two sets have the same "size" (cardinality) if their elements can be paired one-to-one. The integers, even numbers, and rationals all pair perfectly with the natural numbers — they're all the same infinity \(\aleph_0\). But the real numbers cannot be paired with \(\mathbb{N}\) — they form a strictly larger infinity \(\aleph_1 = 2^{\aleph_0}\).
+</div>
+</section>
+<!-- ═══ MODULE 15: FIBONACCI & GOLDEN RATIO ═══ -->
+<section class="module" id="mod15">
+<div class="mhdr"><div class="mtag">Module 14</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> The Fibonacci sequence \(1, 1, 2, 3, 5, 8, 13, 21, \ldots\) is defined by \(F_1=F_2=1\) and \(F_{n+1}=F_n+F_{n-1}\). Remarkably, the ratio of consecutive terms \(F_{n+1}/F_n\) converges to the <em>golden ratio</em> \(\varphi = \frac{1+\sqrt{5}}{2} \approx 1.618\ldots\)
+  <div class="q-intro">→ Step through the sequence and watch the ratio converge.</div>
+</div>
+
+<div class="stabs">
+  <button class="stab on" onclick="s15tab(this,'s15a')">Sequence &amp; Ratio</button>
+  <button class="stab" onclick="s15tab(this,'s15b')">Spiral</button>
+  <button class="stab" onclick="s15tab(this,'s15c')">φ Continued Fraction</button>
+</div>
+
+<div class="spanel on" id="s15a">
+  <div class="fdisp">\(\varphi = \dfrac{1+\sqrt{5}}{2} \approx 1.61803\ldots\)</div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="fibStep()">&#43; Next term</button>
+    <button class="btn btn-solid" onclick="fibFill()">Fill to 20</button>
+    <button class="btn btn-outline" onclick="fibReset()">↺ Reset</button>
+  </div>
+  <div class="cbox"><canvas id="c15seq" height="180"></canvas></div>
+  <div id="fib-table" style="font-family:Arial;font-size:.85rem;overflow-x:auto;margin:.8rem 0;">
+    <table class="tbl" id="fib-tbl">
+      <tr><th>n</th><th>F(n)</th><th>F(n)/F(n−1)</th><th>Error from φ</th></tr>
+    </table>
   </div>
 </div>
 
-<div class="spanel" id="s9c">
-  <div class="mhdr" style="margin-top:.5rem;"><h2 style="font-size:1.2rem;">Grandi's Series</h2></div>
-  <div class="concept">
-    \(S = 1 - 1 + 1 - 1 + 1 - \cdots\) &nbsp; What is the sum?
+<div class="spanel" id="s15b">
+  <div class="concept" style="background:#eef2ff;border-color:var(--purple);">
+    The Fibonacci spiral approximates the <em>golden spiral</em>. Each square has side length equal to a Fibonacci number, and the quarter-circle arcs trace a spiral that appears throughout nature.
   </div>
-  <div class="fdisp">\(S_N = \begin{cases} 1 & N \text{ odd} \\ 0 & N \text{ even}\end{cases}\)</div>
-  <div class="cbox"><canvas id="c9c" height="140"></canvas></div>
-  <div class="note">
-    <strong>The partial sums oscillate</strong> between 0 and 1 and never converge — so by the standard definition, this series <em>diverges</em>. However, some summation methods (Cesàro, Abel) assign it the value \(\frac{1}{2}\). This illustrates that the "sum" of a series depends critically on the definition of summation used, and why rigorous definitions matter in mathematics.
+  <div class="cbox"><canvas id="c15spiral" height="320"></canvas></div>
+  <div class="note">Fibonacci numbers appear in sunflower seed patterns, pine cones, and leaf arrangements (<em>phyllotaxis</em>) — because the golden angle \(360°/\varphi^2 \approx 137.5°\) is the "most irrational" angle, packing structures most efficiently.</div>
+</div>
+
+<div class="spanel" id="s15c">
+  <div class="concept" style="background:#eef2ff;border-color:var(--purple);">
+    The golden ratio has the remarkable property that it equals a continued fraction of all 1s — making it the "hardest number to approximate" by rationals.
   </div>
-  <div class="challenges">
-    <h3>Think about it</h3>
-    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is 0.999… = 1?</div>
-    <div class="ccard-a">Yes, exactly. \(0.\overline{9} = \sum_{n=1}^\infty \frac{9}{10^n} = \frac{9/10}{1-1/10} = 1\). They are different decimal representations of the same real number, just as \(\frac{1}{2} = \frac{2}{4}\). The apparent "paradox" arises from confusing the decimal representation with the number itself.</div></div>
+  <div class="fdisp">\(\varphi = 1 + \dfrac{1}{1+\dfrac{1}{1+\dfrac{1}{1+\cdots}}}\)</div>
+  <div class="slider-row"><label>Depth \(k\) =</label><input type="range" id="s15c-k" min="1" max="20" value="1" oninput="drawCF()"><span class="slider-val" id="s15c-kv">1</span></div>
+  <div class="big-num">Approximation = <span id="s15c-val">—</span></div>
+  <div class="status" id="s15c-st">Error: —</div>
+  <div class="cbox"><canvas id="c15cf" height="160"></canvas></div>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the ratio converge to φ?</div>
+  <div class="ccard-a">If the ratio \(r = F_{n+1}/F_n\) converges to a limit \(L\), then dividing \(F_{n+1}=F_n+F_{n-1}\) by \(F_n\) gives \(L = 1 + 1/L\), so \(L^2 = L + 1\). The positive root of this is \(L = \frac{1+\sqrt{5}}{2} = \varphi\).</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is φ rational or irrational?</div>
+  <div class="ccard-a">\(\varphi\) is irrational — it cannot be written as a fraction \(p/q\). Its continued fraction expansion \([1;1,1,1,\ldots]\) never terminates (rational numbers always have terminating continued fractions). In fact, among all irrationals, \(\varphi\) is the "hardest" to approximate by rationals — its rational approximants (the Fibonacci ratios) converge most slowly.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The Fibonacci sequence and the golden ratio are just aesthetic — not rigorous maths."</div>
+  <div class="ccard-a">They are completely rigorous. The convergence of \(F_{n+1}/F_n\to\varphi\) follows from the closed-form Binet formula \(F_n=(\varphi^n-\psi^n)/\sqrt5\) where \(|\psi|&lt;1\), so \(\psi^n\to0\) and the ratio approaches \(\varphi\). The maths is as precise as any other limit proof.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 16: π FROM INFINITE SERIES ═══ -->
+<section class="module" id="mod16">
+<div class="mhdr"><div class="mtag">Module 15</div><h2>&pi; from Infinite Series</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> The number \(\pi\) can be computed using infinite series. Some converge remarkably slowly; others blazingly fast. The <em>rate of convergence</em> is the difference between a curiosity and a practical tool.
+  <div class="q-intro">→ Step through each series and compare how quickly they reach π.</div>
+</div>
+
+<div class="stabs">
+  <button class="stab on" onclick="s16tab(this,'s16a')">Leibniz</button>
+  <button class="stab" onclick="s16tab(this,'s16b')">Wallis</button>
+  <button class="stab" onclick="s16tab(this,'s16c')">Nilakantha</button>
+  <button class="stab" onclick="s16tab(this,'s16d')">Race</button>
+</div>
+
+<div class="spanel on" id="s16a">
+  <div class="fdisp">\(\dfrac{\pi}{4} = 1 - \dfrac{1}{3} + \dfrac{1}{5} - \dfrac{1}{7} + \cdots = \displaystyle\sum_{n=0}^\infty\dfrac{(-1)^n}{2n+1}\)</div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="piStep('a')">&#43; Add term</button>
+    <button class="btn btn-solid" onclick="piFill('a',500)">500 terms</button>
+    <button class="btn btn-outline" onclick="piReset('a')">↺ Reset</button>
   </div>
+  <div class="pi-bar-wrap">
+    <div class="pi-bar-track"><div class="pi-bar-fill" id="pi-a-bar" style="width:0%"></div></div>
+    <div class="pi-bar-label" id="pi-a-lab">Approximation: —</div>
+  </div>
+  <div class="big-num">π ≈ <span id="pi-a-val">—</span></div>
+  <div class="status" id="pi-a-st">Terms: 0 &nbsp;|&nbsp; Error: —</div>
+  <div class="cbox"><canvas id="c16a" height="170"></canvas></div>
+</div>
+
+<div class="spanel" id="s16b">
+  <div class="fdisp">\(\dfrac{\pi}{2} = \dfrac{2\cdot2\cdot4\cdot4\cdot6\cdot6\cdots}{1\cdot3\cdot3\cdot5\cdot5\cdot7\cdots} = \displaystyle\prod_{n=1}^\infty\dfrac{4n^2}{4n^2-1}\)</div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="piStep('b')">&#43; Add factor</button>
+    <button class="btn btn-solid" onclick="piFill('b',500)">500 factors</button>
+    <button class="btn btn-outline" onclick="piReset('b')">↺ Reset</button>
+  </div>
+  <div class="pi-bar-wrap">
+    <div class="pi-bar-track"><div class="pi-bar-fill" id="pi-b-bar" style="width:0%"></div></div>
+    <div class="pi-bar-label" id="pi-b-lab">Approximation: —</div>
+  </div>
+  <div class="big-num">π ≈ <span id="pi-b-val">—</span></div>
+  <div class="status" id="pi-b-st">Factors: 0 &nbsp;|&nbsp; Error: —</div>
+  <div class="cbox"><canvas id="c16b" height="170"></canvas></div>
+</div>
+
+<div class="spanel" id="s16c">
+  <div class="fdisp">\(\pi = 3 + \dfrac{4}{2\cdot3\cdot4} - \dfrac{4}{4\cdot5\cdot6} + \dfrac{4}{6\cdot7\cdot8} - \cdots\)</div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="piStep('c')">&#43; Add term</button>
+    <button class="btn btn-solid" onclick="piFill('c',50)">50 terms</button>
+    <button class="btn btn-outline" onclick="piReset('c')">↺ Reset</button>
+  </div>
+  <div class="pi-bar-wrap">
+    <div class="pi-bar-track"><div class="pi-bar-fill" id="pi-c-bar" style="width:0%"></div></div>
+    <div class="pi-bar-label" id="pi-c-lab">Approximation: —</div>
+  </div>
+  <div class="big-num">π ≈ <span id="pi-c-val">—</span></div>
+  <div class="status" id="pi-c-st">Terms: 0 &nbsp;|&nbsp; Error: —</div>
+  <div class="cbox"><canvas id="c16c" height="170"></canvas></div>
+</div>
+
+<div class="spanel" id="s16d">
+  <div class="concept" style="background:#eef2ff;border-color:var(--purple);">
+    All three approximations plotted together on the same scale. Notice how Nilakantha (orange) converges far faster than Leibniz (navy) and Wallis (teal).
+  </div>
+  <div class="cbox"><canvas id="c16race" height="220"></canvas></div>
+  <div style="display:flex;gap:1.5rem;font-family:Arial;font-size:.85rem;justify-content:center;flex-wrap:wrap;margin:.5rem 0;">
+    <span><span style="display:inline-block;width:14px;height:3px;background:var(--navy);vertical-align:middle;"></span> Leibniz</span>
+    <span><span style="display:inline-block;width:14px;height:3px;background:var(--teal);vertical-align:middle;"></span> Wallis</span>
+    <span><span style="display:inline-block;width:14px;height:3px;background:var(--orange);vertical-align:middle;"></span> Nilakantha</span>
+  </div>
+  <div class="note red"><strong>Key lesson:</strong> Leibniz's formula needs 1,000,000 terms to get 6 correct decimal places. Nilakantha's needs only about 50. Convergence speed is everything in practice.</div>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the Leibniz series converge to π/4 and not something else?</div>
+  <div class="ccard-a">It follows from the Taylor series for \(\arctan x\): \(\arctan x = x - \frac{x^3}{3} + \frac{x^5}{5} - \cdots\) for \(|x|\le1\). Substituting \(x=1\) gives \(\arctan 1 = \pi/4 = 1 - \frac{1}{3} + \frac{1}{5} - \cdots\). The convergence at \(x=1\) requires a separate argument (Abel's theorem), but it works.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the fastest known series for π?</div>
+  <div class="ccard-a">The Chudnovsky algorithm, discovered in 1988, produces roughly 14 correct decimal digits per term. It has been used to compute π to over 100 trillion decimal places. It is based on Ramanujan's earlier series and involves deep results in complex analysis — far beyond A-level, but the key idea (faster convergence = fewer terms needed) is the same principle you see here.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 17: TELESCOPING SERIES ═══ -->
+<section class="module" id="mod17">
+<div class="mhdr"><div class="mtag">Module 16</div><h2>Telescoping Series</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> A <em>telescoping series</em> is one where consecutive terms cancel in pairs, like the sections of a collapsible telescope closing up. What looks like an infinite sum collapses to a simple expression — often leaving just two terms.
+  <div class="q-intro">→ Press "Add term" to see each cancellation happen step by step.</div>
+</div>
+
+<div class="stabs">
+  <button class="stab on" onclick="s17tab(this,'s17a')">1/(n(n+1))</button>
+  <button class="stab" onclick="s17tab(this,'s17b')">ln((n+1)/n)</button>
+  <button class="stab" onclick="s17tab(this,'s17c')">√n − √(n+1)</button>
+</div>
+
+<div class="spanel on" id="s17a">
+  <div class="fdisp">\(\dfrac{1}{n(n+1)} = \dfrac{1}{n} - \dfrac{1}{n+1}\)</div>
+  <div class="concept" style="background:#eef2ff;border-color:var(--purple);">
+    Each term is a difference of two fractions. When we sum N terms, nearly everything cancels:<br>
+    \(\displaystyle\sum_{n=1}^N\frac{1}{n(n+1)} = \left(1-\frac{1}{2}\right)+\left(\frac{1}{2}-\frac{1}{3}\right)+\cdots+\left(\frac{1}{N}-\frac{1}{N+1}\right) = 1 - \frac{1}{N+1} \to 1\)
+  </div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="teleStep('a')">&#43; Add term</button>
+    <button class="btn btn-solid" onclick="teleFill('a')">Show 8 terms</button>
+    <button class="btn btn-outline" onclick="teleReset('a')">↺ Reset</button>
+  </div>
+  <div id="tele-a-chips" style="margin:.8rem 0;min-height:2.5rem;"></div>
+  <div class="big-num">S<sub>N</sub> = <span id="tele-a-sum">0</span> → <span style="color:var(--teal)">1</span></div>
+  <div class="status converge" id="tele-a-st">N = 0</div>
+  <div class="cbox"><canvas id="c17a" height="160"></canvas></div>
+</div>
+
+<div class="spanel" id="s17b">
+  <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\ln\!\left(\frac{n+1}{n}\right) = \ln 2 + \ln\frac{3}{2} + \ln\frac{4}{3} + \cdots\)</div>
+  <div class="concept" style="background:#fdf0f0;border-color:var(--red);">
+    Using \(\ln\frac{n+1}{n} = \ln(n+1) - \ln(n)\), the partial sum telescopes to \(\ln(N+1) - \ln 1 = \ln(N+1) \to \infty\). A telescoping series can diverge!
+  </div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="teleStep('b')">&#43; Add term</button>
+    <button class="btn btn-outline" onclick="teleReset('b')">↺ Reset</button>
+  </div>
+  <div class="big-num">S<sub>N</sub> = ln(<span id="tele-b-n">1</span>) = <span id="tele-b-sum">0</span></div>
+  <div class="status diverge">This telescoping series diverges — partial sums grow without bound.</div>
+  <div class="cbox"><canvas id="c17b" height="160"></canvas></div>
+</div>
+
+<div class="spanel" id="s17c">
+  <div class="fdisp">\(\displaystyle\sum_{n=1}^N(\sqrt{n+1}-\sqrt{n}) = \sqrt{N+1} - 1 \to \infty\)</div>
+  <div class="concept" style="background:#fdf0f0;border-color:var(--red);">
+    Another divergent telescoping series. The first term \(\sqrt{2}-1\) and last surviving term \(\sqrt{N+1}\) are left after cancellations — and \(\sqrt{N+1}\to\infty\).
+  </div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="teleStep('c')">&#43; Add term</button>
+    <button class="btn btn-outline" onclick="teleReset('c')">↺ Reset</button>
+  </div>
+  <div class="big-num">S<sub>N</sub> = √<span id="tele-c-n">2</span> − 1 = <span id="tele-c-sum">—</span></div>
+  <div class="status diverge">Diverges — the surviving term √(N+1) grows to ∞.</div>
+  <div class="cbox"><canvas id="c17c" height="160"></canvas></div>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">How do you spot a telescoping series?</div>
+  <div class="ccard-a">Look for terms that can be written as \(f(n) - f(n+1)\) (or \(f(n+1)-f(n)\)) for some function \(f\). The key technique is <em>partial fractions</em>: e.g. \(\frac{1}{n(n+1)}=\frac{1}{n}-\frac{1}{n+1}\). Once you spot the pattern, you can write out a few terms and see what survives after cancellation.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Can all series be made to telescope?</div>
+  <div class="ccard-a">No — but many rational-function series can be decomposed using partial fractions into telescoping form. For example \(\sum\frac{1}{n(n+2)}\), \(\sum\frac{1}{n(n+1)(n+2)}\), and similar families all telescope. Series involving exponentials or trigonometric functions usually require different approaches.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "Telescoping always means the series converges."</div>
+  <div class="ccard-a">Not at all. As Modules 17b and 17c show, telescoping just means terms cancel in sequence — but if the surviving terms still grow to infinity, the series diverges. Always check what's left after cancellation. The series \(\sum(\sqrt{n+1}-\sqrt{n})\) telescopes perfectly yet diverges.</div></div>
 </div>
 </section>
 
 </div><!-- /container -->
-
 <script>
-/* ─── MODULE SWITCHING ─────────────────────────── */
+/* ══════════════════════════════════════════════════
+   GLOBALS & UTILITIES
+══════════════════════════════════════════════════ */
 const inited={};
+const visited=new Set();
+const NAVY='#1a3a6b',GOLD='#c9a227',TEAL='#0f6e56',RED='#a32d2d',
+      MUT='#5a6280',PURP='#533bb7',BG='#f0f3fa';
+
+function rz(id){
+  const c=document.getElementById(id);if(!c)return null;
+  const W=c.offsetWidth||c.parentElement?.offsetWidth||800;
+  if(c.width!==W)c.width=W;return c;
+}
+function tog(el){el.classList.toggle('open');}
+
 function go(m){
   document.querySelectorAll('.module').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('mod'+m).classList.add('on');
   document.querySelector('[data-m="'+m+'"]').classList.add('on');
+  visited.add(m);
+  document.getElementById('pd'+m).classList.add('visited');
   if(!inited[m]){initMod(m);inited[m]=true;}
+  injectBottomNav(m);
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-function tog(el){el.classList.toggle('open');}
 
-/* ─── SUB-TAB HELPERS ─────────────────────────── */
-function mkTabFn(prefix){
+function mkTabFn(){
   return function(btn,id){
-    btn.closest('.module').querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
-    btn.closest('.module').querySelectorAll('.spanel').forEach(p=>p.classList.remove('on'));
+    const mod=btn.closest('.module');
+    mod.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+    mod.querySelectorAll('.spanel').forEach(p=>p.classList.remove('on'));
     btn.classList.add('on');
     document.getElementById(id).classList.add('on');
-    // re-init canvases in the new panel
-    const m=btn.closest('.module').id.replace('mod','');
-    initMod(+m,id);
+    const m=+mod.id.replace('mod','');
+    initMod(m,id);
   };
 }
-const s2tab=mkTabFn('s2'),s3tab=mkTabFn('s3'),s5tab=mkTabFn('s5'),
-      s6tab=mkTabFn('s6'),s8tab=mkTabFn('s8'),s9tab=mkTabFn('s9');
+const s2tab=mkTabFn(),s3tab=mkTabFn(),s4tab=mkTabFn(),s5tab=mkTabFn(),
+      s6tab=mkTabFn(),s8tab=mkTabFn(),s12tab=mkTabFn(),s13tab=mkTabFn();
 
-/* ─── CANVAS UTILS ─────────────────────────────── */
-function rz(id){
-  const c=document.getElementById(id);if(!c)return null;
-  const W=c.offsetWidth||c.parentElement.offsetWidth||800;
-  c.width=W;return c;
+/* ── Scientific notation formatter ─────────────────
+   Returns HTML: mantissa × 10<sup>exp</sup>
+   e.g. fmtSci(0.0057, 3) → "5.700 × 10<sup>−3</sup>"
+────────────────────────────────────────────────── */
+function fmtSci(v, dp=3){
+  if(v===0) return '0';
+  const s=v.toExponential(dp);
+  const [mant, expStr]=s.split('e');
+  const exp=parseInt(expStr,10);
+  // use proper minus sign (−) not hyphen for negative exponents
+  const expDisp=exp<0?'&minus;'+Math.abs(exp):String(exp);
+  return `${mant} &times; 10<sup>${expDisp}</sup>`;
 }
-const NAVY='#1a3a6b',GOLD='#c9a227',TEAL='#0f6e56',RED='#a32d2d',
-      MUT='#5a6280',BG='#f0f3fa';
 
-/* ─── MODULE 1: NUMBER LINE ─────────────────────── */
-let m1_offset=0,m1_drag=false,m1_dx=0,m1_timer=null,m1_n=1;
+/* ══════════════════════════════════════════════════
+   MODULE 1: NUMBER LINE
+══════════════════════════════════════════════════ */
+let m1off=0,m1drag=false,m1dx=0,m1timer=null,m1n=1;
 function initMod1(){
   const c=rz('c1nl');if(!c)return;
-  const ctx=c.getContext('2d');
-  c.addEventListener('mousedown',e=>{m1_drag=true;m1_dx=e.offsetX;});
-  c.addEventListener('touchstart',e=>{m1_drag=true;m1_dx=e.touches[0].clientX;},{passive:true});
-  window.addEventListener('mouseup',()=>m1_drag=false);
-  window.addEventListener('touchend',()=>m1_drag=false);
-  c.addEventListener('mousemove',e=>{if(m1_drag){m1_offset+=e.offsetX-m1_dx;m1_dx=e.offsetX;drawNL();}});
-  c.addEventListener('touchmove',e=>{if(m1_drag){m1_offset+=e.touches[0].clientX-m1_dx;m1_dx=e.touches[0].clientX;drawNL();}},{passive:true});
+  c.onmousedown=e=>{m1drag=true;m1dx=e.offsetX;};
+  c.ontouchstart=e=>{m1drag=true;m1dx=e.touches[0].clientX;};
+  window.addEventListener('mouseup',()=>m1drag=false,{once:false});
+  window.addEventListener('touchend',()=>m1drag=false,{once:false});
+  c.onmousemove=e=>{if(m1drag){m1off+=e.offsetX-m1dx;m1dx=e.offsetX;drawNL();}};
+  c.ontouchmove=e=>{if(m1drag){m1off+=e.touches[0].clientX-m1dx;m1dx=e.touches[0].clientX;drawNL();}};
   drawNL();
 }
 function drawNL(){
-  const c=document.getElementById('c1nl');if(!c)return;
+  const c=rz('c1nl');if(!c)return;
   const ctx=c.getContext('2d'),W=c.width,H=c.height,cy=H/2;
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  // line
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
   ctx.strokeStyle=NAVY;ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
-  // ticks
-  const step=60,origin=W/2+m1_offset;
-  const start=Math.floor(-origin/step)-2,end=Math.ceil((W-origin)/step)+2;
-  ctx.font='13px Arial';ctx.textAlign='center';ctx.fillStyle=NAVY;
-  for(let i=start;i<=end;i++){
+  const step=60,origin=W/2+m1off;
+  const s0=Math.floor(-origin/step)-2,s1=Math.ceil((W-origin)/step)+2;
+  ctx.font='13px Arial';ctx.textAlign='center';
+  for(let i=s0;i<=s1;i++){
     const x=origin+i*step;
     ctx.strokeStyle=i===0?GOLD:NAVY;ctx.lineWidth=i===0?2.5:1.5;
     ctx.beginPath();ctx.moveTo(x,cy-10);ctx.lineTo(x,cy+10);ctx.stroke();
     ctx.fillStyle=i===0?GOLD:NAVY;
     ctx.fillText(i,x,cy+26);
   }
-  // current n marker
-  const nx=origin+m1_n*step;
-  ctx.fillStyle=RED;
-  ctx.beginPath();ctx.arc(nx,cy,7,0,2*Math.PI);ctx.fill();
+  const nx=origin+m1n*step;
+  ctx.fillStyle=RED;ctx.beginPath();ctx.arc(nx,cy,7,0,2*Math.PI);ctx.fill();
 }
-function m1StartCount(){
-  if(m1_timer)return;
-  m1_timer=setInterval(()=>{
-    m1_n++;
-    document.getElementById('m1n').textContent=m1_n.toLocaleString();
-    // auto-scroll
+function m1Start(){
+  if(m1timer)return;
+  const st=document.getElementById('m1st');
+  st.textContent='';
+  m1timer=setInterval(()=>{
+    m1n++;
+    document.getElementById('m1n').textContent=m1n.toLocaleString();
     const c=document.getElementById('c1nl');
-    if(c){m1_offset=c.width/2-m1_n*60;drawNL();}
-    const st=document.getElementById('m1status');
-    if(m1_n>1e4){st.textContent='n = '+m1_n.toLocaleString()+' … it just keeps going!';st.className='status diverge';}
-    else{st.textContent='n = '+m1_n.toLocaleString();}
+    if(c){m1off=c.width/2-m1n*60;drawNL();}
+    if(m1n>9999){st.textContent='… and it never stops!';st.className='status diverge';}
   },80);
 }
-function m1StopCount(){clearInterval(m1_timer);m1_timer=null;}
-function m1ResetCount(){m1StopCount();m1_n=1;m1_offset=0;document.getElementById('m1n').textContent='1';drawNL();document.getElementById('m1status').textContent='Will this process ever stop?';document.getElementById('m1status').className='status';}
+function m1Stop(){clearInterval(m1timer);m1timer=null;}
+function m1Reset(){m1Stop();m1n=1;m1off=0;document.getElementById('m1n').textContent='1';drawNL();document.getElementById('m1st').textContent='Will this process ever stop?';document.getElementById('m1st').className='status';}
 
-/* ─── MODULE 2: APPROACHING ZERO ─────────────────── */
-function s2update(t){
+/* ══════════════════════════════════════════════════
+   MODULE 2: APPROACHING ZERO
+══════════════════════════════════════════════════ */
+function s2upd(t){
   const sl=document.getElementById('s2'+t+'-sl');
   const n=+sl.value;
-  document.getElementById('s2'+t+'-val').textContent=n;
+  document.getElementById('s2'+t+'-v').textContent=n;
   let v,st;
   if(t==='a'){v=1/n;st=n>=100?'Very close to zero, but still positive.':'Getting smaller…';}
   else if(t==='b'){v=1/(n*n);st=n>=50?'Approaching zero rapidly.':'Decreasing fast…';}
   else{
     const r=+document.getElementById('s2c-r').value/100;
-    document.getElementById('s2c-rval').textContent=r.toFixed(2);
-    v=Math.pow(r,n);st=Math.abs(r)<1?'|r| < 1: sequence → 0.':'|r| ≥ 1: does NOT converge to 0.';}
-  document.getElementById('s2'+t+'-res').textContent=v.toExponential(4);
-  const el=document.getElementById('s2'+t+'-st');if(el)el.textContent=st;
+    document.getElementById('s2c-rv').textContent=r.toFixed(2);
+    v=Math.pow(r,n);st=Math.abs(r)<1?'|r|<1: sequence → 0.':'|r|≥1: does not converge to 0.';}
+  document.getElementById('s2'+t+'-r').innerHTML=fmtSci(v,4);
+  if(document.getElementById('s2'+t+'-st'))document.getElementById('s2'+t+'-st').textContent=st;
   drawSeq2(t);
 }
 function drawSeq2(t){
-  const cid='c2'+t;
-  const c=rz(cid);if(!c)return;
-  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  const c=rz('c2'+t);if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=30,N=60;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  const N=60,pad=30;
   const pts=[];
   for(let i=1;i<=N;i++){
-    let v;
-    if(t==='a')v=1/i;
-    else if(t==='b')v=1/(i*i);
-    else{const r=+document.getElementById('s2c-r').value/100;v=Math.pow(r,i);}
-    pts.push(v);
+    if(t==='a')pts.push(1/i);
+    else if(t==='b')pts.push(1/(i*i));
+    else{const r=+document.getElementById('s2c-r').value/100;pts.push(Math.pow(r,i));}
   }
-  const maxV=Math.max(...pts.map(Math.abs))||1;
+  const mx0=Math.max(...pts.map(Math.abs))||1;
+  const mx2=i=>pad+(i/N)*(W-2*pad);
+  const my2=v=>H-pad-((v+mx0)/(2*mx0))*(H-2*pad);
+  ctx.strokeStyle='#ddd';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,my2(0));ctx.lineTo(W-pad,my2(0));ctx.stroke();
+  ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.beginPath();
+  pts.forEach((v,i)=>i?ctx.lineTo(mx2(i+1),my2(v)):ctx.moveTo(mx2(1),my2(v)));ctx.stroke();
+  const n=Math.min(+document.getElementById('s2'+t+'-sl').value,N);
+  ctx.fillStyle=RED;ctx.beginPath();ctx.arc(mx2(n),my2(pts[n-1]),5,0,2*Math.PI);ctx.fill();
+}
+function drawRace(){
+  const r=+document.getElementById('s2r-r').value/100;
+  document.getElementById('s2r-rv').textContent=r.toFixed(2);
+  const c=rz('c2race');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35,N=50;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const a=[],b=[],d=[];
+  for(let i=1;i<=N;i++){a.push(1/i);b.push(1/(i*i));d.push(Math.abs(Math.pow(r,i)));}
+  const maxV=Math.max(a[0],b[0],d[0],0.01);
   const mx=i=>pad+(i/N)*(W-2*pad);
   const my=v=>H-pad-(v/maxV)*(H-2*pad);
-  // zero line
-  ctx.strokeStyle='#ccc';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(pad,my(0));ctx.lineTo(W-pad,my(0));ctx.stroke();
-  ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.beginPath();
-  pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));
-  ctx.stroke();
-  // current n dot
-  const n=+document.getElementById('s2'+t+'-sl').value;
-  const cn=Math.min(n,N);
-  ctx.fillStyle=RED;ctx.beginPath();ctx.arc(mx(cn),my(pts[cn-1]),5,0,2*Math.PI);ctx.fill();
+  ctx.strokeStyle='#eee';ctx.lineWidth=1;
+  [0.25,0.5,0.75,1].forEach(f=>{ctx.beginPath();ctx.moveTo(pad,my(maxV*f));ctx.lineTo(W-pad,my(maxV*f));ctx.stroke();});
+  [[a,NAVY],[b,TEAL],[d,RED]].forEach(([pts,col])=>{
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+    pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  });
 }
 
-/* ─── MODULE 3: 0/0 ─────────────────────────────── */
-function s3update(t){
+/* ══════════════════════════════════════════════════
+   MODULE 3: 0/0
+══════════════════════════════════════════════════ */
+function s3upd(t){
   let x,v,xlab;
-  if(t==='a'){
-    const raw=+document.getElementById('s3a-sl').value;
-    x=(200-raw+1)*0.005;xlab=x.toFixed(3);v=x===0?1:Math.sin(x)/x;
-    document.getElementById('s3a-xval').textContent=xlab;
-    document.getElementById('s3a-res').textContent=v.toFixed(6);
-  }else if(t==='b'){
-    const raw=+document.getElementById('s3b-sl').value;
-    x=1+(200-raw)*0.01;xlab=x.toFixed(3);v=x===1?2:(x*x-1)/(x-1);
-    document.getElementById('s3b-xval').textContent=xlab;
-    document.getElementById('s3b-res').textContent=v.toFixed(6);
-  }else{
-    const raw=+document.getElementById('s3c-sl').value;
-    x=(raw)*0.005;xlab=x.toFixed(3);v=x===0?Infinity:x/(x*x);
-    document.getElementById('s3c-xval').textContent=xlab;
-    document.getElementById('s3c-res').textContent=isFinite(v)?v.toFixed(4):'∞';
-  }
+  if(t==='a'){x=(200-+document.getElementById('s3a-sl').value+1)*0.005;xlab=x.toFixed(3);v=x<1e-9?1:Math.sin(x)/x;document.getElementById('s3a-xv').textContent=xlab;document.getElementById('s3a-res').textContent=v.toFixed(6);}
+  else if(t==='b'){x=1+(200-+document.getElementById('s3b-sl').value)*0.01;xlab=x.toFixed(3);v=(x*x-1)/(x-1);document.getElementById('s3b-xv').textContent=xlab;document.getElementById('s3b-res').textContent=v.toFixed(6);}
+  else{x=+document.getElementById('s3c-sl').value*0.005;xlab=x.toFixed(3);v=x<1e-9?Infinity:1/x;document.getElementById('s3c-xv').textContent=xlab;document.getElementById('s3c-res').textContent=isFinite(v)?v.toFixed(3):'∞';}
   drawRatio3(t);
 }
 function drawRatio3(t){
   const cid='c3'+t;const c=rz(cid);if(!c)return;
-  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35,N=200;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  const N=200,pad=35;
   const pts=[];
   for(let i=1;i<=N;i++){
     let v;
     if(t==='a'){const x=(N-i+1)*0.005;v=x<1e-9?1:Math.sin(x)/x;}
     else if(t==='b'){const x=1+(N-i)*0.01;v=(x*x-1)/(x-1);}
-    else{const x=i*0.005;v=x<1e-9?1000:1/x;}
-    pts.push(isFinite(v)?v:null);
+    else{const x=i*0.005;v=x<1e-9?null:1/x;}
+    pts.push((v!==null&&isFinite(v)&&Math.abs(v)<1000)?v:null);
   }
-  const valid=pts.filter(v=>v!==null&&isFinite(v));
-  const mn=Math.min(...valid),mx2=Math.max(...valid);
-  const rng=mx2-mn||1;
+  const valid=pts.filter(v=>v!==null);
+  if(!valid.length)return;
+  const mn=Math.min(...valid),mx2=Math.max(...valid),rng=mx2-mn||1;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
-  // horizontal grid
   ctx.strokeStyle='#eee';ctx.lineWidth=1;
   for(let g=0;g<=4;g++){const y=pad+g*(H-2*pad)/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();}
-  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();
-  let started=false;
-  pts.forEach((v,i)=>{if(v===null||!isFinite(v)){started=false;return;}if(!started){ctx.moveTo(mx(i+1),my(v));started=true;}else{ctx.lineTo(mx(i+1),my(v));}});
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();let started=false;
+  pts.forEach((v,i)=>{if(v===null){started=false;return;}if(!started){ctx.moveTo(mx(i+1),my(v));started=true;}else ctx.lineTo(mx(i+1),my(v));});
   ctx.stroke();
 }
 
-/* ─── MODULE 4: LIMITS ──────────────────────────── */
-function m4update(){
-  const eps=+document.getElementById('m4eps').value/100;
-  document.getElementById('m4epsval').textContent=eps.toFixed(2);
-  const c=rz('c4');if(!c)return;
-  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=40;
+/* ══════════════════════════════════════════════════
+   MODULE 4: LIMITS
+══════════════════════════════════════════════════ */
+function m4draw(t){
+  const eps=+document.getElementById('m4'+t+'-eps').value/100;
+  document.getElementById('m4'+t+'-ev').textContent=eps.toFixed(2);
+  const c=rz('c4'+t);if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=40,N=60,L=0;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  const N=50,L=0;
-  const seq=i=>1/i;
-  const Nfind=Math.ceil(1/eps)+1;
-  // epsilon band
+  const seqFn=t==='a'?i=>1/i:t==='b'?i=>1/(i*i):i=>Math.pow(-1,i)/i;
+  const scale=t==='c'?1.2:1.2;
+  const maxV=seqFn(1)*scale;
   const cy=H/2;
-  const bandH=(eps/(1.2))*(H-2*pad);
-  ctx.fillStyle='rgba(15,110,86,0.12)';
-  ctx.fillRect(pad,cy-bandH,W-2*pad,2*bandH);
+  const bandH=(eps/maxV)*(H/2-pad);
+  ctx.fillStyle='rgba(15,110,86,0.1)';ctx.fillRect(pad,cy-bandH,W-2*pad,2*bandH);
   ctx.strokeStyle=TEAL;ctx.lineWidth=1;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(pad,cy-bandH);ctx.lineTo(W-pad,cy-bandH);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(pad,cy+bandH);ctx.lineTo(W-pad,cy+bandH);ctx.stroke();
+  [[cy-bandH],[cy+bandH]].forEach(([y])=>{ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();});
   ctx.setLineDash([]);
-  // L line
-  ctx.strokeStyle=GOLD;ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(pad,cy);ctx.lineTo(W-pad,cy);ctx.stroke();
-  ctx.fillStyle=GOLD;ctx.font='bold 12px Arial';ctx.textAlign='left';
-  ctx.fillText('L = 0',4,cy+5);
-  // sequence points
+  ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pad,cy);ctx.lineTo(W-pad,cy);ctx.stroke();
+  ctx.fillStyle=GOLD;ctx.font='bold 11px Arial';ctx.textAlign='left';ctx.fillText('L=0',4,cy+4);
+  let Nval=0;
   for(let i=1;i<=N;i++){
+    const v=seqFn(i);
     const x=pad+(i/N)*(W-2*pad);
-    const y=cy-seq(i)/(1.2)*(H-2*pad)/2;
-    const inside=Math.abs(seq(i)-L)<eps;
+    const y=cy-(v/maxV)*(H/2-pad);
+    const inside=Math.abs(v-L)<eps;
+    if(!inside)Nval=i;
     ctx.fillStyle=inside?TEAL:RED;
     ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();
   }
-  // N marker
-  if(Nfind<=N){
-    const xN=pad+(Nfind/N)*(W-2*pad);
-    ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.setLineDash([3,3]);
-    ctx.beginPath();ctx.moveTo(xN,pad);ctx.lineTo(xN,H-pad);ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';
-    ctx.fillText('N='+Nfind,xN,H-8);
-  }
-  document.getElementById('m4status').textContent=
-    'All terms inside the ε-band after N = '+Nfind+'. ε = '+eps.toFixed(2);
+  if(Nval<N){const xN=pad+(Nval/N)*(W-2*pad);ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(xN,pad);ctx.lineTo(xN,H-pad);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('N='+Nval,xN,H-6);}
+  document.getElementById('m4'+t+'-st').textContent='ε = '+eps.toFixed(2)+'. All terms inside band after N = '+(Nval+1)+'.';
 }
 
-/* ─── MODULE 5: SEQUENCES ───────────────────────── */
+/* ══════════════════════════════════════════════════
+   MODULE 5: SEQUENCES
+══════════════════════════════════════════════════ */
 function s5draw(t){
-  const cid='c5'+t;const c=rz(cid);if(!c)return;
-  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=30;
+  const c=rz('c5'+t);if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=30,N=30;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  const N=30;
   let pts=[];
   if(t==='a'){
     const a=+document.getElementById('s5a-a').value,d=+document.getElementById('s5a-d').value;
-    document.getElementById('s5a-aval').textContent=a;
-    document.getElementById('s5a-dval').textContent=d;
+    document.getElementById('s5a-av').textContent=a;document.getElementById('s5a-dv').textContent=d;
     for(let i=1;i<=N;i++)pts.push(a+(i-1)*d);
     const st=document.getElementById('s5a-st');
-    if(d===0){st.textContent='d = 0: constant sequence, converges.';st.className='status converge';}
-    else{st.textContent='d ≠ 0: arithmetic sequence diverges.';st.className='status diverge';}
+    if(d===0){st.textContent='d=0: constant — converges.';st.className='status converge';}
+    else{st.textContent='d≠0: diverges.';st.className='status diverge';}
   }else if(t==='b'){
     const a=+document.getElementById('s5b-a').value,r=+document.getElementById('s5b-r').value/10;
-    document.getElementById('s5b-aval').textContent=a;
-    document.getElementById('s5b-rval').textContent=r.toFixed(1);
+    document.getElementById('s5b-av').textContent=a;document.getElementById('s5b-rv').textContent=r.toFixed(1);
     for(let i=1;i<=N;i++)pts.push(a*Math.pow(r,i-1));
     const st=document.getElementById('s5b-st');
-    if(Math.abs(r)<1){st.textContent='|r| < 1: converges to 0.';st.className='status converge';}
-    else if(Math.abs(r)===1){st.textContent='|r| = 1: bounded but may not converge.';st.className='status';}
-    else{st.textContent='|r| > 1: diverges.';st.className='status diverge';}
+    if(Math.abs(r)<1){st.textContent='|r|<1: converges to 0.';st.className='status converge';}
+    else{st.textContent='|r|≥1: diverges.';st.className='status diverge';}
   }else if(t==='c'){
-    const r=+document.getElementById('s5c-r').value;
-    document.getElementById('s5c-rval').textContent=r;
-    for(let i=1;i<=N;i++)pts.push(r*Math.pow(-1,i));
-  }else{
-    for(let i=1;i<=N;i++)pts.push(Math.sin(i)/i);
-  }
-  const mn=Math.min(...pts),mx2=Math.max(...pts);
-  const rng=mx2-mn||1;
+    const a=+document.getElementById('s5c-a').value;
+    document.getElementById('s5c-av').textContent=a;
+    for(let i=1;i<=N;i++)pts.push(a*Math.pow(-1,i));
+  }else{for(let i=1;i<=N;i++)pts.push(Math.sin(i)/i);}
+  const mn=Math.min(...pts),mx2=Math.max(...pts),rng=mx2-mn||1;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
-  // zero line
   if(mn<0&&mx2>0){ctx.strokeStyle='#ddd';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,my(0));ctx.lineTo(W-pad,my(0));ctx.stroke();}
-  // lines
-  ctx.strokeStyle='#cce';ctx.lineWidth=1;ctx.beginPath();
-  pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));
-  ctx.stroke();
-  // dots
+  ctx.strokeStyle='#c8d8f0';ctx.lineWidth=1;ctx.beginPath();pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
   pts.forEach((v,i)=>{ctx.fillStyle=NAVY;ctx.beginPath();ctx.arc(mx(i+1),my(v),3.5,0,2*Math.PI);ctx.fill();});
 }
 
-/* ─── MODULE 6: SERIES ──────────────────────────── */
+/* ══════════════════════════════════════════════════
+   MODULE 6: INFINITE SERIES
+══════════════════════════════════════════════════ */
+// --- Geometric step-through ---
+let s6a_n=0,s6a_pts=[];
+function s6aGetParams(){
+  const a=+document.getElementById('s6a-a').value;
+  const r=+document.getElementById('s6a-r').value/10;
+  document.getElementById('s6a-av').textContent=a;
+  document.getElementById('s6a-rv').textContent=r.toFixed(1);
+  return{a,r};
+}
+function s6aReset(){
+  const{a,r}=s6aGetParams();
+  s6a_n=0;s6a_pts=[];
+  document.getElementById('s6a-chips').innerHTML='';
+  document.getElementById('s6a-bar').style.width='0%';
+  document.getElementById('s6a-sum').textContent='0';
+  const exact=a/(1-r);
+  document.getElementById('s6a-blab').innerHTML='S = 0 &nbsp;|&nbsp; Exact = '+exact.toFixed(4);
+  drawS6a();
+}
+function s6aStep(){
+  const{a,r}=s6aGetParams();
+  const exact=a/(1-r);
+  const term=a*Math.pow(r,s6a_n);
+  s6a_n++;
+  const cumsum=(s6a_pts.length?s6a_pts[s6a_pts.length-1]:0)+term;
+  s6a_pts.push(cumsum);
+  // chip
+  const chips=document.getElementById('s6a-chips');
+  const chip=document.createElement('span');
+  chip.className='term-chip';
+  chip.textContent=(s6a_n===1?'':' + ')+term.toFixed(4);
+  chips.appendChild(chip);
+  if(chips.children.length>10){chips.removeChild(chips.firstChild);}
+  // bar
+  const pct=Math.min(cumsum/exact*100,100);
+  document.getElementById('s6a-bar').style.width=pct+'%';
+  document.getElementById('s6a-sum').textContent=cumsum.toFixed(6);
+  document.getElementById('s6a-blab').innerHTML='S<sub>'+s6a_n+'</sub> = '+cumsum.toFixed(4)+' &nbsp;|&nbsp; Exact = '+exact.toFixed(4);
+  drawS6a();
+}
+function s6aFill(){const{a,r}=s6aGetParams();while(s6a_n<30)s6aStep();}
+function drawS6a(){
+  const c=rz('c6a');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  if(!s6a_pts.length)return;
+  const{a,r}=s6aGetParams();
+  const exact=a/(1-r);
+  const mx2=Math.max(exact*1.1,s6a_pts[s6a_pts.length-1]*1.1)||1;
+  const my=v=>H-pad-(v/mx2)*(H-2*pad);
+  const mx=i=>pad+(i/(Math.max(s6a_pts.length,10)))*(W-2*pad);
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(pad,my(exact));ctx.lineTo(W-pad,my(exact));ctx.stroke();
+  ctx.setLineDash([]);ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('Exact = '+exact.toFixed(3),4,my(exact)-4);
+  ctx.strokeStyle=TEAL;ctx.lineWidth=2;ctx.beginPath();
+  s6a_pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  s6a_pts.forEach((v,i)=>{ctx.fillStyle=TEAL;ctx.beginPath();ctx.arc(mx(i+1),my(v),3,0,2*Math.PI);ctx.fill();});
+}
+
+// --- Slider-based series ---
 function s6draw(t){
-  const cid='c6'+t;const c=rz(cid);if(!c)return;
+  const c=rz('c6'+t);if(!c)return;
   const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
   let cumsums=[];
-  if(t==='a'){
-    const a=+document.getElementById('s6a-a').value,r=+document.getElementById('s6a-r').value/10;
-    document.getElementById('s6a-aval').textContent=a;
-    document.getElementById('s6a-rval').textContent=r.toFixed(1);
-    const exact=a/(1-r);
-    document.getElementById('s6a-exact').textContent=exact.toFixed(4);
-    let s=0;for(let i=0;i<=60;i++){s+=a*Math.pow(r,i);cumsums.push(s);}
-    document.getElementById('s6a-sum').textContent=s.toFixed(4);
-    // horizontal exact line
-    const mn2=0,mx3=exact*1.1;
-    const my2=v=>H-pad-((v-mn2)/(mx3-mn2))*(H-2*pad);
-    const mx2=i=>pad+(i/60)*(W-2*pad);
-    ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(pad,my2(exact));ctx.lineTo(W-pad,my2(exact));ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();
-    cumsums.forEach((v,i)=>i?ctx.lineTo(mx2(i),my2(v)):ctx.moveTo(mx2(0),my2(v)));ctx.stroke();
-    cumsums.forEach((v,i)=>{ctx.fillStyle=TEAL;ctx.beginPath();ctx.arc(mx2(i),my2(v),2.5,0,2*Math.PI);ctx.fill();});
-    return;
-  }else if(t==='b'){
+  if(t==='b'){
     const N=+document.getElementById('s6b-n').value;
-    document.getElementById('s6b-nval').textContent=N;
+    document.getElementById('s6b-nv').textContent=N;
     let s=0;for(let i=1;i<=N;i++){s+=1/i;cumsums.push(s);}
     document.getElementById('s6b-sum').textContent=s.toFixed(4);
-  }else{
+  }else if(t==='c'){
     const N=+document.getElementById('s6c-n').value;
-    document.getElementById('s6c-nval').textContent=N;
+    document.getElementById('s6c-nv').textContent=N;
     let s=0;for(let i=1;i<=N;i++){s+=Math.pow(-1,i+1)/i;cumsums.push(s);}
     document.getElementById('s6c-sum').textContent=s.toFixed(6);
-    // ln2 line
-    const mn3=Math.min(...cumsums)*.95,mx4=Math.max(...cumsums)*1.05;
-    const rng=mx4-mn3||1;
-    const my3=v=>H-pad-((v-mn3)/rng)*(H-2*pad);
-    const mx3=i=>pad+(i/cumsums.length)*(W-2*pad);
-    ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(pad,my3(Math.LN2));ctx.lineTo(W-pad,my3(Math.LN2));ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();
-    cumsums.forEach((v,i)=>i?ctx.lineTo(mx3(i+1),my3(v)):ctx.moveTo(mx3(1),my3(v)));ctx.stroke();
-    cumsums.forEach((v,i)=>{ctx.fillStyle=TEAL;ctx.beginPath();ctx.arc(mx3(i+1),my3(v),2.5,0,2*Math.PI);ctx.fill();});
-    return;
   }
-  const mn=0,mx2=Math.max(...cumsums)*1.05||1;
-  const my=v=>H-pad-((v-mn)/(mx2-mn))*(H-2*pad);
+  if(!cumsums.length)return;
+  const mn=Math.min(...cumsums)*.95,mx2=Math.max(...cumsums)*1.05,rng=mx2-mn||1;
+  const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+(i/cumsums.length)*(W-2*pad);
+  if(t==='c'){ctx.strokeStyle=GOLD;ctx.lineWidth=1;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(Math.LN2));ctx.lineTo(W-pad,my(Math.LN2));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('ln 2',4,my(Math.LN2)-4);}
   ctx.strokeStyle=t==='b'?RED:TEAL;ctx.lineWidth=2;ctx.beginPath();
   cumsums.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
   cumsums.forEach((v,i)=>{ctx.fillStyle=t==='b'?RED:TEAL;ctx.beginPath();ctx.arc(mx(i+1),my(v),2.5,0,2*Math.PI);ctx.fill();});
 }
 
-/* ─── MODULE 9: PARADOXES ───────────────────────── */
-function drawZeno(){
-  const c=rz('c9a');if(!c)return;
+/* ══════════════════════════════════════════════════
+   MODULE 8: p-SERIES
+══════════════════════════════════════════════════ */
+function drawPseries(){
+  const p=+document.getElementById('s8p-p').value/100;
+  document.getElementById('s8p-pv').textContent=p.toFixed(2);
+  const c=rz('c8p');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35,N=500;
+  let cumsums=[],s=0;
+  for(let i=1;i<=N;i++){s+=1/Math.pow(i,p);cumsums.push(s);}
+  document.getElementById('s8p-sum').textContent=s.toFixed(4);
+  const st=document.getElementById('s8p-st');
+  if(p>1){st.textContent='p = '+p.toFixed(2)+' > 1: series CONVERGES.';st.className='status converge';}
+  else if(Math.abs(p-1)<0.02){st.textContent='p ≈ 1: borderline — harmonic series diverges.';st.className='status diverge';}
+  else{st.textContent='p = '+p.toFixed(2)+' ≤ 1: series DIVERGES.';st.className='status diverge';}
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const mx2=cumsums[cumsums.length-1]*1.05||1;
+  const my=v=>H-pad-(v/mx2)*(H-2*pad);
+  const mx=i=>pad+(i/N)*(W-2*pad);
+  ctx.strokeStyle=p>1?TEAL:RED;ctx.lineWidth=2;ctx.beginPath();
+  cumsums.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  ctx.strokeStyle=GOLD;ctx.setLineDash([3,3]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(W/2,pad);ctx.lineTo(W/2,H-pad);ctx.stroke();ctx.setLineDash([]);
+}
+
+/* ══════════════════════════════════════════════════
+   MODULE 9: BOUNCING BALL
+══════════════════════════════════════════════════ */
+let bbAnim=null,bbPhase=0,bbBounce=0,bbY=0,bbVy=0,bbH=20,bbR=0.7;
+function bbUpdate(){
+  bbH=+document.getElementById('bb-h').value;
+  bbR=+document.getElementById('bb-r').value/100;
+  document.getElementById('bb-hv').textContent=bbH;
+  document.getElementById('bb-rv').textContent=bbR.toFixed(2);
+  const total=bbH*(1+bbR)/(1-bbR);
+  document.getElementById('bb-total').textContent=total.toFixed(2);
+  bbDrawBars();
+}
+function bbDrawBars(){
+  const c=rz('c9bars');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=20;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const bounces=[];let h=bbH;
+  for(let i=0;i<15;i++){bounces.push(h);h*=bbR;if(h<0.01)break;}
+  const maxH=bounces[0]||1;
+  const bw=Math.min((W-2*pad)/bounces.length-4,40);
+  bounces.forEach((bh,i)=>{
+    const x=pad+i*((W-2*pad)/bounces.length);
+    const barH=(bh/maxH)*(H-2*pad);
+    const col=`hsl(${220-i*10},${70-i*2}%,${40+i*2}%)`;
+    ctx.fillStyle=col;ctx.fillRect(x,H-pad-barH,bw,barH);
+    ctx.fillStyle=NAVY;ctx.font='10px Arial';ctx.textAlign='center';
+    if(bh>maxH*0.05)ctx.fillText(bh.toFixed(1),x+bw/2,H-pad-barH-3);
+  });
+  ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('Bounce number →',W/2,H-3);
+}
+function bbAnimate(){
+  bbStop();bbReset();
+  bbH=+document.getElementById('bb-h').value;
+  bbR=+document.getElementById('bb-r').value/100;
+  const c=document.getElementById('c9ball');if(!c)return;
+  const H=c.height;
+  const scale=H/(bbH*1.15);
+  const ground=H-20;
+  let curH=bbH,velY=0,ballY=ground-curH*scale,bounceCount=0;
+  const radius=12;
+  function step(){
+    const c=rz('c9ball');if(!c)return;
+    const ctx=c.getContext('2d'),W=c.width;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#f8f9ff';ctx.fillRect(0,0,W,H);
+    // ground
+    ctx.fillStyle='#c8a84b33';ctx.fillRect(0,ground,W,H-ground);
+    ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,ground);ctx.lineTo(W,ground);ctx.stroke();
+    // height label
+    ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textAlign='left';
+    ctx.fillText('h₀ = '+bbH+'m',8,20);
+    // ball
+    velY+=0.5;ballY+=velY;
+    if(ballY>=ground-radius){
+      ballY=ground-radius;
+      if(bounceCount<20&&Math.abs(velY)>0.3){
+        velY=-Math.abs(velY)*bbR;bounceCount++;
+        const pct=bounceCount/20;
+        ctx.fillStyle=`rgba(201,162,39,${0.7-pct*0.5})`;
+        ctx.beginPath();ctx.ellipse(W/2,ground,40*(1-pct*0.5),5,0,0,2*Math.PI);ctx.fill();
+      }else{velY=0;bbStop();return;}
+    }
+    const grad=ctx.createRadialGradient(W/2-4,ballY-4,2,W/2,ballY,radius);
+    grad.addColorStop(0,'#3a6bcc');grad.addColorStop(1,NAVY);
+    ctx.fillStyle=grad;ctx.beginPath();ctx.arc(W/2,ballY,radius,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.beginPath();ctx.arc(W/2-4,ballY-4,4,0,2*Math.PI);ctx.fill();
+    bbAnim=requestAnimationFrame(step);
+  }
+  step();
+}
+function bbStop(){if(bbAnim){cancelAnimationFrame(bbAnim);bbAnim=null;}}
+function bbReset(){bbStop();const c=rz('c9ball');if(!c)return;const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);}
+
+/* ══════════════════════════════════════════════════
+   MODULE 10: KOCH SNOWFLAKE
+══════════════════════════════════════════════════ */
+function kochDivide(pts){
+  const out=[];
+  for(let i=0;i<pts.length;i++){
+    const p=pts[i],q=pts[(i+1)%pts.length];
+    const dx=q[0]-p[0],dy=q[1]-p[1];
+    const p1=[p[0]+dx/3,p[1]+dy/3];
+    const p2=[p[0]+2*dx/3,p[1]+2*dy/3];
+    const mx=p[0]+dx/2-dy*Math.sqrt(3)/6,my2=p[1]+dy/2+dx*Math.sqrt(3)/6;
+    out.push(p,p1,[mx,my2],p2);
+  }
+  return out;
+}
+function drawKoch(){
+  const iter=+document.getElementById('kk-iter').value;
+  document.getElementById('kk-iv').textContent=iter;
+  const c=rz('c10');if(!c)return;
   const ctx=c.getContext('2d'),W=c.width,H=c.height;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  const y=H/2,pad=20;
-  ctx.strokeStyle=NAVY;ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();
-  // segments
-  const colors=['#1a3a6b','#0f6e56','#c9a227','#a32d2d','#533bb7','#0e6a6a'];
-  let x=pad,total=W-2*pad;
-  for(let i=0;i<8;i++){
-    const seg=total*Math.pow(0.5,i+1);
-    ctx.fillStyle=colors[i%colors.length]+'33';
-    ctx.fillRect(x,y-18,seg,36);
-    ctx.strokeStyle=colors[i%colors.length];ctx.lineWidth=1.5;
-    ctx.strokeRect(x,y-18,seg,36);
-    if(seg>18){ctx.fillStyle=colors[i%colors.length];ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText('½'+(i>0?'ⁿ':''),x+seg/2,y+5);}
-    x+=seg;
-  }
-  ctx.fillStyle=NAVY;ctx.font='13px Arial';ctx.textAlign='left';
-  ctx.fillText('0',pad,y+36);ctx.textAlign='right';ctx.fillText('1',W-pad,y+36);
+  const s=Math.min(W,H)*0.7,cx=W/2,cy=H/2+s*0.12;
+  let pts=[[cx,cy-s*2/3],[cx+s/2,cy+s/3],[cx-s/2,cy+s/3]];
+  for(let i=0;i<iter;i++)pts=kochDivide(pts);
+  ctx.beginPath();pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();
+  ctx.fillStyle='#e8eeff';ctx.fill();ctx.strokeStyle=NAVY;ctx.lineWidth=iter>3?0.5:1.5;ctx.stroke();
+  // stats
+  const perim=(3*Math.pow(4/3,iter)).toFixed(4);
+  let area=1;for(let i=1;i<=iter;i++)area+=3*Math.pow(4,i-1)/Math.pow(9,i);
+  document.getElementById('kk-perim').textContent=perim;
+  document.getElementById('kk-area').textContent=area.toFixed(4);
+  document.getElementById('kk-pst').textContent=iter>=4?'Perimeter → ∞ (grows by ×4/3 each step)':'Gets bigger each step — growing to ∞';
+  document.getElementById('kk-ast').textContent='Converges → '+(8/5).toFixed(4)+' (= 8/5 of original)';
 }
-function drawGrandi(){
-  const c=rz('c9c');if(!c)return;
+
+/* ══════════════════════════════════════════════════
+   MODULE 11: DENSITY OF FRACTIONS
+══════════════════════════════════════════════════ */
+let fracLeft=[0,1],fracRight=[1,1];
+function fracReset(){fracLeft=[0,1];fracRight=[1,1];drawFrac();document.getElementById('frac-info').innerHTML='Start: <strong>0/1</strong> and <strong>1/1</strong>. Click "Zoom in" to find the fraction exactly between them.';}
+function fracZoom(){
+  const [p,q]=fracLeft,[r,s]=fracRight;
+  const mp=p+r,mq=q+s;
+  // decide which half to zoom into (left half for demo)
+  const decision=Math.random()<0.5;
+  if(decision){fracRight=[mp,mq];}else{fracLeft=[mp,mq];}
+  drawFrac();
+  const [a,b]=fracLeft,[c,d]=fracRight;
+  const mid=document.getElementById('frac-info');
+  mid.innerHTML=`Left: <strong>${a}/${b}</strong> = ${(a/b).toFixed(8)} &emsp; Right: <strong>${c}/${d}</strong> = ${(c/d).toFixed(8)}<br>Middle (mediant): <strong>${mp}/${mq}</strong> = ${(mp/mq).toFixed(8)}<br><em>You can always keep zooming in — the rationals are dense!</em>`;
+}
+function drawFrac(){
+  const c=rz('c11');if(!c)return;
   const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=30;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  const N=30;
-  const pts=[];let s=0;
+  const [a,b]=fracLeft,[d2,e]=fracRight;
+  const lo=a/b,hi=d2/e,mid=(a+d2)/(b+e);
+  const toX=v=>pad+(v-lo)/(hi-lo)*(W-2*pad);
+  // axis
+  const ay=H/2;
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pad,ay);ctx.lineTo(W-pad,ay);ctx.stroke();
+  // ticks
+  [[lo,'left'],[hi,'right'],[mid,'mid']].forEach(([v,lbl])=>{
+    const x=toX(v);
+    const col=lbl==='mid'?GOLD:NAVY;
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,ay-12);ctx.lineTo(x,ay+12);ctx.stroke();
+    ctx.fillStyle=col;ctx.font=`bold 12px Arial`;ctx.textAlign='center';
+    const label=lbl==='left'?a+'/'+b:lbl==='right'?d2+'/'+e:(a+d2)+'/'+(b+e);
+    ctx.fillText(label,x,ay-(lbl==='mid'?20:20));
+  });
+  // show interval
+  ctx.fillStyle='rgba(201,162,39,0.15)';ctx.fillRect(pad,ay-6,W-2*pad,12);
+}
+
+/* ══════════════════════════════════════════════════
+   MODULE 12: CALCULATOR LIES
+══════════════════════════════════════════════════ */
+function factorial(n){let f=1;for(let i=2;i<=n;i++)f*=i;return f;}
+function taylorSin(x,k){let s=0;for(let i=0;i<k;i++)s+=Math.pow(-1,i)*Math.pow(x,2*i+1)/factorial(2*i+1);return s;}
+function taylorCos(x,k){let s=0;for(let i=0;i<k;i++)s+=Math.pow(-1,i)*Math.pow(x,2*i)/factorial(2*i);return s;}
+function taylorExp(x,k){let s=0;for(let i=0;i<k;i++)s+=Math.pow(x,i)/factorial(i);return s;}
+function draw12(t){
+  const k=+document.getElementById('t12'+t).value;
+  document.getElementById('t12'+t+'-v').textContent=k;
+  const c=rz('c12'+t);if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=40;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const xMin=t==='c'?0:-Math.PI*2.2,xMax=t==='c'?5:Math.PI*2.2;
+  const yMin=t==='c'?-1:-1.8,yMax=t==='c'?20:1.8;
+  const tx=x=>pad+(x-xMin)/(xMax-xMin)*(W-2*pad);
+  const ty=y=>H-pad-(y-yMin)/(yMax-yMin)*(H-2*pad);
+  // axes
+  ctx.strokeStyle='#ddd';ctx.lineWidth=1;
+  if(yMin<0&&yMax>0){ctx.beginPath();ctx.moveTo(pad,ty(0));ctx.lineTo(W-pad,ty(0));ctx.stroke();}
+  if(xMin<0&&xMax>0){ctx.beginPath();ctx.moveTo(tx(0),pad);ctx.lineTo(tx(0),H-pad);ctx.stroke();}
+  // exact
+  const exact=t==='a'?Math.sin:t==='b'?Math.cos:Math.exp;
+  ctx.strokeStyle=TEAL;ctx.lineWidth=2;ctx.beginPath();
+  let first=true;
+  for(let xi=0;xi<=300;xi++){
+    const x=xMin+xi/300*(xMax-xMin),y=exact(x);
+    if(y<yMin-1||y>yMax+1){first=true;continue;}
+    first?ctx.moveTo(tx(x),ty(y)):ctx.lineTo(tx(x),ty(y));first=false;
+  }
+  ctx.stroke();
+  // approx
+  const approx=t==='a'?x=>taylorSin(x,k):t==='b'?x=>taylorCos(x,k):x=>taylorExp(x,k);
+  ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.setLineDash([]);ctx.beginPath();first=true;
+  for(let xi=0;xi<=300;xi++){
+    const x=xMin+xi/300*(xMax-xMin),y=approx(x);
+    if(y<yMin-1||y>yMax+1){first=true;continue;}
+    first?ctx.moveTo(tx(x),ty(y)):ctx.lineTo(tx(x),ty(y));first=false;
+  }
+  ctx.stroke();
+  ctx.font='11px Arial';ctx.textAlign='left';
+  ctx.fillStyle=TEAL;ctx.fillText('Exact',W-pad-50,pad+14);
+  ctx.fillStyle=RED;ctx.fillText('Taylor ('+k+' terms)',W-pad-100,pad+28);
+  // error
+  const xTest=t==='c'?3:Math.PI/2;
+  const err=Math.abs(exact(xTest)-approx(xTest));
+  document.getElementById('t12'+t+'-err').innerHTML=err<1e-10?'&lt; 10<sup>&minus;10</sup> (negligible)':fmtSci(err,3);
+}
+
+/* ══════════════════════════════════════════════════
+   MODULE 13: PARADOXES
+══════════════════════════════════════════════════ */
+// Zeno animated
+let zenoTimer=null,zenoStep=0,zenoCumsum=0;
+function zenoReset(){clearInterval(zenoTimer);zenoTimer=null;zenoStep=0;zenoCumsum=0;document.getElementById('zeno-sum').textContent='0';drawZenoState();}
+function zenoAnim(){
+  zenoReset();
+  zenoTimer=setInterval(()=>{
+    zenoStep++;zenoCumsum+=Math.pow(0.5,zenoStep);
+    document.getElementById('zeno-sum').textContent=zenoCumsum.toFixed(8);
+    drawZenoState();
+    if(zenoStep>=14){clearInterval(zenoTimer);zenoTimer=null;}
+  },600);
+}
+function drawZenoState(){
+  const c=rz('c13z');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const y=H/2,pad=25;
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();
+  const colors=[NAVY,TEAL,GOLD,RED,PURP,'#0e6a6a','#b85c00'];
+  let x=pad,total=W-2*pad;
+  for(let i=1;i<=Math.min(zenoStep,10);i++){
+    const seg=total*Math.pow(0.5,i);
+    ctx.fillStyle=colors[(i-1)%colors.length]+'44';ctx.fillRect(x,y-18,seg,36);
+    ctx.strokeStyle=colors[(i-1)%colors.length];ctx.lineWidth=1.5;ctx.strokeRect(x,y-18,seg,36);
+    if(seg>22){ctx.fillStyle=colors[(i-1)%colors.length];ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.fillText('½'+(i>1?String.fromCodePoint(0x2070+i):''),x+seg/2,y+5);}
+    x+=seg;
+  }
+  ctx.fillStyle=NAVY;ctx.font='13px Arial';ctx.textAlign='left';ctx.fillText('0',pad,y+32);ctx.textAlign='right';ctx.fillText('1',W-pad,y+32);
+}
+
+function drawGrandi(){
+  const c=rz('c13g');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=30;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const N=30,pts=[];let s=0;
   for(let i=1;i<=N;i++){s+=Math.pow(-1,i+1);pts.push(s);}
   const my=v=>H-pad-((v+0.5)/2)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
-  // 0.5 line
-  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(pad,my(0.5));ctx.lineTo(W-pad,my(0.5));ctx.stroke();
-  ctx.setLineDash([]);
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(0.5));ctx.lineTo(W-pad,my(0.5));ctx.stroke();ctx.setLineDash([]);
   ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('½',2,my(0.5)+4);
-  pts.forEach((v,i)=>{
-    ctx.fillStyle=v===1?TEAL:RED;
+  ctx.strokeStyle='#ddd';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,my(0));ctx.lineTo(W-pad,my(0));ctx.stroke();
+  ctx.strokeStyle='#ddd';ctx.beginPath();ctx.moveTo(pad,my(1));ctx.lineTo(W-pad,my(1));ctx.stroke();
+  pts.forEach((v,i)=>{ctx.fillStyle=v===1?TEAL:RED;ctx.beginPath();ctx.arc(mx(i+1),my(v),5,0,2*Math.PI);ctx.fill();});
+}
+
+/* ══════════════════════════════════════════════════
+   initMod DISPATCHER
+══════════════════════════════════════════════════ */
+function initMod(m,panel){
+  if(m===1){initMod1();}
+  else if(m===2){s2upd('a');s2upd('b');s2upd('c');drawRace();}
+  else if(m===3){s3upd('a');s3upd('b');s3upd('c');}
+  else if(m===4){m4draw('a');m4draw('b');m4draw('c');}
+  else if(m===5){s5draw('a');s5draw('b');s5draw('c');s5draw('d');}
+  else if(m===6){s6aReset();s6draw('b');s6draw('c');}
+  else if(m===8){drawPseries();}
+  else if(m===9){bbUpdate();}
+  else if(m===10){drawKoch();}
+  else if(m===11){fracReset();}
+  else if(m===12){draw12('a');draw12('b');draw12('c');}
+  else if(m===13){drawZenoState();drawGrandi();}
+  else if(m===15){fibReset();drawSpiral();drawCF();}
+  else if(m===16){piReset('a');piReset('b');piReset('c');drawPiRace();}
+  else if(m===17){teleReset('a');teleReset('b');teleReset('c');}
+}
+
+const TOTAL_MODULES=17;
+
+/* ══════════════════════════════════════════════════
+   BOTTOM NAV — inject into every module on first visit
+══════════════════════════════════════════════════ */
+function injectBottomNav(m){
+  const mod=document.getElementById('mod'+m);
+  if(!mod||mod.querySelector('.mod-nav'))return;
+  const labels={1:'Number Line',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',8:'Tests',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'14 Fibonacci',16:'15 π Series',17:'16 Telescoping',14:'Summary'};
+  const modNums={1:'Module 1',2:'Module 2',3:'Module 3',4:'Module 4',5:'Module 5',6:'Module 6',7:'Module 7',8:'Module 8',9:'Module 9',10:'Module 10',11:'Module 11',12:'Module 12',13:'Module 13',15:'Module 14',16:'Module 15',17:'Module 16',14:'Summary'};
+  const navOrder=[1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
+  const pos=navOrder.indexOf(m);
+  const prev=pos>0?navOrder[pos-1]:null;
+  const next=pos<navOrder.length-1?navOrder[pos+1]:null;
+  const div=document.createElement('div');div.className='mod-nav';
+  div.innerHTML=(prev?`<button class="btn btn-outline" onclick="go(${prev})">← ${labels[prev]}</button>`:'<span></span>')+
+    `<span class="mod-nav-info">${modNums[m]} of 16<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
+    (next?`<button class="btn btn-solid" onclick="go(${next})">${labels[next]} →</button>`:'<span></span>');
+  mod.appendChild(div);
+}
+
+/* ══════════════════════════════════════════════════
+   MODULE 15: FIBONACCI & GOLDEN RATIO
+══════════════════════════════════════════════════ */
+const s15tab=mkTabFn();
+const PHI=(1+Math.sqrt(5))/2;
+let fibSeq=[1,1],fibN=2;
+
+function fibReset(){
+  fibSeq=[1,1];fibN=2;
+  const tbl=document.getElementById('fib-tbl');
+  if(!tbl)return;
+  while(tbl.rows.length>1)tbl.deleteRow(1);
+  addFibRow(1,1,null);addFibRow(2,1,1);
+  drawFibSeq();
+}
+function addFibRow(n,f,ratio){
+  const tbl=document.getElementById('fib-tbl');if(!tbl)return;
+  const tr=tbl.insertRow();
+  const err=ratio?Math.abs(ratio-PHI):null;
+  tr.innerHTML=`<td>${n}</td><td>${f.toLocaleString()}</td><td>${ratio?ratio.toFixed(8):'—'}</td><td style="color:${err&&err<0.001?'var(--teal)':'var(--navy)'}">${err?fmtSci(err,3):'—'}</td>`;
+  tbl.parentElement.scrollTop=tbl.parentElement.scrollHeight;
+}
+function fibStep(){
+  if(fibN>=25){document.getElementById('fib-tbl').parentElement.scrollTop=9999;return;}
+  const next=fibSeq[fibSeq.length-1]+fibSeq[fibSeq.length-2];
+  fibSeq.push(next);fibN++;
+  const ratio=fibSeq[fibSeq.length-1]/fibSeq[fibSeq.length-2];
+  addFibRow(fibN,next,ratio);
+  drawFibSeq();
+}
+function fibFill(){while(fibN<20)fibStep();}
+function drawFibSeq(){
+  const c=rz('c15seq');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  if(fibSeq.length<2)return;
+  const ratios=[];for(let i=1;i<fibSeq.length;i++)ratios.push(fibSeq[i]/fibSeq[i-1]);
+  const mn=Math.min(...ratios)*0.98,mx2=Math.max(...ratios)*1.02;
+  const my=v=>H-pad-((v-mn)/(mx2-mn))*(H-2*pad);
+  const mx=i=>pad+(i/(ratios.length))*(W-2*pad);
+  // phi line
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(pad,my(PHI));ctx.lineTo(W-pad,my(PHI));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=GOLD;ctx.font='bold 11px Arial';ctx.textAlign='left';ctx.fillText('φ = 1.618…',4,my(PHI)-4);
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();
+  ratios.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  ratios.forEach((v,i)=>{
+    const err=Math.abs(v-PHI);
+    ctx.fillStyle=err<0.01?TEAL:err<0.1?GOLD:RED;
     ctx.beginPath();ctx.arc(mx(i+1),my(v),5,0,2*Math.PI);ctx.fill();
+  });
+  ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('n →',W/2,H-4);
+}
+function drawSpiral(){
+  const c=rz('c15spiral');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const fibs=[1,1,2,3,5,8,13,21,34,55];
+  const scale=Math.min(W,H)*0.9/89;
+  const colors=[NAVY,TEAL,GOLD,RED,PURP,'#0e6a6a','#b85c00',NAVY,TEAL,GOLD];
+  let x=W/2-34*scale,y=H/2-21*scale;
+  const dirs=[[1,0],[0,1],[-1,0],[0,-1]];let dir=0;
+  const boxes=[];
+  fibs.forEach((f,i)=>{
+    const s=f*scale;
+    boxes.push({x,y,s,c:colors[i%colors.length],f});
+    ctx.fillStyle=colors[i%colors.length]+'22';ctx.fillRect(x,y,s*(dirs[dir%4][0]||1),s*(dirs[dir%4][1]||1));
+    // arcs
+    let ax,ay,startA,endA;
+    if(dir%4===0){ax=x;ay=y+s;startA=-Math.PI/2;endA=0;}
+    else if(dir%4===1){ax=x;ay=y;startA=0;endA=Math.PI/2;}
+    else if(dir%4===2){ax=x+s;ay=y;startA=Math.PI/2;endA=Math.PI;}
+    else{ax=x+s;ay=y+s;startA=Math.PI;endA=3*Math.PI/2;}
+    ctx.strokeStyle=colors[i%colors.length];ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(ax,ay,s,startA,endA);ctx.stroke();
+    // move
+    if(dir%4===0){x+=s;y-=fibs[Math.min(i+1,fibs.length-1)]*scale;}
+    else if(dir%4===1){y+=s;}
+    else if(dir%4===2){x-=fibs[Math.min(i+1,fibs.length-1)]*scale;}
+    else{y-=fibs[Math.min(i+1,fibs.length-1)]*scale;x+=s;}
+    dir++;
+  });
+  // labels
+  ctx.font='bold 10px Arial';ctx.textAlign='center';
+  boxes.slice(0,7).forEach(b=>{ctx.fillStyle=b.c;ctx.fillText(b.f,b.x+b.s/2,b.y+b.s/2+4);});
+}
+function drawCF(){
+  const k=+document.getElementById('s15c-k').value;
+  document.getElementById('s15c-kv').textContent=k;
+  let v=1;for(let i=0;i<k;i++)v=1+1/v;
+  // but we want proper CF: compute from bottom up
+  let cf=1;for(let i=1;i<k;i++)cf=1+1/cf;
+  document.getElementById('s15c-val').textContent=cf.toFixed(10);
+  const err=Math.abs(cf-PHI);
+  document.getElementById('s15c-st').innerHTML='Error: '+fmtSci(err,4);
+  document.getElementById('s15c-st').className=err<1e-6?'status converge':'status';
+  const c=rz('c15cf');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35,N=20;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pts=[];for(let d=1;d<=N;d++){let x=1;for(let i=1;i<d;i++)x=1+1/x;pts.push(x);}
+  const mn=1.5,mx2=1.7;
+  const my=v=>H-pad-((v-mn)/(mx2-mn))*(H-2*pad);
+  const mx=i=>pad+(i/N)*(W-2*pad);
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(PHI));ctx.lineTo(W-pad,my(PHI));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('φ',4,my(PHI)-3);
+  ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.beginPath();
+  pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  pts.forEach((v,i)=>{ctx.fillStyle=i<k?PURP:'#ccc';ctx.beginPath();ctx.arc(mx(i+1),my(v),4,0,2*Math.PI);ctx.fill();});
+}
+
+/* ══════════════════════════════════════════════════
+   MODULE 16: π FROM SERIES
+══════════════════════════════════════════════════ */
+const s16tab=mkTabFn();
+const piState={a:{n:0,val:0,pts:[]},b:{n:0,val:1,pts:[]},c:{n:0,val:3,pts:[]}};
+
+function piReset(t){
+  if(t==='a')piState.a={n:0,val:0,pts:[]};
+  else if(t==='b')piState.b={n:0,val:1,pts:[]};
+  else piState.c={n:0,val:3,pts:[]};
+  updatePiUI(t);drawPiCanvas(t);
+}
+function piStep(t){
+  const s=piState[t];
+  if(t==='a'){
+    const term=Math.pow(-1,s.n)/(2*s.n+1);
+    s.val+=term;s.n++;
+    s.pts.push(s.val*4);
+  }else if(t==='b'){
+    const n=s.n+1;
+    s.val*=(4*n*n)/(4*n*n-1);s.n++;
+    s.pts.push(s.val*2);
+  }else{
+    if(s.n===0){s.pts.push(3);s.n=1;}
+    else{
+      const term=4*Math.pow(-1,s.n+1)/((2*s.n)*(2*s.n+1)*(2*s.n+2));
+      s.val+=term;s.n++;
+      s.pts.push(s.val);
+    }
+  }
+  updatePiUI(t);drawPiCanvas(t);
+}
+function piFill(t,count){for(let i=0;i<count;i++)piStep(t);}
+function updatePiUI(t){
+  const s=piState[t];
+  const approx=s.pts.length?s.pts[s.pts.length-1]:null;
+  const err=approx?Math.abs(approx-Math.PI):null;
+  const pct=approx?Math.max(0,100-Math.abs(approx-Math.PI)*1000):0;
+  document.getElementById('pi-'+t+'-bar').style.width=Math.min(pct,100)+'%';
+  document.getElementById('pi-'+t+'-val').textContent=approx?approx.toFixed(10):'—';
+  document.getElementById('pi-'+t+'-lab').textContent='π ≈ '+(approx?approx.toFixed(8):'—')+' (true: 3.14159265…)';
+  document.getElementById('pi-'+t+'-st').innerHTML='Terms: '+s.n+' &nbsp;|&nbsp; Error: '+(err?fmtSci(err,4):'—');
+}
+function drawPiCanvas(t){
+  const s=piState[t];
+  const c=rz('c16'+t);if(!c||!s.pts.length)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const all=s.pts,N=all.length;
+  const mn=Math.min(...all,Math.PI*0.98),mx2=Math.max(...all,Math.PI*1.02);
+  const rng=mx2-mn||0.01;
+  const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
+  const mx=i=>pad+((i+1)/Math.max(N,10))*(W-2*pad);
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(pad,my(Math.PI));ctx.lineTo(W-pad,my(Math.PI));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('π',4,my(Math.PI)-3);
+  const col=t==='a'?NAVY:t==='b'?TEAL:'#b85c00';
+  ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+  all.forEach((v,i)=>i?ctx.lineTo(mx(i),my(v)):ctx.moveTo(mx(i),my(v)));ctx.stroke();
+  if(N<100)all.forEach((v,i)=>{ctx.fillStyle=col;ctx.beginPath();ctx.arc(mx(i),my(v),3,0,2*Math.PI);ctx.fill();});
+}
+function drawPiRace(){
+  const c=rz('c16race');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35,N=200;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const leibniz=[],wallis=[],nila=[];
+  let la=0,wb=1,nc=3;
+  for(let i=0;i<N;i++){
+    la+=Math.pow(-1,i)/(2*i+1);leibniz.push(la*4);
+    const n=i+1;wb*=(4*n*n)/(4*n*n-1);wallis.push(wb*2);
+    if(i===0)nila.push(3);
+    else{nc+=4*Math.pow(-1,i+1)/((2*i)*(2*i+1)*(2*i+2));nila.push(nc);}
+  }
+  const all=[...leibniz,...wallis,...nila];
+  const mn=Math.min(...all,Math.PI*0.9),mx2=Math.max(...all,Math.PI*1.1);
+  const rng=mx2-mn||0.01;
+  const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
+  const mx=i=>pad+((i+1)/N)*(W-2*pad);
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(pad,my(Math.PI));ctx.lineTo(W-pad,my(Math.PI));ctx.stroke();ctx.setLineDash([]);
+  [[leibniz,NAVY],[wallis,TEAL],[nila,'#b85c00']].forEach(([pts,col])=>{
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+    pts.forEach((v,i)=>i?ctx.lineTo(mx(i),my(v)):ctx.moveTo(mx(i),my(v)));ctx.stroke();
   });
 }
 
-/* ─── initMod DISPATCHER ─────────────────────────── */
-function initMod(m,panel){
-  if(m===1)initMod1();
-  else if(m===2){s2update('a');s2update('b');s2update('c');}
-  else if(m===3){s3update('a');s3update('b');s3update('c');}
-  else if(m===4)m4update();
-  else if(m===5){s5draw('a');s5draw('b');s5draw('c');s5draw('d');}
-  else if(m===6){s6draw('a');s6draw('b');s6draw('c');}
-  else if(m===9){drawZeno();drawGrandi();}
+/* ══════════════════════════════════════════════════
+   MODULE 17: TELESCOPING SERIES
+══════════════════════════════════════════════════ */
+const s17tab=mkTabFn();
+const teleState={a:{n:0,pts:[],sum:0},b:{n:0,pts:[],sum:0},c:{n:0,pts:[],sum:0}};
+
+function teleReset(t){
+  teleState[t]={n:0,pts:[],sum:0};
+  const chips=document.getElementById('tele-'+t+'-chips');
+  if(chips)chips.innerHTML='';
+  updateTeleUI(t);drawTeleCanvas(t);
+}
+function teleStep(t){
+  const s=teleState[t];
+  s.n++;const n=s.n;
+  let term,partial;
+  if(t==='a'){term=1/(n*(n+1));s.sum+=term;partial=1-1/(n+1);}
+  else if(t==='b'){term=Math.log((n+1)/n);s.sum+=term;partial=Math.log(n+1);}
+  else{term=Math.sqrt(n+1)-Math.sqrt(n);s.sum+=term;partial=Math.sqrt(n+1)-1;}
+  s.pts.push(s.sum);
+  // animate chips for series a
+  if(t==='a'){
+    const chips=document.getElementById('tele-a-chips');if(!chips)return;
+    chips.innerHTML='';
+    for(let i=1;i<=n;i++){
+      const pos=document.createElement('span');pos.className='tele-chip '+(i<n?'cancel':'remain');pos.textContent='+1/'+i;chips.appendChild(pos);
+      const neg=document.createElement('span');neg.className='tele-chip '+(i<n?'cancel':'neg');neg.textContent='−1/'+(i+1);chips.appendChild(neg);
+      if(i<n){const sp=document.createElement('span');sp.style.cssText='font-family:Arial;font-size:.8rem;color:var(--muted)';sp.textContent=' ';chips.appendChild(sp);}
+    }
+  }
+  updateTeleUI(t);drawTeleCanvas(t);
+}
+function teleFill(t){for(let i=0;i<8;i++)teleStep(t);}
+function updateTeleUI(t){
+  const s=teleState[t];
+  if(t==='a'){
+    document.getElementById('tele-a-sum').textContent=s.sum.toFixed(8);
+    document.getElementById('tele-a-st').textContent='N = '+s.n+' | Exact S_N = 1 − 1/'+(s.n+1)+' = '+(1-1/(s.n+1)).toFixed(8);
+  }else if(t==='b'){
+    document.getElementById('tele-b-n').textContent=s.n+1;
+    document.getElementById('tele-b-sum').textContent=s.n?Math.log(s.n+1).toFixed(6):'0';
+  }else{
+    document.getElementById('tele-c-n').textContent=s.n+1;
+    document.getElementById('tele-c-sum').textContent=s.n?(Math.sqrt(s.n+1)-1).toFixed(6):'—';
+  }
+}
+function drawTeleCanvas(t){
+  const s=teleState[t];
+  const c=rz('c17'+t);if(!c||!s.pts.length)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pts=s.pts,N=pts.length;
+  const limit=t==='a'?1:null;
+  const mn=limit?Math.min(...pts,0.9):Math.min(...pts)*0.95;
+  const mx2=limit?Math.max(...pts,1.05):Math.max(...pts)*1.05;
+  const rng=mx2-mn||0.01;
+  const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
+  const mx=i=>pad+((i+1)/Math.max(N,5))*(W-2*pad);
+  if(limit){
+    ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(1));ctx.lineTo(W-pad,my(1));ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('Limit = 1',4,my(1)-3);
+  }
+  const col=t==='a'?TEAL:RED;
+  ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+  pts.forEach((v,i)=>i?ctx.lineTo(mx(i),my(v)):ctx.moveTo(mx(i),my(v)));ctx.stroke();
+  pts.forEach((v,i)=>{ctx.fillStyle=col;ctx.beginPath();ctx.arc(mx(i),my(v),4,0,2*Math.PI);ctx.fill();});
 }
 
-/* ─── Initial render ────────────────────────────── */
+/* ══════════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════════ */
 window.addEventListener('load',()=>{
+  visited.add(1);document.getElementById('pd1').classList.add('visited');
   initMod(1);inited[1]=true;
+  injectBottomNav(1);
   window.addEventListener('resize',()=>{
     const m=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
     initMod(m);
+  });
+  // Keyboard navigation
+  const navOrder=[1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT')return;
+    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
+    const pos=navOrder.indexOf(cur);
+    if(e.key==='ArrowRight'&&pos<navOrder.length-1)go(navOrder[pos+1]);
+    else if(e.key==='ArrowLeft'&&pos>0)go(navOrder[pos-1]);
   });
 });
 </script>
