@@ -246,7 +246,7 @@ function fmtPoly(coeffs, v) {
     if (c === 0) continue;
     let term = '';
     if (i === 0) term = Math.abs(c).toString();
-    else if (i === 1) term = (Math.abs(c) === 1 ? '' : Math.abs(c)) + v;
+    else if (i === 1) term = (Math.abs(c) === 1 ? v : Math.abs(c) + v);
     else term = (Math.abs(c) === 1 ? '' : Math.abs(c)) + v + sup(i);
     if (terms.length === 0) { if (c < 0) term = '\u2212' + term; }
     else term = (c > 0 ? ' + ' : ' \u2212 ') + term;
@@ -288,14 +288,20 @@ function multiplyPoly(p1, p2) {
 
 function dividePoly(dividend, divisor) {
   let rem = [...dividend];
-  let quot = [];
   const dd = divisor.length - 1;
+
+  let quot = new Array(rem.length - dd).fill(0);
+
   for (let i = rem.length - 1; i >= dd; i--) {
     const c = rem[i] / divisor[dd];
-    quot.unshift(c);
-    for (let j = 0; j <= dd; j++) rem[i - dd + j] -= c * divisor[j];
+
+    quot[i - dd] = c;
+
+    for (let j = 0; j <= dd; j++) {
+      rem[i - dd + j] -= c * divisor[j];
+    }
   }
-  while (quot.length > 1 && quot[quot.length - 1] === 0) quot.pop();
+
   return quot;
 }
 
@@ -313,6 +319,10 @@ function genAdd() {
 function genPF() {
   const v = randVar();
   const a1=rndSmall(), b1=rndSmall(), a2=rndSmall(), b2=rndSmall();
+  while (a1 === a2 && b1 === b2) {
+   a2 = rndSmall();
+   b2 = rndSmall();
+					}
   const A=rndSmall(), B=rndSmall();
   return { v, a1, b1, a2, b2, A, B,
     cV: A*a2 + B*a1,
@@ -409,7 +419,7 @@ function renderHard() {
 
 const renderers = { add: renderAdd, pf: renderPF, med: renderMed, hard: renderHard };
 const ansBoxIds  = { add:'addAnswerBox', pf:'pfAnswerBox', med:'medAnswerBox', hard:'hardAnswerBox' };
-const answerBtns = {};
+
 
 function newProblem(key) {
   if (key === 'add')  problems.add  = genAdd();
