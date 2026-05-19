@@ -173,6 +173,10 @@ canvas{display:block;width:100%;}
 .tele-chip.neg{background:#fdf0f0;border-color:var(--red);color:var(--red);}
 .tele-chip.cancel{background:#eee;border-color:#bbb;color:#bbb;text-decoration:line-through;opacity:.55;}
 .tele-chip.remain{background:var(--goldf);border-color:var(--gold);color:var(--navy);}
+/* ── NESTED SUB-TABS (module 18 harmonic) ── */
+.spanel .stabs{margin-bottom:.6rem;}
+.spanel .spanel{display:none;}
+.spanel .spanel.on{display:block;}
 </style>
 </head>
 <body>
@@ -186,40 +190,42 @@ canvas{display:block;width:100%;}
 <div class="progress-row">
   <span class="prog-label">Progress:</span>
   <div class="pdot" id="pd1" data-label="1 Number Line" onclick="go(1)"></div>
-  <div class="pdot" id="pd2" data-label="2 Approaching Zero" onclick="go(2)"></div>
-  <div class="pdot" id="pd3" data-label="3 The 0/0 Problem" onclick="go(3)"></div>
-  <div class="pdot" id="pd4" data-label="4 What is a Limit?" onclick="go(4)"></div>
-  <div class="pdot" id="pd5" data-label="5 Sequences" onclick="go(5)"></div>
-  <div class="pdot" id="pd6" data-label="6 Infinite Series" onclick="go(6)"></div>
-  <div class="pdot" id="pd7" data-label="7 Why Convergence?" onclick="go(7)"></div>
-  <div class="pdot" id="pd8" data-label="8 Tests" onclick="go(8)"></div>
-  <div class="pdot" id="pd9" data-label="9 Bouncing Ball" onclick="go(9)"></div>
-  <div class="pdot" id="pd10" data-label="10 Koch Snowflake" onclick="go(10)"></div>
-  <div class="pdot" id="pd11" data-label="11 Density of Fractions" onclick="go(11)"></div>
-  <div class="pdot" id="pd12" data-label="12 Calculator Lies" onclick="go(12)"></div>
-  <div class="pdot" id="pd13" data-label="13 Paradoxes" onclick="go(13)"></div>
-  <div class="pdot" id="pd15" data-label="14 Fibonacci" onclick="go(15)"></div>
-  <div class="pdot" id="pd16" data-label="15 π from Series" onclick="go(16)"></div>
-  <div class="pdot" id="pd17" data-label="16 Telescoping" onclick="go(17)"></div>
+  <div class="pdot" id="pd18" data-label="2 Early Encounters" onclick="go(18)"></div>
+  <div class="pdot" id="pd2" data-label="3 Approaching Zero" onclick="go(2)"></div>
+  <div class="pdot" id="pd3" data-label="4 The 0/0 Problem" onclick="go(3)"></div>
+  <div class="pdot" id="pd4" data-label="5 What is a Limit?" onclick="go(4)"></div>
+  <div class="pdot" id="pd5" data-label="6 Sequences" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="7 Infinite Series" onclick="go(6)"></div>
+  <div class="pdot" id="pd7" data-label="8 Why Convergence?" onclick="go(7)"></div>
+  <div class="pdot" id="pd8" data-label="9 Tests" onclick="go(8)"></div>
+  <div class="pdot" id="pd9" data-label="10 Bouncing Ball" onclick="go(9)"></div>
+  <div class="pdot" id="pd10" data-label="11 Koch Snowflake" onclick="go(10)"></div>
+  <div class="pdot" id="pd11" data-label="12 Density of Fractions" onclick="go(11)"></div>
+  <div class="pdot" id="pd12" data-label="13 Calculator Lies" onclick="go(12)"></div>
+  <div class="pdot" id="pd13" data-label="14 Paradoxes" onclick="go(13)"></div>
+  <div class="pdot" id="pd15" data-label="15 Fibonacci" onclick="go(15)"></div>
+  <div class="pdot" id="pd16" data-label="16 π from Series" onclick="go(16)"></div>
+  <div class="pdot" id="pd17" data-label="17 Telescoping" onclick="go(17)"></div>
   <div class="pdot" id="pd14" data-label="Summary" onclick="go(14)"></div>
 </div>
 <nav id="nav">
   <button class="nb on" data-m="1" onclick="go(1)">1&hairsp;Number&nbsp;Line</button>
-  <button class="nb" data-m="2" onclick="go(2)">2&hairsp;Approaching&nbsp;Zero</button>
-  <button class="nb" data-m="3" onclick="go(3)">3&hairsp;The&nbsp;0/0&nbsp;Problem</button>
-  <button class="nb" data-m="4" onclick="go(4)">4&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
-  <button class="nb" data-m="5" onclick="go(5)">5&hairsp;Sequences</button>
-  <button class="nb" data-m="6" onclick="go(6)">6&hairsp;Infinite&nbsp;Series</button>
-  <button class="nb" data-m="7" onclick="go(7)">7&hairsp;Why&nbsp;Convergence?</button>
-  <button class="nb" data-m="8" onclick="go(8)">8&hairsp;Tests</button>
-  <button class="nb" data-m="9" onclick="go(9)">9&hairsp;Bouncing&nbsp;Ball</button>
-  <button class="nb" data-m="10" onclick="go(10)">10&hairsp;Snowflake</button>
-  <button class="nb" data-m="11" onclick="go(11)">11&hairsp;Fractions</button>
-  <button class="nb" data-m="12" onclick="go(12)">12&hairsp;Calculator&nbsp;Lies</button>
-  <button class="nb" data-m="13" onclick="go(13)">&#8734;&hairsp;Paradoxes</button>
-  <button class="nb" data-m="15" onclick="go(15)">14&hairsp;Fibonacci</button>
-  <button class="nb" data-m="16" onclick="go(16)">15&hairsp;&pi;&nbsp;Series</button>
-  <button class="nb" data-m="17" onclick="go(17)">16&hairsp;Telescoping</button>
+  <button class="nb" data-m="18" onclick="go(18)">2&hairsp;Early&nbsp;Encounters</button>
+  <button class="nb" data-m="2" onclick="go(2)">3&hairsp;Approaching&nbsp;Zero</button>
+  <button class="nb" data-m="3" onclick="go(3)">4&hairsp;The&nbsp;0/0&nbsp;Problem</button>
+  <button class="nb" data-m="4" onclick="go(4)">5&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
+  <button class="nb" data-m="5" onclick="go(5)">6&hairsp;Sequences</button>
+  <button class="nb" data-m="6" onclick="go(6)">7&hairsp;Infinite&nbsp;Series</button>
+  <button class="nb" data-m="7" onclick="go(7)">8&hairsp;Why&nbsp;Convergence?</button>
+  <button class="nb" data-m="8" onclick="go(8)">9&hairsp;Tests</button>
+  <button class="nb" data-m="9" onclick="go(9)">10&hairsp;Bouncing&nbsp;Ball</button>
+  <button class="nb" data-m="10" onclick="go(10)">11&hairsp;Snowflake</button>
+  <button class="nb" data-m="11" onclick="go(11)">12&hairsp;Fractions</button>
+  <button class="nb" data-m="12" onclick="go(12)">13&hairsp;Calculator&nbsp;Lies</button>
+  <button class="nb" data-m="13" onclick="go(13)">14&hairsp;Paradoxes</button>
+  <button class="nb" data-m="15" onclick="go(15)">15&hairsp;Fibonacci</button>
+  <button class="nb" data-m="16" onclick="go(16)">16&hairsp;&pi;&nbsp;Series</button>
+  <button class="nb" data-m="17" onclick="go(17)">17&hairsp;Telescoping</button>
   <button class="nb" data-m="14" onclick="go(14)">&#9654;&hairsp;Summary</button>
 </nav>
 </header>
@@ -243,6 +249,13 @@ canvas{display:block;width:100%;}
 </div>
 <div class="big-num">n = <span id="m1n">1</span></div>
 <div class="status" id="m1st">Will this process ever stop?</div>
+<div style="font-size:.95rem;line-height:1.75;margin:1.2rem 0;">
+  <p style="margin-bottom:.9rem;">A usable definition of <strong>mathematically finite</strong> is an object that has a limited or countable size. So the positive whole numbers up to six, starting at one: \(\{1, 2, 3, 4, 5, 6\}\) is finite, the weight of a particular vehicle is finite — they can be measured or counted and some number associated with them. An <strong>infinite</strong> mathematical object is something that can be counted but the counting never ends, or its dimensions continue without limit.</p>
+  <div class="note" style="font-size:.95rem;line-height:1.75;">
+    <strong>The challenge in this app</strong> is to answer the question:<br><br>
+    <em>Are there any processes that never stop, that can be associated with an infinite number of steps, that can somehow generate a value that is finite?</em>
+  </div>
+</div>
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the largest integer?</div>
   <div class="ccard-a">There is no largest integer. For any integer \(N\), the integer \(N+1\) is larger. The process never terminates — this is what "infinite" means.</div></div>
@@ -253,9 +266,151 @@ canvas{display:block;width:100%;}
 </div>
 </section>
 
+<!-- ═══ MODULE 18: EARLY ENCOUNTERS WITH INFINITY ═══ -->
+<section class="module" id="mod18">
+<div class="mhdr"><div class="mtag">Module 2</div><h2>Early Encounters with Infinity</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> Long before formal analysis, mathematicians bumped into infinity in concrete sums.
+  Some sums grow without bound; others, surprisingly, settle to a finite value.
+  The same question — "does adding more and more terms eventually produce a finite total?" — lies at the heart of everything that follows.
+  <div class="q-intro">→ Use the tabs to explore four famous encounters with the infinite.</div>
+</div>
+
+<div class="stabs">
+  <button class="stab on" onclick="s18tab(this,'s18a')">Triangular numbers</button>
+  <button class="stab" onclick="s18tab(this,'s18b')">Geometric sum</button>
+  <button class="stab" onclick="s18tab(this,'s18c')">Harmonic &amp; friends</button>
+  <button class="stab" onclick="s18tab(this,'s18d')">Circle &amp; &pi;</button>
+</div>
+
+<!-- ── Tab A: Triangular numbers ── -->
+<div class="spanel on" id="s18a">
+  <div class="fdisp">\(S_n = 1 + 2 + 3 + \cdots + n = \dfrac{n(n+1)}{2}\)</div>
+  <p style="font-size:.93rem;line-height:1.7;margin-bottom:.8rem;">
+    Add the positive integers one by one: the running total is
+    \(1, 3, 6, 10, 15, \ldots\) — the <em>triangular numbers</em>.
+    Each time we include the next integer the sum jumps by a larger amount, so the total grows <em>without bound</em>.
+    No matter how large a number \(M\) you choose, adding enough integers will eventually surpass \(M\).
+  </p>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="tri18Step()">&#43; Add next</button>
+    <button class="btn btn-solid" onclick="tri18Fill()">Fill to 20</button>
+    <button class="btn btn-outline" onclick="tri18Reset()">↺ Reset</button>
+  </div>
+  <div class="big-num">S<sub><span id="tri18-n">0</span></sub> = <span id="tri18-sum">0</span></div>
+  <div class="status diverge" id="tri18-st">Growing without bound — this sum diverges.</div>
+  <div class="cbox"><canvas id="c18tri" height="180"></canvas></div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is there a closed formula for the sum 1 + 2 + … + n?</div>
+    <div class="ccard-a">Yes: \(S_n = \frac{n(n+1)}{2}\). Gauss reportedly discovered this as a child by pairing the first and last terms: \(1+n, 2+(n-1), \ldots\) each pair sums to \(n+1\), and there are \(n/2\) such pairs.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does this sum diverge?</div>
+    <div class="ccard-a">Because \(S_n = \frac{n(n+1)}{2} \to \infty\) as \(n \to \infty\). The terms themselves \((a_n = n)\) grow, not shrink — and even if they shrank towards zero it wouldn't guarantee convergence (see the Harmonic tab). Here there is no doubt: the partial sums increase without limit.</div></div>
+  </div>
+</div>
+
+<!-- ── Tab B: Geometric sum ── -->
+<div class="spanel" id="s18b">
+  <div class="fdisp">\(1 + \tfrac{1}{2} + \tfrac{1}{4} + \tfrac{1}{8} + \cdots = \displaystyle\sum_{n=0}^{\infty}\!\left(\tfrac{1}{2}\right)^n = 2\)</div>
+  <p style="font-size:.93rem;line-height:1.7;margin-bottom:.8rem;">
+    Now add powers of \(\tfrac{1}{2}\): each new term is <em>half</em> the previous one.
+    The running total is \(1, 1.5, 1.75, 1.875, \ldots\) — always less than 2,
+    yet creeping ever closer.
+    Unlike the triangular sums, this process <em>does not</em> grow without bound:
+    the total settles towards the finite value <strong>2</strong>.
+  </p>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="geo18Step()">&#43; Add next term</button>
+    <button class="btn btn-solid" onclick="geo18Fill()">Fill to 20</button>
+    <button class="btn btn-outline" onclick="geo18Reset()">↺ Reset</button>
+  </div>
+  <div class="big-num">S<sub><span id="geo18-n">0</span></sub> = <span id="geo18-sum">0</span></div>
+  <div class="status converge">Converges to exactly 2.</div>
+  <div class="cbox"><canvas id="c18geo" height="180"></canvas></div>
+  <div class="note teal"><strong>Key formula:</strong> For any ratio \(|r| < 1\), \(\displaystyle\sum_{n=0}^{\infty} r^n = \frac{1}{1-r}\). Here \(r = \tfrac{1}{2}\), giving \(\frac{1}{1-\frac{1}{2}} = 2\).</div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the sum not grow without bound?</div>
+    <div class="ccard-a">Each successive term is halved. The gap between the partial sum and 2 is \(2 - S_n = \left(\tfrac{1}{2}\right)^n\), which shrinks geometrically to zero. No matter how many terms you add, the sum is always less than 2 — and the remainder after \(n\) terms is exactly \(2-S_n=2\cdot(1/2)^n\).</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">What if the ratio were greater than 1?</div>
+    <div class="ccard-a">Then the terms themselves would grow, and the sum would diverge to infinity. For example \(1 + 2 + 4 + 8 + \cdots\) has no finite sum. The condition \(|r| < 1\) is essential for the geometric series to converge.</div></div>
+  </div>
+</div>
+
+<!-- ── Tab C: Harmonic & odd harmonic ── -->
+<div class="spanel" id="s18c">
+  <p style="font-size:.93rem;line-height:1.7;margin-bottom:.7rem;">
+    The reciprocals \(1, \tfrac{1}{2}, \tfrac{1}{3}, \tfrac{1}{4},\ldots\) decrease to zero — yet their sum <em>diverges</em>.
+    What about summing only the odd reciprocals \(1, \tfrac{1}{3}, \tfrac{1}{5}, \tfrac{1}{7},\ldots\)?
+    Both sums exceed any bound you care to name — but they do so at very different speeds.
+  </p>
+  <div class="stabs" style="margin-bottom:.6rem;">
+    <button class="stab on" onclick="harm18tab(this,'h18harm')">Harmonic \(\sum 1/n\)</button>
+    <button class="stab" onclick="harm18tab(this,'h18odd')">Odd harmonic \(\sum 1/(2n-1)\)</button>
+    <button class="stab" onclick="harm18tab(this,'h18both')">Both together</button>
+  </div>
+  <div class="spanel on" id="h18harm">
+    <div class="fdisp">\(\displaystyle\sum_{n=1}^{\infty}\frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots\)</div>
+    <div class="slider-row"><label>Terms \(N\) =</label><input type="range" id="h18harm-sl" min="1" max="500" value="20" oninput="harm18draw()"><span class="slider-val" id="h18harm-nv">20</span></div>
+    <div class="big-num">S<sub>N</sub> = <span id="h18harm-sum">—</span></div>
+    <div class="status diverge">Harmonic series: diverges (extremely slowly).</div>
+    <div class="note red">It takes more than <strong>10,000 terms</strong> for the harmonic sum to exceed 10. It diverges — but infinitely slowly. This is a famous trap for intuition.</div>
+    <div class="cbox"><canvas id="c18harm" height="170"></canvas></div>
+  </div>
+  <div class="spanel" id="h18odd">
+    <div class="fdisp">\(\displaystyle\sum_{n=1}^{\infty}\frac{1}{2n-1} = 1 + \frac{1}{3} + \frac{1}{5} + \frac{1}{7} + \cdots\)</div>
+    <div class="slider-row"><label>Terms \(N\) =</label><input type="range" id="h18odd-sl" min="1" max="500" value="20" oninput="harm18draw()"><span class="slider-val" id="h18odd-nv">20</span></div>
+    <div class="big-num">S<sub>N</sub> = <span id="h18odd-sum">—</span></div>
+    <div class="status diverge">Odd harmonic series: also diverges — even more slowly.</div>
+    <div class="note red">Notice how much slower this grows than the full harmonic series: we are only using half the terms. But removing every other term cannot save a divergent series — it still diverges.</div>
+    <div class="cbox"><canvas id="c18odd" height="170"></canvas></div>
+  </div>
+  <div class="spanel" id="h18both">
+    <div class="concept" style="background:#eef2ff;border-color:var(--purple);">Both series plotted together. The harmonic series (navy) grows faster than the odd harmonic (red), but <strong>both grow without bound</strong>.</div>
+    <div class="slider-row"><label>Terms \(N\) =</label><input type="range" id="h18both-sl" min="1" max="500" value="50" oninput="harm18draw()"><span class="slider-val" id="h18both-nv">50</span></div>
+    <div class="cbox"><canvas id="c18both" height="190"></canvas></div>
+    <div style="display:flex;gap:1.5rem;font-family:Arial;font-size:.85rem;justify-content:center;margin:.5rem 0;">
+      <span><span style="display:inline-block;width:14px;height:3px;background:var(--navy);vertical-align:middle;"></span> \(\sum 1/n\)</span>
+      <span><span style="display:inline-block;width:14px;height:3px;background:var(--red);vertical-align:middle;"></span> \(\sum 1/(2n-1)\)</span>
+    </div>
+  </div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the harmonic series diverge if 1/n → 0?</div>
+    <div class="ccard-a">Having terms that shrink to zero is <em>necessary</em> for convergence, but not sufficient. Oresme's 14th-century proof groups the terms cleverly: \(1/3 + 1/4 > 1/2\); \(1/5+1/6+1/7+1/8 > 1/2\); and so on. Each block contributes at least \(\tfrac{1}{2}\), so the sum grows by \(\tfrac{1}{2}\) for every doubling of terms — without limit.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does the odd harmonic series diverge for the same reason?</div>
+    <div class="ccard-a">Yes, by comparison: every odd-reciprocal term \(\tfrac{1}{2n-1}\) satisfies \(\tfrac{1}{2n-1} > \tfrac{1}{2n}\), so the odd harmonic sum exceeds \(\tfrac{1}{2}\sum\tfrac{1}{n}\). Since \(\sum\tfrac{1}{n}\) diverges and the odd sum is larger (term for term), it too must diverge by the Comparison Test.</div></div>
+  </div>
+</div>
+
+<!-- ── Tab D: Circle & π ── -->
+<div class="spanel" id="s18d">
+  <p style="font-size:.93rem;line-height:1.7;margin-bottom:.7rem;">
+    A circle has radius \(r\) and circumference \(C\).
+    By slicing it into thin sectors and rearranging them, we can <em>see</em> why the area must equal \(\tfrac{1}{2}Cr\).
+    Since \(C = 2\pi r\), the area is \(\pi r^2\).
+  </p>
+  <div class="ctrls" style="flex-wrap:wrap;gap:.5rem;">
+    <button class="btn btn-solid" onclick="circ18anim()">&#9654; Animate</button>
+    <button class="btn btn-outline" onclick="circ18reset()">↺ Reset</button>
+    <span id="circ18-label" style="font-family:Arial;font-size:.85rem;color:var(--navy);font-weight:700;margin-left:.5rem;"></span>
+  </div>
+  <div class="cbox"><canvas id="c18circ" height="260"></canvas></div>
+  <div class="fdisp" id="circ18-formula" style="font-size:1rem;">\(\text{Sectors arranged}\Rightarrow\text{rectangle}:\quad \text{Area} = \tfrac{C}{2}\times r = \pi r^2\)</div>
+  <div class="note teal" id="circ18-note">
+    As the number of sectors increases the rearranged shape approaches a perfect rectangle of width \(\tfrac{C}{2}\) and height \(r\). The area of this rectangle — and hence the original circle — is \(\tfrac{C}{2} \cdot r = \pi r \cdot r = \pi r^2\).
+  </div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does slicing into more sectors make the shape more rectangular?</div>
+    <div class="ccard-a">Each sector has a curved arc on its outer edge. When we interleave sectors apex-up and apex-down, those arcs form the top and bottom of the rearranged shape. As the number of sectors \(n \to \infty\), each arc becomes shorter and straighter, so the top and bottom edges approach straight lines of total length \(C/2\), and the sides approach vertical lines of height \(r\). In the limit the shape is exactly a rectangle.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Where does π come from?</div>
+    <div class="ccard-a">\(\pi\) is defined as the ratio of the circumference to the diameter: \(\pi = C/(2r)\), so \(C = 2\pi r\). Substituting into the area formula gives \(\text{Area} = \tfrac{C}{2} \cdot r = \pi r \cdot r = \pi r^2\). The argument above shows <em>why</em> the area involves \(C\); the definition of \(\pi\) then brings the familiar formula.</div></div>
+  </div>
+</div>
+
+</section>
+
 <!-- ═══ MODULE 2: APPROACHING ZERO ═══ -->
 <section class="module" id="mod2">
-<div class="mhdr"><div class="mtag">Module 2</div><h2>Approaching Zero</h2></div>
+<div class="mhdr"><div class="mtag">Module 3</div><h2>Approaching Zero</h2></div>
+<p style="font-size:.95rem;line-height:1.7;margin-bottom:1rem;">Another approach to the idea of infinity is if we take a succession or sequence of numbers, without ever ending can we get closer to a particular number, the simplest being zero?</p>
 <div class="concept">
   <strong>Core idea:</strong> A sequence can get arbitrarily close to zero without ever equalling zero.
   Different sequences approach zero at very different speeds — which matters enormously for series.
@@ -317,7 +472,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 3: 0/0 PROBLEM ═══ -->
 <section class="module" id="mod3">
-<div class="mhdr"><div class="mtag">Module 3</div><h2>The 0/0 Problem</h2></div>
+<div class="mhdr"><div class="mtag">Module 4</div><h2>The 0/0 Problem</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> \(\frac{0}{0}\) is <em>indeterminate</em>. The limit of a ratio \(\frac{f(x)}{g(x)}\) as both \(f,g\to0\) can be anything — it depends entirely on <em>how fast</em> each approaches zero.
 </div>
@@ -360,7 +515,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 4: WHAT IS A LIMIT? ═══ -->
 <section class="module" id="mod4">
-<div class="mhdr"><div class="mtag">Module 4</div><h2>What is a Limit?</h2></div>
+<div class="mhdr"><div class="mtag">Module 5</div><h2>What is a Limit?</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> We say \(\lim_{n\to\infty}a_n = L\) if we can make \(a_n\) as close to \(L\) as we like by taking \(n\) large enough. The green band below shows the tolerance \(\varepsilon\) around \(L=0\).
   <div class="q-intro">→ Drag the \(\varepsilon\) slider. Watch how many red points fall outside the band — and find the threshold \(N\).</div>
@@ -402,7 +557,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 5: SEQUENCES ═══ -->
 <section class="module" id="mod5">
-<div class="mhdr"><div class="mtag">Module 5</div><h2>Sequences</h2></div>
+<div class="mhdr"><div class="mtag">Module 6</div><h2>Sequences</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A sequence \(a_1,a_2,a_3,\ldots\) converges if its terms settle towards a finite limit. Otherwise it diverges — either by growing without bound, or by oscillating.
 </div>
@@ -451,7 +606,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 6: INFINITE SERIES ═══ -->
 <section class="module" id="mod6">
-<div class="mhdr"><div class="mtag">Module 6</div><h2>Infinite Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 7</div><h2>Infinite Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> An infinite series \(\sum_{n=1}^\infty a_n\) is defined via partial sums \(S_N=\sum_{n=1}^N a_n\).
   The series converges if \(S_N\to L\) as \(N\to\infty\).
@@ -515,7 +670,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 7: WHY CONVERGENCE MATTERS ═══ -->
 <section class="module" id="mod7">
-<div class="mhdr"><div class="mtag">Module 7</div><h2>Why Convergence Matters</h2></div>
+<div class="mhdr"><div class="mtag">Module 8</div><h2>Why Convergence Matters</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Convergent series let us compute exact values of \(\pi\), \(e\), \(\ln 2\) and the standard functions. They underpin calculus, Fourier analysis, and much of modern mathematics.
 </div>
@@ -540,7 +695,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 8: TESTS ═══ -->
 <section class="module" id="mod8">
-<div class="mhdr"><div class="mtag">Module 8</div><h2>Convergence Tests</h2></div>
+<div class="mhdr"><div class="mtag">Module 9</div><h2>Convergence Tests</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A toolkit of tests determines convergence for most series you'll meet. The new <em>p-series</em> tab shows a clean boundary between convergence and divergence.
 </div>
@@ -626,7 +781,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 9: BOUNCING BALL ═══ -->
 <section class="module" id="mod9">
-<div class="mhdr"><div class="mtag">Module 9</div><h2>Bouncing Ball</h2></div>
+<div class="mhdr"><div class="mtag">Module 10</div><h2>Bouncing Ball</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A ball dropped from height \(h\) bouncing to fraction \(r\) of its height each time travels
   a total distance that is a geometric series. Even though it bounces infinitely many times, the total distance is finite!
@@ -658,7 +813,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 10: KOCH SNOWFLAKE ═══ -->
 <section class="module" id="mod10">
-<div class="mhdr"><div class="mtag">Module 10</div><h2>The Koch Snowflake</h2></div>
+<div class="mhdr"><div class="mtag">Module 11</div><h2>The Koch Snowflake</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A fractal where the perimeter grows without bound at each step — yet the area it encloses converges to a finite value.
   Two series, one divergent and one convergent, living in the same picture.
@@ -688,7 +843,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 11: DENSITY OF FRACTIONS ═══ -->
 <section class="module" id="mod11">
-<div class="mhdr"><div class="mtag">Module 11</div><h2>Density of Fractions</h2></div>
+<div class="mhdr"><div class="mtag">Module 12</div><h2>Density of Fractions</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Between any two different fractions (rational numbers) there is always another fraction. This property is called <em>density</em>. Yet the rationals, despite being everywhere, are in some sense "smaller" than the real numbers.
   <div class="q-intro">→ Click "Find Middle" to zoom in between two fractions. You can keep going forever.</div>
@@ -713,7 +868,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
 <section class="module" id="mod12">
-<div class="mhdr"><div class="mtag">Module 12</div><h2>Calculator Lies</h2></div>
+<div class="mhdr"><div class="mtag">Module 13</div><h2>Calculator Lies</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). It approximates it using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
 </div>
@@ -750,7 +905,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 13: PARADOXES ═══ -->
 <section class="module" id="mod13">
-<div class="mhdr"><div class="mtag">Module 13</div><h2>Infinity Paradoxes</h2></div>
+<div class="mhdr"><div class="mtag">Module 14</div><h2>Infinity Paradoxes</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Infinity leads to results that feel paradoxical but are mathematically precise. Understanding these paradoxes deepens intuition for limits, series, and the real number system.
 </div>
@@ -881,7 +1036,7 @@ canvas{display:block;width:100%;}
 </section>
 <!-- ═══ MODULE 15: FIBONACCI & GOLDEN RATIO ═══ -->
 <section class="module" id="mod15">
-<div class="mhdr"><div class="mtag">Module 14</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
+<div class="mhdr"><div class="mtag">Module 15</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> The Fibonacci sequence \(1, 1, 2, 3, 5, 8, 13, 21, \ldots\) is defined by \(F_1=F_2=1\) and \(F_{n+1}=F_n+F_{n-1}\). Remarkably, the ratio of consecutive terms \(F_{n+1}/F_n\) converges to the <em>golden ratio</em> \(\varphi = \frac{1+\sqrt{5}}{2} \approx 1.618\ldots\)
   <div class="q-intro">→ Step through the sequence and watch the ratio converge.</div>
@@ -941,7 +1096,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 16: π FROM INFINITE SERIES ═══ -->
 <section class="module" id="mod16">
-<div class="mhdr"><div class="mtag">Module 15</div><h2>&pi; from Infinite Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 16</div><h2>&pi; from Infinite Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> The number \(\pi\) can be computed using infinite series. Some converge remarkably slowly; others blazingly fast. The <em>rate of convergence</em> is the difference between a curiosity and a practical tool.
   <div class="q-intro">→ Step through each series and compare how quickly they reach π.</div>
@@ -1025,7 +1180,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 17: TELESCOPING SERIES ═══ -->
 <section class="module" id="mod17">
-<div class="mhdr"><div class="mtag">Module 16</div><h2>Telescoping Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 17</div><h2>Telescoping Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A <em>telescoping series</em> is one where consecutive terms cancel in pairs, like the sections of a collapsible telescope closing up. What looks like an infinite sum collapses to a simple expression — often leaving just two terms.
   <div class="q-intro">→ Press "Add term" to see each cancellation happen step by step.</div>
@@ -1135,7 +1290,8 @@ function mkTabFn(){
   };
 }
 const s2tab=mkTabFn(),s3tab=mkTabFn(),s4tab=mkTabFn(),s5tab=mkTabFn(),
-      s6tab=mkTabFn(),s8tab=mkTabFn(),s12tab=mkTabFn(),s13tab=mkTabFn();
+      s6tab=mkTabFn(),s8tab=mkTabFn(),s12tab=mkTabFn(),s13tab=mkTabFn(),
+      s18tab=mkTabFn();
 
 /* ── Scientific notation formatter ─────────────────
    Returns HTML: mantissa × 10<sup>exp</sup>
@@ -1721,6 +1877,7 @@ function drawGrandi(){
 ══════════════════════════════════════════════════ */
 function initMod(m,panel){
   if(m===1){initMod1();}
+  else if(m===18){tri18Reset();geo18Reset();harm18draw();circ18reset();}
   else if(m===2){s2upd('a');s2upd('b');s2upd('c');drawRace();}
   else if(m===3){s3upd('a');s3upd('b');s3upd('c');}
   else if(m===4){m4draw('a');m4draw('b');m4draw('c');}
@@ -1737,7 +1894,7 @@ function initMod(m,panel){
   else if(m===17){teleReset('a');teleReset('b');teleReset('c');}
 }
 
-const TOTAL_MODULES=17;
+const TOTAL_MODULES=18;
 
 /* ══════════════════════════════════════════════════
    BOTTOM NAV — inject into every module on first visit
@@ -1745,15 +1902,15 @@ const TOTAL_MODULES=17;
 function injectBottomNav(m){
   const mod=document.getElementById('mod'+m);
   if(!mod||mod.querySelector('.mod-nav'))return;
-  const labels={1:'Number Line',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',8:'Tests',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'14 Fibonacci',16:'15 π Series',17:'16 Telescoping',14:'Summary'};
-  const modNums={1:'Module 1',2:'Module 2',3:'Module 3',4:'Module 4',5:'Module 5',6:'Module 6',7:'Module 7',8:'Module 8',9:'Module 9',10:'Module 10',11:'Module 11',12:'Module 12',13:'Module 13',15:'Module 14',16:'Module 15',17:'Module 16',14:'Summary'};
-  const navOrder=[1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
+  const labels={1:'Number Line',18:'Early Encounters',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',8:'Tests',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'15 Fibonacci',16:'16 π Series',17:'17 Telescoping',14:'Summary'};
+  const modNums={1:'Module 1',18:'Module 2',2:'Module 3',3:'Module 4',4:'Module 5',5:'Module 6',6:'Module 7',7:'Module 8',8:'Module 9',9:'Module 10',10:'Module 11',11:'Module 12',12:'Module 13',13:'Module 14',15:'Module 15',16:'Module 16',17:'Module 17',14:'Summary'};
+  const navOrder=[1,18,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
   const pos=navOrder.indexOf(m);
   const prev=pos>0?navOrder[pos-1]:null;
   const next=pos<navOrder.length-1?navOrder[pos+1]:null;
   const div=document.createElement('div');div.className='mod-nav';
   div.innerHTML=(prev?`<button class="btn btn-outline" onclick="go(${prev})">← ${labels[prev]}</button>`:'<span></span>')+
-    `<span class="mod-nav-info">${modNums[m]} of 16<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
+    `<span class="mod-nav-info">${modNums[m]} of 17<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
     (next?`<button class="btn btn-solid" onclick="go(${next})">${labels[next]} →</button>`:'<span></span>');
   mod.appendChild(div);
 }
@@ -2023,8 +2180,377 @@ function drawTeleCanvas(t){
 }
 
 /* ══════════════════════════════════════════════════
-   BOOT
+   MODULE 18: EARLY ENCOUNTERS WITH INFINITY
 ══════════════════════════════════════════════════ */
+
+/* ── Tab A: Triangular numbers ── */
+let tri18n=0,tri18pts=[];
+function tri18Reset(){
+  tri18n=0;tri18pts=[];
+  document.getElementById('tri18-n').textContent='0';
+  document.getElementById('tri18-sum').textContent='0';
+  draw18tri();
+}
+function tri18Step(){
+  tri18n++;
+  const S=tri18n*(tri18n+1)/2;
+  tri18pts.push(S);
+  document.getElementById('tri18-n').textContent=tri18n;
+  document.getElementById('tri18-sum').textContent=S.toLocaleString();
+  draw18tri();
+}
+function tri18Fill(){while(tri18n<20)tri18Step();}
+function draw18tri(){
+  const c=rz('c18tri');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  if(!tri18pts.length){
+    ctx.fillStyle=MUT;ctx.font='13px Arial';ctx.textAlign='center';
+    ctx.fillText('Press "+ Add next" to begin',W/2,H/2);return;
+  }
+  const mx2=tri18pts[tri18pts.length-1]*1.1||1;
+  const my=v=>H-pad-(v/mx2)*(H-2*pad);
+  const mx=i=>pad+(i/(Math.max(tri18pts.length,10)))*(W-2*pad);
+  // gridlines
+  ctx.strokeStyle='#eee';ctx.lineWidth=1;
+  for(let g=1;g<=4;g++){const y=H-pad-g*(H-2*pad)/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();}
+  // label formula
+  ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textAlign='right';
+  ctx.fillText('S_n = n(n+1)/2',W-pad,pad-5);
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();
+  tri18pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  tri18pts.forEach((v,i)=>{ctx.fillStyle=RED;ctx.beginPath();ctx.arc(mx(i+1),my(v),4.5,0,2*Math.PI);ctx.fill();});
+  ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('n →',W/2,H-2);
+}
+
+/* ── Tab B: Geometric series 1 + 1/2 + 1/4 + … ── */
+let geo18n=0,geo18pts=[];
+function geo18Reset(){
+  geo18n=0;geo18pts=[];
+  document.getElementById('geo18-n').textContent='0';
+  document.getElementById('geo18-sum').textContent='0';
+  draw18geo();
+}
+function geo18Step(){
+  const term=Math.pow(0.5,geo18n);
+  const prev=geo18pts.length?geo18pts[geo18pts.length-1]:0;
+  geo18n++;
+  geo18pts.push(prev+term);
+  document.getElementById('geo18-n').textContent=geo18n;
+  document.getElementById('geo18-sum').textContent=(prev+term).toFixed(8);
+  draw18geo();
+}
+function geo18Fill(){while(geo18n<20)geo18Step();}
+function draw18geo(){
+  const c=rz('c18geo');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  if(!geo18pts.length){
+    ctx.fillStyle=MUT;ctx.font='13px Arial';ctx.textAlign='center';
+    ctx.fillText('Press "+ Add next term" to begin',W/2,H/2);return;
+  }
+  const limit=2;
+  const my=v=>H-pad-((v/limit))*(H-2*pad);
+  const mx=i=>pad+(i/(Math.max(geo18pts.length,10)))*(W-2*pad);
+  // limit line
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(pad,my(limit));ctx.lineTo(W-pad,my(limit));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=GOLD;ctx.font='bold 11px Arial';ctx.textAlign='left';ctx.fillText('Limit = 2',4,my(limit)-4);
+  ctx.strokeStyle=TEAL;ctx.lineWidth=2;ctx.beginPath();
+  geo18pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  geo18pts.forEach((v,i)=>{ctx.fillStyle=TEAL;ctx.beginPath();ctx.arc(mx(i+1),my(v),4,0,2*Math.PI);ctx.fill();});
+  ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('n →',W/2,H-2);
+}
+
+/* ── Tab C: Harmonic / Odd-harmonic sub-tabs ── */
+function harm18tab(btn,id){
+  const mod=btn.closest('.spanel');
+  mod.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  mod.querySelectorAll('.spanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(id).classList.add('on');
+  harm18draw();
+}
+function harm18draw(){
+  // Harm
+  {
+    const sl=document.getElementById('h18harm-sl');
+    if(sl){
+      const N=+sl.value;document.getElementById('h18harm-nv').textContent=N;
+      let s=0,pts=[];for(let i=1;i<=N;i++){s+=1/i;pts.push(s);}
+      document.getElementById('h18harm-sum').textContent=s.toFixed(4);
+      drawHarmCanvas('c18harm',pts,null,NAVY);
+    }
+  }
+  // Odd
+  {
+    const sl=document.getElementById('h18odd-sl');
+    if(sl){
+      const N=+sl.value;document.getElementById('h18odd-nv').textContent=N;
+      let s=0,pts=[];for(let i=1;i<=N;i++){s+=1/(2*i-1);pts.push(s);}
+      document.getElementById('h18odd-sum').textContent=s.toFixed(4);
+      drawHarmCanvas('c18odd',pts,null,RED);
+    }
+  }
+  // Both
+  {
+    const sl=document.getElementById('h18both-sl');
+    if(sl){
+      const N=+sl.value;document.getElementById('h18both-nv').textContent=N;
+      const ph=[],po=[];
+      for(let i=1;i<=N;i++){ph.push(ph.length?(ph[ph.length-1]+1/i):1/i);po.push(po.length?(po[po.length-1]+1/(2*i-1)):1);}
+      const c=rz('c18both');if(!c)return;
+      const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+      ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+      const mx2=Math.max(...ph,1)*1.05;
+      const my=v=>H-pad-(v/mx2)*(H-2*pad);
+      const mx=i=>pad+(i/N)*(W-2*pad);
+      [[ph,NAVY],[po,RED]].forEach(([pts,col])=>{
+        ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+        pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+      });
+      ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('n →',W/2,H-2);
+    }
+  }
+}
+function drawHarmCanvas(id,pts,limit,col){
+  const c=rz(id);if(!c||!pts.length)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=35;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const mx2=Math.max(...pts)*1.1||1;
+  const my=v=>H-pad-(v/mx2)*(H-2*pad);
+  const mx=i=>pad+(i/pts.length)*(W-2*pad);
+  if(limit){ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(limit));ctx.lineTo(W-pad,my(limit));ctx.stroke();ctx.setLineDash([]);}
+  ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+  pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
+  if(pts.length<100)pts.forEach((v,i)=>{ctx.fillStyle=col;ctx.beginPath();ctx.arc(mx(i+1),my(v),2.5,0,2*Math.PI);ctx.fill();});
+  ctx.fillStyle=NAVY;ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText('n →',W/2,H-2);
+}
+
+/* ── Tab D: Circle sector animation (geometrically correct) ── */
+let circ18timer=null,circ18phase=0;
+const circ18phases=['circle',4,8,16,32,'rect'];
+
+function circ18reset(){
+  if(circ18timer){clearTimeout(circ18timer);circ18timer=null;}
+  circ18phase=0;
+  const lbl=document.getElementById('circ18-label');
+  if(lbl)lbl.textContent='A circle of radius r';
+  _drawCircle18();
+}
+
+function circ18anim(){
+  if(circ18timer){clearTimeout(circ18timer);circ18timer=null;}
+  circ18phase=0;
+  function doStep(){
+    const s=circ18phases[circ18phase];
+    const lbl=document.getElementById('circ18-label');
+    if(lbl){
+      if(s==='circle')lbl.textContent='A circle of radius r — about to be cut into sectors';
+      else if(s==='rect')lbl.textContent='As n → ∞: sectors fill a rectangle of width C/2 and height r';
+      else lbl.textContent=s+' sectors rearranged — alternating apex down / apex up';
+    }
+    if(s==='circle')_drawCircle18();
+    else if(s==='rect')_drawRect18();
+    else _drawSectors18(s);
+    circ18phase++;
+    if(circ18phase<circ18phases.length){circ18timer=setTimeout(doStep,2600);}
+    else{circ18timer=null;}
+  }
+  doStep();
+}
+
+/* Draw the initial undivided circle */
+function _drawCircle18(){
+  const c=rz('c18circ');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const r=Math.min(W,H)*0.30,cx=W/2,cy=H/2+8;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);
+  ctx.fillStyle='rgba(26,58,107,0.12)';ctx.fill();
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2.5;ctx.stroke();
+  // Center dot
+  ctx.fillStyle=NAVY;ctx.beginPath();ctx.arc(cx,cy,3,0,2*Math.PI);ctx.fill();
+  // r arrow (dashed, from center rightward)
+  ctx.save();ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r,cy);ctx.stroke();
+  ctx.setLineDash([]);
+  _arrowHead18(ctx,cx+r,cy,'right',NAVY);
+  ctx.restore();
+  ctx.fillStyle=NAVY;ctx.font='bold 15px Georgia';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('r',cx+r/2,cy-6);
+  ctx.textBaseline='alphabetic';
+}
+
+/* Draw sectors arranged in the alternating pattern matching the reference images.
+   Geometry: each sector is a true pie-slice. Adjacent sectors share a radius edge.
+   Even sectors: apex at BOTTOM, arc curving UP.
+   Odd sectors:  apex at TOP,    arc curving DOWN.
+   This creates the sinusoidal "wave" shape (Image 1 for n=4) and the
+   near-rectangular block (Image 2 for larger n). */
+function _drawSectors18(n){
+  const c=rz('c18circ');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  const alpha=Math.PI/n;           // half-angle of each sector
+  const sinA=Math.sin(alpha),cosA=Math.cos(alpha);
+
+  /* Size r so the arrangement fits comfortably with room for labels.
+     Arrangement dimensions:
+       width  = (n+1)*r*sinA  (from leftmost arc-tip to rightmost)
+       height = r*(2-cosA)    (from top arc-midpoint to bottom arc-midpoint) */
+  const padH=80,padW=120;          // vertical / horizontal space reserved for labels
+  const rFromW=(W-padW)/((n+1)*sinA);
+  const rFromH=(H-padH)/(2-cosA);
+  const r=Math.min(rFromW,rFromH,85);
+
+  const arrW=(n+1)*r*sinA;
+  const arrH=r*(2-cosA);
+
+  /* Centre the arrangement.
+     apex0_x = x-coordinate of sector-0 apex.
+     leftmost arc-tip = apex0_x - r*sinA  → set to W/2 - arrW/2 */
+  const apex0_x=W/2-arrW/2+r*sinA;
+
+  /* apex0_y = y of even-sector apexes (the "lower" apexes).
+     Arrangement vertical centre = apex0_y - r*cosA/2
+     (derivation: top=apex0_y-r, bottom=apex0_y+r*(1-cosA),
+      centre=(top+bottom)/2 = apex0_y - r*cosA/2)
+     Leave extra room at top for the C/2 label. */
+  const vizCY=H/2+18;
+  const apex0_y=vizCY+r*cosA/2;
+
+  // Palette (colours cycle for visual distinction)
+  const pal=[[26,58,107],[15,110,86],[83,59,183],[163,45,45],[14,106,106],[184,92,0]];
+
+  for(let i=0;i<n;i++){
+    const ax=apex0_x+i*r*sinA;
+    const isDown=(i%2===0);
+    const ay=isDown?apex0_y:apex0_y-r*cosA;
+    const [pr,pg,pb]=pal[i%pal.length];
+
+    ctx.beginPath();
+    ctx.moveTo(ax,ay);
+    if(isDown){
+      /* Left radius edge → left arc-tip, then arc curving UP to right arc-tip */
+      ctx.lineTo(ax-r*sinA, ay-r*cosA);
+      ctx.arc(ax, ay, r, -Math.PI/2-alpha, -Math.PI/2+alpha, false);
+      /* anticlockwise=false → clockwise in canvas → passes through -π/2 (straight UP) */
+    }else{
+      /* Left radius edge → left arc-tip, then arc curving DOWN to right arc-tip */
+      ctx.lineTo(ax-r*sinA, ay+r*cosA);
+      ctx.arc(ax, ay, r, Math.PI/2+alpha, Math.PI/2-alpha, true);
+      /* anticlockwise=true → counterclockwise in canvas → passes through π/2 (straight DOWN) */
+    }
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${pr},${pg},${pb},0.22)`;
+    ctx.fill();
+    ctx.strokeStyle=`rgb(${Math.round(pr*.65)},${Math.round(pg*.65)},${Math.round(pb*.65)})`;
+    ctx.lineWidth=n<=8?2:1.5;
+    ctx.stroke();
+  }
+
+  /* ── Annotations ── */
+  const topY  = apex0_y-r;              // highest point (arc-top of sector 0)
+  const botY  = apex0_y+r*(1-cosA);     // lowest point  (arc-bottom of apex-up sectors)
+  const leftX = apex0_x-r*sinA;         // leftmost arc-tip
+  const rightX= apex0_x+n*r*sinA;       // rightmost arc-tip
+
+  /* C/2 dashed span above, with arrowheads */
+  const topLblY=topY-22;
+  ctx.save();
+  ctx.strokeStyle=TEAL;ctx.lineWidth=1.5;ctx.setLineDash([7,4]);
+  ctx.beginPath();ctx.moveTo(leftX,topLblY);ctx.lineTo(rightX,topLblY);ctx.stroke();
+  ctx.setLineDash([]);
+  _arrowHead18(ctx,leftX,topLblY,'left',TEAL);
+  _arrowHead18(ctx,rightX,topLblY,'right',TEAL);
+  ctx.fillStyle=TEAL;ctx.font='bold 14px Georgia';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('C/2',W/2,topLblY-3);
+  ctx.restore();
+
+  /* C/2 dashed span below for n≤8 (clearly visible bottom arcs) */
+  if(n<=8){
+    const botLblY=botY+22;
+    ctx.save();
+    ctx.strokeStyle=TEAL;ctx.lineWidth=1.5;ctx.setLineDash([7,4]);
+    ctx.beginPath();ctx.moveTo(leftX,botLblY);ctx.lineTo(rightX,botLblY);ctx.stroke();
+    ctx.setLineDash([]);
+    _arrowHead18(ctx,leftX,botLblY,'left',TEAL);
+    _arrowHead18(ctx,rightX,botLblY,'right',TEAL);
+    ctx.fillStyle=TEAL;ctx.font='bold 14px Georgia';ctx.textAlign='center';ctx.textBaseline='top';
+    ctx.fillText('C/2',W/2,botLblY+3);
+    ctx.restore();
+  }
+
+  /* r dashed bracket on the right, spanning the arrangement height */
+  const rLblX=rightX+32;
+  ctx.save();
+  ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(rLblX,topY);ctx.lineTo(rLblX,botY);ctx.stroke();
+  ctx.setLineDash([]);
+  _arrowHead18(ctx,rLblX,topY,'up',NAVY);
+  _arrowHead18(ctx,rLblX,botY,'down',NAVY);
+  ctx.fillStyle=NAVY;ctx.font='bold 14px Georgia';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('r',rLblX+8,(topY+botY)/2);
+  ctx.restore();
+  ctx.textBaseline='alphabetic';
+}
+
+/* Draw the final rectangle */
+function _drawRect18(){
+  const c=rz('c18circ');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const r=Math.min(W*0.20,H*0.28,72);
+  const rectW=Math.PI*r,rectH=r;
+  const rx=W/2-rectW/2,ry=H/2-rectH/2+10;
+  ctx.fillStyle='rgba(15,110,86,0.18)';ctx.fillRect(rx,ry,rectW,rectH);
+  ctx.strokeStyle=TEAL;ctx.lineWidth=2.5;ctx.strokeRect(rx,ry,rectW,rectH);
+  // C/2 = πr span at top
+  const tlY=ry-26;
+  ctx.save();
+  ctx.strokeStyle=TEAL;ctx.lineWidth=1.5;ctx.setLineDash([7,4]);
+  ctx.beginPath();ctx.moveTo(rx,tlY);ctx.lineTo(rx+rectW,tlY);ctx.stroke();
+  ctx.setLineDash([]);
+  _arrowHead18(ctx,rx,tlY,'left',TEAL);
+  _arrowHead18(ctx,rx+rectW,tlY,'right',TEAL);
+  ctx.fillStyle=TEAL;ctx.font='bold 14px Georgia';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('C/2 = πr',W/2,tlY-3);
+  ctx.restore();
+  // r bracket on right
+  const rX=rx+rectW+32;
+  ctx.save();
+  ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(rX,ry);ctx.lineTo(rX,ry+rectH);ctx.stroke();
+  ctx.setLineDash([]);
+  _arrowHead18(ctx,rX,ry,'up',NAVY);
+  _arrowHead18(ctx,rX,ry+rectH,'down',NAVY);
+  ctx.fillStyle=NAVY;ctx.font='bold 14px Georgia';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('r',rX+8,ry+rectH/2);
+  ctx.restore();
+  // Formula inside rectangle
+  ctx.fillStyle=NAVY;ctx.font='bold 15px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('Area = C/2 × r',W/2,ry+rectH/2-11);
+  ctx.font='14px Georgia';
+  ctx.fillText('= πr · r = πr²',W/2,ry+rectH/2+12);
+  ctx.textBaseline='alphabetic';
+}
+
+/* Arrowhead helper: draws a solid triangle pointing in direction 'dir' */
+function _arrowHead18(ctx,x,y,dir,col){
+  const s=8;
+  ctx.fillStyle=col;
+  ctx.beginPath();
+  if(dir==='left') {ctx.moveTo(x,y);ctx.lineTo(x+s,y-s/2);ctx.lineTo(x+s,y+s/2);}
+  else if(dir==='right'){ctx.moveTo(x,y);ctx.lineTo(x-s,y-s/2);ctx.lineTo(x-s,y+s/2);}
+  else if(dir==='up')  {ctx.moveTo(x,y);ctx.lineTo(x-s/2,y+s);ctx.lineTo(x+s/2,y+s);}
+  else                 {ctx.moveTo(x,y);ctx.lineTo(x-s/2,y-s);ctx.lineTo(x+s/2,y-s);}
+  ctx.closePath();ctx.fill();
+}
+
+
 window.addEventListener('load',()=>{
   visited.add(1);document.getElementById('pd1').classList.add('visited');
   initMod(1);inited[1]=true;
@@ -2034,7 +2560,7 @@ window.addEventListener('load',()=>{
     initMod(m);
   });
   // Keyboard navigation
-  const navOrder=[1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
+  const navOrder=[1,18,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT')return;
     const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
