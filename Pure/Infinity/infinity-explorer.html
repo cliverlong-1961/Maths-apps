@@ -193,9 +193,9 @@ canvas{display:block;width:100%;}
   <div class="pdot" id="pd18" data-label="2 Early Encounters" onclick="go(18)"></div>
   <div class="pdot" id="pd2" data-label="3 Approaching Zero" onclick="go(2)"></div>
   <div class="pdot" id="pd3" data-label="4 The 0/0 Problem" onclick="go(3)"></div>
-  <div class="pdot" id="pd4" data-label="5 What is a Limit?" onclick="go(4)"></div>
-  <div class="pdot" id="pd5" data-label="6 Sequences" onclick="go(5)"></div>
-  <div class="pdot" id="pd6" data-label="7 Infinite Series" onclick="go(6)"></div>
+  <div class="pdot" id="pd5" data-label="5 Sequences" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="6 Infinite Series" onclick="go(6)"></div>
+  <div class="pdot" id="pd4" data-label="7 What is a Limit?" onclick="go(4)"></div>
   <div class="pdot" id="pd7" data-label="8 Why Convergence?" onclick="go(7)"></div>
   <div class="pdot" id="pd8" data-label="9 Tests" onclick="go(8)"></div>
   <div class="pdot" id="pd9" data-label="10 Bouncing Ball" onclick="go(9)"></div>
@@ -213,9 +213,9 @@ canvas{display:block;width:100%;}
   <button class="nb" data-m="18" onclick="go(18)">2&hairsp;Early&nbsp;Encounters</button>
   <button class="nb" data-m="2" onclick="go(2)">3&hairsp;Approaching&nbsp;Zero</button>
   <button class="nb" data-m="3" onclick="go(3)">4&hairsp;The&nbsp;0/0&nbsp;Problem</button>
-  <button class="nb" data-m="4" onclick="go(4)">5&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
-  <button class="nb" data-m="5" onclick="go(5)">6&hairsp;Sequences</button>
-  <button class="nb" data-m="6" onclick="go(6)">7&hairsp;Infinite&nbsp;Series</button>
+  <button class="nb" data-m="5" onclick="go(5)">5&hairsp;Sequences</button>
+  <button class="nb" data-m="6" onclick="go(6)">6&hairsp;Infinite&nbsp;Series</button>
+  <button class="nb" data-m="4" onclick="go(4)">7&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
   <button class="nb" data-m="7" onclick="go(7)">8&hairsp;Why&nbsp;Convergence?</button>
   <button class="nb" data-m="8" onclick="go(8)">9&hairsp;Tests</button>
   <button class="nb" data-m="9" onclick="go(9)">10&hairsp;Bouncing&nbsp;Ball</button>
@@ -513,53 +513,11 @@ canvas{display:block;width:100%;}
 </div>
 </section>
 
-<!-- ═══ MODULE 4: WHAT IS A LIMIT? ═══ -->
-<section class="module" id="mod4">
-<div class="mhdr"><div class="mtag">Module 5</div><h2>What is a Limit?</h2></div>
-<div class="concept">
-  <strong>Core idea:</strong> We say \(\lim_{n\to\infty}a_n = L\) if we can make \(a_n\) as close to \(L\) as we like by taking \(n\) large enough. The green band below shows the tolerance \(\varepsilon\) around \(L=0\).
-  <div class="q-intro">→ Drag the \(\varepsilon\) slider. Watch how many red points fall outside the band — and find the threshold \(N\).</div>
-</div>
-<div class="fdisp">
-  \(\displaystyle\lim_{n\to\infty}a_n = L \iff \forall\,\varepsilon>0,\ \exists\,N:\ n>N\Rightarrow|a_n-L|<\varepsilon\)
-</div>
-<div class="stabs">
-  <button class="stab on" onclick="s4tab(this,'s4a')">1/n → 0</button>
-  <button class="stab" onclick="s4tab(this,'s4b')">1/n² → 0</button>
-  <button class="stab" onclick="s4tab(this,'s4c')">(−1)ⁿ/n → 0</button>
-</div>
-<div class="spanel on" id="s4a">
-  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4a-eps" min="1" max="100" value="30" oninput="m4draw('a')"><span class="slider-val" id="m4a-ev">0.30</span></div>
-  <div class="cbox"><canvas id="c4a" height="220"></canvas></div>
-  <div class="status" id="m4a-st"></div>
-</div>
-<div class="spanel" id="s4b">
-  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4b-eps" min="1" max="100" value="30" oninput="m4draw('b')"><span class="slider-val" id="m4b-ev">0.30</span></div>
-  <div class="cbox"><canvas id="c4b" height="220"></canvas></div>
-  <div class="status" id="m4b-st"></div>
-</div>
-<div class="spanel" id="s4c">
-  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4c-eps" min="1" max="100" value="30" oninput="m4draw('c')"><span class="slider-val" id="m4c-ev">0.30</span></div>
-  <div class="cbox"><canvas id="c4c" height="220"></canvas></div>
-  <div class="status" id="m4c-st"></div>
-</div>
-<div class="challenges"><h3>Think about it</h3>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does the limit have to be reached?</div>
-  <div class="ccard-a">No. \(a_n=\frac{1}{n}\) has limit 0 but never equals 0. The limit is the value the sequence <em>approaches</em>, not a value it necessarily attains.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What happens if ε is halved?</div>
-  <div class="ccard-a">For \(a_n=1/n\), halving \(\varepsilon\) doubles \(N\) (since \(N\approx 1/\varepsilon\)). For \(a_n=1/n^2\), \(N\) only grows like \(\sqrt{1/\varepsilon}\) — a much more modest increase. Faster-decaying sequences need smaller \(N\) for the same tolerance.</div></div>
-</div>
-<div class="mistakes"><h3>Common mistake</h3>
-  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The sequence equals its limit eventually."</div>
-  <div class="ccard-a">Not in general. For \(a_n=1/n\), no term ever equals 0. The definition says the terms get <em>arbitrarily close</em> — not that they arrive. (Some sequences do eventually reach their limit, e.g. a constant sequence, but this is the exception.)</div></div>
-</div>
-</section>
-
 <!-- ═══ MODULE 5: SEQUENCES ═══ -->
 <section class="module" id="mod5">
-<div class="mhdr"><div class="mtag">Module 6</div><h2>Sequences</h2></div>
+<div class="mhdr"><div class="mtag">Module 5</div><h2>Sequences</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> A sequence \(a_1,a_2,a_3,\ldots\) converges if its terms settle towards a finite limit. Otherwise it diverges — either by growing without bound, or by oscillating.
+  <strong>Core idea:</strong> \((a_n)\) is the sequence of numbers \(a_1, a_2, a_3, \ldots\) We can ask 'What are successive values of this sequence \(a_n\) and are they getting closer to a particular value?' A sequence \(a_1,a_2,a_3,\ldots\) converges if its terms settle towards a finite limit. Otherwise it diverges — either by growing without bound, or by oscillating.
 </div>
 <div class="stabs">
   <button class="stab on" onclick="s5tab(this,'s5a')">Arithmetic</button>
@@ -606,7 +564,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 6: INFINITE SERIES ═══ -->
 <section class="module" id="mod6">
-<div class="mhdr"><div class="mtag">Module 7</div><h2>Infinite Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 6</div><h2>Infinite Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> An infinite series \(\sum_{n=1}^\infty a_n\) is defined via partial sums \(S_N=\sum_{n=1}^N a_n\).
   The series converges if \(S_N\to L\) as \(N\to\infty\).
@@ -665,6 +623,68 @@ canvas{display:block;width:100%;}
 <div class="mistakes"><h3>Common mistake</h3>
   <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The terms of the harmonic series go to zero, so it must converge."</div>
   <div class="ccard-a">This is the single most common error in series. Terms going to zero is necessary but NOT sufficient. The harmonic series diverges despite \(1/n\to0\). Always apply a proper convergence test — never rely on this alone.</div></div>
+</div>
+</section>
+
+<!-- ═══ MODULE 4: WHAT IS A LIMIT? ═══ -->
+<section class="module" id="mod4">
+<div class="mhdr"><div class="mtag">Module 7</div><h2>What is a Limit?</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> We say \(\lim_{n\to\infty}a_n = L\) if we can make \(a_n\) as close to \(L\) as we like by taking \(n\) large enough. The green band below shows the tolerance \(\varepsilon\) around \(L=0\).
+</div>
+<div class="stabs">
+  <button class="stab on" onclick="s4tab(this,'s4a')">1/n → 0</button>
+  <button class="stab" onclick="s4tab(this,'s4b')">1/n² → 0</button>
+  <button class="stab" onclick="s4tab(this,'s4c')">(−1)ⁿ/n → 0</button>
+</div>
+<div class="q-intro" style="margin-bottom:.7rem;">→ Drag the \(\varepsilon\) slider. Watch how many red points fall outside the band — and find the threshold \(N\).</div>
+<div class="spanel on" id="s4a">
+  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4a-eps" min="1" max="100" value="30" oninput="m4draw('a')"><span class="slider-val" id="m4a-ev">0.30</span></div>
+  <div class="cbox"><canvas id="c4a" height="220"></canvas></div>
+  <div class="status" id="m4a-st"></div>
+</div>
+<div class="spanel" id="s4b">
+  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4b-eps" min="1" max="100" value="30" oninput="m4draw('b')"><span class="slider-val" id="m4b-ev">0.30</span></div>
+  <div class="cbox"><canvas id="c4b" height="220"></canvas></div>
+  <div class="status" id="m4b-st"></div>
+</div>
+<div class="spanel" id="s4c">
+  <div class="slider-row"><label>\(\varepsilon =\)</label><input type="range" id="m4c-eps" min="1" max="100" value="30" oninput="m4draw('c')"><span class="slider-val" id="m4c-ev">0.30</span></div>
+  <div class="cbox"><canvas id="c4c" height="220"></canvas></div>
+  <div class="status" id="m4c-st"></div>
+</div>
+<div class="flow-box" style="margin-top:1.5rem;">
+  <h3>Formal definition of a limit</h3>
+  <div class="fdisp" style="margin:0 0 1.1rem;">
+    \(\displaystyle\lim_{n\to\infty}a_n = L \iff \forall\,\varepsilon>0,\ \exists\,N:\ n>N\Rightarrow|a_n-L|<\varepsilon\)
+  </div>
+  <table class="tbl" style="margin:.4rem 0 1.2rem;">
+    <tr><th style="width:28%">Symbol</th><th>Meaning</th></tr>
+    <tr><td>\(a_n\)</td><td>An arbitrary term in the sequence \((a_n)\).</td></tr>
+    <tr><td>\(\lim_{n\to\infty}a_n = L\)</td><td>The successive terms in the sequence \((a_n)\) approach \(L\).</td></tr>
+    <tr><td>\(\iff\)</td><td>Is logically the same as.</td></tr>
+    <tr><td>\(\forall\,\varepsilon>0\)</td><td>We take any value that is positive and small, i.e. close to zero — say \(0.01\) or \(0.001\) or \(0.000\ldots01\).</td></tr>
+    <tr><td>\(\exists\,N:\)</td><td>There will be some (probably "large") positive integer \(N\).</td></tr>
+    <tr><td>\(n>N\)</td><td>Every integer bigger than \(N\) — and it is vital that this is true for <em>every</em> integer \(n\).</td></tr>
+    <tr><td>\(\Rightarrow\)</td><td>Results in.</td></tr>
+    <tr><td>\(|a_n-L|\)</td><td>The difference between any and every term in the sequence beyond \(a_N\).</td></tr>
+    <tr><td>\({}<\varepsilon\)</td><td>Is smaller than our \(\varepsilon\).</td></tr>
+  </table>
+  <p style="font-size:.92rem;line-height:1.75;margin-bottom:1rem;">So in this way we can get our terms as close as we like to the value \(L\) (the limit) even if we cannot actually "reach" the limit.</p>
+  <div class="note teal">
+    <strong>Another way of thinking about this — a competition:</strong><br><br>
+    I have a sequence of numbers I claim has a limit \(L\). You choose a small positive number \(\varepsilon > 0\). If somehow I can show that <em>all</em> values of the sequence \((a_n)\) after a particular value \(a_N\) are closer than your \(\varepsilon\) to my claimed limit \(L\) — i.e. \(|a_n - L| < \varepsilon\) — then \(L\) is the limit of the sequence.
+  </div>
+</div>
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does the limit have to be reached?</div>
+  <div class="ccard-a">No. \(a_n=\frac{1}{n}\) has limit 0 but never equals 0. The limit is the value the sequence <em>approaches</em>, not a value it necessarily attains.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What happens if ε is halved?</div>
+  <div class="ccard-a">For \(a_n=1/n\), halving \(\varepsilon\) doubles \(N\) (since \(N\approx 1/\varepsilon\)). For \(a_n=1/n^2\), \(N\) only grows like \(\sqrt{1/\varepsilon}\) — a much more modest increase. Faster-decaying sequences need smaller \(N\) for the same tolerance.</div></div>
+</div>
+<div class="mistakes"><h3>Common mistake</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "The sequence equals its limit eventually."</div>
+  <div class="ccard-a">Not in general. For \(a_n=1/n\), no term ever equals 0. The definition says the terms get <em>arbitrarily close</em> — not that they arrive. (Some sequences do eventually reach their limit, e.g. a constant sequence, but this is the exception.)</div></div>
 </div>
 </section>
 
@@ -1903,8 +1923,8 @@ function injectBottomNav(m){
   const mod=document.getElementById('mod'+m);
   if(!mod||mod.querySelector('.mod-nav'))return;
   const labels={1:'Number Line',18:'Early Encounters',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',8:'Tests',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'15 Fibonacci',16:'16 π Series',17:'17 Telescoping',14:'Summary'};
-  const modNums={1:'Module 1',18:'Module 2',2:'Module 3',3:'Module 4',4:'Module 5',5:'Module 6',6:'Module 7',7:'Module 8',8:'Module 9',9:'Module 10',10:'Module 11',11:'Module 12',12:'Module 13',13:'Module 14',15:'Module 15',16:'Module 16',17:'Module 17',14:'Summary'};
-  const navOrder=[1,18,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
+  const modNums={1:'Module 1',18:'Module 2',2:'Module 3',3:'Module 4',5:'Module 5',6:'Module 6',4:'Module 7',7:'Module 8',8:'Module 9',9:'Module 10',10:'Module 11',11:'Module 12',12:'Module 13',13:'Module 14',15:'Module 15',16:'Module 16',17:'Module 17',14:'Summary'};
+  const navOrder=[1,18,2,3,5,6,4,7,8,9,10,11,12,13,15,16,17,14];
   const pos=navOrder.indexOf(m);
   const prev=pos>0?navOrder[pos-1]:null;
   const next=pos<navOrder.length-1?navOrder[pos+1]:null;
@@ -2560,7 +2580,7 @@ window.addEventListener('load',()=>{
     initMod(m);
   });
   // Keyboard navigation
-  const navOrder=[1,18,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,14];
+  const navOrder=[1,18,2,3,5,6,4,7,8,9,10,11,12,13,15,16,17,14];
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT')return;
     const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
