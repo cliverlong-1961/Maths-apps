@@ -189,6 +189,7 @@ canvas{display:block;width:100%;}
 </div>
 <div class="progress-row">
   <span class="prog-label">Progress:</span>
+  <div class="pdot" id="pd0" data-label="0 Inspirations" onclick="go(0)"></div>
   <div class="pdot" id="pd1" data-label="1 Number Line" onclick="go(1)"></div>
   <div class="pdot" id="pd18" data-label="2 Early Encounters" onclick="go(18)"></div>
   <div class="pdot" id="pd19" data-label="3 Basic Numbers" onclick="go(19)"></div>
@@ -198,19 +199,22 @@ canvas{display:block;width:100%;}
   <div class="pdot" id="pd6" data-label="7 Infinite Series" onclick="go(6)"></div>
   <div class="pdot" id="pd4" data-label="8 What is a Limit?" onclick="go(4)"></div>
   <div class="pdot" id="pd7" data-label="9 Why Convergence?" onclick="go(7)"></div>
-  <div class="pdot" id="pd8" data-label="10 Tests" onclick="go(8)"></div>
-  <div class="pdot" id="pd9" data-label="11 Bouncing Ball" onclick="go(9)"></div>
-  <div class="pdot" id="pd10" data-label="12 Koch Snowflake" onclick="go(10)"></div>
-  <div class="pdot" id="pd11" data-label="13 Density of Fractions" onclick="go(11)"></div>
-  <div class="pdot" id="pd12" data-label="14 Calculator Lies" onclick="go(12)"></div>
-  <div class="pdot" id="pd13" data-label="15 Paradoxes" onclick="go(13)"></div>
-  <div class="pdot" id="pd15" data-label="16 Fibonacci" onclick="go(15)"></div>
-  <div class="pdot" id="pd16" data-label="17 π from Series" onclick="go(16)"></div>
-  <div class="pdot" id="pd17" data-label="18 Telescoping" onclick="go(17)"></div>
+  <div class="pdot" id="pd20" data-label="10 Sequence Convergence Tests" onclick="go(20)"></div>
+  <div class="pdot" id="pd8" data-label="11 Series Convergence Tests" onclick="go(8)"></div>
+  <div class="pdot" id="pd21" data-label="12 Limits applied to functions" onclick="go(21)"></div>
+  <div class="pdot" id="pd9" data-label="13 Bouncing Ball" onclick="go(9)"></div>
+  <div class="pdot" id="pd10" data-label="14 Koch Snowflake" onclick="go(10)"></div>
+  <div class="pdot" id="pd11" data-label="15 Density of Fractions" onclick="go(11)"></div>
+  <div class="pdot" id="pd12" data-label="16 Calculator Lies" onclick="go(12)"></div>
+  <div class="pdot" id="pd13" data-label="17 Paradoxes" onclick="go(13)"></div>
+  <div class="pdot" id="pd15" data-label="18 Fibonacci" onclick="go(15)"></div>
+  <div class="pdot" id="pd16" data-label="19 π from Series" onclick="go(16)"></div>
+  <div class="pdot" id="pd17" data-label="20 Telescoping" onclick="go(17)"></div>
   <div class="pdot" id="pd14" data-label="Summary" onclick="go(14)"></div>
 </div>
 <nav id="nav">
-  <button class="nb on" data-m="1" onclick="go(1)">1&hairsp;Number&nbsp;Line</button>
+  <button class="nb on" data-m="0" onclick="go(0)">0&hairsp;Inspirations</button>
+  <button class="nb" data-m="1" onclick="go(1)">1&hairsp;Number&nbsp;Line</button>
   <button class="nb" data-m="18" onclick="go(18)">2&hairsp;Early&nbsp;Encounters</button>
   <button class="nb" data-m="19" onclick="go(19)">3&hairsp;Basic&nbsp;Numbers</button>
   <button class="nb" data-m="2" onclick="go(2)">4&hairsp;Approaching&nbsp;Zero</button>
@@ -219,23 +223,50 @@ canvas{display:block;width:100%;}
   <button class="nb" data-m="6" onclick="go(6)">7&hairsp;Infinite&nbsp;Series</button>
   <button class="nb" data-m="4" onclick="go(4)">8&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
   <button class="nb" data-m="7" onclick="go(7)">9&hairsp;Why&nbsp;Convergence?</button>
-  <button class="nb" data-m="8" onclick="go(8)">10&hairsp;Tests</button>
-  <button class="nb" data-m="9" onclick="go(9)">11&hairsp;Bouncing&nbsp;Ball</button>
-  <button class="nb" data-m="10" onclick="go(10)">12&hairsp;Snowflake</button>
-  <button class="nb" data-m="11" onclick="go(11)">13&hairsp;Fractions</button>
-  <button class="nb" data-m="12" onclick="go(12)">14&hairsp;Calculator&nbsp;Lies</button>
-  <button class="nb" data-m="13" onclick="go(13)">15&hairsp;Paradoxes</button>
-  <button class="nb" data-m="15" onclick="go(15)">16&hairsp;Fibonacci</button>
-  <button class="nb" data-m="16" onclick="go(16)">17&hairsp;&pi;&nbsp;Series</button>
-  <button class="nb" data-m="17" onclick="go(17)">18&hairsp;Telescoping</button>
+  <button class="nb" data-m="20" onclick="go(20)">10&hairsp;Seq.&nbsp;Tests</button>
+  <button class="nb" data-m="8" onclick="go(8)">11&hairsp;Series&nbsp;Tests</button>
+  <button class="nb" data-m="21" onclick="go(21)">12&hairsp;Limits&nbsp;Fns</button>
+  <button class="nb" data-m="9" onclick="go(9)">13&hairsp;Bouncing&nbsp;Ball</button>
+  <button class="nb" data-m="10" onclick="go(10)">14&hairsp;Snowflake</button>
+  <button class="nb" data-m="11" onclick="go(11)">15&hairsp;Fractions</button>
+  <button class="nb" data-m="12" onclick="go(12)">16&hairsp;Calculator&nbsp;Lies</button>
+  <button class="nb" data-m="13" onclick="go(13)">17&hairsp;Paradoxes</button>
+  <button class="nb" data-m="15" onclick="go(15)">18&hairsp;Fibonacci</button>
+  <button class="nb" data-m="16" onclick="go(16)">19&hairsp;&pi;&nbsp;Series</button>
+  <button class="nb" data-m="17" onclick="go(17)">20&hairsp;Telescoping</button>
   <button class="nb" data-m="14" onclick="go(14)">&#9654;&hairsp;Summary</button>
 </nav>
 </header>
 
 <div class="container">
 
+<!-- ═══ MODULE 0: INSPIRATIONS AND RECOMMENDATIONS ═══ -->
+<section class="module on" id="mod0">
+<div class="mhdr"><div class="mtag">Module 0</div><h2>Inspirations and Recommendations</h2></div>
+
+<div style="font-size:.95rem;line-height:1.85;margin-bottom:1.2rem;">
+  <p style="margin-bottom:1rem;">When I started studying (integral and differential) calculus I came across the phrase "in the limit". I realised this was an important idea and technique to justify the results I was using in calculus. I did study some introductory texts in real analysis but quickly I got bogged down in technical detail about limits and continuity in the result of Bolzano, Cauchy and Weierstrass.</p>
+
+  <p style="margin-bottom:1rem;">Two "strands" that have started to help me clear the fog of confusion is a concerted effort to understand mathematical proof (see my app on that). Alongside proof I realised I needed to understand the idea of infinity, tackled in the wonderful book, <em>Infinite Powers</em> by Steven Strogatz, that I urge you to buy if you have any interest in calculus and its foundations. The list of topics in this app and their order in this app is my responsibility. However, a couple of examples are taken from Strogatz's book and I hope I have credited them fully. <em>Infinite Powers</em> is broader, deeper and richer than the brief introduction to the topic of the infinite given in this app. Any errors in explanation in this app are all mine.</p>
+
+  <p style="margin-bottom:1rem;">Although not specifically about the infinite, <em>A Very Short Introduction to Mathematics</em> by Tim Gowers. The book gives short (of course) explanations about the idea of proof and the idea that calculating a limit is a "competition". Gowers is a brilliant mathematician who has managed to produce a work that is accessible to those with basic algebra skills can understand.</p>
+
+  <p style="margin-bottom:1rem;">After that the field is wide-open for a more intense study of real analysis and maybe even complex analysis.</p>
+
+  <p>This app aims to make you aware of the role the infinite plays in large areas of mathematics. Hopefully you will be tempted to spend time investigating these ideas further.</p>
+</div>
+
+<div class="note teal" style="margin-top:1.4rem;">
+  <strong>Recommended reading</strong>
+  <ul style="padding-left:1.2rem;margin-top:.6rem;line-height:2.1;">
+    <li><em>Infinite Powers</em> &mdash; Steven Strogatz</li>
+    <li><em>A Very Short Introduction to Mathematics</em> &mdash; Tim Gowers</li>
+  </ul>
+</div>
+</section>
+
 <!-- ═══ MODULE 1: NUMBER LINE ═══ -->
-<section class="module on" id="mod1">
+<section class="module" id="mod1">
 <div class="mhdr"><div class="mtag">Module 1</div><h2>The Endless Number Line</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Integers never end. No matter how large a number you name, you can always add one more.
@@ -264,7 +295,7 @@ canvas{display:block;width:100%;}
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is infinity a number?</div>
   <div class="ccard-a">No. \(\infty\) is not a real number. Expressions like \(\infty - \infty\) or \(\frac{\infty}{\infty}\) are <em>indeterminate</em> — they have no single value. Infinity describes a process or a limit, not a quantity you can substitute into arithmetic.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are there different sizes of infinity?</div>
-  <div class="ccard-a">Yes — Cantor showed this in the 19th century. The integers and rationals are "countably infinite" (\(\aleph_0\)), but the real numbers are a strictly larger "uncountably infinite" set. See Module 11 for more on this idea.</div></div>
+  <div class="ccard-a">Yes — Cantor showed this in the 19th century. The integers and rationals are "countably infinite" (\(\aleph_0\)), but the real numbers are a strictly larger "uncountably infinite" set. See Module 15 for more on this idea.</div></div>
 </div>
 </section>
 
@@ -412,6 +443,10 @@ canvas{display:block;width:100%;}
 <!-- ═══ MODULE 19: BASIC NUMBERS – CALCULATING WITH INFINITY ═══ -->
 <section class="module" id="mod19">
 <div class="mhdr"><div class="mtag">Module 3</div><h2>Basic Numbers — Calculating with Infinity</h2></div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Shift from discrete to continuous real values</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1.2rem;">Up to this point examples have used whole numbers also known as integers. To go further we need to understand the meaning of fractions (rational numbers) and then real numbers. The "Number systems" section of the Proof app, <a href="https://maths-apps.crlong.uk/Pure/Proof/Proof.html" target="_blank" style="color:var(--navy);">https://maths-apps.crlong.uk/Pure/Proof/Proof.html</a>, goes into a bit more detail about these types of number — but not to the level a professional mathematician would think precise. In this whole area there is a trade off between precision and (lack of) understandability by even a determined reader.</p>
+
 <div class="concept">
   <strong>Note:</strong> The content of this module is based on an example from the excellent <em>Infinite Powers</em> by Steven Strogatz. This book is highly recommended — it gives a historical view of the development of the idea of infinity. Over several hundred years, the gradually deepening understanding of what infinity means allowed the Integral and Differential Calculus to be placed on a firm mathematical foundation. The scope of this app is simply to introduce the basic ideas and applications of infinity in mathematics.
 </div>
@@ -424,7 +459,6 @@ canvas{display:block;width:100%;}
     <li><strong>Fractions:</strong> also known as rational numbers &nbsp;&mdash;&nbsp; e.g. \(\tfrac{1}{2},\ \tfrac{3}{4},\ -\tfrac{7}{3}\)</li>
     <li><strong>Irrational numbers:</strong> which represent points on the number line that cannot be accurately expressed using fractions of integers &nbsp;&mdash;&nbsp; e.g. \(\sqrt{2},\ \pi,\ e\)</li>
   </ul>
-  <p style="margin-top:.7rem;font-size:.9rem;">The "Number systems" section of the Proof app goes into a bit more detail about these types of number.</p>
 </div>
 
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:1.2rem;">This app assumes you know what division of whole numbers is and how to divide by a fraction.</p>
@@ -468,7 +502,7 @@ canvas{display:block;width:100%;}
 <!-- ═══ MODULE 2: APPROACHING ZERO ═══ -->
 <section class="module" id="mod2">
 <div class="mhdr"><div class="mtag">Module 4</div><h2>Approaching Zero</h2></div>
-<p style="font-size:.95rem;line-height:1.7;margin-bottom:1rem;">Another approach to the idea of infinity is if we take a succession or sequence of numbers, without ever ending can we get closer to a particular number, the simplest being zero?</p>
+<p style="font-size:.95rem;line-height:1.7;margin-bottom:1rem;">Another approach to the idea of infinity is to ask whether, by taking a succession or sequence of numbers without ever ending, we can get closer and closer to a particular number — the simplest example being zero.</p>
 <div class="concept">
   <strong>Core idea:</strong> A sequence can get arbitrarily close to zero without ever equalling zero.
   Different sequences approach zero at very different speeds — which matters enormously for series.
@@ -787,7 +821,7 @@ canvas{display:block;width:100%;}
   <tr><td>\(\sum_{n=1}^\infty\frac{1}{n}\)</td><td>—</td><td class="diverge">Diverges</td></tr>
   <tr><td>\(\sum_{n=1}^\infty\frac{1}{n^2}\)</td><td>\(\dfrac{\pi^2}{6}\)</td><td class="converge">Converges (Basel problem)</td></tr>
 </table>
-<div class="note"><strong>Taylor/Maclaurin series:</strong> If a function is smooth enough, it equals its Taylor series within its radius of convergence. Calculators use finite partial sums to evaluate \(\sin\), \(\cos\), \(e^x\) — see Module 12 for a live demonstration.</div>
+<div class="note"><strong>Taylor/Maclaurin series:</strong> If a function is smooth enough, it equals its Taylor series within its radius of convergence. Calculators use finite partial sums to evaluate \(\sin\), \(\cos\), \(e^x\) — see Module 16 for a live demonstration.</div>
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the Basel problem?</div>
   <div class="ccard-a">Euler (1734) proved \(\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}\approx1.6449\). The appearance of \(\pi\) in a sum over integers was astonishing. The proof uses the fact that \(\sin x\) can be written as an infinite product over its zeros.</div></div>
@@ -796,9 +830,97 @@ canvas{display:block;width:100%;}
 </div>
 </section>
 
-<!-- ═══ MODULE 8: TESTS ═══ -->
+<!-- ═══ MODULE 20: SEQUENCE CONVERGENCE TESTS ═══ -->
+<section class="module" id="mod20">
+<div class="mhdr"><div class="mtag">Module 10</div><h2>Sequence Convergence Tests</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> There are several important tests and criteria for determining whether a <em>sequence</em> converges. For a sequence \((a_n)\), convergence means there exists a number \(L\) such that
+  \[a_n \to L \quad \text{as } n\to\infty\]
+  Unlike series, where you add infinitely many terms, sequences are just lists of numbers, so the tests are somewhat different.
+</div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">1. Direct limit evaluation</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Often you simply compute the limit using algebra. Example:</p>
+<div class="fdisp">\[a_n = \frac{2n+1}{n}\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Then</p>
+<div class="fdisp">\[a_n = 2 + \frac{1}{n} \to 2\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">So the sequence converges to \(2\).</p>
+
+<div class="sdiv"></div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">2. Monotone Convergence Theorem</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">A very important theorem. If a sequence is:</p>
+<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
+  <li><strong>monotonic</strong> (always increasing or always decreasing), and</li>
+  <li><strong>bounded</strong> (<a href="#bounds-note" style="color:var(--navy);">see below</a>)</li>
+</ul>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">then it converges. Example:</p>
+<div class="fdisp">\[a_n = 1 - \frac{1}{n}\]</div>
+<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
+  <li>increasing,</li>
+  <li>bounded above by \(1\),</li>
+</ul>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">therefore convergent. In fact,</p>
+<div class="fdisp">\[a_n \to 1\]</div>
+
+<div class="sdiv"></div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">3. Squeeze (Sandwich) Theorem</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">If</p>
+<div class="fdisp">\[b_n \le a_n \le c_n\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">and both outer sequences converge to the same limit \(L\), then \(a_n \to L\). Example:</p>
+<div class="fdisp">\[-\frac{1}{n} \le \frac{\sin n}{n} \le \frac{1}{n}\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">Since both outer sequences go to \(0\), we conclude \(\dfrac{\sin n}{n}\to 0\).</p>
+
+<div class="sdiv"></div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">4. Cauchy Criterion</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">A sequence converges if and only if its terms eventually become arbitrarily close to each other. Formally:</p>
+<div class="fdisp">\[(a_n)\text{ converges } \iff \forall\,\varepsilon>0,\ \exists\,N \text{ such that } |a_n - a_m| < \varepsilon\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">for all \(m, n > N\). This is fundamental in analysis.</p>
+
+<div class="sdiv"></div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">5. Ratio behaviour (sometimes useful)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">For positive sequences, if</p>
+<div class="fdisp">\[\frac{a_{n+1}}{a_n} \to r\]</div>
+<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
+  <li>if \(0 \le r < 1\), usually \(a_n \to 0\),</li>
+  <li>if \(r > 1\), the sequence grows away from zero.</li>
+</ul>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Example: \(a_n = \tfrac{1}{2^n}\), since \(\dfrac{a_{n+1}}{a_n} = \tfrac{1}{2}\), the sequence tends to \(0\). This is related to the ratio test for series, but applied directly to sequences.</p>
+
+<div class="sdiv"></div>
+
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">6. Subsequences</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Sometimes you prove divergence by showing different subsequences approach different limits. Example:</p>
+<div class="fdisp">\[a_n = (-1)^n\]</div>
+<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
+  <li>even terms \(\to 1\),</li>
+  <li>odd terms \(\to -1\),</li>
+</ul>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">so the sequence cannot converge.</p>
+
+<div class="sdiv"></div>
+
+<div class="note" style="margin-top:1rem;">
+  <strong>A distinction worth keeping clear:</strong>
+  <ul style="padding-left:1.2rem;margin-top:.5rem;line-height:2.1;">
+    <li><strong>Sequence convergence</strong> asks whether the terms approach a fixed number.</li>
+    <li><strong>Series convergence</strong> asks whether the running totals (its partial sums) \(\displaystyle S_n = \sum_{k=1}^n a_k\) approach a fixed number.</li>
+  </ul>
+  <p style="margin-top:.5rem;">A series is studied through the sequence of its partial sums.</p>
+</div>
+
+<div class="note teal" id="bounds-note" style="margin-top:1rem;">
+  <strong>Bounds</strong><br>
+  The understanding of bounds, upper bounds, least upper bounds, etc. is fundamental, but firmly in the area of (real) analysis — which is beyond the scope of what is introduced in this app.
+</div>
+</section>
+
+<!-- ═══ MODULE 8: SERIES CONVERGENCE TESTS ═══ -->
 <section class="module" id="mod8">
-<div class="mhdr"><div class="mtag">Module 10</div><h2>Convergence Tests</h2></div>
+<div class="mhdr"><div class="mtag">Module 11</div><h2>Series Convergence Tests</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A toolkit of tests determines convergence for most series you'll meet. The various tests for the convergence of a series are based on tests performed on one or more terms in the sequence that have been added to make the series.
 </div>
@@ -882,9 +1004,111 @@ canvas{display:block;width:100%;}
 </div>
 </section>
 
+<!-- ═══ MODULE 21: LIMITS APPLIED TO FUNCTIONS ═══ -->
+<section class="module" id="mod21">
+<div class="mhdr"><div class="mtag">Module 12</div><h2>Limits Applied to Functions</h2></div>
+<div class="concept">
+  Applying the limit definition to simple examples of functions we are starting to scratch at real analysis.
+  The two examples below compare a function that is <em>continuous</em> at \(x = 1\) with one that has
+  a <strong>removable discontinuity</strong> there — the limit exists and is well-defined, but the function
+  itself is not defined at that point.
+</div>
+
+<!-- ── f(x) = x + 1 ── -->
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .5rem;">Example 1: \(f(x) = x + 1\)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  \(f\) is a straight line. It is defined and continuous everywhere.
+  At \(x = 1\): \(f(1) = 2\). The limit from both sides is equally straightforward:
+</p>
+<div class="fdisp">\[\lim_{x \to 1} f(x) = \lim_{x \to 1}(x+1) = 2\]</div>
+<div class="cbox"><canvas id="c21f" height="220"></canvas></div>
+<div class="status converge">f(1) = 2 &nbsp;|&nbsp; limit from left = 2 &nbsp;|&nbsp; limit from right = 2</div>
+
+<div class="sdiv"></div>
+
+<!-- ── g(x) = (x²−1)/(x−1) ── -->
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .5rem;">Example 2: \(g(x) = \dfrac{x^2 - 1}{x - 1}\)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  This looks more complicated, but we can factorise the numerator:
+</p>
+<div class="fdisp">\[g(x) = \frac{(x+1)(x-1)}{x-1} = x + 1 \quad (x \ne 1)\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  So \(g(x) = x + 1\) everywhere <strong>except \(x = 1\)</strong>, where the denominator is zero
+  and \(g\) is undefined — shown as an open circle on the graph.
+  Despite this, the limit as \(x \to 1\) exists perfectly well, because we only ask what value
+  \(g(x)\) <em>approaches</em>, never what it equals at \(x = 1\) itself:
+</p>
+<div class="fdisp">\[\lim_{x \to 1} g(x) = \lim_{x \to 1}(x+1) = 2\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  Notice that \(f(x) = x+1\) and \(g(x) = x+1\) (for \(x \ne 1\)) are <em>identical</em> in value
+  for every \(x \ne 1\), and both have the <em>same</em> limit \(2\) as \(x \to 1\).
+  The sole difference is that \(f(1) = 2\) is defined, while \(g(1)\) is not.
+  This makes \(g\) a textbook example of a <strong>removable discontinuity</strong> at \(x = 1\).
+</p>
+<div class="cbox"><canvas id="c21g" height="220"></canvas></div>
+<div class="status" style="color:var(--red);font-weight:700;">g(1) undefined &nbsp;|&nbsp; limit from left = 2 &nbsp;|&nbsp; limit from right = 2</div>
+
+<div class="sdiv"></div>
+
+<!-- ── Approach slider ── -->
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .5rem;">Approaching \(x = 1\) from both sides</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">
+  Move the slider to approach \(x = 1\) from either side. Both \(f(x)\) and \(g(x)\) approach
+  \(2\) — identically, from left and right. Slide to the centre (\(x = 1\) exactly) to see the
+  contrast: \(f(1) = 2\) is defined, while \(g(1)\) is not.
+</p>
+<div class="slider-row">
+  <label>\(x =\)</label>
+  <input type="range" id="m21-sl" min="0" max="200" value="0" oninput="m21approach()">
+  <span class="slider-val" id="m21-xv">0.500</span>
+</div>
+<div class="two-col" style="gap:.8rem;margin:.6rem 0 1rem;">
+  <div style="background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.9rem 1.1rem;text-align:center;">
+    <div style="font-family:Arial;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">f(x) = x + 1 &nbsp;→&nbsp; limit 2</div>
+    <div class="big-num" style="font-size:1.6rem;">f(x) = <span id="m21-fv">1.500</span></div>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.9rem 1.1rem;text-align:center;">
+    <div style="font-family:Arial;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">g(x) = (x²−1)/(x−1) &nbsp;→&nbsp; limit 2</div>
+    <div class="big-num" style="font-size:1.6rem;">g(x) = <span id="m21-gv">1.500</span></div>
+  </div>
+</div>
+<div class="status" id="m21-st">Slide toward x = 1 to see both limits.</div>
+
+<div class="sdiv"></div>
+
+<!-- ── Summary table ── -->
+<table class="tbl" style="margin-top:1rem;">
+  <tr><th>Property</th><th>\(f(x) = x+1\)</th><th>\(g(x) = \dfrac{x^2-1}{x-1}\)</th></tr>
+  <tr><td>Value at \(x = 1\)</td><td>\(f(1) = 2\)</td><td class="diverge">Undefined</td></tr>
+  <tr><td>\(\lim_{x\to 1^-}\)</td><td>\(2\)</td><td>\(2\)</td></tr>
+  <tr><td>\(\lim_{x\to 1^+}\)</td><td>\(2\)</td><td>\(2\)</td></tr>
+  <tr><td>Limit equals value?</td><td class="converge">Yes — continuous at \(x=1\)</td><td class="diverge">No — removable discontinuity at \(x=1\)</td></tr>
+  <tr><td>Same limit as \(f\)?</td><td>—</td><td class="converge">Yes: both limits equal \(2\)</td></tr>
+  <tr><td>Defined everywhere?</td><td class="converge">Yes</td><td class="diverge">No — undefined at \(x = 1\)</td></tr>
+</table>
+
+<div class="note" style="margin-top:1rem;">
+  <strong>The key takeaway:</strong> \(f\) and \(g\) produce <em>exactly the same output</em> for every
+  \(x \ne 1\), and share the same limit \(2\) as \(x \to 1\). Yet \(f(1) = 2\) while \(g(1)\) is
+  undefined. The limit describes what value a function <em>approaches</em> — it does not require the
+  function to be defined at the point. The missing point \((1,\,2)\) on the graph of \(g\) is a
+  <em>removable discontinuity</em>: it could be filled in simply by defining \(g(1) = 2\), at which
+  point \(g\) would become identical to \(f\) everywhere.
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does cancelling (x − 1) give the limit but not the value at x = 1?</div>
+  <div class="ccard-a">Cancellation is valid for \(x \ne 1\). When we write \(\frac{(x+1)(x-1)}{x-1} = x+1\), this equality holds only when \(x - 1 \ne 0\). The limit process takes \(x\) close to \(1\) but never equal to \(1\), so the cancellation is always legitimate in the limit calculation. The value \(g(1)\) itself remains undefined because the original expression requires dividing by zero there.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is a removable discontinuity?</div>
+  <div class="ccard-a">A removable discontinuity at a point \(a\) means the limit \(\lim_{x\to a} g(x)\) exists, but either \(g(a)\) is undefined or \(g(a)\) does not equal the limit. It is called "removable" because you can repair the discontinuity simply by redefining \(g(a)\) to equal the limit value. Here, defining \(g(1) = 2\) would make \(g\) continuous at \(x = 1\).</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What makes f continuous at x = 1 but not g?</div>
+  <div class="ccard-a">Three conditions must hold for continuity at a point: (1) the function is defined there, (2) the limit exists, and (3) the limit equals the function value. \(f\) satisfies all three: \(f(1)=2\), \(\lim f = 2\), they agree. \(g\) fails condition (1): \(g(1)\) is simply not defined, so continuity cannot hold regardless of what the limit does.</div></div>
+</div>
+</section>
+
 <!-- ═══ MODULE 9: BOUNCING BALL ═══ -->
 <section class="module" id="mod9">
-<div class="mhdr"><div class="mtag">Module 11</div><h2>Bouncing Ball</h2></div>
+<div class="mhdr"><div class="mtag">Module 13</div><h2>Bouncing Ball</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A ball dropped from height \(h\) bouncing to fraction \(r\) of its height each time travels
   a total distance that is a geometric series. Even though it bounces infinitely many times, the total distance is finite!
@@ -916,7 +1140,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 10: KOCH SNOWFLAKE ═══ -->
 <section class="module" id="mod10">
-<div class="mhdr"><div class="mtag">Module 12</div><h2>The Koch Snowflake</h2></div>
+<div class="mhdr"><div class="mtag">Module 14</div><h2>The Koch Snowflake</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A fractal where the perimeter grows without bound at each step — yet the area it encloses converges to a finite value.
   Two series, one divergent and one convergent, living in the same picture.
@@ -946,7 +1170,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 11: DENSITY OF FRACTIONS ═══ -->
 <section class="module" id="mod11">
-<div class="mhdr"><div class="mtag">Module 13</div><h2>Density of Fractions</h2></div>
+<div class="mhdr"><div class="mtag">Module 15</div><h2>Density of Fractions</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Between any two different fractions (rational numbers) there is always another fraction. This property is called <em>density</em>. Yet the rationals, despite being everywhere, are in some sense "smaller" than the real numbers.
   <div class="q-intro">→ Click "Find Middle" to zoom in between two fractions. You can keep going forever.</div>
@@ -971,7 +1195,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
 <section class="module" id="mod12">
-<div class="mhdr"><div class="mtag">Module 14</div><h2>Calculator Lies</h2></div>
+<div class="mhdr"><div class="mtag">Module 16</div><h2>Calculator Lies</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). It approximates it using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
 </div>
@@ -1008,7 +1232,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 13: PARADOXES ═══ -->
 <section class="module" id="mod13">
-<div class="mhdr"><div class="mtag">Module 15</div><h2>Infinity Paradoxes</h2></div>
+<div class="mhdr"><div class="mtag">Module 17</div><h2>Infinity Paradoxes</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Infinity leads to results that feel paradoxical but are mathematically precise. Understanding these paradoxes deepens intuition for limits, series, and the real number system.
 </div>
@@ -1139,7 +1363,7 @@ canvas{display:block;width:100%;}
 </section>
 <!-- ═══ MODULE 15: FIBONACCI & GOLDEN RATIO ═══ -->
 <section class="module" id="mod15">
-<div class="mhdr"><div class="mtag">Module 16</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
+<div class="mhdr"><div class="mtag">Module 18</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> The Fibonacci sequence \(1, 1, 2, 3, 5, 8, 13, 21, \ldots\) is defined by \(F_1=F_2=1\) and \(F_{n+1}=F_n+F_{n-1}\). Remarkably, the ratio of consecutive terms \(F_{n+1}/F_n\) converges to the <em>golden ratio</em> \(\varphi = \frac{1+\sqrt{5}}{2} \approx 1.618\ldots\)
   <div class="q-intro">→ Step through the sequence and watch the ratio converge.</div>
@@ -1199,7 +1423,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 16: π FROM INFINITE SERIES ═══ -->
 <section class="module" id="mod16">
-<div class="mhdr"><div class="mtag">Module 17</div><h2>&pi; from Infinite Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 19</div><h2>&pi; from Infinite Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> The number \(\pi\) can be computed using infinite series. Some converge remarkably slowly; others blazingly fast. The <em>rate of convergence</em> is the difference between a curiosity and a practical tool.
   <div class="q-intro">→ Step through each series and compare how quickly they reach π.</div>
@@ -1283,7 +1507,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 17: TELESCOPING SERIES ═══ -->
 <section class="module" id="mod17">
-<div class="mhdr"><div class="mtag">Module 18</div><h2>Telescoping Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 20</div><h2>Telescoping Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A <em>telescoping series</em> is one where consecutive terms cancel in pairs, like the sections of a collapsible telescope closing up. What looks like an infinite sum collapses to a simple expression — often leaving just two terms.
   <div class="q-intro">→ Press "Add term" to see each cancellation happen step by step.</div>
@@ -1996,10 +2220,10 @@ function initMod(m,panel){
   else if(m===13){drawZenoState();drawGrandi();}
   else if(m===15){fibReset();drawSpiral();drawCF();}
   else if(m===16){piReset('a');piReset('b');piReset('c');drawPiRace();}
-  else if(m===17){teleReset('a');teleReset('b');teleReset('c');}
+  else if(m===21){mod21DrawF();mod21DrawG();m21approach();}
 }
 
-const TOTAL_MODULES=19;
+const TOTAL_MODULES=22;
 
 /* ══════════════════════════════════════════════════
    BOTTOM NAV — inject into every module on first visit
@@ -2007,15 +2231,15 @@ const TOTAL_MODULES=19;
 function injectBottomNav(m){
   const mod=document.getElementById('mod'+m);
   if(!mod||mod.querySelector('.mod-nav'))return;
-  const labels={1:'Number Line',18:'Early Encounters',19:'Basic Numbers',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',8:'Tests',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'16 Fibonacci',16:'17 π Series',17:'18 Telescoping',14:'Summary'};
-  const modNums={1:'Module 1',18:'Module 2',19:'Module 3',2:'Module 4',3:'Module 5',5:'Module 6',6:'Module 7',4:'Module 8',7:'Module 9',8:'Module 10',9:'Module 11',10:'Module 12',11:'Module 13',12:'Module 14',13:'Module 15',15:'Module 16',16:'Module 17',17:'Module 18',14:'Summary'};
-  const navOrder=[1,18,19,2,3,5,6,4,7,8,9,10,11,12,13,15,16,17,14];
+  const labels={0:'Inspirations',1:'Number Line',18:'Early Encounters',19:'Basic Numbers',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',20:'Seq. Convergence Tests',8:'Series Convergence Tests',21:'Limits applied to functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'Fibonacci',16:'π Series',17:'Telescoping',14:'Summary'};
+  const modNums={0:'Module 0',1:'Module 1',18:'Module 2',19:'Module 3',2:'Module 4',3:'Module 5',5:'Module 6',6:'Module 7',4:'Module 8',7:'Module 9',20:'Module 10',8:'Module 11',21:'Module 12',9:'Module 13',10:'Module 14',11:'Module 15',12:'Module 16',13:'Module 17',15:'Module 18',16:'Module 19',17:'Module 20',14:'Summary'};
+  const navOrder=[0,1,18,19,2,3,5,6,4,7,20,8,21,9,10,11,12,13,15,16,17,14];
   const pos=navOrder.indexOf(m);
   const prev=pos>0?navOrder[pos-1]:null;
   const next=pos<navOrder.length-1?navOrder[pos+1]:null;
   const div=document.createElement('div');div.className='mod-nav';
   div.innerHTML=(prev?`<button class="btn btn-outline" onclick="go(${prev})">← ${labels[prev]}</button>`:'<span></span>')+
-    `<span class="mod-nav-info">${modNums[m]} of 18<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
+    `<span class="mod-nav-info">${modNums[m]} of 21<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
     (next?`<button class="btn btn-solid" onclick="go(${next})">${labels[next]} →</button>`:'<span></span>');
   mod.appendChild(div);
 }
@@ -2656,19 +2880,127 @@ function _arrowHead18(ctx,x,y,dir,col){
 }
 
 
+/* ══════════════════════════════════════════════════
+   MODULE 21: LIMITS APPLIED TO FUNCTIONS
+══════════════════════════════════════════════════ */
+function _m21axes(ctx,W,H,xMin,xMax,yMin,yMax){
+  const pad=42;
+  const tx=x=>pad+(x-xMin)/(xMax-xMin)*(W-pad-18);
+  const ty=y=>H-pad-(y-yMin)/(yMax-yMin)*(H-pad-18);
+  // Grid
+  ctx.strokeStyle='#eee';ctx.lineWidth=1;
+  for(let xi=Math.ceil(xMin);xi<=Math.floor(xMax);xi++){ctx.beginPath();ctx.moveTo(tx(xi),18);ctx.lineTo(tx(xi),H-pad);ctx.stroke();}
+  for(let yi=Math.ceil(yMin);yi<=Math.floor(yMax);yi++){ctx.beginPath();ctx.moveTo(pad,ty(yi));ctx.lineTo(W-18,ty(yi));ctx.stroke();}
+  // Axes
+  ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;
+  if(yMin<0&&yMax>0){ctx.beginPath();ctx.moveTo(pad,ty(0));ctx.lineTo(W-18,ty(0));ctx.stroke();}
+  if(xMin<0&&xMax>0){ctx.beginPath();ctx.moveTo(tx(0),18);ctx.lineTo(tx(0),H-pad);ctx.stroke();}
+  // Tick labels
+  ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  for(let xi=Math.ceil(xMin);xi<=Math.floor(xMax);xi++){
+    if(Math.abs(xi)>0.01)ctx.fillText(xi,tx(xi),H-pad+3);
+  }
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let yi=Math.ceil(yMin);yi<=Math.floor(yMax);yi++){
+    if(Math.abs(yi)>0.01)ctx.fillText(yi,pad-4,ty(yi));
+  }
+  ctx.textBaseline='alphabetic';
+  return{tx,ty,pad};
+}
+function _m21drawCurve(ctx,fn,tx,ty,xMin,xMax,col,skipNear,skipX){
+  ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.beginPath();let go=false;
+  for(let i=0;i<=400;i++){
+    const x=xMin+i/400*(xMax-xMin);
+    if(skipNear&&Math.abs(x-skipX)<(xMax-xMin)/120){go=false;continue;}
+    const y=fn(x);
+    if(!isFinite(y)){go=false;continue;}
+    if(!go){ctx.moveTo(tx(x),ty(y));go=true;}else ctx.lineTo(tx(x),ty(y));
+  }
+  ctx.stroke();
+}
+function mod21DrawF(){
+  const c=rz('c21f');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const xMin=-2,xMax=2.5,yMin=-2,yMax=3;
+  const{tx,ty}=_m21axes(ctx,W,H,xMin,xMax,yMin,yMax);
+  const f=x=>x+1;
+  _m21drawCurve(ctx,f,tx,ty,xMin,xMax,NAVY,false,0);
+  // x=1 dashed line
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(tx(1),18);ctx.lineTo(tx(1),H-42);ctx.stroke();ctx.setLineDash([]);
+  // Solid dot at (1,2)
+  ctx.fillStyle=GOLD;ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(tx(1),ty(2),6,0,2*Math.PI);ctx.fill();ctx.stroke();
+  // Label
+  ctx.fillStyle=NAVY;ctx.font='bold 12px Georgia';ctx.textAlign='left';ctx.textBaseline='bottom';
+  ctx.fillText('(1, 2)',tx(1)+8,ty(2)-4);
+  // Function label
+  ctx.fillStyle=NAVY;ctx.font='italic 13px Georgia';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('f(x) = x + 1',tx(xMin+0.1)+4,22);
+  ctx.textBaseline='alphabetic';
+}
+function mod21DrawG(){
+  const c=rz('c21g');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const xMin=-2,xMax=2.5,yMin=-2,yMax=3;
+  const{tx,ty}=_m21axes(ctx,W,H,xMin,xMax,yMin,yMax);
+  const g=x=>(x*x-1)/(x-1); // = x+1 for x≠1
+  _m21drawCurve(ctx,g,tx,ty,xMin,xMax,NAVY,true,1);
+  // Open circle at hole (1, 2)
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.arc(tx(1),ty(2),6,0,2*Math.PI);ctx.fill();ctx.stroke();
+  ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('hole (1, 2) — undefined',tx(1)+9,ty(2));
+  // x=1 dashed line
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(tx(1),18);ctx.lineTo(tx(1),H-42);ctx.stroke();ctx.setLineDash([]);
+  // Function label
+  ctx.fillStyle=NAVY;ctx.font='italic 13px Georgia';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('g(x) = (x²−1)/(x−1)',tx(xMin+0.1)+4,22);
+  ctx.textBaseline='alphabetic';
+}
+function m21approach(){
+  const sl=document.getElementById('m21-sl');if(!sl)return;
+  const t=+sl.value/200;  // 0..1
+  // 0→0.495 maps to x in [0.500, 0.9999]; 0.505→1 maps to x in [1.0001, 1.500]
+  let x,fromSide;
+  if(t<=0.495){x=0.5+t*(0.4999/0.495);fromSide='left';}
+  else if(t>=0.505){x=1.0001+(t-0.505)*(0.4999/0.495);fromSide='right';}
+  else{x=1;fromSide='at';}
+  document.getElementById('m21-xv').textContent=x.toFixed(5);
+  const fv=x+1;
+  const gv=(x===1)?NaN:(x*x-1)/(x-1);
+  document.getElementById('m21-fv').textContent=fv.toFixed(6);
+  document.getElementById('m21-gv').textContent=isNaN(gv)?'undefined':gv.toFixed(6);
+  const st=document.getElementById('m21-st');
+  const dist=Math.abs(x-1);
+  if(fromSide==='at'){
+    st.textContent='x = 1 exactly: f(1) = 2, g(1) is undefined.';
+    st.className='status';st.style.color='var(--red)';st.style.fontWeight='700';
+  }else if(dist<0.01){
+    st.textContent='Very close to x = 1 from the '+fromSide+': both f(x) and g(x) → 2.';
+    st.className='status converge';st.style.color='';st.style.fontWeight='';
+  }else{
+    st.textContent='Approaching from the '+fromSide+'. Both f(x) and g(x) → 2 as x → 1.';
+    st.className='status';st.style.color='';st.style.fontWeight='';
+  }
+}
+
 window.addEventListener('load',()=>{
-  visited.add(1);document.getElementById('pd1').classList.add('visited');
-  initMod(1);inited[1]=true;
-  injectBottomNav(1);
+  visited.add(0);document.getElementById('pd0').classList.add('visited');
+  inited[0]=true;
+  injectBottomNav(0);
   window.addEventListener('resize',()=>{
-    const m=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
+    const m=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
     initMod(m);
   });
   // Keyboard navigation
-  const navOrder=[1,18,19,2,3,5,6,4,7,8,9,10,11,12,13,15,16,17,14];
+  const navOrder=[0,1,18,19,2,3,5,6,4,7,20,8,21,9,10,11,12,13,15,16,17,14];
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT')return;
-    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
+    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
     const pos=navOrder.indexOf(cur);
     if(e.key==='ArrowRight'&&pos<navOrder.length-1)go(navOrder[pos+1]);
     else if(e.key==='ArrowLeft'&&pos>0)go(navOrder[pos-1]);
