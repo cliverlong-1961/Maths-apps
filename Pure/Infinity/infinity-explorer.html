@@ -205,7 +205,7 @@ canvas{display:block;width:100%;}
   <div class="pdot" id="pd9" data-label="13 Bouncing Ball" onclick="go(9)"></div>
   <div class="pdot" id="pd10" data-label="14 Koch Snowflake" onclick="go(10)"></div>
   <div class="pdot" id="pd11" data-label="15 Density of Fractions" onclick="go(11)"></div>
-  <div class="pdot" id="pd12" data-label="16 Calculator Lies" onclick="go(12)"></div>
+  <div class="pdot" id="pd12" data-label="16 Calculator Approximation" onclick="go(12)"></div>
   <div class="pdot" id="pd13" data-label="17 Paradoxes" onclick="go(13)"></div>
   <div class="pdot" id="pd15" data-label="18 Fibonacci" onclick="go(15)"></div>
   <div class="pdot" id="pd16" data-label="19 π from Series" onclick="go(16)"></div>
@@ -229,7 +229,7 @@ canvas{display:block;width:100%;}
   <button class="nb" data-m="9" onclick="go(9)">13&hairsp;Bouncing&nbsp;Ball</button>
   <button class="nb" data-m="10" onclick="go(10)">14&hairsp;Snowflake</button>
   <button class="nb" data-m="11" onclick="go(11)">15&hairsp;Fractions</button>
-  <button class="nb" data-m="12" onclick="go(12)">16&hairsp;Calculator&nbsp;Lies</button>
+  <button class="nb" data-m="12" onclick="go(12)">16&hairsp;Calculator&nbsp;Approximation</button>
   <button class="nb" data-m="13" onclick="go(13)">17&hairsp;Paradoxes</button>
   <button class="nb" data-m="15" onclick="go(15)">18&hairsp;Fibonacci</button>
   <button class="nb" data-m="16" onclick="go(16)">19&hairsp;&pi;&nbsp;Series</button>
@@ -839,82 +839,121 @@ canvas{display:block;width:100%;}
   Unlike series, where you add infinitely many terms, sequences are just lists of numbers, so the tests are somewhat different.
 </div>
 
-<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">1. Direct limit evaluation</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Often you simply compute the limit using algebra. Example:</p>
-<div class="fdisp">\[a_n = \frac{2n+1}{n}\]</div>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Then</p>
-<div class="fdisp">\[a_n = 2 + \frac{1}{n} \to 2\]</div>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">So the sequence converges to \(2\).</p>
+<div class="stabs">
+  <button class="stab on" onclick="s20tab(this,'s20a')">Direct</button>
+  <button class="stab" onclick="s20tab(this,'s20b')">Monotone</button>
+  <button class="stab" onclick="s20tab(this,'s20c')">Squeeze</button>
+  <button class="stab" onclick="s20tab(this,'s20d')">Cauchy</button>
+  <button class="stab" onclick="s20tab(this,'s20e')">Ratio</button>
+  <button class="stab" onclick="s20tab(this,'s20f')">Subsequences</button>
+</div>
 
-<div class="sdiv"></div>
+<div class="spanel on" id="s20a">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Direct Limit Evaluation</h3>
+  <div class="fdisp">\[a_n = \frac{2n+1}{n} = 2 + \frac{1}{n} \;\to\; 2\]</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    Divide numerator and denominator by the highest power of \(n\). Terms of the form \(\tfrac{c}{n^k}\to 0\), leaving the limit by direct substitution.
+  </div>
+  <div class="note"><strong>When it applies:</strong> whenever the sequence is given by a rational or elementary formula in \(n\) and the limit can be read off algebraically.</div>
+  <table class="tbl">
+    <tr><th>Sequence \(a_n\)</th><th>Simplification</th><th>Limit</th></tr>
+    <tr><td>\(\dfrac{2n+1}{n}\)</td><td>\(2+\tfrac{1}{n}\)</td><td class="converge">\(2\)</td></tr>
+    <tr><td>\(\dfrac{3n^2-1}{n^2+4}\)</td><td>\(\dfrac{3-1/n^2}{1+4/n^2}\)</td><td class="converge">\(3\)</td></tr>
+    <tr><td>\(\dfrac{n^3}{n^2+1}\)</td><td>\(\dfrac{n}{1+1/n^2}\to\infty\)</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\dfrac{(-1)^n}{n}\)</td><td>\(|a_n|=\tfrac{1}{n}\to 0\)</td><td class="converge">\(0\)</td></tr>
+  </table>
+</div>
 
-<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">2. Monotone Convergence Theorem</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">A very important theorem. If a sequence is:</p>
-<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
-  <li><strong>monotonic</strong> (always increasing or always decreasing), and</li>
-  <li><strong>bounded</strong> (<a href="#bounds-note" style="color:var(--navy);">see below</a>)</li>
-</ul>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">then it converges. Example:</p>
-<div class="fdisp">\[a_n = 1 - \frac{1}{n}\]</div>
-<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
-  <li>increasing,</li>
-  <li>bounded above by \(1\),</li>
-</ul>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">therefore convergent. In fact,</p>
-<div class="fdisp">\[a_n \to 1\]</div>
+<div class="spanel" id="s20b">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Monotone Convergence Theorem</h3>
+  <div class="fdisp">\[\text{monotonic} + \text{bounded} \;\Longrightarrow\; \text{converges}\]</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    A sequence is <strong>monotone</strong> if it is always increasing (\(a_{n+1}\ge a_n\)) or always decreasing (\(a_{n+1}\le a_n\)). It is <strong>bounded</strong> if there exist real numbers \(m\) and \(M\) with \(m\le a_n\le M\) for all \(n\). Both conditions together guarantee convergence — even when the limit cannot be found explicitly.
+  </div>
+  <div class="note teal"><strong>Note:</strong> the theorem guarantees a limit exists; it does not always give its value. The precise theory of bounds belongs to real analysis.</div>
+  <table class="tbl">
+    <tr><th>Sequence \(a_n\)</th><th>Monotone?</th><th>Bounded?</th><th>Conclusion</th></tr>
+    <tr><td>\(1-\tfrac{1}{n}\)</td><td>Increasing</td><td>Yes (\(\le 1\))</td><td class="converge">Converges to \(1\)</td></tr>
+    <tr><td>\(\tfrac{1}{n}\)</td><td>Decreasing</td><td>Yes (\(\ge 0\))</td><td class="converge">Converges to \(0\)</td></tr>
+    <tr><td>\(n\)</td><td>Increasing</td><td>No</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\((-1)^n\)</td><td>No</td><td>Yes</td><td class="diverge">Diverges (oscillates)</td></tr>
+  </table>
+</div>
 
-<div class="sdiv"></div>
+<div class="spanel" id="s20c">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Squeeze (Sandwich) Theorem</h3>
+  <div class="fdisp">\[b_n \le a_n \le c_n \quad\text{and}\quad b_n\to L,\;c_n\to L \;\Longrightarrow\; a_n\to L\]</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    If you can trap a sequence between two simpler sequences that share the same limit, the middle sequence is forced to that limit too. Most useful when \(a_n\) involves \(\sin\), \(\cos\), or oscillating factors multiplied by a term known to vanish.
+  </div>
+  <table class="tbl">
+    <tr><th>Sequence \(a_n\)</th><th>Bounds used</th><th>Conclusion</th></tr>
+    <tr><td>\(\dfrac{\sin n}{n}\)</td><td>\(-\tfrac{1}{n}\le\tfrac{\sin n}{n}\le\tfrac{1}{n}\)</td><td class="converge">\(\to 0\)</td></tr>
+    <tr><td>\(\dfrac{\cos n}{n^2}\)</td><td>\(-\tfrac{1}{n^2}\le\tfrac{\cos n}{n^2}\le\tfrac{1}{n^2}\)</td><td class="converge">\(\to 0\)</td></tr>
+    <tr><td>\(\dfrac{(-1)^n+2}{n}\)</td><td>\(\tfrac{1}{n}\le a_n\le\tfrac{3}{n}\)</td><td class="converge">\(\to 0\)</td></tr>
+  </table>
+</div>
 
-<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">3. Squeeze (Sandwich) Theorem</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">If</p>
-<div class="fdisp">\[b_n \le a_n \le c_n\]</div>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">and both outer sequences converge to the same limit \(L\), then \(a_n \to L\). Example:</p>
-<div class="fdisp">\[-\frac{1}{n} \le \frac{\sin n}{n} \le \frac{1}{n}\]</div>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">Since both outer sequences go to \(0\), we conclude \(\dfrac{\sin n}{n}\to 0\).</p>
+<div class="spanel" id="s20d">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Cauchy Criterion</h3>
+  <div class="fdisp">\[(a_n)\text{ converges} \iff \forall\,\varepsilon>0\;\exists\,N:\;|a_n-a_m|<\varepsilon\quad\forall\,m,n>N\]</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    A sequence is a <strong>Cauchy sequence</strong> if its terms eventually cluster arbitrarily tightly together — without needing to know the limit in advance. In the real numbers, Cauchy sequences and convergent sequences are the same thing. This is fundamental to real analysis and the construction of \(\mathbb{R}\).
+  </div>
+  <div class="note red"><strong>A-level scope:</strong> the Cauchy criterion is more of an analysis concept than an A-level tool. It appears here because it underpins why limits work — it defines convergence without reference to a limit value.</div>
+  <table class="tbl">
+    <tr><th>Sequence</th><th>Cauchy?</th><th>Conclusion</th></tr>
+    <tr><td>\(\tfrac{1}{n}\)</td><td>Yes (terms → 0 apart)</td><td class="converge">Converges to \(0\)</td></tr>
+    <tr><td>\((-1)^n\)</td><td>No (\(|a_{n+1}-a_n|=2\) always)</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(n\)</td><td>No (terms move apart)</td><td class="diverge">Diverges</td></tr>
+  </table>
+</div>
 
-<div class="sdiv"></div>
+<div class="spanel" id="s20e">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Ratio Behaviour</h3>
+  <div class="fdisp">\[r = \lim_{n\to\infty}\frac{a_{n+1}}{a_n}\]</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    \(0\le r&lt;1\) &nbsp;&rarr;&nbsp; <span style="color:var(--teal);font-weight:700">\(a_n\to 0\)</span> &emsp;
+    \(r>1\) &nbsp;&rarr;&nbsp; <span style="color:var(--red);font-weight:700">\(a_n\to\infty\)</span> &emsp;
+    \(r=1\) &nbsp;&rarr;&nbsp; <span style="color:var(--muted)">inconclusive</span>
+  </div>
+  <div class="note"><strong>Related to the Ratio Test for series</strong>, but applied directly to the terms of the sequence. Particularly effective for sequences involving factorials or exponentials.</div>
+  <table class="tbl">
+    <tr><th>Sequence \(a_n\)</th><th>\(a_{n+1}/a_n\)</th><th>\(r\)</th><th>Conclusion</th></tr>
+    <tr><td>\(\tfrac{1}{2^n}\)</td><td>\(\tfrac{1}{2}\)</td><td>\(\tfrac{1}{2}\)</td><td class="converge">\(\to 0\)</td></tr>
+    <tr><td>\(\tfrac{n!}{3^n}\)</td><td>\(\tfrac{n+1}{3}\)</td><td>\(\infty\)</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\tfrac{3^n}{n!}\)</td><td>\(\tfrac{3}{n+1}\)</td><td>\(0\)</td><td class="converge">\(\to 0\)</td></tr>
+    <tr><td>\(\tfrac{1}{n}\)</td><td>\(\tfrac{n}{n+1}\)</td><td>\(1\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
+  </table>
+</div>
 
-<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">4. Cauchy Criterion</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">A sequence converges if and only if its terms eventually become arbitrarily close to each other. Formally:</p>
-<div class="fdisp">\[(a_n)\text{ converges } \iff \forall\,\varepsilon>0,\ \exists\,N \text{ such that } |a_n - a_m| < \varepsilon\]</div>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">for all \(m, n > N\). This is fundamental in analysis.</p>
+<div class="spanel" id="s20f">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Subsequences</h3>
+  <div class="fdisp">\[(a_n)\to L \;\Longrightarrow\; \text{every subsequence also}\to L\]</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    The contrapositive is most useful: if you can find two subsequences that approach <em>different</em> limits, the original sequence <strong>diverges</strong>. A subsequence is formed by selecting an infinite subset of terms in order: \(a_{n_1}, a_{n_2}, a_{n_3},\ldots\)
+  </div>
+  <table class="tbl">
+    <tr><th>Sequence</th><th>Subsequences</th><th>Conclusion</th></tr>
+    <tr><td>\((-1)^n\)</td><td>Even terms \(\to 1\), odd terms \(\to -1\)</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\sin\!\left(\tfrac{n\pi}{2}\right)\)</td><td>Takes values \(0,1,0,-1,\ldots\) repeatedly</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\tfrac{1}{n}\)</td><td>Every subsequence \(\to 0\)</td><td class="converge">Converges to \(0\)</td></tr>
+  </table>
+  <div class="note teal" style="margin-top:1rem;"><strong>Bolzano–Weierstrass:</strong> every bounded sequence has at least one convergent subsequence. This guarantees a convergent subsequence exists — but not that the full sequence converges.</div>
+</div>
 
-<div class="sdiv"></div>
-
-<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">5. Ratio behaviour (sometimes useful)</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">For positive sequences, if</p>
-<div class="fdisp">\[\frac{a_{n+1}}{a_n} \to r\]</div>
-<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
-  <li>if \(0 \le r < 1\), usually \(a_n \to 0\),</li>
-  <li>if \(r > 1\), the sequence grows away from zero.</li>
-</ul>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Example: \(a_n = \tfrac{1}{2^n}\), since \(\dfrac{a_{n+1}}{a_n} = \tfrac{1}{2}\), the sequence tends to \(0\). This is related to the ratio test for series, but applied directly to sequences.</p>
-
-<div class="sdiv"></div>
-
-<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .6rem;">6. Subsequences</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">Sometimes you prove divergence by showing different subsequences approach different limits. Example:</p>
-<div class="fdisp">\[a_n = (-1)^n\]</div>
-<ul style="font-size:.95rem;line-height:2;padding-left:1.4rem;margin-bottom:.7rem;">
-  <li>even terms \(\to 1\),</li>
-  <li>odd terms \(\to -1\),</li>
-</ul>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">so the sequence cannot converge.</p>
-
-<div class="sdiv"></div>
-
-<div class="note" style="margin-top:1rem;">
+<div class="note" style="margin-top:1.5rem;">
   <strong>A distinction worth keeping clear:</strong>
   <ul style="padding-left:1.2rem;margin-top:.5rem;line-height:2.1;">
     <li><strong>Sequence convergence</strong> asks whether the terms approach a fixed number.</li>
-    <li><strong>Series convergence</strong> asks whether the running totals (its partial sums) \(\displaystyle S_n = \sum_{k=1}^n a_k\) approach a fixed number.</li>
+    <li><strong>Series convergence</strong> asks whether the running totals (partial sums) \(\displaystyle S_n = \sum_{k=1}^n a_k\) approach a fixed number.</li>
   </ul>
-  <p style="margin-top:.5rem;">A series is studied through the sequence of its partial sums.</p>
+  <p style="margin-top:.5rem;">A series is studied through the sequence of its partial sums — so sequence convergence is foundational.</p>
 </div>
 
 <div class="note teal" id="bounds-note" style="margin-top:1rem;">
   <strong>Bounds</strong><br>
-  The understanding of bounds, upper bounds, least upper bounds, etc. is fundamental, but firmly in the area of (real) analysis — which is beyond the scope of what is introduced in this app.
+  The understanding of bounds, upper bounds, and least upper bounds is fundamental to the Monotone Convergence Theorem, but firmly in the area of real analysis — beyond the scope of what is introduced in this app.
 </div>
 </section>
 
@@ -1009,9 +1048,10 @@ canvas{display:block;width:100%;}
 <div class="mhdr"><div class="mtag">Module 12</div><h2>Limits Applied to Functions</h2></div>
 <div class="concept">
   Applying the limit definition to simple examples of functions we are starting to scratch at real analysis.
-  The two examples below compare a function that is <em>continuous</em> at \(x = 1\) with one that has
-  a <strong>removable discontinuity</strong> there — the limit exists and is well-defined, but the function
-  itself is not defined at that point.
+  The three examples below compare a function that is <em>continuous</em> at \(x = 1\) with two
+  different kinds of discontinuity there — one where the function is <strong>not defined</strong> at the
+  point, and one where it <strong>is</strong> defined but with a value that <strong>disagrees with the
+  limit</strong>. In all three cases the limit itself is the same.
 </div>
 
 <!-- ── f(x) = x + 1 ── -->
@@ -1050,26 +1090,58 @@ canvas{display:block;width:100%;}
 
 <div class="sdiv"></div>
 
+<!-- ── h(x) piecewise ── -->
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .5rem;">Example 3: \(h(x) = \begin{cases}\dfrac{x^2-1}{x-1} &amp; x \ne 1 \\ 1 &amp; x = 1\end{cases}\)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  Now we <em>do</em> assign a value at \(x = 1\), but we choose a value that <em>disagrees</em> with
+  the limit. For \(x \ne 1\) the formula simplifies exactly as in Example 2:
+</p>
+<div class="fdisp">\[h(x) = \frac{(x+1)(x-1)}{x-1} = x+1 \quad (x \ne 1)\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  So the limit as \(x \to 1\) is still \(2\):
+</p>
+<div class="fdisp">\[\lim_{x \to 1} h(x) = \lim_{x \to 1}(x+1) = 2\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  But at \(x = 1\) itself, the piecewise definition gives \(h(1) = 1\). The function <em>is</em>
+  defined at \(x = 1\) — yet it is still <strong>discontinuous</strong> there, because
+  \(h(1) = 1 \ne 2 = \lim_{x\to 1} h(x)\). The graph shows the characteristic picture: a
+  <strong>filled dot at \((1,\,1)\)</strong> (the actual value) and an <strong>open circle at
+  \((1,\,2)\)</strong> (the limit value the curve approaches).
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.6rem;">
+  This is still called a <strong>removable discontinuity</strong>: the limit exists,
+  so the discontinuity could be repaired simply by redefining \(h(1) = 2\) — that is, by
+  replacing the wrong value with the correct (limit) value.
+</p>
+<div class="cbox"><canvas id="c21h" height="220"></canvas></div>
+<div class="status" style="color:var(--red);font-weight:700;">h(1) = 1 &nbsp;|&nbsp; limit from left = 2 &nbsp;|&nbsp; limit from right = 2 &nbsp;|&nbsp; limit &ne; h(1)</div>
+
+<div class="sdiv"></div>
+
 <!-- ── Approach slider ── -->
 <h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.1rem;font-weight:bold;color:var(--navy);margin:1.3rem 0 .5rem;">Approaching \(x = 1\) from both sides</h3>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.7rem;">
-  Move the slider to approach \(x = 1\) from either side. Both \(f(x)\) and \(g(x)\) approach
-  \(2\) — identically, from left and right. Slide to the centre (\(x = 1\) exactly) to see the
-  contrast: \(f(1) = 2\) is defined, while \(g(1)\) is not.
+  Move the slider to approach \(x = 1\) from either side. All three functions approach \(2\)
+  as \(x \to 1\). Slide to the centre (\(x = 1\) exactly) to see the key contrasts:
+  \(f(1) = 2\) (defined, equals limit); \(g(1)\) undefined; \(h(1) = 1\) (defined but not equal to limit).
 </p>
 <div class="slider-row">
   <label>\(x =\)</label>
   <input type="range" id="m21-sl" min="0" max="200" value="0" oninput="m21approach()">
   <span class="slider-val" id="m21-xv">0.500</span>
 </div>
-<div class="two-col" style="gap:.8rem;margin:.6rem 0 1rem;">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.6rem 0 1rem;">
   <div style="background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.9rem 1.1rem;text-align:center;">
     <div style="font-family:Arial;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">f(x) = x + 1 &nbsp;→&nbsp; limit 2</div>
     <div class="big-num" style="font-size:1.6rem;">f(x) = <span id="m21-fv">1.500</span></div>
   </div>
   <div style="background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.9rem 1.1rem;text-align:center;">
-    <div style="font-family:Arial;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">g(x) = (x²−1)/(x−1) &nbsp;→&nbsp; limit 2</div>
+    <div style="font-family:Arial;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">g(x) = (x²&minus;1)/(x&minus;1) &nbsp;→&nbsp; limit 2</div>
     <div class="big-num" style="font-size:1.6rem;">g(x) = <span id="m21-gv">1.500</span></div>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:.9rem 1.1rem;text-align:center;">
+    <div style="font-family:Arial;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">h(x): piecewise &nbsp;→&nbsp; limit 2</div>
+    <div class="big-num" style="font-size:1.6rem;">h(x) = <span id="m21-hv">1.500</span></div>
   </div>
 </div>
 <div class="status" id="m21-st">Slide toward x = 1 to see both limits.</div>
@@ -1078,31 +1150,37 @@ canvas{display:block;width:100%;}
 
 <!-- ── Summary table ── -->
 <table class="tbl" style="margin-top:1rem;">
-  <tr><th>Property</th><th>\(f(x) = x+1\)</th><th>\(g(x) = \dfrac{x^2-1}{x-1}\)</th></tr>
-  <tr><td>Value at \(x = 1\)</td><td>\(f(1) = 2\)</td><td class="diverge">Undefined</td></tr>
-  <tr><td>\(\lim_{x\to 1^-}\)</td><td>\(2\)</td><td>\(2\)</td></tr>
-  <tr><td>\(\lim_{x\to 1^+}\)</td><td>\(2\)</td><td>\(2\)</td></tr>
-  <tr><td>Limit equals value?</td><td class="converge">Yes — continuous at \(x=1\)</td><td class="diverge">No — removable discontinuity at \(x=1\)</td></tr>
-  <tr><td>Same limit as \(f\)?</td><td>—</td><td class="converge">Yes: both limits equal \(2\)</td></tr>
-  <tr><td>Defined everywhere?</td><td class="converge">Yes</td><td class="diverge">No — undefined at \(x = 1\)</td></tr>
+  <tr><th>Property</th><th>\(f(x) = x+1\)</th><th>\(g(x) = \dfrac{x^2-1}{x-1}\)</th><th>\(h(x)\) piecewise</th></tr>
+  <tr><td>Value at \(x = 1\)</td><td>\(f(1) = 2\)</td><td class="diverge">Undefined</td><td class="diverge">\(h(1) = 1\)</td></tr>
+  <tr><td>\(\lim_{x\to 1^-}\)</td><td>\(2\)</td><td>\(2\)</td><td>\(2\)</td></tr>
+  <tr><td>\(\lim_{x\to 1^+}\)</td><td>\(2\)</td><td>\(2\)</td><td>\(2\)</td></tr>
+  <tr><td>Limit equals value?</td><td class="converge">Yes — continuous at \(x=1\)</td><td class="diverge">No — not defined at \(x=1\)</td><td class="diverge">No — \(h(1)=1\ne 2\)</td></tr>
+  <tr><td>Same limit as \(f\)?</td><td>—</td><td class="converge">Yes: both limits equal \(2\)</td><td class="converge">Yes: all three limits equal \(2\)</td></tr>
+  <tr><td>Defined everywhere?</td><td class="converge">Yes</td><td class="diverge">No — undefined at \(x = 1\)</td><td class="converge">Yes — but value disagrees with limit</td></tr>
+  <tr><td>Discontinuity type</td><td class="converge">None (continuous)</td><td class="diverge">Removable (point missing)</td><td class="diverge">Removable (wrong value assigned)</td></tr>
 </table>
 
 <div class="note" style="margin-top:1rem;">
-  <strong>The key takeaway:</strong> \(f\) and \(g\) produce <em>exactly the same output</em> for every
-  \(x \ne 1\), and share the same limit \(2\) as \(x \to 1\). Yet \(f(1) = 2\) while \(g(1)\) is
-  undefined. The limit describes what value a function <em>approaches</em> — it does not require the
-  function to be defined at the point. The missing point \((1,\,2)\) on the graph of \(g\) is a
-  <em>removable discontinuity</em>: it could be filled in simply by defining \(g(1) = 2\), at which
-  point \(g\) would become identical to \(f\) everywhere.
+  <strong>The key takeaway:</strong> All three functions produce <em>exactly the same output</em> for every
+  \(x \ne 1\), and all share the same limit \(2\) as \(x \to 1\). Yet at \(x = 1\) they differ completely:
+  \(f(1) = 2\) (defined and equals the limit — <em>continuous</em>);
+  \(g(1)\) is <em>undefined</em> (removable discontinuity — missing point);
+  \(h(1) = 1\) (defined but <em>wrong value</em> — also a removable discontinuity).
+  The limit describes what a function <em>approaches</em>; it is independent of
+  what the function does <em>at</em> the point — whether that is "nothing" (as in \(g\)) or
+  "something incorrect" (as in \(h\)).  Both \(g\) and \(h\) have removable discontinuities at
+  \(x = 1\): in each case the repair is simply to set the value equal to \(2\).
 </div>
 
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does cancelling (x − 1) give the limit but not the value at x = 1?</div>
   <div class="ccard-a">Cancellation is valid for \(x \ne 1\). When we write \(\frac{(x+1)(x-1)}{x-1} = x+1\), this equality holds only when \(x - 1 \ne 0\). The limit process takes \(x\) close to \(1\) but never equal to \(1\), so the cancellation is always legitimate in the limit calculation. The value \(g(1)\) itself remains undefined because the original expression requires dividing by zero there.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is a removable discontinuity?</div>
-  <div class="ccard-a">A removable discontinuity at a point \(a\) means the limit \(\lim_{x\to a} g(x)\) exists, but either \(g(a)\) is undefined or \(g(a)\) does not equal the limit. It is called "removable" because you can repair the discontinuity simply by redefining \(g(a)\) to equal the limit value. Here, defining \(g(1) = 2\) would make \(g\) continuous at \(x = 1\).</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What makes f continuous at x = 1 but not g?</div>
-  <div class="ccard-a">Three conditions must hold for continuity at a point: (1) the function is defined there, (2) the limit exists, and (3) the limit equals the function value. \(f\) satisfies all three: \(f(1)=2\), \(\lim f = 2\), they agree. \(g\) fails condition (1): \(g(1)\) is simply not defined, so continuity cannot hold regardless of what the limit does.</div></div>
+  <div class="ccard-a">A removable discontinuity at a point \(a\) means the limit \(\lim_{x\to a}\) exists, but either the function is undefined at \(a\) or its value there does not equal the limit. It is called "removable" because you can repair the discontinuity simply by (re)defining the function value at \(a\) to equal the limit. For \(g\), define \(g(1) = 2\); for \(h\), redefine \(h(1) = 2\) — in both cases the function becomes continuous at \(x = 1\).</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What makes f continuous at x = 1 but not g or h?</div>
+  <div class="ccard-a">Three conditions must hold for continuity at a point \(a\): (1) the function is defined there, (2) the limit exists, and (3) the limit equals the function value. \(f\) satisfies all three: \(f(1)=2\), \(\lim f = 2\), they agree. \(g\) fails condition (1): \(g(1)\) is not defined at all. \(h\) satisfies (1) and (2) but fails (3): \(h(1)=1\) while \(\lim h = 2\), so the value and the limit disagree.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">How do g and h differ if both are removable discontinuities?</div>
+  <div class="ccard-a">Both \(g\) and \(h\) fail the continuity test at \(x=1\), but for different reasons. \(g\) has a <em>missing point</em>: the function is simply not defined at \(x=1\), so there is a "hole" in its graph at \((1,2)\). \(h\) has a <em>mislabelled point</em>: the function is defined, but the assigned value \(h(1)=1\) sits in the wrong place. On the graph this appears as a filled dot at \((1,1)\) together with an open circle at \((1,2)\). In both cases the repair is the same: set the value at \(x=1\) equal to \(2\).</div></div>
 </div>
 </section>
 
@@ -1195,10 +1273,13 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
 <section class="module" id="mod12">
-<div class="mhdr"><div class="mtag">Module 16</div><h2>Calculator Lies</h2></div>
+<div class="mhdr"><div class="mtag">Module 16</div><h2>Calculator Approximation</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). It approximates it using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
 </div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  Select a function button then the first few terms of the infinite series that is equivalent to the function will be displayed. The pattern of successive terms should be clear from the 4 displayed terms. As more terms of the series are taken the calculated value is closer to the actual value of the function at that point.
+</p>
 <div class="stabs">
   <button class="stab on" onclick="s12tab(this,'s12a')">sin x</button>
   <button class="stab" onclick="s12tab(this,'s12b')">cos x</button>
@@ -1207,20 +1288,23 @@ canvas{display:block;width:100%;}
 
 <div class="spanel on" id="s12a">
   <div class="fdisp">\(\sin x = x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \dfrac{x^7}{7!} + \cdots\)</div>
-  <div class="slider-row"><label>Terms \(k\) =</label><input type="range" id="t12a" min="1" max="12" value="1" oninput="draw12('a')"><span class="slider-val" id="t12a-v">1</span></div>
-  <div class="big-num">Error at \(x=\pi/2\): <span id="t12a-err">—</span></div>
+  <p style="font-size:.9rem;line-height:1.7;margin:.8rem 0 .4rem;">Number of terms is how many terms of the infinite series, starting from the left and the variable x has increasing integer powers, are taken resulting in an approximation to the exact value of the function for a particular value of x.</p>
+  <div class="slider-row"><label>Number of terms in series =</label><input type="range" id="t12a" min="1" max="12" value="1" oninput="draw12('a')"><span class="slider-val" id="t12a-v">1</span></div>
+  <div class="big-num">Difference from exact value at \(x=\pi/2\): <span id="t12a-err">—</span></div>
   <div class="cbox"><canvas id="c12a" height="200"></canvas></div>
 </div>
 <div class="spanel" id="s12b">
   <div class="fdisp">\(\cos x = 1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \dfrac{x^6}{6!} + \cdots\)</div>
-  <div class="slider-row"><label>Terms \(k\) =</label><input type="range" id="t12b" min="1" max="12" value="1" oninput="draw12('b')"><span class="slider-val" id="t12b-v">1</span></div>
-  <div class="big-num">Error at \(x=\pi/2\): <span id="t12b-err">—</span></div>
+  <p style="font-size:.9rem;line-height:1.7;margin:.8rem 0 .4rem;">Number of terms is how many terms of the infinite series, starting from the left and the variable x has increasing integer powers, are taken resulting in an approximation to the exact value of the function for a particular value of x.</p>
+  <div class="slider-row"><label>Number of terms in series =</label><input type="range" id="t12b" min="1" max="12" value="1" oninput="draw12('b')"><span class="slider-val" id="t12b-v">1</span></div>
+  <div class="big-num">Difference from exact value at \(x=\pi/2\): <span id="t12b-err">—</span></div>
   <div class="cbox"><canvas id="c12b" height="200"></canvas></div>
 </div>
 <div class="spanel" id="s12c">
   <div class="fdisp">\(e^x = 1 + x + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \cdots\)</div>
-  <div class="slider-row"><label>Terms \(k\) =</label><input type="range" id="t12c" min="1" max="15" value="1" oninput="draw12('c')"><span class="slider-val" id="t12c-v">1</span></div>
-  <div class="big-num">Error at \(x=3\): <span id="t12c-err">—</span></div>
+  <p style="font-size:.9rem;line-height:1.7;margin:.8rem 0 .4rem;">Number of terms is how many terms of the infinite series, starting from the left and the variable x has increasing integer powers, are taken resulting in an approximation to the exact value of the function for a particular value of x.</p>
+  <div class="slider-row"><label>Number of terms in series =</label><input type="range" id="t12c" min="1" max="15" value="1" oninput="draw12('c')"><span class="slider-val" id="t12c-v">1</span></div>
+  <div class="big-num">Difference from exact value at \(x=3\): <span id="t12c-err">—</span></div>
   <div class="cbox"><canvas id="c12c" height="200"></canvas></div>
 </div>
 <div class="note"><strong>Why does it work?</strong> The error after \(k\) terms of the Taylor series for \(\sin x\) is no larger than \(\frac{|x|^{2k+1}}{(2k+1)!}\), which \(\to0\) as \(k\to\infty\) for any fixed \(x\). Convergence guarantees the approximation can be made as accurate as needed.</div>
@@ -1618,7 +1702,7 @@ function mkTabFn(){
 }
 const s2tab=mkTabFn(),s3tab=mkTabFn(),s4tab=mkTabFn(),s5tab=mkTabFn(),
       s6tab=mkTabFn(),s8tab=mkTabFn(),s12tab=mkTabFn(),s13tab=mkTabFn(),
-      s18tab=mkTabFn();
+      s18tab=mkTabFn(),s20tab=mkTabFn();
 
 /* ── Scientific notation formatter ─────────────────
    Returns HTML: mantissa × 10<sup>exp</sup>
@@ -2220,7 +2304,7 @@ function initMod(m,panel){
   else if(m===13){drawZenoState();drawGrandi();}
   else if(m===15){fibReset();drawSpiral();drawCF();}
   else if(m===16){piReset('a');piReset('b');piReset('c');drawPiRace();}
-  else if(m===21){mod21DrawF();mod21DrawG();m21approach();}
+  else if(m===21){mod21DrawF();mod21DrawG();mod21DrawH();m21approach();}
 }
 
 const TOTAL_MODULES=22;
@@ -2231,7 +2315,7 @@ const TOTAL_MODULES=22;
 function injectBottomNav(m){
   const mod=document.getElementById('mod'+m);
   if(!mod||mod.querySelector('.mod-nav'))return;
-  const labels={0:'Inspirations',1:'Number Line',18:'Early Encounters',19:'Basic Numbers',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',20:'Seq. Convergence Tests',8:'Series Convergence Tests',21:'Limits applied to functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Lies',13:'Paradoxes',15:'Fibonacci',16:'π Series',17:'Telescoping',14:'Summary'};
+  const labels={0:'Inspirations',1:'Number Line',18:'Early Encounters',19:'Basic Numbers',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',20:'Seq. Convergence Tests',8:'Series Convergence Tests',21:'Limits applied to functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Approximation',13:'Paradoxes',15:'Fibonacci',16:'π Series',17:'Telescoping',14:'Summary'};
   const modNums={0:'Module 0',1:'Module 1',18:'Module 2',19:'Module 3',2:'Module 4',3:'Module 5',5:'Module 6',6:'Module 7',4:'Module 8',7:'Module 9',20:'Module 10',8:'Module 11',21:'Module 12',9:'Module 13',10:'Module 14',11:'Module 15',12:'Module 16',13:'Module 17',15:'Module 18',16:'Module 19',17:'Module 20',14:'Summary'};
   const navOrder=[0,1,18,19,2,3,5,6,4,7,20,8,21,9,10,11,12,13,15,16,17,14];
   const pos=navOrder.indexOf(m);
@@ -2961,6 +3045,34 @@ function mod21DrawG(){
   ctx.fillText('g(x) = (x²−1)/(x−1)',tx(xMin+0.1)+4,22);
   ctx.textBaseline='alphabetic';
 }
+function mod21DrawH(){
+  const c=rz('c21h');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const xMin=-2,xMax=2.5,yMin=-2,yMax=3;
+  const{tx,ty}=_m21axes(ctx,W,H,xMin,xMax,yMin,yMax);
+  // Draw the curve y = x+1 skipping near x=1 (the piecewise part)
+  const hCurve=x=>(x*x-1)/(x-1);
+  _m21drawCurve(ctx,hCurve,tx,ty,xMin,xMax,NAVY,true,1);
+  // Open circle at (1, 2) — the limit value (not assigned)
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.arc(tx(1),ty(2),6,0,2*Math.PI);ctx.fill();ctx.stroke();
+  // Filled dot at (1, 1) — the defined value h(1)=1
+  ctx.fillStyle=RED;ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(tx(1),ty(1),6,0,2*Math.PI);ctx.fill();ctx.stroke();
+  // Labels
+  ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('(1, 2) — limit (open circle)',tx(1)+9,ty(2));
+  ctx.fillStyle=RED;ctx.font='11px Arial';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('(1, 1) — h(1) defined here',tx(1)+9,ty(1));
+  // x=1 dashed line
+  ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(tx(1),18);ctx.lineTo(tx(1),H-42);ctx.stroke();ctx.setLineDash([]);
+  // Function label
+  ctx.fillStyle=NAVY;ctx.font='italic 13px Georgia';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('h(x): piecewise, h(1)=1',tx(xMin+0.1)+4,22);
+  ctx.textBaseline='alphabetic';
+}
 function m21approach(){
   const sl=document.getElementById('m21-sl');if(!sl)return;
   const t=+sl.value/200;  // 0..1
@@ -2972,18 +3084,20 @@ function m21approach(){
   document.getElementById('m21-xv').textContent=x.toFixed(5);
   const fv=x+1;
   const gv=(x===1)?NaN:(x*x-1)/(x-1);
+  const hv=(x===1)?1:(x*x-1)/(x-1);
   document.getElementById('m21-fv').textContent=fv.toFixed(6);
   document.getElementById('m21-gv').textContent=isNaN(gv)?'undefined':gv.toFixed(6);
+  document.getElementById('m21-hv').textContent=hv.toFixed(6);
   const st=document.getElementById('m21-st');
   const dist=Math.abs(x-1);
   if(fromSide==='at'){
-    st.textContent='x = 1 exactly: f(1) = 2, g(1) is undefined.';
+    st.textContent='x = 1 exactly: f(1) = 2, g(1) is undefined, h(1) = 1.';
     st.className='status';st.style.color='var(--red)';st.style.fontWeight='700';
   }else if(dist<0.01){
-    st.textContent='Very close to x = 1 from the '+fromSide+': both f(x) and g(x) → 2.';
+    st.textContent='Very close to x = 1 from the '+fromSide+': f(x), g(x) and h(x) all → 2.';
     st.className='status converge';st.style.color='';st.style.fontWeight='';
   }else{
-    st.textContent='Approaching from the '+fromSide+'. Both f(x) and g(x) → 2 as x → 1.';
+    st.textContent='Approaching from the '+fromSide+'. f(x), g(x) and h(x) all → 2 as x → 1.';
     st.className='status';st.style.color='';st.style.fontWeight='';
   }
 }
