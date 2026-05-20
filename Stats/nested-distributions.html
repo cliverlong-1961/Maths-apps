@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nested Probability Distributions — A-Level Statistics</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --navy:   #1a2e4a;
+    --mid:    #2c4a72;
+    --accent: #c9a84c;
+    --light:  #e8f0f8;
+    --white:  #ffffff;
+    --text:   #1a1a2e;
+    --muted:  #5a6a7e;
+    --border: #c5d5e8;
+    --green:  #1e6b4a;
+    --green-bg: #e8f5ef;
+    --shadow: 0 2px 12px rgba(26,46,74,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f2f6fb;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 0 0 0 0;
+    border-bottom: 3px solid var(--accent);
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 18px 24px 12px;
+  }
+  header h1 {
+    font-size: 1.45rem;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+  }
+  header .subtitle {
+    font-size: 0.82rem;
+    color: #a8c4e0;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  /* ── NAV TABS ── */
+  nav {
+    background: var(--mid);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: inline-flex;
+    padding: 0 16px;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: #c0d8f0;
+    font-family: Georgia, serif;
+    font-size: 0.80rem;
+    padding: 9px 14px 8px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  nav button:hover { color: var(--white); }
+  nav button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: bold;
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 960px;
+    margin: 28px auto;
+    padding: 0 20px 60px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── HOME ── */
+  .home-intro {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+  }
+  .home-intro h2 {
+    font-size: 1.15rem;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .home-intro p { font-size: 0.92rem; line-height: 1.7; color: #2a3a4e; }
+
+  .steps-box {
+    background: #f0f5fa;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin: 18px 0 0;
+  }
+  .steps-box h3 { font-size: 0.95rem; color: var(--navy); margin-bottom: 10px; }
+  .step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 7px 0;
+  }
+  .step-num {
+    background: var(--navy);
+    color: var(--accent);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text { font-size: 0.88rem; line-height: 1.5; color: var(--text); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .combo-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+  }
+  .combo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(26,46,74,0.14);
+    border-color: var(--accent);
+  }
+  .combo-card .arrow {
+    font-size: 1.0rem;
+    color: var(--accent);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .dist-pill {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.73rem;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-style: normal;
+  }
+  .combo-card p {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+  .combo-card .tag {
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* ── SECTION PAGES ── */
+  .page-title {
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .page-title h2 {
+    font-size: 1.25rem;
+    color: var(--navy);
+    font-weight: normal;
+  }
+  .page-title .flow {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* cards */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .card h3 {
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #dde8f2;
+    letter-spacing: 0.01em;
+  }
+  .card p, .card li {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .card ul { padding-left: 20px; }
+  .card li { margin: 3px 0; }
+
+  /* technique steps */
+  .technique-steps { display: flex; flex-direction: column; gap: 8px; }
+  .t-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f5f8fc;
+    border: 1px solid #dde8f5;
+    border-radius: 4px;
+    padding: 10px 14px;
+  }
+  .t-num {
+    background: var(--mid);
+    color: var(--white);
+    width: 22px; height: 22px;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .t-text { font-size: 0.87rem; line-height: 1.55; }
+  .t-text strong { color: var(--navy); }
+  .t-text em { color: var(--mid); font-style: italic; }
+
+  /* reminder box */
+  .reminder {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--mid);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+  }
+  .reminder h4 {
+    font-size: 0.82rem;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .reminder p, .reminder li {
+    font-size: 0.86rem;
+    line-height: 1.65;
+    color: #2a3a4e;
+  }
+  .reminder ul { padding-left: 18px; }
+
+  /* question */
+  .question-card {
+    background: #fff9ee;
+    border: 1px solid #e8d5a0;
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+  }
+  .question-card h4 {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #8a6a10;
+    margin-bottom: 10px;
+  }
+  .question-card p, .question-card li {
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .part {
+    margin: 12px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid #e8d5a0;
+  }
+  .part-label {
+    font-weight: bold;
+    color: var(--navy);
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+  }
+
+  /* solution toggle */
+  .sol-toggle {
+    background: none;
+    border: 1px solid var(--mid);
+    color: var(--mid);
+    font-family: Georgia, serif;
+    font-size: 0.80rem;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .sol-toggle:hover {
+    background: var(--mid);
+    color: var(--white);
+  }
+  .solution {
+    display: none;
+    background: var(--green-bg);
+    border: 1px solid #a8d5be;
+    border-left: 4px solid var(--green);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-top: 10px;
+  }
+  .solution.open { display: block; }
+  .solution h5 {
+    font-size: 0.80rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .solution p, .solution li {
+    font-size: 0.87rem;
+    line-height: 1.7;
+    color: #1a3a2a;
+  }
+  .solution .answer {
+    background: #d0ead8;
+    border: 1px solid #8ecaa0;
+    border-radius: 3px;
+    padding: 6px 12px;
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 0.88rem;
+    color: #0f4a28;
+    display: inline-block;
+  }
+
+  /* formula display */
+  .formula-line {
+    margin: 8px 0;
+    padding: 4px 0;
+    font-size: 0.92rem;
+  }
+
+  /* key fact box */
+  .key-fact {
+    background: #eaf0f8;
+    border: 1px solid #b8ccdf;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: #1a2e4a;
+  }
+  .key-fact strong { color: var(--mid); }
+
+  /* distribution label */
+  .dist-name {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.78rem;
+    padding: 2px 10px;
+    border-radius: 3px;
+    margin: 2px 0;
+  }
+  .dist-name.out {
+    background: var(--green);
+  }
+
+  /* uniform diagram */
+  .uniform-diagram {
+    margin: 12px 0;
+    text-align: center;
+  }
+
+  /* table */
+  .combo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin-top: 10px;
+  }
+  .combo-table th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: normal;
+  }
+  .combo-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .combo-table tr:nth-child(even) td { background: #f5f8fc; }
+  .combo-table tr:hover td { background: var(--light); }
+
+  /* back button */
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: Georgia, serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 0 0 18px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .back-btn:hover { color: var(--navy); }
+
+  /* marks badge */
+  .marks {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--accent);
+    font-size: 0.72rem;
+    padding: 1px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+    font-style: normal;
+    font-family: Georgia, serif;
+  }
+
+  /* hypothesis test box */
+  .hyp-box {
+    background: #f5f0fa;
+    border: 1px solid #cbbddf;
+    border-left: 4px solid #6a3a9a;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 0.87rem;
+    line-height: 1.7;
+    color: #2a1a3e;
+  }
+  .hyp-box strong { color: #6a3a9a; }
+
+  /* conclusion box */
+  .conclusion {
+    background: #eaf5ee;
+    border: 1px solid #7ec49a;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: #0f3a20;
+  }
+  .conclusion strong { color: var(--green); }
+
+  /* sub-parts indented */
+  .subpart {
+    margin: 10px 0 0 18px;
+    padding-top: 8px;
+    border-top: 1px dashed #e8d5a0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1>Nested Probability Distributions</h1>
+    <div class="subtitle">A-Level Statistics — Technique Summary &amp; Worked Examples</div>
+  </div>
+  <nav>
+    <div class="nav-inner">
+      <button class="active" onclick="showSection('home',this)">Overview</button>
+      <button onclick="showSection('n2b',this)">Normal → Binomial</button>
+      <button onclick="showSection('u2b',this)">Uniform → Binomial</button>
+      <button onclick="showSection('g2b',this)">Geometric → Binomial</button>
+      <button onclick="showSection('b2g',this)">Binomial → Geometric</button>
+      <button onclick="showSection('u2g',this)">Uniform → Geometric</button>
+      <button onclick="showSection('ext1',this)">Extended: Normal</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="home" class="section active">
+
+  <div class="home-intro">
+    <h2>What are Nested Probability Distributions?</h2>
+    <p>These questions involve <strong>two probability distributions working in sequence</strong>. You
+    first compute a probability from one distribution, then use that probability as the parameter
+    for a second distribution. Recognising the structure is the key skill.</p>
+
+    <div class="steps-box">
+      <h3>General 3-Step Method</h3>
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Identify both distributions</strong> — determine which distribution appears first
+        (inner) and which is applied to the results (outer).</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Find the linking probability P</strong> — use the inner distribution
+        to calculate the probability of a "success" event.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Apply the outer distribution</strong> — use <em>P</em> from Step 2
+        as the success probability in the outer distribution to answer the final question.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <h3 style="font-size:0.95rem;color:var(--navy);margin-bottom:4px;">All Five Combinations — click any card to explore</h3>
+    <p style="font-size:0.83rem;color:var(--muted);">Each combination has a reminder, a worked example, and a full solution.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="combo-card" onclick="showSection('n2b',document.querySelectorAll('nav button')[1])">
+      <div class="arrow">
+        <span class="dist-pill">Normal</span>
+        &#8594;
+        <span class="dist-pill">Binomial</span>
+      </div>
+      <p>Find a probability from a normal distribution, then count successes in repeated independent trials.</p>
+      <div class="tag">Rice packets · acceptable mass · shipment of 12</div>
+    </div>
+    <div class="combo-card" onclick="showSection('u2b',document.querySelectorAll('nav button')[2])">
+      <div class="arrow">
+        <span class="dist-pill">Uniform</span>
+        &#8594;
+        <span class="dist-pill">Binomial</span>
+      </div>
+      <p>Use the rectangle-area formula on a uniform distribution, then apply binomially over many trials.</p>
+      <div class="tag">Bus arrivals · short wait · 7 mornings</div>
+    </div>
+    <div class="combo-card" onclick="showSection('g2b',document.querySelectorAll('nav button')[3])">
+      <div class="arrow">
+        <span class="dist-pill">Geometric</span>
+        &#8594;
+        <span class="dist-pill">Binomial</span>
+      </div>
+      <p>Compute a tail probability from the geometric distribution, then count how many players satisfy it.</p>
+      <div class="tag">Quiz machine · 8 independent players</div>
+    </div>
+    <div class="combo-card" onclick="showSection('b2g',document.querySelectorAll('nav button')[4])">
+      <div class="arrow">
+        <span class="dist-pill">Binomial</span>
+        &#8594;
+        <span class="dist-pill">Geometric</span>
+      </div>
+      <p>Find a "box-level" probability using the binomial, then model how many boxes until the first success.</p>
+      <div class="tag">Defective chips · boxes inspected</div>
+    </div>
+    <div class="combo-card" onclick="showSection('u2g',document.querySelectorAll('nav button')[5])">
+      <div class="arrow">
+        <span class="dist-pill">Uniform</span>
+        &#8594;
+        <span class="dist-pill">Geometric</span>
+      </div>
+      <p>Compute a probability from a uniform distribution, then find how many trials until first success.</p>
+      <div class="tag">Electronic sensor lifetime · first long-lasting</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Quick Reference — Distribution Formulas</h3>
+    <table class="combo-table">
+      <tr>
+        <th>Distribution</th>
+        <th>Notation</th>
+        <th>Key Formula / Rule</th>
+      </tr>
+      <tr>
+        <td><strong>Normal</strong></td>
+        <td>\(X \sim N(\mu, \sigma^2)\)</td>
+        <td>Standardise: \(Z = \dfrac{X - \mu}{\sigma}\), use tables or calculator</td>
+      </tr>
+      <tr>
+        <td><strong>Uniform</strong></td>
+        <td>\(X \sim U(a, b)\)</td>
+        <td>\(P(c &lt; X &lt; d) = \dfrac{d - c}{b - a}\)</td>
+      </tr>
+      <tr>
+        <td><strong>Geometric</strong></td>
+        <td>\(X \sim \text{Geom}(p)\)</td>
+        <td>\(P(X = r) = (1-p)^{r-1}p\) &nbsp;·&nbsp; \(P(X > k) = (1-p)^k\)</td>
+      </tr>
+      <tr>
+        <td><strong>Binomial</strong></td>
+        <td>\(X \sim B(n, p)\)</td>
+        <td>\(P(X = k) = \dbinom{n}{k} p^k (1-p)^{n-k}\)</td>
+      </tr>
+    </table>
+  </div>
+
+</div><!-- end home -->
+
+
+<!-- ═══════════════ NORMAL → BINOMIAL ═══════════════ -->
+<div id="n2b" class="section">
+  <button class="back-btn" onclick="showSection('home',document.querySelectorAll('nav button')[0])">&#8592; Overview</button>
+  <div class="page-title">
+    <h2>Normal Distribution &rarr; Binomial Distribution</h2>
+    <div class="flow">Inner: Normal &nbsp;|&nbsp; Outer: Binomial &nbsp;|&nbsp; Link: P(value in range)</div>
+  </div>
+
+  <div class="card">
+    <h3>Technique</h3>
+    <div class="technique-steps">
+      <div class="t-step">
+        <div class="t-num">1</div>
+        <div class="t-text"><strong>Identify:</strong> A quantity is normally distributed. A number of independent items are then sampled, and you need to count how many satisfy some condition.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">2</div>
+        <div class="t-text"><strong>Find P:</strong> Use the Normal distribution to compute \(P = P(c &lt; X &lt; d)\) — the probability that a single item satisfies the condition. Standardise if needed: \(Z = \dfrac{X - \mu}{\sigma}\).</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">3</div>
+        <div class="t-text"><strong>Apply Binomial:</strong> Let \(Y \sim B(n, P)\) where \(n\) = number of items. Use the binomial formula to answer the count question.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reminder">
+    <h4>Normal Distribution Reminder</h4>
+    <p>For \(X \sim N(\mu, \sigma^2)\), standardise to \(Z \sim N(0,1)\):</p>
+    <div class="formula-line">\[ Z = \frac{X - \mu}{\sigma} \]</div>
+    <p>Read \(\Phi(z) = P(Z \leq z)\) from tables or compute directly on a calculator. Use symmetry: \(\Phi(-z) = 1 - \Phi(z)\).</p>
+  </div>
+
+  <div class="question-card">
+    <h4>Worked Example</h4>
+    <p>The masses of packets of rice produced by a factory are normally distributed with mean 500 g and standard deviation 8 g.</p>
+    <p style="margin-top:6px;">A packet is classified as <em>acceptable</em> if its mass is between 495 g and 510 g.</p>
+    <div class="part">
+      <div class="part-label">(a)</div>
+      <p>Find the probability that a randomly selected packet is acceptable.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (a)</h5>
+        <p>\(X \sim N(500,\, 8^2)\)</p>
+        <div class="formula-line">\[ P(495 < X < 510) \]</div>
+        <p>Standardise both bounds:</p>
+        <div class="formula-line">\[ z_1 = \frac{495 - 500}{8} = -0.625 \qquad z_2 = \frac{510 - 500}{8} = 1.25 \]</div>
+        <p>Using tables / calculator:</p>
+        <div class="formula-line">\[ \Phi(1.25) - \Phi(-0.625) = \Phi(1.25) - (1 - \Phi(0.625)) \]</div>
+        <div class="formula-line">\[ \approx 0.8944 - (1 - 0.7340) = 0.8944 - 0.2660 \]</div>
+        <div class="answer">\(P(\text{acceptable}) \approx 0.6284\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(b)</div>
+      <p>A supermarket receives a shipment of 12 packets. Find the probability that exactly 9 packets are acceptable.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (b)</h5>
+        <p>Let \(Y\) = number of acceptable packets in 12. Using \(P \approx 0.6284\) from (a):</p>
+        <div class="formula-line">\[ Y \sim B(12,\; 0.6284) \]</div>
+        <div class="formula-line">\[ P(Y = 9) = \binom{12}{9}(0.6284)^9(0.3716)^3 \]</div>
+        <div class="formula-line">\[ = 220 \times (0.6284)^9 \times (0.3716)^3 \]</div>
+        <div class="answer">\(P(Y = 9) \approx 0.189\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    <strong>Key insight:</strong> The probability \(P\) from the Normal calculation is carried forward <em>exactly</em> (or to at least 4 s.f.) into the Binomial. Rounding too early loses accuracy in the final answer.
+  </div>
+</div><!-- end n2b -->
+
+
+<!-- ═══════════════ UNIFORM → BINOMIAL ═══════════════ -->
+<div id="u2b" class="section">
+  <button class="back-btn" onclick="showSection('home',document.querySelectorAll('nav button')[0])">&#8592; Overview</button>
+  <div class="page-title">
+    <h2>Uniform Distribution &rarr; Binomial Distribution</h2>
+    <div class="flow">Inner: Uniform &nbsp;|&nbsp; Outer: Binomial &nbsp;|&nbsp; Link: P(value in sub-interval)</div>
+  </div>
+
+  <div class="reminder">
+    <h4>Uniform Distribution Reminder</h4>
+    <p>For \(X \sim U(a,b)\) the probability density is constant at \(\dfrac{1}{b-a}\) between \(a\) and \(b\):</p>
+    <div class="formula-line">\[ P(c < X < d) = \frac{d - c}{b - a} \qquad (a \leq c < d \leq b) \]</div>
+    <p style="margin-top:8px;">Equivalently: probability = (width of target interval) ÷ (total width). No standardising needed.</p>
+  </div>
+
+  <div class="card">
+    <h3>Technique</h3>
+    <div class="technique-steps">
+      <div class="t-step">
+        <div class="t-num">1</div>
+        <div class="t-text"><strong>Identify:</strong> A continuous variable is uniformly distributed over \([a, b]\). Repeated independent observations are made, and you count how many fall in a sub-interval.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">2</div>
+        <div class="t-text"><strong>Find P:</strong> Calculate \(P = \dfrac{d - c}{b - a}\) — the ratio of the target sub-interval length to the full interval length. This is the probability of "success" on one trial.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">3</div>
+        <div class="t-text"><strong>Apply Binomial:</strong> Let \(Y \sim B(n, P)\). Compute the required binomial probability.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <h4>Worked Example</h4>
+    <p>A bus arrives at a stop at a random time uniformly distributed between 0 and 20 minutes after 8:00 am. The waiting time is called <em>short</em> if the bus arrives within 6 minutes.</p>
+    <div class="part">
+      <div class="part-label">(a)</div>
+      <p>Find the probability that the waiting time is short.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (a)</h5>
+        <p>\(T \sim U(0, 20)\). A short wait means \(T &lt; 6\).</p>
+        <div class="formula-line">\[ P(T < 6) = \frac{6 - 0}{20 - 0} = \frac{6}{20} \]</div>
+        <div class="answer">\(P = 0.3\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(b)</div>
+      <p>The passenger travels on 7 different mornings. Find the probability that on <em>at least 5</em> mornings the waiting time is short.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (b)</h5>
+        <p>Let \(Y \sim B(7,\; 0.3)\). We need \(P(Y \geq 5) = P(Y=5) + P(Y=6) + P(Y=7)\).</p>
+        <div class="formula-line">\[ P(Y=5) = \binom{7}{5}(0.3)^5(0.7)^2 = 21 \times 0.00243 \times 0.49 \approx 0.02501 \]</div>
+        <div class="formula-line">\[ P(Y=6) = \binom{7}{6}(0.3)^6(0.7)^1 = 7 \times 0.000729 \times 0.7 \approx 0.003571 \]</div>
+        <div class="formula-line">\[ P(Y=7) = (0.3)^7 \approx 0.000219 \]</div>
+        <div class="formula-line">\[ P(Y \geq 5) \approx 0.02501 + 0.003571 + 0.000219 \]</div>
+        <div class="answer">\(P(Y \geq 5) \approx 0.0288\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    <strong>Key insight:</strong> The uniform distribution requires only a simple ratio — no tables or standardising. Sketch the rectangle to confirm which sub-interval you want.
+  </div>
+</div><!-- end u2b -->
+
+
+<!-- ═══════════════ GEOMETRIC → BINOMIAL ═══════════════ -->
+<div id="g2b" class="section">
+  <button class="back-btn" onclick="showSection('home',document.querySelectorAll('nav button')[0])">&#8592; Overview</button>
+  <div class="page-title">
+    <h2>Geometric Distribution &rarr; Binomial Distribution</h2>
+    <div class="flow">Inner: Geometric &nbsp;|&nbsp; Outer: Binomial &nbsp;|&nbsp; Link: P(X &gt; k) = tail probability</div>
+  </div>
+
+  <div class="reminder">
+    <h4>Geometric Distribution Reminder</h4>
+    <p>For \(X \sim \text{Geom}(p)\) (trials until first success, success probability \(p\)):</p>
+    <div class="formula-line">\[ P(X = r) = (1-p)^{r-1}p \qquad r = 1, 2, 3, \ldots \]</div>
+    <p style="margin-top:6px;"><strong>Tail probability</strong> (very useful in nested questions):</p>
+    <div class="formula-line">\[ P(X > k) = (1-p)^k \]</div>
+    <p style="margin-top:4px;font-size:0.83rem;color:var(--muted);">Reason: \(X > k\) means the first \(k\) trials are all failures, each with probability \((1-p)\).</p>
+  </div>
+
+  <div class="card">
+    <h3>Technique</h3>
+    <div class="technique-steps">
+      <div class="t-step">
+        <div class="t-num">1</div>
+        <div class="t-text"><strong>Identify:</strong> One player/process follows a geometric model. The question then asks about several independent players, so a binomial count is needed.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">2</div>
+        <div class="t-text"><strong>Find P:</strong> Compute the required geometric probability for <em>one</em> player — often a tail probability \(P(X > k) = (1-p)^k\). This becomes the success probability for the outer binomial.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">3</div>
+        <div class="t-text"><strong>Apply Binomial:</strong> Let \(Y \sim B(n, P)\). Calculate the required probability for the group of \(n\) players.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <h4>Worked Example</h4>
+    <p>A quiz machine gives a prize with probability 0.18 on each play. A player continues playing until winning their first prize. Let \(X\) = number of plays needed.</p>
+    <div class="part">
+      <div class="part-label">(a)</div>
+      <p>State the distribution of \(X\).</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (a)</h5>
+        <div class="answer">\(X \sim \text{Geom}(0.18)\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(b)</div>
+      <p>Find the probability that the player needs <strong>more than 4 plays</strong> to obtain the first prize.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (b)</h5>
+        <p>"More than 4 plays" means the first 4 plays are all failures.</p>
+        <div class="formula-line">\[ P(X > 4) = (1 - 0.18)^4 = (0.82)^4 \]</div>
+        <div class="answer">\(P(X > 4) \approx 0.4521\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(c)</div>
+      <p>Eight different players each play independently until winning their first prize. Find the probability that exactly 3 players need more than 4 plays.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (c)</h5>
+        <p>For each player, \(P(\text{needs} > 4 \text{ plays}) \approx 0.4521\) from (b). Let \(Y\) = number of such players:</p>
+        <div class="formula-line">\[ Y \sim B(8,\; 0.4521) \]</div>
+        <div class="formula-line">\[ P(Y = 3) = \binom{8}{3}(0.4521)^3(0.5479)^5 \]</div>
+        <div class="formula-line">\[ = 56 \times 0.09233 \times 0.05117 \approx 0.2646 \]</div>
+        <div class="answer">\(P(Y = 3) \approx 0.265\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    <strong>Key insight:</strong> The tail probability \(P(X > k) = (1-p)^k\) is the most common link between the geometric and binomial layers. Memorise this result — deriving it from scratch in an exam is slow.
+  </div>
+</div><!-- end g2b -->
+
+
+<!-- ═══════════════ BINOMIAL → GEOMETRIC ═══════════════ -->
+<div id="b2g" class="section">
+  <button class="back-btn" onclick="showSection('home',document.querySelectorAll('nav button')[0])">&#8592; Overview</button>
+  <div class="page-title">
+    <h2>Binomial Distribution &rarr; Geometric Distribution</h2>
+    <div class="flow">Inner: Binomial &nbsp;|&nbsp; Outer: Geometric &nbsp;|&nbsp; Link: P(batch satisfies condition)</div>
+  </div>
+
+  <div class="card">
+    <h3>Technique</h3>
+    <div class="technique-steps">
+      <div class="t-step">
+        <div class="t-num">1</div>
+        <div class="t-text"><strong>Identify:</strong> Items within a batch follow a Binomial model. Batches are then inspected one at a time until the first batch meeting some condition — this is the Geometric layer.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">2</div>
+        <div class="t-text"><strong>Find P:</strong> Use the Binomial distribution to compute \(P = P(X = k)\) or \(P(X \leq k)\) for a single batch — the probability of that batch being a "success".</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">3</div>
+        <div class="t-text"><strong>Apply Geometric:</strong> Let \(Y \sim \text{Geom}(P)\) where \(P\) is from Step 2. Compute geometric probabilities for the batch-inspection count.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <h4>Worked Example</h4>
+    <p>A production line manufactures electronic chips. Each chip is defective with probability 0.07 independently. A box contains 5 chips. Let \(X\) = number of defective chips in a box.</p>
+    <div class="part">
+      <div class="part-label">(a)</div>
+      <p>State the distribution of \(X\).</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (a)</h5>
+        <div class="answer">\(X \sim B(5,\; 0.07)\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(b)</div>
+      <p>Find the probability that a box contains no defective chips.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (b)</h5>
+        <div class="formula-line">\[ P(X = 0) = \binom{5}{0}(0.07)^0(0.93)^5 = (0.93)^5 \]</div>
+        <div class="answer">\(P(X = 0) \approx 0.6957\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(c)</div>
+      <p>Boxes are inspected one at a time until the first box containing no defective chips. Let \(Y\) = number of boxes inspected. State the distribution of \(Y\).</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (c)</h5>
+        <p>A "success" is a box with no defective chips; probability = 0.6957 from (b).</p>
+        <div class="answer">\(Y \sim \text{Geom}(0.6957)\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(d)</div>
+      <p>Find the probability that more than 3 boxes must be inspected.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (d)</h5>
+        <p>"More than 3 boxes" means the first 3 are all failures (boxes <em>with</em> defective chips).</p>
+        <p>Failure probability for one box: \(1 - 0.6957 = 0.3043\)</p>
+        <div class="formula-line">\[ P(Y > 3) = (0.3043)^3 \]</div>
+        <div class="answer">\(P(Y > 3) \approx 0.0282\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    <strong>Key insight:</strong> The Binomial operates at the <em>item level</em> within a batch; the Geometric operates at the <em>batch level</em>. Make sure you clearly identify what constitutes a "trial" and a "success" at each layer.
+  </div>
+</div><!-- end b2g -->
+
+
+<!-- ═══════════════ UNIFORM → GEOMETRIC ═══════════════ -->
+<div id="u2g" class="section">
+  <button class="back-btn" onclick="showSection('home',document.querySelectorAll('nav button')[0])">&#8592; Overview</button>
+  <div class="page-title">
+    <h2>Uniform Distribution &rarr; Geometric Distribution</h2>
+    <div class="flow">Inner: Uniform &nbsp;|&nbsp; Outer: Geometric &nbsp;|&nbsp; Link: P(value in sub-interval)</div>
+  </div>
+
+  <div class="card">
+    <h3>Technique</h3>
+    <div class="technique-steps">
+      <div class="t-step">
+        <div class="t-num">1</div>
+        <div class="t-text"><strong>Identify:</strong> A continuous quantity is uniformly distributed. Items are tested one at a time until the first item meeting a condition — this sequential stopping rule signals the Geometric distribution.</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">2</div>
+        <div class="t-text"><strong>Find P:</strong> Use \(P = \dfrac{d - c}{b - a}\) to find the probability a single item satisfies the condition (its uniform value falls in the target sub-interval).</div>
+      </div>
+      <div class="t-step">
+        <div class="t-num">3</div>
+        <div class="t-text"><strong>Apply Geometric:</strong> Let \(Y \sim \text{Geom}(P)\). Use \(P(Y = r) = (1-P)^{r-1}P\) or the tail formula \(P(Y > k) = (1-P)^k\).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <h4>Worked Example</h4>
+    <p>The lifetime, in hours, of a small electronic sensor is uniformly distributed between 40 and 100 hours. A sensor is called <em>long-lasting</em> if it survives more than 85 hours. Sensors are tested one at a time until the first long-lasting sensor is found.</p>
+    <div class="part">
+      <div class="part-label">(a)</div>
+      <p>Find the probability that a randomly selected sensor is long-lasting.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (a)</h5>
+        <p>\(L \sim U(40, 100)\). Long-lasting means \(L > 85\).</p>
+        <div class="formula-line">\[ P(L > 85) = \frac{100 - 85}{100 - 40} = \frac{15}{60} = \frac{1}{4} \]</div>
+        <div class="answer">\(p = 0.25\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(b)</div>
+      <p>State the distribution of the number of sensors tested.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (b)</h5>
+        <p>Let \(Y\) = number of sensors tested until the first long-lasting one:</p>
+        <div class="answer">\(Y \sim \text{Geom}(0.25)\)</div>
+      </div>
+    </div>
+    <div class="part">
+      <div class="part-label">(c)</div>
+      <p>Find the probability that the first long-lasting sensor is found on the <strong>6th test</strong>.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (c)</h5>
+        <p>First 5 tests fail, 6th succeeds. Failure probability per test = 0.75.</p>
+        <div class="formula-line">\[ P(Y = 6) = (0.75)^5 \times 0.25 \]</div>
+        <div class="formula-line">\[ = 0.2373 \times 0.25 \]</div>
+        <div class="answer">\(P(Y = 6) \approx 0.0593\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    <strong>Key insight:</strong> The phrase "tested/inspected/selected <em>one at a time until the first …</em>" is the tell-tale sign of a Geometric distribution in the outer layer. The inner distribution (here, Uniform) supplies the value of \(p\).
+  </div>
+</div><!-- end u2g -->
+
+<!-- ═══════════════ EXTENDED: NORMAL (Q5-STYLE) ═══════════════ -->
+<div id="ext1" class="section">
+  <button class="back-btn" onclick="showSection('home',document.querySelectorAll('nav button')[0])">&#8592; Overview</button>
+  <div class="page-title">
+    <h2>Extended Question — Normal Distribution (A-Level Style)</h2>
+    <div class="flow">Finding &sigma; from a percentile &nbsp;|&nbsp; Normal approx. to Binomial &nbsp;|&nbsp; Hypothesis test for mean</div>
+  </div>
+
+  <div class="reminder">
+    <h4>Skills Covered in This Question</h4>
+    <ul>
+      <li>Using a given percentile to find the standard deviation of a normal distribution</li>
+      <li>Finding an unknown upper bound \(k\) using inverse normal</li>
+      <li>Applying the <strong>normal approximation</strong> to a binomial (with continuity correction)</li>
+      <li>Conducting a <strong>one-tailed \(z\)-test</strong> for a population mean (known variance)</li>
+    </ul>
+  </div>
+
+  <div class="question-card">
+    <h4>Question &nbsp;<span style="font-weight:normal;font-style:italic;color:#8a6a10;">(Total: 13 marks)</span></h4>
+
+    <p>A machine fills bottles of shampoo. The amount of shampoo put into each bottle, \(S\) ml,
+    follows a normal distribution with mean <strong>200 ml</strong>.</p>
+    <p style="margin-top:6px;">It is known that <strong>20% of bottles contain less than 198.32 ml</strong>.</p>
+
+    <!-- Part (a) -->
+    <div class="part">
+      <div class="part-label">(a) &nbsp;<span class="marks">5 marks</span></div>
+      <p>Find, to 2 decimal places, the value of \(k\) such that
+      \(\,P(198.32 < S < k) = 0.35\).</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (a)</h5>
+
+        <p><strong>Step 1 — Find \(\sigma\).</strong></p>
+        <p>Given \(P(S < 198.32) = 0.20\), standardise:</p>
+        <div class="formula-line">\[ \frac{198.32 - 200}{\sigma} = \Phi^{-1}(0.20) = -0.8416 \]</div>
+        <div class="formula-line">\[ \sigma = \frac{-1.68}{-0.8416} = 1.9961\ldots \approx 2.0 \]</div>
+        <p>So \(S \sim N(200,\; 2^2)\).</p>
+
+        <p style="margin-top:10px;"><strong>Step 2 — Find \(k\).</strong></p>
+        <p>We need \(P(S < k)\):</p>
+        <div class="formula-line">\[ P(S < k) = P(S < 198.32) + 0.35 = 0.20 + 0.35 = 0.55 \]</div>
+        <p>Standardise and use inverse normal:</p>
+        <div class="formula-line">\[ \frac{k - 200}{2} = \Phi^{-1}(0.55) = 0.1257 \]</div>
+        <div class="formula-line">\[ k = 200 + 2 \times 0.1257 = 200.2514\ldots \]</div>
+        <div class="answer">\(k = 200.25 \text{ ml}\quad\text{(2 d.p.)}\)</div>
+      </div>
+    </div>
+
+    <!-- Part (b) -->
+    <div class="part">
+      <div class="part-label">(b) &nbsp;<span class="marks">3 marks</span></div>
+      <p>A random sample of <strong>100 bottles</strong> is taken.</p>
+      <p style="margin-top:5px;">Using a normal approximation, find the probability that <em>more than 40</em> of these
+      bottles contain between 198.32 ml and \(k\) ml.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (b)</h5>
+        <p>From part (a), \(P(198.32 < S < k) = 0.35\). Let \(Y\) = number of bottles in the range:</p>
+        <div class="formula-line">\[ Y \sim B(100,\; 0.35) \]</div>
+        <p>Normal approximation parameters:</p>
+        <div class="formula-line">\[ \mu = np = 35, \qquad \sigma^2 = np(1-p) = 100 \times 0.35 \times 0.65 = 22.75 \]</div>
+        <div class="formula-line">\[ Y \approx N(35,\; 22.75) \]</div>
+        <p>With continuity correction, \(P(Y > 40) = P(Y \geq 41) \approx P\!\left(Z > \dfrac{40.5 - 35}{\sqrt{22.75}}\right)\):</p>
+        <div class="formula-line">\[ z = \frac{40.5 - 35}{4.770} = \frac{5.5}{4.770} = 1.153 \]</div>
+        <div class="formula-line">\[ P(Z > 1.153) = 1 - \Phi(1.153) \approx 1 - 0.8756 \]</div>
+        <div class="answer">\(P(Y > 40) \approx 0.124\)</div>
+      </div>
+    </div>
+
+    <!-- Part (c) -->
+    <div class="part">
+      <div class="part-label">(c) &nbsp;<span class="marks">5 marks</span></div>
+      <p>The machine is adjusted so that the standard deviation of the shampoo volume is now
+      <strong>0.4 ml</strong>.</p>
+      <p style="margin-top:5px;">Following the adjustment, it is believed that the mean amount
+      of shampoo per bottle has <em>increased</em> from 200 ml.</p>
+      <p style="margin-top:5px;">A random sample of <strong>25 bottles</strong> is taken and
+      the sample mean is found to be <strong>200.18 ml</strong>.</p>
+      <p style="margin-top:5px;">Test this belief at the <strong>5% level of significance</strong>.
+      State your hypotheses clearly.</p>
+      <button class="sol-toggle" onclick="toggleSol(this)">Show Solution</button>
+      <div class="solution">
+        <h5>Solution (c)</h5>
+
+        <p><strong>Hypotheses:</strong></p>
+        <div class="hyp-box">
+          \(H_0: \mu = 200\) &nbsp;&nbsp; (the mean has not changed)<br>
+          \(H_1: \mu > 200\) &nbsp;&nbsp; (one-tailed; the mean has increased)
+        </div>
+
+        <p style="margin-top:8px;"><strong>Distribution of sample mean under \(H_0\):</strong></p>
+        <div class="formula-line">\[ \bar{S} \sim N\!\left(200,\; \frac{0.4^2}{25}\right) = N\!\left(200,\; \frac{0.16}{25}\right) = N(200,\; 0.0064) \]</div>
+
+        <p><strong>Test statistic:</strong></p>
+        <div class="formula-line">\[ z = \frac{\bar{s} - \mu_0}{\sigma/\sqrt{n}} = \frac{200.18 - 200}{0.4/\sqrt{25}} = \frac{0.18}{0.4/5} = \frac{0.18}{0.08} = 2.25 \]</div>
+
+        <p><strong>Critical value</strong> (one-tailed, 5%):</p>
+        <div class="formula-line">\[ z_{\text{crit}} = 1.6449 \]</div>
+
+        <p><strong>Comparison:</strong> \(z = 2.25 > 1.6449\)</p>
+        <div class="conclusion">
+          <strong>Conclusion:</strong> Since \(2.25 > 1.6449\), the test statistic lies in the
+          critical region. We <strong>reject \(H_0\)</strong>. There is sufficient evidence at
+          the 5% level to conclude that the mean amount of shampoo per bottle has increased
+          above 200 ml.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    <strong>Examiner tips:</strong> In part (a), always find \(\sigma\) first before attempting to
+    locate \(k\) — two separate inverse-normal lookups are needed and both contribute marks.
+    In part (b), state \(B(n,p)\) explicitly before switching to the normal approximation, and
+    always apply the continuity correction. In part (c), write the hypotheses in terms of \(\mu\)
+    (not \(\bar{x}\)), state the critical value, and write a conclusion in context.
+  </div>
+
+</div><!-- end ext1 -->
+
+</main>
+
+<script>
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleSol(btn) {
+  const sol = btn.nextElementSibling;
+  const open = sol.classList.toggle('open');
+  btn.textContent = open ? 'Hide Solution' : 'Show Solution';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: '\\[', right: '\\]', display: true },
+      { left: '\\(', right: '\\)', display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+</body>
+</html>
