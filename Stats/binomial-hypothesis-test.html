@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binomial Hypothesis Testing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[
+    {left:'\\[',right:'\\]',display:true},
+    {left:'\\(',right:'\\)',display:false}
+  ]});"></script>
+
+<style>
+  :root {
+    --navy: #1a2e4a;
+    --mid-blue: #2c5282;
+    --accent: #3b82c4;
+    --light-blue: #dbeafe;
+    --pale: #f0f6ff;
+    --gold: #c9a84c;
+    --text: #1e293b;
+    --muted: #64748b;
+    --red: #dc2626;
+    --green: #16a34a;
+    --orange: #d97706;
+    --border: #c3d5e8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f4f7fb;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 18px 30px;
+    border-bottom: 3px solid var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  header h1 {
+    font-size: 1.35rem;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+  }
+  header .subtitle {
+    font-size: 0.82rem;
+    color: #a8c4e0;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  nav {
+    background: var(--mid-blue);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 6px 10px;
+    border-bottom: 2px solid var(--navy);
+  }
+  nav button {
+    font-family: Georgia, serif;
+    font-size: 0.78rem;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: #cde0f5;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.15s, color 0.15s;
+  }
+  nav button:hover { background: rgba(255,255,255,0.12); color: white; }
+  nav button.active {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: bold;
+    border-color: var(--gold);
+  }
+
+  main { max-width: 870px; margin: 30px auto; padding: 0 20px 60px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  h2 {
+    font-size: 1.3rem;
+    color: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+  h3 {
+    font-size: 1.05rem;
+    color: var(--mid-blue);
+    margin: 22px 0 10px;
+  }
+  h4 {
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin: 16px 0 8px;
+  }
+
+  p { line-height: 1.75; margin-bottom: 12px; font-size: 0.95rem; }
+
+  .info-box {
+    background: var(--pale);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .info-box.gold {
+    background: #fefbf0;
+    border-left-color: var(--gold);
+  }
+  .info-box.green {
+    background: #f0fdf4;
+    border-left-color: var(--green);
+  }
+  .info-box.red {
+    background: #fef2f2;
+    border-left-color: var(--red);
+  }
+  .info-box.orange {
+    background: #fffbeb;
+    border-left-color: var(--orange);
+  }
+
+  .key-idea {
+    background: var(--navy);
+    color: white;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+  .key-idea strong { color: var(--gold); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    background: white;
+  }
+  .col-card.lower { border-top: 3px solid var(--red); }
+  .col-card.upper { border-top: 3px solid var(--green); }
+
+  .formula-block {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    text-align: center;
+    font-size: 1.0rem;
+    overflow-x: auto;
+  }
+
+  .step-list {
+    counter-reset: steps;
+    list-style: none;
+    margin: 10px 0 16px;
+  }
+  .step-list li {
+    counter-increment: steps;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .step-list li::before {
+    content: counter(steps);
+    background: var(--mid-blue);
+    color: white;
+    font-size: 0.78rem;
+    font-family: Georgia, serif;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* === SVG Distribution Charts === */
+  .chart-wrap { margin: 20px 0; }
+  .chart-wrap svg { display: block; margin: 0 auto; }
+
+  /* === Interactive Calculator === */
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  @media (max-width: 560px) { .calc-grid { grid-template-columns: 1fr; } }
+
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-style: italic;
+  }
+  .field input, .field select {
+    font-family: Georgia, serif;
+    font-size: 0.92rem;
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    color: var(--text);
+  }
+  .field input:focus, .field select:focus {
+    outline: 2px solid var(--accent);
+    border-color: var(--accent);
+  }
+
+  .calc-btn {
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    padding: 10px 28px;
+    background: var(--mid-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 6px;
+  }
+  .calc-btn:hover { background: var(--navy); }
+
+  #calc-result {
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: white;
+    display: none;
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+  #calc-result .verdict {
+    font-size: 1.0rem;
+    font-weight: bold;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-top: 12px;
+    text-align: center;
+  }
+  #calc-result .verdict.reject {
+    background: #fef2f2;
+    color: var(--red);
+    border: 1px solid #fca5a5;
+  }
+  #calc-result .verdict.accept {
+    background: #f0fdf4;
+    color: var(--green);
+    border: 1px solid #86efac;
+  }
+
+  #calc-dist-svg { margin-top: 16px; }
+
+  .note { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-top: 8px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.88rem;
+    margin: 14px 0;
+  }
+  th {
+    background: var(--navy);
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: normal;
+  }
+  td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--pale); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-style: normal;
+  }
+  .tag.lower { background: #fee2e2; color: var(--red); }
+  .tag.upper { background: #dcfce7; color: var(--green); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Binomial Hypothesis Testing</h1>
+    <div class="subtitle">One-tailed tests using the binomial distribution</div>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="show('intro',this)">1. Introduction</button>
+  <button onclick="show('logic',this)">2. The Core Logic</button>
+  <button onclick="show('lower',this)">3. Lower Tail Test</button>
+  <button onclick="show('upper',this)">4. Upper Tail Test</button>
+  <button onclick="show('why',this)">5. Why the Inequalities?</button>
+  <button onclick="show('calc',this)">6. Interactive Calculator</button>
+</nav>
+
+<main>
+
+<!-- ===== SECTION 1: INTRODUCTION ===== -->
+<div id="intro" class="section active">
+  <h2>1. Introduction: Setting Up the Test</h2>
+
+  <p>
+    A <strong>hypothesis test</strong> uses sample data to decide whether there is sufficient evidence
+    to reject a claim about a population parameter. When outcomes are binary — success or failure —
+    and trials are independent, the <strong>binomial distribution</strong> provides the probability model.
+  </p>
+
+  <h3>The Random Variable and Hypotheses</h3>
+  <p>
+    Let \(X\) be the number of successes in \(S\) independent trials,
+    where each trial has probability \(p\) of success.
+    Under certain conditions (discussed below), \(X\sim B(S,\,p)\).
+  </p>
+
+  <div class="formula-block">
+    \[X \sim B(S,\, p)\]
+  </div>
+
+  <p>The two competing hypotheses are:</p>
+
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Null Hypothesis \(H_0\)</h4>
+      <p>The default assumption — that the probability of success equals some specified value \(k\):</p>
+      <div class="formula-block">\[H_0 : p = k\]</div>
+      <p>We <em>assume</em> \(H_0\) is true when we perform calculations.</p>
+    </div>
+    <div class="col-card">
+      <h4>Alternative Hypothesis \(H_1\)</h4>
+      <p>The claim we are testing — that \(p\) differs from \(k\) in a particular direction:</p>
+      <div class="formula-block">\[H_1: p < k \quad\text{or}\quad H_1: p > k\]</div>
+      <p>These are <em>one-tailed</em> tests (lower or upper tail).</p>
+    </div>
+  </div>
+
+  <h3>The Significance Level \(\alpha\)</h3>
+  <p>
+    The <strong>significance level</strong> \(\alpha\) (commonly \(0.05\) or \(0.01\)) is the threshold probability
+    below which we consider our observed result too unlikely under \(H_0\). It controls the risk
+    of a <em>Type I error</em> — incorrectly rejecting a true null hypothesis.
+  </p>
+
+  <div class="info-box gold">
+    <strong>Key quantities:</strong><br>
+    \(k\) — the hypothesised probability of success under \(H_0\)<br>
+    \(S\) — the sample size (number of trials)<br>
+    \(C\) — the observed number of successes in the sample<br>
+    \(\alpha\) — the significance level
+  </div>
+
+  <h3>The Procedure in Brief</h3>
+  <ol class="step-list">
+    <li>State \(H_0: p = k\) and \(H_1\) (lower or upper tail).</li>
+    <li>Assume \(H_0\) is true, so \(X \sim B(S,\, k)\).</li>
+    <li>Observe \(C\) successes in the sample.</li>
+    <li>Calculate the probability of a result <em>at least as extreme</em> as \(C\), in the direction of \(H_1\).</li>
+    <li>If this probability \(\leq \alpha\), reject \(H_0\); otherwise, do not reject \(H_0\).</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Why "at least as extreme"?</strong> We don't just ask how likely exactly \(C\) successes are —
+    we ask how likely it is to see something <em>as surprising or more surprising</em> than what we observed.
+    This cumulative probability is compared to \(\alpha\).
+  </div>
+</div>
+
+<!-- ===== SECTION 2: CORE LOGIC ===== -->
+<div id="logic" class="section">
+  <h2>2. The Core Logic of the Test</h2>
+
+  <p>
+    The fundamental idea is a <strong>proof by contradiction</strong> applied to probability.
+    We temporarily assume \(H_0\) is true, then ask:
+    <em>"If \(H_0\) were true, how likely would it be to observe a result as extreme as — or more extreme than — what we actually saw?"</em>
+  </p>
+
+  <div class="key-idea">
+    <strong>The p-value principle:</strong> If the observed result would be very unlikely under \(H_0\),
+    then \(H_0\) is probably not true — and we reject it.
+    The threshold for "very unlikely" is the significance level \(\alpha\).
+  </div>
+
+  <h3>Tail Direction and Extremeness</h3>
+  <p>
+    The meaning of "extreme" depends on \(H_1\). The direction of \(H_1\) tells us
+    <em>which way</em> we expect the data to deviate from \(H_0\) if \(H_0\) is false.
+  </p>
+
+  <div class="two-col">
+    <div class="col-card lower">
+      <h4><span class="tag lower">Lower tail</span> &nbsp;\(H_1: p < k\)</h4>
+      <p>
+        We suspect \(p\) is <em>smaller</em> than \(k\).
+        A surprisingly <strong>small</strong> number of successes supports \(H_1\).
+        Extremeness means "unusually few successes".
+      </p>
+    </div>
+    <div class="col-card upper">
+      <h4><span class="tag upper">Upper tail</span> &nbsp;\(H_1: p > k\)</h4>
+      <p>
+        We suspect \(p\) is <em>larger</em> than \(k\).
+        A surprisingly <strong>large</strong> number of successes supports \(H_1\).
+        Extremeness means "unusually many successes".
+      </p>
+    </div>
+  </div>
+
+  <h3>Accumulating the Probability</h3>
+  <p>
+    Because we want the probability of a result "as extreme or more extreme", we must
+    <em>accumulate</em> probabilities across all values of \(X\) that are at least as extreme as \(C\).
+    This is why a <strong>cumulative probability</strong> — not just \(P(X=C)\) — is computed.
+  </p>
+
+  <div class="info-box orange">
+    <strong>Why not just use \(P(X = C)\)?</strong><br>
+    For a continuous distribution the probability of any single exact value is zero,
+    but even for discrete distributions, using only \(P(X=C)\) would under-count
+    the evidence against \(H_0\). We should count all outcomes <em>at least as contradictory</em>
+    to \(H_0\) as the one we observed.
+  </div>
+
+  <h3>The Decision Rule</h3>
+
+  <div class="two-col">
+    <div class="col-card lower">
+      <h4>If \(H_1: p < k\)</h4>
+      <div class="formula-block">\[P(X \leq C) \leq \alpha \Rightarrow \text{Reject } H_0\]</div>
+    </div>
+    <div class="col-card upper">
+      <h4>If \(H_1: p > k\)</h4>
+      <div class="formula-block">\[P(X \geq C) \leq \alpha \Rightarrow \text{Reject } H_0\]</div>
+    </div>
+  </div>
+
+  <p>
+    If the cumulative probability exceeds \(\alpha\), the result is not sufficiently unusual under \(H_0\),
+    so we <strong>do not reject \(H_0\)</strong>. (We never "accept \(H_0\)" — we simply lack evidence to reject it.)
+  </p>
+
+  <div class="info-box green">
+    <strong>Remember:</strong> all probability calculations are done assuming \(H_0\) is true,
+    i.e. using \(X \sim B(S, k)\). The observed value \(C\) is fixed; we calculate
+    how probable it and more extreme outcomes would be under that model.
+  </div>
+</div>
+
+<!-- ===== SECTION 3: LOWER TAIL ===== -->
+<div id="lower" class="section">
+  <h2>3. The Lower Tail Test &nbsp;<span class="tag lower">\(H_1: p < k\)</span></h2>
+
+  <h3>When is this test used?</h3>
+  <p>
+    Use a lower tail test when you have reason to believe the true probability of success
+    may be <em>less than</em> the claimed value \(k\). The observed number of successes \(C\)
+    provides the evidence.
+  </p>
+
+  <div class="info-box">
+    <strong>Example context:</strong> A manufacturer claims that \(20\%\) of items are defective
+    (\(p = 0.20\)). A quality inspector suspects the rate has <em>decreased</em> following
+    process improvements. Testing on a sample of \(S\) items with \(C\) defectives found,
+    the test is \(H_0: p = 0.20\), \(H_1: p < 0.20\).
+  </div>
+
+  <h3>The Probability to Calculate</h3>
+  <p>
+    Assuming \(H_0\) is true (\(X \sim B(S, k)\)), we compute:
+  </p>
+  <div class="formula-block">
+    \[P(X \leq C) = \sum_{r=0}^{C} \binom{S}{r} k^r (1-k)^{S-r}\]
+  </div>
+  <p>
+    This is the probability of observing \(C\) successes <strong>or fewer</strong> if \(H_0\) were true.
+  </p>
+
+  <h3>Visual Interpretation</h3>
+  <p>
+    The diagram below shows a binomial distribution. The shaded bars represent \(P(X \leq C)\)
+    — the probability mass in the <strong>lower tail</strong>, accumulated from 0 up to \(C\).
+  </p>
+
+  <div class="chart-wrap">
+    <svg id="lower-chart" viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%;">
+    </svg>
+  </div>
+
+  <h3>The Decision</h3>
+  <div class="two-col">
+    <div class="col-card lower">
+      <h4>Reject \(H_0\) if:</h4>
+      <div class="formula-block">\[P(X \leq C) \leq \alpha\]</div>
+      <p>The observed result falls in the <strong>critical region</strong>.</p>
+      <p>There is sufficient evidence at the \(\alpha\) significance level to conclude \(p < k\).</p>
+    </div>
+    <div class="col-card">
+      <h4>Do not reject \(H_0\) if:</h4>
+      <div class="formula-block">\[P(X \leq C) > \alpha\]</div>
+      <p>The result is not sufficiently unusual under \(H_0\).</p>
+      <p>There is insufficient evidence to conclude \(p < k\).</p>
+    </div>
+  </div>
+
+  <h3>Worked Example</h3>
+  <div class="info-box gold">
+    <p>
+      A die is rolled \(S = 20\) times. Under \(H_0\), each roll has \(p = \tfrac{1}{6} \approx 0.167\)
+      chance of showing a six. A player suspects the die gives <em>fewer</em> sixes than expected.
+      In the experiment, \(C = 1\) six is observed. Test at \(\alpha = 0.05\).
+    </p>
+    <p>
+      \(H_0: p = \tfrac{1}{6}\), &nbsp; \(H_1: p < \tfrac{1}{6}\), &nbsp; \(X \sim B(20, \tfrac{1}{6})\)
+    </p>
+    <p>
+      \(P(X \leq 1) = P(X=0) + P(X=1)\)
+    </p>
+    <p>
+      \(= \left(\tfrac{5}{6}\right)^{20} + \binom{20}{1}\left(\tfrac{1}{6}\right)\left(\tfrac{5}{6}\right)^{19}\)
+    </p>
+    <p>
+      \(\approx 0.0261 + 0.1043 = 0.1304\)
+    </p>
+    <p>
+      Since \(0.1304 > 0.05\), we <strong>do not reject \(H_0\)</strong>. There is insufficient evidence
+      at the 5% level that the die produces fewer sixes than expected.
+    </p>
+  </div>
+</div>
+
+<!-- ===== SECTION 4: UPPER TAIL ===== -->
+<div id="upper" class="section">
+  <h2>4. The Upper Tail Test &nbsp;<span class="tag upper">\(H_1: p > k\)</span></h2>
+
+  <h3>When is this test used?</h3>
+  <p>
+    Use an upper tail test when you have reason to believe the true probability of success
+    may be <em>greater than</em> the claimed value \(k\). The observed number of successes \(C\)
+    provides the evidence.
+  </p>
+
+  <div class="info-box">
+    <strong>Example context:</strong> A new teaching method is claimed to produce a pass rate
+    of \(p = 0.70\). A researcher suspects the method is <em>better</em> than claimed.
+    After applying it to \(S\) students, \(C\) pass. The test is \(H_0: p = 0.70\), \(H_1: p > 0.70\).
+  </div>
+
+  <h3>The Probability to Calculate</h3>
+  <p>
+    Assuming \(H_0\) is true (\(X \sim B(S, k)\)), we compute:
+  </p>
+  <div class="formula-block">
+    \[P(X \geq C) = \sum_{r=C}^{S} \binom{S}{r} k^r (1-k)^{S-r}\]
+  </div>
+  <p>
+    This is the probability of observing \(C\) successes <strong>or more</strong> if \(H_0\) were true.
+  </p>
+
+  <p>
+    In practice, it is often easier to compute the complement:
+  </p>
+  <div class="formula-block">
+    \[P(X \geq C) = 1 - P(X \leq C - 1)\]
+  </div>
+
+  <h3>Visual Interpretation</h3>
+  <p>
+    The diagram below shows a binomial distribution. The shaded bars represent \(P(X \geq C)\)
+    — the probability mass in the <strong>upper tail</strong>, accumulated from \(C\) upwards.
+  </p>
+
+  <div class="chart-wrap">
+    <svg id="upper-chart" viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%;">
+    </svg>
+  </div>
+
+  <h3>The Decision</h3>
+  <div class="two-col">
+    <div class="col-card upper">
+      <h4>Reject \(H_0\) if:</h4>
+      <div class="formula-block">\[P(X \geq C) \leq \alpha\]</div>
+      <p>The observed result falls in the <strong>critical region</strong>.</p>
+      <p>There is sufficient evidence at the \(\alpha\) significance level to conclude \(p > k\).</p>
+    </div>
+    <div class="col-card">
+      <h4>Do not reject \(H_0\) if:</h4>
+      <div class="formula-block">\[P(X \geq C) > \alpha\]</div>
+      <p>The result is not sufficiently unusual under \(H_0\).</p>
+      <p>There is insufficient evidence to conclude \(p > k\).</p>
+    </div>
+  </div>
+
+  <h3>Worked Example</h3>
+  <div class="info-box gold">
+    <p>
+      A coin is tossed \(S = 15\) times. Under \(H_0\), the probability of heads is \(p = 0.5\).
+      A gambler suspects the coin is biased towards heads. They observe \(C = 11\) heads.
+      Test at \(\alpha = 0.05\).
+    </p>
+    <p>
+      \(H_0: p = 0.5\), &nbsp; \(H_1: p > 0.5\), &nbsp; \(X \sim B(15, 0.5)\)
+    </p>
+    <p>
+      \(P(X \geq 11) = 1 - P(X \leq 10) \approx 1 - 0.9408 = 0.0592\)
+    </p>
+    <p>
+      Since \(0.0592 > 0.05\), we <strong>do not reject \(H_0\)</strong>. There is insufficient
+      evidence at the 5% level that the coin is biased towards heads. (Note: this would be
+      rejected at the 10% level.)
+    </p>
+  </div>
+</div>
+
+<!-- ===== SECTION 5: WHY THE INEQUALITIES ===== -->
+<div id="why" class="section">
+  <h2>5. Why the Inequalities Work That Way</h2>
+
+  <p>
+    This is perhaps the most conceptually important question in the test: why does
+    \(H_1: p < k\) lead us to compute \(P(X \leq C)\), and \(H_1: p > k\) lead to
+    \(P(X \geq C)\)? The answer comes from thinking carefully about what "extreme" means
+    in each case.
+  </p>
+
+  <h3>The Guiding Principle</h3>
+
+  <div class="key-idea">
+    <strong>Rule:</strong> We always compute the probability of outcomes that are
+    <em>at least as supportive of \(H_1\)</em> — and therefore at least as damaging to \(H_0\) —
+    as the observed result \(C\).
+    The inequality direction in the cumulative probability matches the inequality in \(H_1\).
+  </div>
+
+  <hr class="divider">
+
+  <h3>Case 1: \(H_1: p < k\) &nbsp;→&nbsp; Compute \(P(X \leq C)\)</h3>
+
+  <p>
+    If \(p\) is truly less than \(k\), we expect the number of successes to be
+    <strong>smaller</strong> than the mean \(Sk\) under \(H_0\).
+    So the evidence <em>against</em> \(H_0\) and <em>for</em> \(H_1\) comes in the form of
+    <strong>a small value of \(X\)</strong>.
+  </p>
+
+  <div class="info-box">
+    Think of it this way: if the true \(p\) is small, successes are rare,
+    so the data should show <em>few</em> successes. Observing a small \(C\) is
+    therefore consistent with \(H_1: p < k\).
+  </div>
+
+  <p>
+    Now, if \(C\) successes is strong evidence against \(H_0\), then observing
+    <em>even fewer</em> successes — say \(C-1, C-2, \ldots, 0\) — would be
+    <strong>even stronger</strong> evidence against \(H_0\).
+    All values from \(0\) to \(C\) are "at least as extreme" as \(C\) in the lower direction.
+  </p>
+
+  <p>
+    Therefore, we accumulate probability from \(0\) up to and including \(C\):
+  </p>
+
+  <div class="formula-block">
+    \[P(X \leq C) = P(X=0) + P(X=1) + \cdots + P(X=C)\]
+  </div>
+
+  <div class="info-box green">
+    <strong>Why include outcomes smaller than \(C\)?</strong><br>
+    If observing \(C\) successes gives evidence against \(H_0\), observing \(C-1\) or fewer
+    would give <em>even more</em> evidence. We must count all such outcomes in our probability
+    — otherwise we would underestimate how unlikely the tail is.
+  </div>
+
+  <hr class="divider">
+
+  <h3>Case 2: \(H_1: p > k\) &nbsp;→&nbsp; Compute \(P(X \geq C)\)</h3>
+
+  <p>
+    If \(p\) is truly greater than \(k\), we expect the number of successes to be
+    <strong>larger</strong> than the mean \(Sk\) under \(H_0\).
+    So the evidence <em>against</em> \(H_0\) and <em>for</em> \(H_1\) comes in the form of
+    <strong>a large value of \(X\)</strong>.
+  </p>
+
+  <div class="info-box">
+    Think of it this way: if the true \(p\) is large, successes are frequent,
+    so the data should show <em>many</em> successes. Observing a large \(C\) is
+    therefore consistent with \(H_1: p > k\).
+  </div>
+
+  <p>
+    If \(C\) successes is strong evidence against \(H_0\), then observing
+    <em>even more</em> successes — say \(C+1, C+2, \ldots, S\) — would be
+    <strong>even stronger</strong> evidence against \(H_0\).
+    All values from \(C\) to \(S\) are "at least as extreme" as \(C\) in the upper direction.
+  </p>
+
+  <p>
+    Therefore, we accumulate probability from \(C\) up to \(S\):
+  </p>
+
+  <div class="formula-block">
+    \[P(X \geq C) = P(X=C) + P(X=C+1) + \cdots + P(X=S)\]
+  </div>
+
+  <div class="info-box green">
+    <strong>Why include outcomes larger than \(C\)?</strong><br>
+    If observing \(C\) successes gives evidence against \(H_0\), observing \(C+1\) or more
+    would give <em>even more</em> evidence. We must count all such outcomes in our probability
+    — otherwise we would underestimate how unlikely the tail is.
+  </div>
+
+  <hr class="divider">
+
+  <h3>Summary: The Matching Rule</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Alternative \(H_1\)</th>
+        <th>Direction of evidence</th>
+        <th>"More extreme" means</th>
+        <th>Cumulative probability</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>\(H_1: p < k\)</td>
+        <td>Small \(X\) supports \(H_1\)</td>
+        <td>Even fewer successes: \(X < C\)</td>
+        <td>\(P(X \leq C)\) &nbsp;<span class="tag lower">lower tail</span></td>
+      </tr>
+      <tr>
+        <td>\(H_1: p > k\)</td>
+        <td>Large \(X\) supports \(H_1\)</td>
+        <td>Even more successes: \(X > C\)</td>
+        <td>\(P(X \geq C)\) &nbsp;<span class="tag upper">upper tail</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="key-idea">
+    <strong>The memory aid:</strong> The inequality in the cumulative probability
+    <strong>matches</strong> the inequality in \(H_1\).
+    <br><br>
+    \(H_1: p \mathbf{<} k \;\Rightarrow\; P(X \,\mathbf{\leq}\, C)\) &emsp;&emsp;
+    \(H_1: p \mathbf{>} k \;\Rightarrow\; P(X \,\mathbf{\geq}\, C)\)
+    <br><br>
+    This works because \(H_1\) tells you which direction is "extreme" — and you accumulate
+    probability in that same direction from \(C\) outward.
+  </div>
+
+  <hr class="divider">
+
+  <h3>A Useful Way to Think About It</h3>
+  <p>
+    Imagine you are a sceptic trying to challenge \(H_0\). You observe \(C\) successes.
+    You ask: <em>"What is the probability that a world where \(H_0\) is true would produce
+    a result this extreme, or more so, in the direction I'm investigating?"</em>
+  </p>
+  <p>
+    For \(H_1: p < k\), "more extreme in the direction I'm investigating" means
+    <em>fewer</em> successes, so you look left from \(C\) on the distribution.
+    For \(H_1: p > k\), it means <em>more</em> successes, so you look right.
+    In both cases you include \(C\) itself, because you want the probability of
+    \(C\) <em>or worse</em> (from \(H_0\)'s point of view).
+  </p>
+</div>
+
+<!-- ===== SECTION 6: CALCULATOR ===== -->
+<div id="calc" class="section">
+  <h2>6. Interactive Calculator</h2>
+  <p>Enter the parameters of your hypothesis test below. The calculator will compute the
+     relevant cumulative probability and give a decision.</p>
+
+  <div class="calc-grid">
+    <div class="field">
+      <label>Sample size \(S\) (number of trials)</label>
+      <input type="number" id="inp-S" value="20" min="1" max="200">
+    </div>
+    <div class="field">
+      <label>Hypothesised probability \(k\) (under \(H_0\))</label>
+      <input type="number" id="inp-k" value="0.3" min="0.001" max="0.999" step="0.001">
+    </div>
+    <div class="field">
+      <label>Observed successes \(C\)</label>
+      <input type="number" id="inp-C" value="3" min="0">
+    </div>
+    <div class="field">
+      <label>Significance level \(\alpha\)</label>
+      <input type="number" id="inp-alpha" value="0.05" min="0.001" max="0.5" step="0.001">
+    </div>
+    <div class="field">
+      <label>Alternative hypothesis \(H_1\)</label>
+      <select id="inp-tail">
+        <option value="lower">p &lt; k &nbsp;(lower tail)</option>
+        <option value="upper">p &gt; k &nbsp;(upper tail)</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="runCalc()">Run Hypothesis Test</button>
+
+  <div id="calc-result">
+    <div id="calc-text"></div>
+    <svg id="calc-dist-svg" viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg"
+         style="max-width:620px;width:100%;margin-top:16px;display:block;"></svg>
+    <div id="calc-verdict" class="verdict"></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ---- Navigation ----
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'lower') drawLowerChart();
+  if (id === 'upper') drawUpperChart();
+}
+
+// ---- Binomial helpers ----
+function logFactorial(n) {
+  let s = 0;
+  for (let i = 2; i <= n; i++) s += Math.log(i);
+  return s;
+}
+function logBinom(n, r) {
+  return logFactorial(n) - logFactorial(r) - logFactorial(n - r);
+}
+function binomPMF(n, k, r) {
+  if (r < 0 || r > n) return 0;
+  return Math.exp(logBinom(n, r) + r * Math.log(k) + (n - r) * Math.log(1 - k));
+}
+function binomCDF_le(n, k, c) {
+  let s = 0;
+  for (let r = 0; r <= c; r++) s += binomPMF(n, k, r);
+  return s;
+}
+function binomCDF_ge(n, k, c) {
+  let s = 0;
+  for (let r = c; r <= n; r++) s += binomPMF(n, k, r);
+  return s;
+}
+
+// ---- Generic chart drawing ----
+function drawBinomChart(svgId, S, k, C, tail, highlightColor, unshadeColor) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+  const W = 620, H = 260;
+  const padL = 38, padR = 20, padT = 25, padB = 45;
+  const cW = W - padL - padR;
+  const cH = H - padT - padB;
+
+  // Compute probs
+  const probs = [];
+  let maxP = 0;
+  for (let r = 0; r <= S; r++) {
+    const p = binomPMF(S, k, r);
+    probs.push(p);
+    if (p > maxP) maxP = p;
+  }
+  maxP *= 1.15;
+
+  const n = S + 1;
+  const bw = cW / n;
+  const barW = Math.max(2, bw * 0.72);
+
+  let html = `<rect width="${W}" height="${H}" fill="#f9fbfe" rx="4"/>`;
+
+  // Axes
+  html += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+cH}" stroke="#555" stroke-width="1.2"/>`;
+  html += `<line x1="${padL}" y1="${padT+cH}" x2="${padL+cW}" y2="${padT+cH}" stroke="#555" stroke-width="1.2"/>`;
+
+  // Y ticks
+  for (let t = 0; t <= 4; t++) {
+    const frac = t / 4;
+    const yy = padT + cH - frac * cH;
+    const val = (frac * maxP).toFixed(3);
+    html += `<line x1="${padL-4}" y1="${yy}" x2="${padL}" y2="${yy}" stroke="#555" stroke-width="1"/>`;
+    html += `<text x="${padL-7}" y="${yy+4}" text-anchor="end" font-size="10" fill="#555" font-family="Georgia">${val}</text>`;
+  }
+
+  // Bars
+  for (let r = 0; r <= S; r++) {
+    const bh = (probs[r] / maxP) * cH;
+    const bx = padL + r * bw + (bw - barW) / 2;
+    const by = padT + cH - bh;
+    let fill;
+    if (tail === 'lower') fill = r <= C ? highlightColor : unshadeColor;
+    else fill = r >= C ? highlightColor : unshadeColor;
+    html += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}"
+               fill="${fill}" stroke="white" stroke-width="0.5" rx="1"/>`;
+  }
+
+  // X labels — only if not too many bars
+  const step = S <= 20 ? 1 : S <= 40 ? 2 : S <= 80 ? 5 : 10;
+  for (let r = 0; r <= S; r += step) {
+    const cx = padL + r * bw + bw / 2;
+    html += `<text x="${cx.toFixed(1)}" y="${padT+cH+14}" text-anchor="middle" font-size="10"
+               fill="#444" font-family="Georgia">${r}</text>`;
+  }
+
+  // Axis labels
+  html += `<text x="${padL + cW/2}" y="${H-4}" text-anchor="middle" font-size="11"
+             fill="#334" font-family="Georgia,serif" font-style="italic">Number of successes x</text>`;
+  html += `<text x="12" y="${padT + cH/2}" text-anchor="middle" font-size="11"
+             fill="#334" font-family="Georgia,serif" font-style="italic"
+             transform="rotate(-90, 12, ${padT + cH/2})">P(X = x)</text>`;
+
+  // C marker line
+  const cx0 = padL + C * bw + bw / 2;
+  html += `<line x1="${cx0.toFixed(1)}" y1="${padT}" x2="${cx0.toFixed(1)}" y2="${padT+cH}"
+             stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  html += `<text x="${(cx0+4).toFixed(1)}" y="${padT+13}" font-size="10" fill="#8b6914" font-family="Georgia">C=${C}</text>`;
+
+  // Legend
+  const lx = padL + cW - 180;
+  html += `<rect x="${lx}" y="${padT+2}" width="12" height="12" fill="${highlightColor}" rx="2"/>`;
+  const tailLabel = tail === 'lower' ? 'P(X ≤ C) — shaded' : 'P(X ≥ C) — shaded';
+  html += `<text x="${lx+16}" y="${padT+12}" font-size="10" fill="#334" font-family="Georgia">${tailLabel}</text>`;
+  html += `<rect x="${lx}" y="${padT+18}" width="12" height="12" fill="${unshadeColor}" rx="2"/>`;
+  html += `<text x="${lx+16}" y="${padT+28}" font-size="10" fill="#334" font-family="Georgia">Unshaded region</text>`;
+
+  svg.innerHTML = html;
+}
+
+function drawLowerChart() {
+  drawBinomChart('lower-chart', 18, 0.4, 5, 'lower', '#ef4444cc', '#93c5fdcc');
+}
+function drawUpperChart() {
+  drawBinomChart('upper-chart', 18, 0.4, 12, 'upper', '#16a34acc', '#93c5fdcc');
+}
+
+// ---- Calculator ----
+function runCalc() {
+  const S = parseInt(document.getElementById('inp-S').value);
+  const k = parseFloat(document.getElementById('inp-k').value);
+  const C = parseInt(document.getElementById('inp-C').value);
+  const alpha = parseFloat(document.getElementById('inp-alpha').value);
+  const tail = document.getElementById('inp-tail').value;
+
+  if (isNaN(S)||isNaN(k)||isNaN(C)||isNaN(alpha)||S<1||k<=0||k>=1||C<0||C>S||alpha<=0||alpha>=1) {
+    alert('Please check your inputs. Ensure 0 < k < 1, 0 ≤ C ≤ S, 0 < α < 1.');
+    return;
+  }
+
+  const prob = tail === 'lower' ? binomCDF_le(S, k, C) : binomCDF_ge(S, k, C);
+  const reject = prob <= alpha;
+  const probStr = prob.toFixed(5);
+  const alphaStr = alpha.toFixed(4);
+  const h1Str = tail === 'lower' ? 'p &lt; ' + k : 'p &gt; ' + k;
+  const cumStr = tail === 'lower' ? `P(X &le; ${C})` : `P(X &ge; ${C})`;
+  const compareStr = tail === 'lower' ? `P(X &le; ${C}) = ${probStr}` : `P(X &ge; ${C}) = ${probStr}`;
+
+  const resultDiv = document.getElementById('calc-result');
+  const textDiv = document.getElementById('calc-text');
+  const verdictDiv = document.getElementById('calc-verdict');
+  resultDiv.style.display = 'block';
+
+  textDiv.innerHTML = `
+    <p><strong>Setup:</strong></p>
+    <p style="padding-left:14px">
+      \(H_0: p = ${k}\) &emsp; \(H_1: ${h1Str}\) &emsp; \(X \\sim B(${S},\\, ${k})\)<br>
+      Sample size \(S = ${S}\), &nbsp; Observed successes \(C = ${C}\), &nbsp; \(\\alpha = ${alpha}\)
+    </p>
+    <p style="margin-top:10px"><strong>Calculation:</strong></p>
+    <p style="padding-left:14px">
+      Assuming \(H_0\) is true, compute ${cumStr} under \(X \\sim B(${S},\\, ${k})\):<br>
+      <span style="font-size:1.05em">${compareStr}</span>
+    </p>
+    <p style="margin-top:10px"><strong>Comparison:</strong></p>
+    <p style="padding-left:14px">
+      ${compareStr} &ensp; ${reject ? '&le;' : '&gt;'} &ensp; \(\\alpha = ${alphaStr}\)
+    </p>
+  `;
+
+  verdictDiv.className = 'verdict ' + (reject ? 'reject' : 'accept');
+  if (reject) {
+    verdictDiv.innerHTML = `✗ Reject H₀ — there is sufficient evidence at the ${(alpha*100).toFixed(1)}% significance level that ${h1Str}`;
+  } else {
+    verdictDiv.innerHTML = `✓ Do not reject H₀ — there is insufficient evidence at the ${(alpha*100).toFixed(1)}% significance level to conclude ${h1Str}`;
+  }
+
+  // Re-render KaTeX in result
+  if (window.renderMathInElement) {
+    renderMathInElement(resultDiv, {
+      delimiters:[
+        {left:'\\[',right:'\\]',display:true},
+        {left:'\\(',right:'\\)',display:false}
+      ]
+    });
+  }
+
+  // Draw distribution chart
+  drawBinomChart('calc-dist-svg', S, k, C, tail,
+    tail === 'lower' ? '#ef4444cc' : '#16a34acc', '#93c5fdcc');
+}
+</script>
+
+</body>
+</html>
