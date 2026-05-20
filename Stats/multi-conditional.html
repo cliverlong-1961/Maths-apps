@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Combining Conditional Probability Distributions</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;background:#f4f6fb;color:#1a2035;line-height:1.75}
+header{background:#1a3a5c;color:white;padding:1.8rem 2.5rem 1.4rem}
+header h1{font-size:1.6rem;font-weight:normal;letter-spacing:0.01em;margin-bottom:0.25rem}
+header p{font-size:0.95rem;opacity:0.7;font-style:italic}
+nav{background:#0f2540;display:flex;flex-wrap:wrap;border-bottom:3px solid #c9a227}
+nav button{background:none;border:none;color:#98bcd9;padding:0.6rem 1.2rem;font-family:Georgia,serif;font-size:0.87rem;cursor:pointer;transition:background 0.18s,color 0.18s;border-right:1px solid rgba(255,255,255,0.08)}
+nav button:hover{background:rgba(255,255,255,0.09);color:white}
+nav button.active{background:#c9a227;color:#0f2540;font-weight:bold}
+main{max-width:880px;margin:0 auto;padding:2rem 2rem 4rem}
+section{animation:fadeIn 0.28s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+h2{font-size:1.3rem;color:#1a3a5c;font-weight:normal;margin-bottom:1rem;padding-bottom:0.4rem;border-bottom:2px solid #c9a227}
+h3{font-size:1.05rem;color:#1a3a5c;margin:1.2rem 0 0.45rem}
+p{margin-bottom:0.85rem}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+.card{background:white;border-radius:8px;padding:1.2rem 1.5rem;border:1px solid #d5e2f0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.card.ma{border-left:4px solid #1a6eb5}
+.card.mb{border-left:4px solid #c9a227}
+.card h3{margin-top:0;font-size:1rem}
+.big{font-size:1.65rem;font-weight:bold;color:#1a3a5c;line-height:1.1}
+.sub{font-size:0.8rem;color:#888;margin-top:0.15rem}
+.qbox{background:#eef4fb;border-left:4px solid #1a6eb5;border-radius:6px;padding:1.2rem 1.5rem;margin:1.3rem 0}
+.qbox h3{margin-top:0;color:#1a6eb5;font-size:1rem}
+.fbox{background:white;border:1px solid #d5e2f0;border-radius:8px;padding:1rem 1.5rem;margin:1.1rem 0;text-align:center}
+.step{background:white;border:1px solid #d5e2f0;border-radius:8px;padding:1.3rem 1.5rem 1.1rem;margin:1.1rem 0;position:relative}
+.step-lbl{position:absolute;top:-0.75rem;left:1rem;font-size:0.72rem;padding:0.18rem 0.65rem;border-radius:12px;letter-spacing:0.06em;font-family:Arial,sans-serif;text-transform:uppercase;font-weight:bold}
+.step-lbl.blue{background:#1a3a5c;color:white}
+.step-lbl.gold{background:#c9a227;color:#1a2035}
+.step h3{margin-top:0.1rem}
+.ans{background:#1a3a5c;color:white;border-radius:8px;padding:1.3rem 1.5rem;margin:1.3rem 0;text-align:center}
+.ans .num{font-size:2rem;font-weight:bold;margin:0.3rem 0}
+.ans p{opacity:0.8;font-size:0.9rem;margin:0}
+.note{background:#fffdf0;border:1px solid #e8d48a;border-radius:6px;padding:0.8rem 1.1rem;font-size:0.9rem;color:#5a4800;margin:1rem 0}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+.cg{background:white;border-radius:8px;padding:1rem 1.2rem;border:1px solid #d5e2f0}
+.cg label{display:block;font-size:0.88rem;color:#1a3a5c;margin-bottom:0.35rem}
+.cg input[type=range]{width:100%;accent-color:#1a6eb5;margin-bottom:0.1rem}
+.val{font-weight:bold;color:#1a6eb5}
+.prow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.7rem;margin:0.9rem 0}
+.pc{background:white;border:1px solid #d5e2f0;border-radius:7px;padding:0.8rem;text-align:center}
+.pc .plbl{font-size:0.78rem;color:#888}
+.pc .pval{font-size:1.15rem;font-weight:bold;color:#1a3a5c;margin-top:0.15rem}
+.pc.hi{background:#1a3a5c;border-color:#1a3a5c}
+.pc.hi .plbl{color:#7fafd4}
+.pc.hi .pval{color:#c9a227}
+.fml{text-align:center;background:#eef4fb;border-radius:7px;padding:0.9rem 1rem;font-size:0.88rem;color:#1a3a5c;margin:0.8rem 0}
+table.dt{width:100%;border-collapse:collapse;font-size:0.88rem;margin:1rem 0}
+table.dt th{background:#1a3a5c;color:white;padding:0.5rem 0.8rem;text-align:center;font-weight:normal}
+table.dt td{padding:0.42rem 0.8rem;text-align:center;border-bottom:1px solid #e8ecf4}
+table.dt tr:nth-child(even) td{background:#f5f7fc}
+table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
+.legend{display:flex;gap:1.4rem;justify-content:center;margin-top:0.5rem;font-size:0.83rem;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px}
+.lsq{display:inline-block;width:13px;height:13px;border-radius:2px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Combining Conditional Probability Distributions</h1>
+  <p>Mixture of Binomial Distributions &mdash; AS Level Statistics</p>
+</header>
+
+<nav id="nav">
+  <button class="active" onclick="show(1)">1&ensp;The Problem</button>
+  <button onclick="show(2)">2&ensp;Key Concept</button>
+  <button onclick="show(3)">3&ensp;Full Solution</button>
+  <button onclick="show(4)">4&ensp;Distribution</button>
+  <button onclick="show(5)">5&ensp;Explore</button>
+</nav>
+
+<main>
+
+<!-- ═══════════════════ SECTION 1 ═══════════════════ -->
+<section id="s1">
+<h2>The Problem</h2>
+<p>A factory produces board pens using two machines. The machines differ in their defect rates, and each contributes a different proportion of the total output.</p>
+
+<div class="card-grid">
+  <div class="card ma">
+    <h3>Machine A</h3>
+    <div class="big">64%</div><div class="sub">of total production</div>
+    <div style="margin-top:0.9rem">
+      <div class="big" style="color:#c9a227">3%</div>
+      <div class="sub">probability of a defective pen</div>
+    </div>
+  </div>
+  <div class="card mb">
+    <h3>Machine B</h3>
+    <div class="big">36%</div><div class="sub">of total production</div>
+    <div style="margin-top:0.9rem">
+      <div class="big" style="color:#c9a227">6%</div>
+      <div class="sub">probability of a defective pen</div>
+    </div>
+  </div>
+</div>
+
+<div class="qbox">
+  <h3>Question</h3>
+  <p>A sample of <strong>10 pens</strong> is taken from the factory output. Let \(X\) be the number of defective pens in the sample.</p>
+  <p style="margin:0"><strong>Find</strong> \(\mathrm{P}(X = 2)\).</p>
+</div>
+
+<h3>Why not simply use a Binomial?</h3>
+<p>The overall probability of a defective pen is:</p>
+<div class="fbox">\[\mathrm{P(defective)} = 0.64\times 0.03 + 0.36\times 0.06 = 0.0192 + 0.0216 = 0.0408\]</div>
+<p>It might be tempting to write \(X\sim B(10,\,0.0408)\) — but this gives the <em>wrong answer</em>. The simple Binomial assumes each pen independently has probability 0.0408 of being defective, with that probability identical for all pens. The reality is different: the actual defect probability for each pen depends on which machine made it, and all ten pens in the sample face the <em>same machine</em>.</p>
+<div class="note">&#9888;&ensp;Using \(X\sim B(10,\,0.0408)\) gives \(\mathrm{P}(X=2)\approx 0.0537\). The correct mixture answer is \(\approx 0.0559\) — an underestimate of about 4%. We'll see exactly why in Section 2.</div>
+</section>
+
+<!-- ═══════════════════ SECTION 2 ═══════════════════ -->
+<section id="s2" style="display:none">
+<h2>Key Concept: Mixture Distributions</h2>
+
+<p>When a random variable is drawn from a population composed of sub-groups, each with its own distribution, we apply the <strong>Law of Total Probability</strong> at every value of \(X\):</p>
+
+<div class="fbox">
+\[\mathrm{P}(X = k) = \mathrm{P}(X = k \mid A)\,\mathrm{P}(A) + \mathrm{P}(X = k \mid B)\,\mathrm{P}(B)\]
+</div>
+
+<p>For our factory, conditioning on the machine that produced the sampled pens gives two conditional Binomial distributions:</p>
+
+<div class="fbox" style="text-align:left;padding-left:2.5rem">
+  \[X \mid A \;\sim\; B(10,\;0.03)\]
+  \[X \mid B \;\sim\; B(10,\;0.06)\]
+</div>
+
+<!-- Concept SVG diagram -->
+<svg viewBox="0 0 680 300" width="100%" style="margin:1.3rem 0;overflow:visible" role="img">
+  <title>Tree diagram showing mixture distribution structure</title>
+  <desc>Factory output splits into Machine A (weight 0.64) and Machine B (weight 0.36), each giving a Binomial conditional distribution, whose weighted sum forms the mixture.</desc>
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+  </defs>
+  <!-- Top box: factory -->
+  <rect x="240" y="18" width="200" height="50" rx="8" fill="#1a3a5c"/>
+  <text x="340" y="38" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="white">Factory output</text>
+  <text x="340" y="57" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#98bcd9">sample of 10 bulbs</text>
+  <!-- Branch lines -->
+  <line x1="290" y1="68" x2="155" y2="148" stroke="#1a6eb5" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="390" y1="68" x2="525" y2="148" stroke="#c9a227" stroke-width="2" marker-end="url(#a2)"/>
+  <!-- Branch probability labels -->
+  <text x="195" y="115" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#1a6eb5">P(A) = 0.64</text>
+  <text x="485" y="115" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#b07d00">P(B) = 0.36</text>
+  <!-- Machine A box -->
+  <rect x="60" y="148" width="190" height="54" rx="8" fill="white" stroke="#1a6eb5" stroke-width="1.5"/>
+  <text x="155" y="170" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#1a3a5c">Machine A</text>
+  <text x="155" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#555">X | A ~ B(10, 0.03)</text>
+  <!-- Machine B box -->
+  <rect x="430" y="148" width="190" height="54" rx="8" fill="white" stroke="#c9a227" stroke-width="1.5"/>
+  <text x="525" y="170" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#1a3a5c">Machine B</text>
+  <text x="525" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#555">X | B ~ B(10, 0.06)</text>
+  <!-- Down arrows -->
+  <line x1="155" y1="202" x2="155" y2="240" stroke="#999" stroke-width="1.5" marker-end="url(#a2)"/>
+  <line x1="525" y1="202" x2="525" y2="240" stroke="#999" stroke-width="1.5" marker-end="url(#a2)"/>
+  <!-- Contribution boxes -->
+  <rect x="60" y="240" width="190" height="40" rx="6" fill="#eef4fb" stroke="#1a6eb5" stroke-width="1"/>
+  <text x="155" y="256" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#444">Weighted contribution:</text>
+  <text x="155" y="273" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#1a6eb5">0.7 × P(X = k | A)</text>
+  <rect x="430" y="240" width="190" height="40" rx="6" fill="#fffdf0" stroke="#c9a227" stroke-width="1"/>
+  <text x="525" y="256" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#444">Weighted contribution:</text>
+  <text x="525" y="273" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#b07d00">0.3 × P(X = k | B)</text>
+  <!-- Plus -->
+  <text x="340" y="275" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#1a3a5c">+</text>
+</svg>
+
+<h3>The general mixture formula</h3>
+<p>For a sample of size \(n\) drawn from a two-machine mixture:</p>
+<div class="fbox">
+\[\mathrm{P}(X = k) = w_A\binom{n}{k}p_A^k(1-p_A)^{n-k} \;+\; w_B\binom{n}{k}p_B^k(1-p_B)^{n-k}\]
+</div>
+<p>where \(w_A + w_B = 1\) are the mixture weights (proportions of production), and \(p_A,\,p_B\) are the conditional defect probabilities.</p>
+
+<h3>Why is the simple Binomial wrong?</h3>
+<p>The simple \(B(10, 0.038)\) model assumes the ten bulbs independently have probability 0.038 each of being defective — it treats the process as homogeneous. The mixture model recognises that all ten sampled bulbs came from the <em>same</em> machine, which is unknown. This extra uncertainty increases the variance. Formally:</p>
+
+<div class="fbox" style="text-align:left;padding-left:2.5rem">
+\[\mathrm{E}[X] = n\bigl(w_A p_A + w_B p_B\bigr) = 10 \times 0.0408 = 0.408\quad\text{(same for both models)}\]
+\[\mathrm{Var}(X)_{\text{mixture}} \;>\; \mathrm{Var}(X)_{B(10,\,0.0408)}\quad\text{(mixture has extra variance)}\]
+</div>
+<p>The heavier tail of the mixture distribution means more probability weight on larger values of \(X\) — so \(\mathrm{P}(X=2)\) is higher than the simple Binomial predicts.</p>
+</section>
+
+<!-- ═══════════════════ SECTION 3 ═══════════════════ -->
+<section id="s3" style="display:none">
+<h2>Full Solution: P(X = 2)</h2>
+
+<div class="step">
+  <div class="step-lbl blue">Step 1</div>
+  <h3>State the conditional distributions</h3>
+  <p>Let \(X\) be the number of defective pens in a sample of 10. Conditioning on the machine:</p>
+  \[X \mid A \;\sim\; B(10,\;0.03), \qquad X \mid B \;\sim\; B(10,\;0.06)\]
+</div>
+
+<div class="step">
+  <div class="step-lbl blue">Step 2</div>
+  <h3>Apply the Law of Total Probability</h3>
+  \[\mathrm{P}(X = 2) = \mathrm{P}(X = 2 \mid A)\,\mathrm{P}(A) + \mathrm{P}(X = 2 \mid B)\,\mathrm{P}(B)\]
+  \[\mathrm{P}(X = 2) = 0.64 \times \mathrm{P}(X = 2 \mid A) \;+\; 0.36 \times \mathrm{P}(X = 2 \mid B)\]
+</div>
+
+<div class="step">
+  <div class="step-lbl blue">Step 3</div>
+  <h3>Calculate P(X = 2 | A) using X | A ~ B(10, 0.03)</h3>
+  \[\mathrm{P}(X = 2 \mid A) = \binom{10}{2}(0.03)^2(0.97)^8\]
+  \[= 45 \times 0.0009 \times 0.78374\]
+  \[= 0.03174\]
+</div>
+
+<div class="step">
+  <div class="step-lbl blue">Step 4</div>
+  <h3>Calculate P(X = 2 | B) using X | B ~ B(10, 0.06)</h3>
+  \[\mathrm{P}(X = 2 \mid B) = \binom{10}{2}(0.06)^2(0.94)^8\]
+  \[= 45 \times 0.0036 \times 0.60957\]
+  \[= 0.09875\]
+</div>
+
+<div class="step">
+  <div class="step-lbl gold">Final Step</div>
+  <h3>Combine the weighted contributions</h3>
+  \[\mathrm{P}(X = 2) = 0.64 \times 0.03174 + 0.36 \times 0.09875\]
+  \[= 0.02031 + 0.03555\]
+  \[= 0.05586\]
+</div>
+
+<div class="ans">
+  <p style="opacity:0.7;font-size:0.85rem;margin-bottom:0.2rem">Answer</p>
+  <div class="num">\(\mathrm{P}(X = 2) \approx 0.0559\)</div>
+  <p>Approximately a 5.6% chance of exactly 2 defective pens in the sample</p>
+</div>
+
+<div class="note">
+  <strong>Comparison:</strong>&ensp;The simple \(B(10,\,0.0408)\) model gives
+  \(\binom{10}{2}(0.0408)^2(0.9592)^8 \approx 0.0537\) — an underestimate of about 4%.
+  The discrepancy grows for larger values of \(k\), since the mixture distribution has a heavier tail.
+</div>
+</section>
+
+<!-- ═══════════════════ SECTION 4 ═══════════════════ -->
+<section id="s4" style="display:none">
+<h2>The Full Probability Distribution</h2>
+<p>The table and chart below show the complete distribution of \(X\) under the mixture model, compared to the simple \(B(10,\,0.038)\) approximation. The value \(k=2\) is highlighted.</p>
+
+<div style="background:white;border:1px solid #d5e2f0;border-radius:8px;padding:1rem 1rem 0.5rem;margin:1.2rem 0">
+  <svg id="d4svg" viewBox="0 0 640 250" width="100%"></svg>
+  <div class="legend">
+    <span><span class="lsq" style="background:#1a6eb5"></span>Mixture P(X = k)</span>
+    <span><span class="lsq" style="background:none;border:2px solid #c9a227"></span>Simple B(10, 0.0408)</span>
+    <span><span class="lsq" style="background:#1a3a5c"></span>k = 2 highlighted</span>
+  </div>
+</div>
+
+<table class="dt" id="d4tbl">
+  <thead><tr><th>k</th><th>Mixture P(X = k)</th><th>Simple B(10, 0.0408)</th><th>Difference</th></tr></thead>
+  <tbody id="d4body"></tbody>
+</table>
+</section>
+
+<!-- ═══════════════════ SECTION 5 ═══════════════════ -->
+<section id="s5" style="display:none">
+<h2>Interactive Explorer</h2>
+<p>Adjust the parameters to see how the mixture distribution responds. The stacked bars show the separate contributions from each machine.</p>
+
+<div class="controls">
+  <div class="cg" style="border-left:4px solid #1a6eb5">
+    <label>Machine A proportion &nbsp;<span class="val" id="vwA">0.70</span></label>
+    <input type="range" id="slwA" min="5" max="95" step="5" value="64" oninput="upd()">
+    <label style="margin-top:0.7rem">Machine A defect rate &nbsp;<span class="val" id="vpA">2%</span></label>
+    <input type="range" id="slpA" min="1" max="40" step="1" value="3" oninput="upd()">
+  </div>
+  <div class="cg" style="border-left:4px solid #c9a227">
+    <label>Machine B proportion &nbsp;<span class="val" id="vwB">0.30</span> <em style="font-size:0.78rem;color:#888">(= 1 − A)</em></label>
+    <div style="height:1.6rem"></div>
+    <label style="margin-top:0.7rem">Machine B defect rate &nbsp;<span class="val" id="vpB">8%</span></label>
+    <input type="range" id="slpB" min="1" max="60" step="1" value="6" oninput="upd()">
+  </div>
+  <div class="cg">
+    <label>Sample size &nbsp;<em>n</em> &nbsp;= &nbsp;<span class="val" id="vn">10</span></label>
+    <input type="range" id="sln" min="5" max="30" step="1" value="10" oninput="upd()">
+  </div>
+  <div class="cg">
+    <label>Find P(X = k) for &nbsp;<em>k</em> &nbsp;= &nbsp;<span class="val" id="vk">2</span></label>
+    <input type="range" id="slk" min="0" max="10" step="1" value="2" oninput="upd()">
+  </div>
+</div>
+
+<div class="prow">
+  <div class="pc"><div class="plbl">P(X = k &#124; A)</div><div class="pval" id="rA">—</div></div>
+  <div class="pc"><div class="plbl">P(X = k &#124; B)</div><div class="pval" id="rB">—</div></div>
+  <div class="pc hi"><div class="plbl">P(X = k) mixture</div><div class="pval" id="rM">—</div></div>
+</div>
+
+<div style="background:white;border:1px solid #d5e2f0;border-radius:8px;padding:1rem 1rem 0.5rem;margin:0.9rem 0">
+  <svg id="e5svg" viewBox="0 0 640 250" width="100%"></svg>
+  <div class="legend">
+    <span><span class="lsq" style="background:#1a6eb5"></span>Machine A contribution</span>
+    <span><span class="lsq" style="background:#c9a227"></span>Machine B contribution</span>
+    <span><span class="lsq" style="background:#1a3a5c"></span>Selected k</span>
+  </div>
+</div>
+
+<div class="fml" id="fml">—</div>
+</section>
+
+</main>
+
+<script>
+// ─── Navigation ───────────────────────────────────────────────
+function show(n){
+  for(let i=1;i<=5;i++) document.getElementById('s'+i).style.display = i===n?'':'none';
+  document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('active',i===n-1));
+  if(n===4) build4();
+  if(n===5) upd();
+}
+
+// ─── Maths helpers ────────────────────────────────────────────
+function C(n,k){
+  if(k<0||k>n) return 0; if(k===0||k===n) return 1;
+  let r=1; for(let i=0;i<Math.min(k,n-k);i++) r=r*(n-i)/(i+1); return r;
+}
+function bp(n,k,p){
+  if(p<=0) return k===0?1:0;
+  if(p>=1) return k===n?1:0;
+  return C(n,k)*Math.pow(p,k)*Math.pow(1-p,n-k);
+}
+function mix(n,k,wA,pA,pB){ return wA*bp(n,k,pA)+(1-wA)*bp(n,k,pB); }
+
+// ─── SVG chart builder ───────────────────────────────────────
+function drawChart(svgId,n,probs,hlk,stacks){
+  const sv=document.getElementById(svgId);
+  const W=640,H=250,pl=48,pr=14,pt=18,pb=38;
+  const maxP=Math.max(...probs.map(v=>v||0))*1.18||0.01;
+  const bw=(W-pl-pr)/(n+2);
+  const cx=j=>pl+(j+0.5)*bw;
+  const ys=p=>H-pb-(p/maxP)*(H-pt-pb);
+  let h='';
+  // gridlines
+  for(let t=0;t<=4;t++){
+    const p=(maxP/4)*t, y=ys(p);
+    h+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#e8ecf4" stroke-width="1"/>`;
+    h+=`<text x="${pl-5}" y="${y+4}" text-anchor="end" font-size="10" fill="#999" font-family="Arial,sans-serif">${(p*100).toFixed(1)}%</text>`;
+  }
+  h+=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="#ccc" stroke-width="1"/>`;
+  for(let j=0;j<=n;j++){
+    const x=cx(j),isHL=j===hlk,p=probs[j]||0;
+    const barH=H-pb-ys(p);
+    if(stacks&&barH>0){
+      const hA=(stacks.A[j]||0)/(p||1)*barH;
+      const hB=(stacks.B[j]||0)/(p||1)*barH;
+      if(hA>0) h+=`<rect x="${x-bw*0.4}" y="${H-pb-hA}" width="${bw*0.8}" height="${hA}" fill="${isHL?'#0c2540':'#1a6eb5'}" rx="2"/>`;
+      if(hB>0) h+=`<rect x="${x-bw*0.4}" y="${H-pb-hA-hB}" width="${bw*0.8}" height="${hB}" fill="${isHL?'#8a6000':'#c9a227'}" rx="2"/>`;
+    } else if(barH>0){
+      h+=`<rect x="${x-bw*0.35}" y="${ys(p)}" width="${bw*0.35}" height="${barH}" fill="${isHL?'#1a3a5c':'#1a6eb5'}" rx="2"/>`;
+    }
+    h+=`<text x="${x-(stacks?0:bw*0.175)}" y="${H-pb+13}" text-anchor="middle" font-size="10.5" fill="${isHL?'#1a3a5c':'#777'}" font-family="Arial,sans-serif" font-weight="${isHL?'bold':'normal'}">${j}</text>`;
+  }
+  sv.innerHTML=h;
+}
+
+// ─── Section 4 ────────────────────────────────────────────────
+function build4(){
+  const n=10,wA=0.64,pA=0.03,pB=0.06,ps=0.0408;
+  const mix4=[],sim4=[];
+  for(let k=0;k<=n;k++){ mix4.push(mix(n,k,wA,pA,pB)); sim4.push(bp(n,k,ps)); }
+  // chart — mixture bars then simple outline bars
+  const sv=document.getElementById('d4svg');
+  const W=640,H=250,pl=48,pr=14,pt=18,pb=38;
+  const maxP=Math.max(...mix4,...sim4)*1.18||0.01;
+  const bw=(W-pl-pr)/(n+2);
+  const cx=j=>pl+(j+0.5)*bw;
+  const ys=p=>H-pb-(p/maxP)*(H-pt-pb);
+  let h='';
+  for(let t=0;t<=4;t++){
+    const p=(maxP/4)*t,y=ys(p);
+    h+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#e8ecf4" stroke-width="1"/>`;
+    h+=`<text x="${pl-5}" y="${y+4}" text-anchor="end" font-size="10" fill="#999" font-family="Arial,sans-serif">${(p*100).toFixed(1)}%</text>`;
+  }
+  h+=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="#ccc" stroke-width="1"/>`;
+  for(let k=0;k<=n;k++){
+    const x=cx(k),isHL=k===2;
+    const mH=H-pb-ys(mix4[k]),sH=H-pb-ys(sim4[k]);
+    if(mH>0) h+=`<rect x="${x-bw*0.4}" y="${ys(mix4[k])}" width="${bw*0.4}" height="${mH}" fill="${isHL?'#1a3a5c':'#1a6eb5'}" rx="2"/>`;
+    if(sH>0) h+=`<rect x="${x}" y="${ys(sim4[k])}" width="${bw*0.35}" height="${sH}" fill="none" stroke="#c9a227" stroke-width="1.5" rx="2"/>`;
+    h+=`<text x="${x-bw*0.1}" y="${H-pb+13}" text-anchor="middle" font-size="10.5" fill="${isHL?'#1a3a5c':'#777'}" font-family="Arial,sans-serif" font-weight="${isHL?'bold':'normal'}">${k}</text>`;
+  }
+  sv.innerHTML=h;
+  // table
+  let rows='';
+  for(let k=0;k<=n;k++){
+    const diff=(mix4[k]-sim4[k]);
+    const diffStr=(diff>=0?'+':'')+diff.toFixed(5);
+    rows+=`<tr${k===2?' class="hl"':''}><td>${k}</td><td>${mix4[k].toFixed(5)}</td><td>${sim4[k].toFixed(5)}</td><td>${diffStr}</td></tr>`;
+  }
+  document.getElementById('d4body').innerHTML=rows;
+}
+
+// ─── Section 5 ────────────────────────────────────────────────
+function upd(){
+  const wA=parseInt(document.getElementById('slwA').value)/100;
+  const pA=parseInt(document.getElementById('slpA').value)/100;
+  const pB=parseInt(document.getElementById('slpB').value)/100;
+  const n=parseInt(document.getElementById('sln').value);
+  let k=parseInt(document.getElementById('slk').value);
+  if(k>n){k=n;document.getElementById('slk').value=n;}
+  document.getElementById('slk').max=n;
+
+  document.getElementById('vwA').textContent=wA.toFixed(2);
+  document.getElementById('vwB').textContent=(1-wA).toFixed(2);
+  document.getElementById('vpA').textContent=(pA*100).toFixed(0)+'%';
+  document.getElementById('vpB').textContent=(pB*100).toFixed(0)+'%';
+  document.getElementById('vn').textContent=n;
+  document.getElementById('vk').textContent=k;
+
+  const pAk=bp(n,k,pA), pBk=bp(n,k,pB);
+  const pmx=wA*pAk+(1-wA)*pBk;
+  document.getElementById('rA').textContent=pAk.toFixed(5);
+  document.getElementById('rB').textContent=pBk.toFixed(5);
+  document.getElementById('rM').textContent=pmx.toFixed(5);
+  document.getElementById('fml').innerHTML=
+    `P(X = ${k}) &nbsp;=&nbsp; ${wA.toFixed(2)} &times; ${pAk.toFixed(5)} &nbsp;+&nbsp; ${(1-wA).toFixed(2)} &times; ${pBk.toFixed(5)} &nbsp;=&nbsp; <strong>${pmx.toFixed(5)}</strong>`;
+
+  const probs=[],stA=[],stB=[];
+  for(let j=0;j<=n;j++){
+    const a=wA*bp(n,j,pA), b=(1-wA)*bp(n,j,pB);
+    probs.push(a+b); stA.push(a); stB.push(b);
+  }
+  drawChart('e5svg',n,probs,k,{A:stA,B:stB});
+}
+</script>
+</body>
+</html>
