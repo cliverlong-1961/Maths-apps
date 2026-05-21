@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nested Probability Distributions — A-Level Practice</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root {
+  --navy: #1a2744;
+  --navy2: #243260;
+  --gold: #c9a84c;
+  --gold2: #e6c76a;
+  --pale-gold: #fdf6e3;
+  --bg: #eef0f6;
+  --white: #ffffff;
+  --border: #d5d9ea;
+  --text: #1a2744;
+  --correct: #2e7d32;
+  --wrong: #b71c1c;
+  --correct-bg: #e8f5e9;
+  --wrong-bg: #ffebee;
+  --info-bg: #e8eaf6;
+  --mid: #8892b0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+header {
+  background: var(--navy);
+  border-bottom: 3px solid var(--gold);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hdr-left .eyebrow {
+  font-size: 0.7rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 3px;
+}
+.hdr-left h1 {
+  color: var(--white);
+  font-size: 1.2rem;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+.hdr-score {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid var(--gold);
+  color: var(--gold2);
+  font-size: 0.82rem;
+  padding: 5px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+/* ─── LAYOUT ─── */
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  font-family: Georgia, serif;
+  font-size: 0.85rem;
+  padding: 7px 18px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn-gold { background: var(--gold); color: var(--navy); font-weight: bold; }
+.btn-gold:not(:disabled):hover { background: #b89038; }
+.btn-navy { background: var(--navy); color: var(--white); }
+.btn-navy:not(:disabled):hover { background: var(--navy2); }
+.btn-ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--border); }
+.btn-ghost:not(:disabled):hover { background: var(--white); }
+
+/* ─── TOP BAR ─── */
+.topbar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.topbar-right { margin-left: auto; display: flex; gap: 8px; }
+
+/* ─── CARD ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(26,39,68,0.06);
+}
+.card-head {
+  background: var(--navy);
+  color: var(--white);
+  padding: 9px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-head h2 { font-size: 0.9rem; font-weight: normal; letter-spacing: 0.02em; }
+.badge {
+  background: var(--gold);
+  color: var(--navy);
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.card-body { padding: 16px; }
+
+/* ─── SCENARIO ─── */
+.ctx-text { line-height: 1.75; margin-bottom: 14px; font-size: 0.93rem; }
+.q-part {
+  padding: 10px 14px;
+  border-left: 4px solid var(--gold);
+  background: var(--pale-gold);
+  border-radius: 0 5px 5px 0;
+  line-height: 1.65;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.q-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 3px;
+  font-family: Georgia, serif;
+}
+
+/* ─── DISTRIBUTION INPUTS ─── */
+.dist-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.dist-row label { font-size: 0.875rem; color: var(--mid); }
+select {
+  font-family: Georgia, serif;
+  font-size: 0.875rem;
+  padding: 6px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: var(--white);
+  color: var(--text);
+  min-width: 168px;
+  cursor: pointer;
+}
+select:focus { border-color: var(--navy); outline: none; }
+input[type=number] {
+  font-family: Georgia, serif;
+  font-size: 0.875rem;
+  padding: 5px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: var(--white);
+  color: var(--text);
+  width: 76px;
+}
+input[type=number]:focus { border-color: var(--navy); outline: none; }
+
+.params-area {
+  display: none;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  background: var(--bg);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+}
+.param-item { display: flex; align-items: center; gap: 6px; }
+.param-item label { color: var(--text); font-size: 0.88rem; }
+
+.query-area {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  background: #e8eaf6;
+  padding: 8px 14px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+}
+.query-area span { color: var(--navy2); }
+
+.btn-row { display: flex; align-items: center; gap: 10px; }
+.tick { font-size: 1.1rem; }
+
+/* ─── INNER PROB REVEAL ─── */
+.prob-pill {
+  display: none;
+  margin-top: 12px;
+  padding: 9px 14px;
+  background: var(--navy);
+  color: var(--gold2);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.prob-pill strong { color: var(--white); font-size: 1rem; }
+
+/* ─── FEEDBACK ─── */
+.fb-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 3px 0; font-size: 0.87rem; line-height: 1.55;
+}
+.fb-row.ok { color: var(--correct); }
+.fb-row.err { color: var(--wrong); }
+.fb-box {
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  font-size: 0.88rem;
+}
+.fb-box.ok-box { background: var(--correct-bg); border-left: 4px solid var(--correct); }
+.fb-box.err-box { background: var(--wrong-bg); border-left: 4px solid var(--wrong); }
+.fb-box.info-box { background: var(--info-bg); border-left: 4px solid #5c6bc0; }
+
+.final-ans {
+  margin-top: 10px;
+  padding: 9px 14px;
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.final-ans .ans-val { color: var(--gold2); font-size: 1.05rem; font-weight: bold; }
+
+/* ─── SOLUTION CARD ─── */
+.sol-step { margin-bottom: 14px; }
+.sol-step h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.sol-line { font-size: 0.9rem; margin-bottom: 4px; }
+.sol-line strong { color: var(--navy); }
+.sol-val { color: var(--correct); font-weight: bold; font-size: 0.95rem; }
+hr.sol-div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+/* ─── PLACEHOLDER ─── */
+.placeholder {
+  text-align: center;
+  padding: 28px 20px;
+  color: var(--mid);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.placeholder .arrow { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+
+@media (max-width: 560px) {
+  .params-area, .query-area { flex-direction: column; align-items: flex-start; }
+  .topbar-right { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-left">
+    <div class="eyebrow">A-Level Applied Mathematics</div>
+    <h1>Nested Probability Distributions</h1>
+  </div>
+  <div class="hdr-score" id="scoreTag">Questions: 0 &nbsp;|&nbsp; Correct: 0</div>
+</header>
+
+<div class="wrap">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <button class="btn btn-gold" onclick="newQuestion()">🎲 New Question</button>
+    <button class="btn btn-navy" id="hintBtn" onclick="showHint()" disabled>💡 Hint</button>
+    <div class="topbar-right">
+      <button class="btn btn-ghost" id="solBtn" onclick="showSolution()" disabled>📋 Full Solution</button>
+    </div>
+  </div>
+
+  <!-- SCENARIO CARD -->
+  <div class="card">
+    <div class="card-head">
+      <div class="badge" style="background:transparent; border:1.5px solid var(--gold); color:var(--gold); font-size:1rem;">?</div>
+      <h2>Scenario</h2>
+    </div>
+    <div class="card-body" id="scenarioBody">
+      <div class="placeholder">
+        <span class="arrow">↑</span>
+        Press <strong>New Question</strong> to generate a nested probability problem.
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: INNER DISTRIBUTION -->
+  <div class="card">
+    <div class="card-head">
+      <div class="badge">1</div>
+      <h2>Step 1 — Identify and apply the inner distribution</h2>
+    </div>
+    <div class="card-body">
+      <div class="dist-row">
+        <label for="innerSel">Distribution:</label>
+        <select id="innerSel" onchange="buildFields('inner')">
+          <option value="">— select —</option>
+          <option value="binomial">Binomial</option>
+          <option value="geometric">Geometric</option>
+          <option value="poisson">Poisson</option>
+          <option value="normal">Normal</option>
+          <option value="uniform">Uniform</option>
+          <option value="exponential">Exponential</option>
+        </select>
+      </div>
+      <div id="innerPArea" class="params-area"></div>
+      <div id="innerQArea" class="query-area"></div>
+      <div class="btn-row">
+        <button class="btn btn-navy" onclick="checkInner()">Check Step 1</button>
+        <span class="tick" id="innerTick"></span>
+      </div>
+      <div id="innerPill" class="prob-pill"></div>
+      <div id="innerFB"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: OUTER DISTRIBUTION -->
+  <div class="card">
+    <div class="card-head">
+      <div class="badge">2</div>
+      <h2>Step 2 — Identify and apply the outer distribution</h2>
+    </div>
+    <div class="card-body">
+      <div class="dist-row">
+        <label for="outerSel">Distribution:</label>
+        <select id="outerSel" onchange="buildFields('outer')">
+          <option value="">— select —</option>
+          <option value="binomial">Binomial</option>
+          <option value="geometric">Geometric</option>
+          <option value="poisson">Poisson</option>
+          <option value="normal">Normal</option>
+          <option value="uniform">Uniform</option>
+          <option value="exponential">Exponential</option>
+        </select>
+      </div>
+      <div id="outerPArea" class="params-area"></div>
+      <div id="outerQArea" class="query-area"></div>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="checkAll()">✓ Check Both Steps</button>
+        <span class="tick" id="outerTick"></span>
+      </div>
+      <div id="outerFB"></div>
+    </div>
+  </div>
+
+  <!-- SOLUTION CARD (hidden until requested) -->
+  <div class="card" id="solCard" style="display:none;">
+    <div class="card-head" style="background:#2c3f6a;">
+      <div class="badge" style="background:var(--gold); color:var(--navy);">✔</div>
+      <h2>Full Solution</h2>
+    </div>
+    <div class="card-body" id="solBody"></div>
+  </div>
+
+</div><!-- /.wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   MATHS LIBRARY
+   ═══════════════════════════════════════════════════════════ */
+function fact(n){ if(n<=1) return 1; let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
+function C(n,k){
+  if(k<0||k>n) return 0; if(k===0||k===n) return 1;
+  k=Math.min(k,n-k); let r=1;
+  for(let i=0;i<k;i++) r=r*(n-i)/(i+1);
+  return Math.round(r);
+}
+// Binomial
+function bPMF(n,p,k){ return C(n,k)*Math.pow(p,k)*Math.pow(1-p,n-k); }
+function bCDF(n,p,k){ let s=0; for(let i=0;i<=Math.floor(k);i++) s+=bPMF(n,p,i); return s; }
+function bProb(n,p,op,k){
+  if(op==='=')  return bPMF(n,p,k);
+  if(op==='<=') return bCDF(n,p,k);
+  if(op==='>=') return 1-bCDF(n,p,k-1);
+  if(op==='<')  return bCDF(n,p,k-1);
+  if(op==='>')  return 1-bCDF(n,p,k);
+}
+// Geometric  P(X=k)=(1-p)^(k-1)*p
+function gPMF(p,k){ return Math.pow(1-p,k-1)*p; }
+function gCDF(p,k){ return 1-Math.pow(1-p,k); }
+function gProb(p,op,k){
+  if(op==='=')  return gPMF(p,k);
+  if(op==='<=') return gCDF(p,k);
+  if(op==='>=') return 1-gCDF(p,k-1);
+  if(op==='<')  return gCDF(p,k-1);
+  if(op==='>')  return 1-gCDF(p,k);
+}
+// Poisson
+function pPMF(lam,k){ return Math.exp(-lam)*Math.pow(lam,k)/fact(k); }
+function pCDF(lam,k){ let s=0; for(let i=0;i<=Math.floor(k);i++) s+=pPMF(lam,i); return s; }
+function pProb(lam,op,k){
+  if(op==='=')  return pPMF(lam,k);
+  if(op==='<=') return pCDF(lam,k);
+  if(op==='>=') return 1-pCDF(lam,k-1);
+  if(op==='<')  return pCDF(lam,k-1);
+  if(op==='>')  return 1-pCDF(lam,k);
+}
+// Normal
+function erf(x){
+  const t=1/(1+0.3275911*Math.abs(x));
+  const poly=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));
+  const r=1-poly*Math.exp(-x*x); return x>=0?r:-r;
+}
+function normCDF(x,mu,sig){ return 0.5*(1+erf((x-mu)/(sig*Math.SQRT2))); }
+function nProb(mu,sig,op,x,x2){
+  if(op==='<')       return normCDF(x,mu,sig);
+  if(op==='>')       return 1-normCDF(x,mu,sig);
+  if(op==='between') return normCDF(x2,mu,sig)-normCDF(x,mu,sig);
+}
+// Uniform
+function uProb(a,b,op,x,x2){
+  if(op==='<')       return Math.min(1,Math.max(0,(x-a)/(b-a)));
+  if(op==='>')       return Math.min(1,Math.max(0,(b-x)/(b-a)));
+  if(op==='between') return Math.min(1,Math.max(0,(x2-x)/(b-a)));
+}
+// Exponential
+function eProb(lam,op,x){
+  const cdf=1-Math.exp(-lam*x);
+  if(op==='<'||op==='<=') return cdf;
+  if(op==='>'||op==='>=') return 1-cdf;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIELD CONFIGS
+   ═══════════════════════════════════════════════════════════ */
+const FIELDS = {
+  binomial:    { params:[{id:'n',lbl:'n',step:1,min:1},{id:'p',lbl:'p',step:0.01,min:0,max:1}],
+                 ops:['=','≤','≥','<','>'], opVals:['=','<=','>=','<','>'], qLbl:'k', isInt:true },
+  geometric:   { params:[{id:'p',lbl:'p',step:0.01,min:0,max:1}],
+                 ops:['=','≤','≥','<','>'], opVals:['=','<=','>=','<','>'], qLbl:'k', isInt:true },
+  poisson:     { params:[{id:'lambda',lbl:'λ',step:0.1,min:0}],
+                 ops:['=','≤','≥','<','>'], opVals:['=','<=','>=','<','>'], qLbl:'k', isInt:true },
+  normal:      { params:[{id:'mu',lbl:'μ',step:1},{id:'sigma',lbl:'σ',step:0.5,min:0.01}],
+                 ops:['<','>','between'], opVals:['<','>','between'], qLbl:'x', isInt:false },
+  uniform:     { params:[{id:'a',lbl:'a',step:1},{id:'b',lbl:'b',step:1}],
+                 ops:['<','>','between'], opVals:['<','>','between'], qLbl:'x', isInt:false },
+  exponential: { params:[{id:'lambda',lbl:'λ',step:0.01,min:0.001}],
+                 ops:['<','>','≤','≥'], opVals:['<','>','<=','>='], qLbl:'t', isInt:false }
+};
+
+/* ═══════════════════════════════════════════════════════════
+   SCENARIOS  (10 questions, all 6 dist types as inner)
+   Each inner.params uses actual values; 'INNER' means = computed inner prob
+   ═══════════════════════════════════════════════════════════ */
+const SCENS = [
+  { id:1,
+    ctx: `A student takes a multiple-choice test with <strong>10 questions</strong>. Each question has exactly <strong>5 options</strong>, one of which is correct. The student guesses every answer randomly and independently.`,
+    iQ:  `Find the probability that the student answers <strong>exactly 4 questions correctly</strong>.`,
+    oQ:  `The probability above, \\(p\\), represents the chance that a student "does surprisingly well by guessing". In a class of <strong>15 students</strong>, all guessing randomly and independently, find the probability that <strong>at least 3</strong> students do surprisingly well.`,
+    inner:{ dist:'binomial', params:{n:10,p:0.2}, op:'=',  qv:4,   qv2:null, compute:()=>bPMF(10,0.2,4)    },
+    outer:{ dist:'binomial', params:{n:15,p:'INNER'}, op:'>=', qv:3,   qv2:null, compute:(p)=>1-bCDF(15,p,2)   }
+  },
+  { id:2,
+    ctx: `A telephone helpdesk receives calls at an average rate of <strong>3 per hour</strong>. Calls arrive randomly and independently throughout the day.`,
+    iQ:  `Find the probability that in any particular hour, the helpdesk receives <strong>exactly 2 calls</strong>.`,
+    oQ:  `The probability above, \\(p\\), is the chance of a "2-call hour". A manager examines <strong>8 consecutive one-hour periods</strong>. Find the probability that <strong>more than 3</strong> of these periods each contain exactly 2 calls.`,
+    inner:{ dist:'poisson',  params:{lambda:3},      op:'=',  qv:2,   qv2:null, compute:()=>pPMF(3,2)         },
+    outer:{ dist:'binomial', params:{n:8,p:'INNER'},  op:'>',  qv:3,   qv2:null, compute:(p)=>1-bCDF(8,p,3)    }
+  },
+  { id:3,
+    ctx: `Scores on a national assessment are symmetrically distributed with <strong>mean 65</strong> and <strong>standard deviation 12</strong>. A student scoring above 80 is awarded a distinction.`,
+    iQ:  `Find the probability that a randomly chosen student achieves a <strong>distinction</strong> (score greater than 80).`,
+    oQ:  `The probability above, \\(p\\), is the likelihood of a distinction. In a group of <strong>20 independent students</strong>, find the probability that <strong>at most 2</strong> achieve a distinction.`,
+    inner:{ dist:'normal',   params:{mu:65,sigma:12}, op:'>',  qv:80,  qv2:null, compute:()=>1-normCDF(80,65,12) },
+    outer:{ dist:'binomial', params:{n:20,p:'INNER'}, op:'<=', qv:2,   qv2:null, compute:(p)=>bCDF(20,p,2)      }
+  },
+  { id:4,
+    ctx: `A basketball player takes free throws independently. The probability of scoring on <strong>any single throw is 0.45</strong>.`,
+    iQ:  `Find the probability that the player's <strong>first successful throw occurs on the 3rd attempt</strong>.`,
+    oQ:  `The probability above, \\(p\\), describes a specific warm-up pattern. At a training camp, <strong>12 players</strong> each independently repeat this drill. Find the probability that <strong>exactly 2 players</strong> show this exact pattern.`,
+    inner:{ dist:'geometric',params:{p:0.45},         op:'=',  qv:3,   qv2:null, compute:()=>gPMF(0.45,3)      },
+    outer:{ dist:'binomial', params:{n:12,p:'INNER'}, op:'=',  qv:2,   qv2:null, compute:(p)=>bPMF(12,p,2)     }
+  },
+  { id:5,
+    ctx: `Customers arrive at a service desk. The time between successive arrivals (in minutes) follows a continuous distribution with a <strong>constant rate of 0.4 per minute</strong>.`,
+    iQ:  `Find the probability that the time between two successive customer arrivals <strong>exceeds 3 minutes</strong>.`,
+    oQ:  `The probability above, \\(p\\), represents the chance of a "long gap" between arrivals. A staff member records whether each inter-arrival time is long or short. Find the probability that the <strong>first long gap occurs on the 4th inter-arrival time recorded</strong>.`,
+    inner:{ dist:'exponential', params:{lambda:0.4},  op:'>',  qv:3,   qv2:null, compute:()=>eProb(0.4,'>',3)  },
+    outer:{ dist:'geometric',   params:{p:'INNER'},   op:'=',  qv:4,   qv2:null, compute:(p)=>gPMF(p,4)        }
+  },
+  { id:6,
+    ctx: `A game uses a pointer that stops at a random position on a scale from <strong>0 to 10</strong>. Every stopping position is equally likely. A player "scores" only if the pointer lands strictly between 3 and 7.`,
+    iQ:  `Find the probability that a player <strong>scores</strong> on a single spin.`,
+    oQ:  `The probability above, \\(p\\), is the chance of scoring on any spin. In a tournament with <strong>8 independent spins</strong>, find the probability that a player scores in <strong>more than 5 spins</strong>.`,
+    inner:{ dist:'uniform',  params:{a:0,b:10},       op:'between', qv:3, qv2:7, compute:()=>uProb(0,10,'between',3,7) },
+    outer:{ dist:'binomial', params:{n:8,p:'INNER'},  op:'>',  qv:5,   qv2:null, compute:(p)=>1-bCDF(8,p,5)    }
+  },
+  { id:7,
+    ctx: `A quality inspector examines items from a production line. Each item, independently, has a probability of <strong>0.1</strong> of being defective. Items are assessed in <strong>batches of 5</strong>. A batch is "rejected" if it contains <strong>at least 2 defective items</strong>.`,
+    iQ:  `Find the probability that a batch is <strong>rejected</strong>.`,
+    oQ:  `The probability above, \\(p\\), is the chance of a batch being rejected. Batches are inspected one at a time, independently. Find the probability that the <strong>first rejected batch is the 6th batch inspected</strong>.`,
+    inner:{ dist:'binomial',  params:{n:5,p:0.1},     op:'>=', qv:2,   qv2:null, compute:()=>1-bCDF(5,0.1,1)   },
+    outer:{ dist:'geometric', params:{p:'INNER'},      op:'=',  qv:6,   qv2:null, compute:(p)=>gPMF(p,6)        }
+  },
+  { id:8,
+    ctx: `A server logs software errors at an average rate of <strong>2 per session</strong>. Errors occur randomly and independently during each session.`,
+    iQ:  `Find the probability that a session is <strong>completely error-free</strong>.`,
+    oQ:  `The probability above, \\(p\\), is the chance of an error-free session. Sessions occur independently. Find the probability that the <strong>first error-free session is the 5th session</strong>.`,
+    inner:{ dist:'poisson',   params:{lambda:2},      op:'=',  qv:0,   qv2:null, compute:()=>pPMF(2,0)          },
+    outer:{ dist:'geometric', params:{p:'INNER'},      op:'=',  qv:5,   qv2:null, compute:(p)=>gPMF(p,5)        }
+  },
+  { id:9,
+    ctx: `The lifetime of a machine component is symmetrically distributed with <strong>mean 500 hours</strong> and <strong>standard deviation 30 hours</strong>. A component needs early replacement if it lasts fewer than <strong>460 hours</strong>.`,
+    iQ:  `Find the probability that a randomly chosen component <strong>requires early replacement</strong> (lifetime less than 460 hours).`,
+    oQ:  `The probability above, \\(p\\), is the chance of early replacement. Components are tested one at a time. Find the probability that the <strong>first component requiring early replacement is the 3rd one tested</strong>.`,
+    inner:{ dist:'normal',    params:{mu:500,sigma:30}, op:'<', qv:460, qv2:null, compute:()=>normCDF(460,500,30) },
+    outer:{ dist:'geometric', params:{p:'INNER'},        op:'=', qv:3,  qv2:null, compute:(p)=>gPMF(p,3)         }
+  },
+  { id:10,
+    ctx: `A wireless sensor is powered by a battery with a <strong>constant failure rate of 0.1 per hour</strong>. The lifetime of each battery is modelled with a continuous distribution.`,
+    iQ:  `Find the probability that a battery lasts <strong>more than 15 hours</strong>.`,
+    oQ:  `The probability above, \\(p\\), is the reliability of a single sensor. A monitoring array uses <strong>6 independent sensors</strong>. Find the probability that <strong>at least 4 sensors</strong> last more than 15 hours.`,
+    inner:{ dist:'exponential', params:{lambda:0.1},   op:'>',  qv:15,  qv2:null, compute:()=>eProb(0.1,'>',15)  },
+    outer:{ dist:'binomial',    params:{n:6,p:'INNER'},op:'>=', qv:4,   qv2:null, compute:(p)=>1-bCDF(6,p,3)      }
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   HINTS
+   ═══════════════════════════════════════════════════════════ */
+const HINTS = {
+  binomial:    'The inner problem involves a fixed number of independent trials, each with the same probability of success.',
+  geometric:   'The inner problem involves repeating independent trials until the first success occurs — the key word is "first".',
+  poisson:     'The inner problem involves counting events that occur randomly at a constant average rate over a fixed period.',
+  normal:      'The inner variable is continuous and symmetrically distributed about its mean (bell-shaped). Mean and standard deviation are given.',
+  uniform:     'Every value in the given interval is equally likely — there is no tendency to cluster anywhere in the range.',
+  exponential: 'The inner problem involves the time between events where those events occur at a constant rate — a continuous distribution with a single rate parameter.'
+};
+
+/* ═══════════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════════ */
+let current = null;
+let innerProb = null;
+let qCount = 0, cCount = 0;
+
+/* ═══════════════════════════════════════════════════════════
+   BUILD FIELDS
+   ═══════════════════════════════════════════════════════════ */
+function buildFields(w) {
+  const dist = document.getElementById(w+'Sel').value;
+  const pArea = document.getElementById(w+'PArea');
+  const qArea = document.getElementById(w+'QArea');
+  if(!dist){ pArea.style.display='none'; qArea.style.display='none'; return; }
+  const cfg = FIELDS[dist];
+
+  // Parameters
+  pArea.innerHTML = cfg.params.map(f=>`
+    <div class="param-item">
+      <label for="${w}_${f.id}">${f.lbl} =</label>
+      <input type="number" id="${w}_${f.id}" step="${f.step}"
+        ${f.min!==undefined?'min="'+f.min+'"':''}
+        ${f.max!==undefined?'max="'+f.max+'"':''}>
+    </div>`).join('');
+  pArea.style.display = 'flex';
+
+  // Query row
+  const opSel = `<select id="${w}_op" onchange="toggleBetween('${w}')">
+    ${cfg.ops.map((o,i)=>`<option value="${cfg.opVals[i]}">${o}</option>`).join('')}
+  </select>`;
+  qArea.innerHTML = `
+    <span>P ( X &thinsp;</span>
+    ${opSel}
+    <input type="number" id="${w}_qv" step="${cfg.isInt?1:0.1}" placeholder="${cfg.qLbl}" style="width:80px;">
+    <span id="${w}_bandAnd" style="display:none;">&thinsp;and&thinsp;
+      <input type="number" id="${w}_qv2" step="${cfg.isInt?1:0.1}" placeholder="${cfg.qLbl}₂" style="width:80px;">
+    </span>
+    <span>&thinsp;)</span>`;
+  qArea.style.display = 'flex';
+}
+
+function toggleBetween(w) {
+  const op = document.getElementById(w+'_op').value;
+  const el = document.getElementById(w+'_bandAnd');
+  if(el) el.style.display = (op==='between') ? 'inline-flex' : 'none';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   READ USER VALUES
+   ═══════════════════════════════════════════════════════════ */
+function getVals(w) {
+  const dist = document.getElementById(w+'Sel').value;
+  if(!dist) return null;
+  const cfg = FIELDS[dist];
+  const params = {};
+  cfg.params.forEach(f => {
+    const el = document.getElementById(w+'_'+f.id);
+    params[f.id] = el ? parseFloat(el.value) : NaN;
+  });
+  return {
+    dist,
+    params,
+    op:  document.getElementById(w+'_op')  ? document.getElementById(w+'_op').value  : '',
+    qv:  document.getElementById(w+'_qv')  ? parseFloat(document.getElementById(w+'_qv').value)  : NaN,
+    qv2: document.getElementById(w+'_qv2') ? parseFloat(document.getElementById(w+'_qv2').value) : NaN
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHECKING HELPERS
+   ═══════════════════════════════════════════════════════════ */
+function approxEq(a,b,tol){ return !isNaN(a)&&!isNaN(b)&&Math.abs(a-b)<=tol; }
+
+function tolFor(key){
+  if(key==='n') return 0.5;
+  if(key==='p') return 0.005;
+  if(key==='lambda') return 0.005;
+  if(key==='mu'||key==='a'||key==='b') return 0.5;
+  if(key==='sigma') return 0.5;
+  return 0.01;
+}
+
+function checkPar(userP, correctP, ip) {
+  const feedback = [];
+  let allOk = true;
+  for(const key of Object.keys(correctP)){
+    const cv = (correctP[key]==='INNER') ? ip : correctP[key];
+    const uv = userP[key];
+    const ok = approxEq(uv, cv, tolFor(key));
+    if(!ok){
+      allOk = false;
+      const lbl = {lambda:'λ',sigma:'σ',mu:'μ'}[key]||key;
+      const disp = correctP[key]==='INNER'
+        ? `≈ ${ip.toFixed(4)} (the probability from Step 1)`
+        : cv;
+      feedback.push(`${lbl} should be ${disp}${isNaN(uv)?'':`, you entered ${uv}`}`);
+    }
+  }
+  return {allOk, feedback};
+}
+
+function checkQ(uOp, uQv, uQv2, cOp, cQv, cQv2) {
+  const opOk = uOp===cOp;
+  const qvOk = (cOp==='between')
+    ? approxEq(uQv,cQv,0.5) && approxEq(uQv2,cQv2||0,0.5)
+    : approxEq(uQv,cQv,0.5);
+  return {opOk, qvOk};
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FEEDBACK RENDERING
+   ═══════════════════════════════════════════════════════════ */
+function fbRow(ok, text){
+  return `<div class="fb-row ${ok?'ok':'err'}"><span>${ok?'✅':'❌'}</span><span>${text}</span></div>`;
+}
+function opSym(op){ return {'>':'>','<':'<','>=':'≥','<=':'≤','=':'=','between':'between'}[op]||op; }
+function cap(s){ return s[0].toUpperCase()+s.slice(1); }
+function qDisplay(op,qv,qv2){
+  if(op==='between') return `P(${qv} &lt; X &lt; ${qv2})`;
+  return `P(X ${opSym(op)} ${qv})`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHECK STEP 1
+   ═══════════════════════════════════════════════════════════ */
+function checkInner() {
+  if(!current) return;
+  const user = getVals('inner');
+  const inn  = current.inner;
+
+  // Always recompute correct inner prob
+  innerProb = inn.compute();
+
+  // Reveal pill
+  const pill = document.getElementById('innerPill');
+  pill.innerHTML = `Step 1 result: the inner probability is <strong>p = ${innerProb.toFixed(6)}</strong> &mdash; use this as a parameter in Step 2.`;
+  pill.style.display = 'block';
+
+  if(!user||!user.dist){
+    document.getElementById('innerFB').innerHTML=
+      `<div class="fb-box err-box"><p>Please select a distribution first.</p></div>`;
+    document.getElementById('innerTick').innerHTML='❌';
+    return;
+  }
+
+  const distOk = user.dist===inn.dist;
+  let pCheck={allOk:false,feedback:[]}, qCheck={opOk:false,qvOk:false};
+
+  if(distOk){
+    pCheck = checkPar(user.params, inn.params, innerProb);
+    qCheck = checkQ(user.op, user.qv, user.qv2, inn.op, inn.qv, inn.qv2);
+  }
+  const allOk = distOk && pCheck.allOk && qCheck.opOk && qCheck.qvOk;
+
+  let html = '';
+  html += fbRow(distOk, distOk
+    ? `Distribution: <strong>${cap(inn.dist)}</strong> ✓`
+    : `Wrong distribution — this is a <strong>${cap(inn.dist)}</strong> problem. (You selected ${cap(user.dist)}.)`);
+  if(distOk){
+    html += fbRow(pCheck.allOk, pCheck.allOk
+      ? `Parameters correct ✓`
+      : `Parameter issue: ${pCheck.feedback.join('; ')}`);
+    html += fbRow(qCheck.opOk&&qCheck.qvOk, qCheck.opOk&&qCheck.qvOk
+      ? `Probability query correct ✓`
+      : `Query should be ${qDisplay(inn.op,inn.qv,inn.qv2)} (you had ${qDisplay(user.op,user.qv,user.qv2)})`);
+  }
+
+  document.getElementById('innerTick').innerHTML = allOk?'✅':'❌';
+  document.getElementById('innerFB').innerHTML=
+    `<div class="fb-box ${allOk?'ok-box':'err-box'}">${html}</div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHECK BOTH STEPS
+   ═══════════════════════════════════════════════════════════ */
+function checkAll() {
+  if(!current) return;
+
+  // Run inner check first (sets innerProb, updates UI)
+  checkInner();
+
+  const user = getVals('outer');
+  const out  = current.outer;
+
+  if(!user||!user.dist){
+    document.getElementById('outerFB').innerHTML=
+      `<div class="fb-box err-box"><p>Please select an outer distribution.</p></div>`;
+    document.getElementById('outerTick').innerHTML='❌';
+    return;
+  }
+
+  const distOk = user.dist===out.dist;
+  let pCheck={allOk:false,feedback:[]}, qCheck={opOk:false,qvOk:false};
+
+  if(distOk){
+    pCheck = checkPar(user.params, out.params, innerProb);
+    qCheck = checkQ(user.op, user.qv, user.qv2, out.op, out.qv, out.qv2);
+  }
+  const allOk = distOk && pCheck.allOk && qCheck.opOk && qCheck.qvOk;
+
+  let html = '';
+  html += fbRow(distOk, distOk
+    ? `Distribution: <strong>${cap(out.dist)}</strong> ✓`
+    : `Wrong outer distribution — should be <strong>${cap(out.dist)}</strong>. (You selected ${cap(user.dist)}.)`);
+  if(distOk){
+    html += fbRow(pCheck.allOk, pCheck.allOk
+      ? `Parameters correct ✓ (including the inner probability used as a parameter)`
+      : `Parameter issue: ${pCheck.feedback.join('; ')}`);
+    html += fbRow(qCheck.opOk&&qCheck.qvOk, qCheck.opOk&&qCheck.qvOk
+      ? `Probability query correct ✓`
+      : `Query should be ${qDisplay(out.op,out.qv,out.qv2)} (you had ${qDisplay(user.op,user.qv,user.qv2)})`);
+  }
+
+  const finalAns = current.outer.compute(innerProb);
+  html += `<div class="final-ans">
+    Final answer:&ensp;${qDisplay(out.op,out.qv,out.qv2).replace('X','Y')} =
+    <span class="ans-val"> ${finalAns.toFixed(6)}</span>
+    &ensp;&approx;&ensp;<span class="ans-val">${finalAns.toFixed(4)}</span>
+  </div>`;
+
+  if(allOk){ cCount++; }
+  document.getElementById('outerTick').innerHTML = allOk?'✅':'❌';
+  document.getElementById('outerFB').innerHTML =
+    `<div class="fb-box ${allOk?'ok-box':'err-box'}">${html}</div>`;
+  document.getElementById('scoreTag').textContent =
+    `Questions: ${qCount} \u00a0|\u00a0 Correct: ${cCount}`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NEW QUESTION
+   ═══════════════════════════════════════════════════════════ */
+function newQuestion(){
+  const idx = Math.floor(Math.random()*SCENS.length);
+  current  = SCENS[idx];
+  innerProb = null;
+  qCount++;
+
+  document.getElementById('scenarioBody').innerHTML = `
+    <p class="ctx-text">${current.ctx}</p>
+    <div class="q-part"><span class="q-label">Inner question</span>${current.iQ}</div>
+    <div class="q-part"><span class="q-label">Outer question</span>${current.oQ}</div>`;
+
+  ['inner','outer'].forEach(w=>{
+    document.getElementById(w+'Sel').value='';
+    const pA=document.getElementById(w+'PArea');
+    const qA=document.getElementById(w+'QArea');
+    pA.style.display='none'; pA.innerHTML='';
+    qA.style.display='none'; qA.innerHTML='';
+    document.getElementById(w+'FB').innerHTML='';
+    document.getElementById(w+'Tick').innerHTML='';
+  });
+  document.getElementById('innerPill').style.display='none';
+  document.getElementById('solCard').style.display='none';
+  document.getElementById('hintBtn').disabled=false;
+  document.getElementById('solBtn').disabled=false;
+  document.getElementById('scoreTag').textContent =
+    `Questions: ${qCount} \u00a0|\u00a0 Correct: ${cCount}`;
+
+  renderMath();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HINT
+   ═══════════════════════════════════════════════════════════ */
+function showHint(){
+  if(!current) return;
+  document.getElementById('innerFB').innerHTML=
+    `<div class="fb-box info-box"><strong>Hint (inner distribution):</strong> ${HINTS[current.inner.dist]}</div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FULL SOLUTION
+   ═══════════════════════════════════════════════════════════ */
+function showSolution(){
+  if(!current) return;
+  const inn = current.inner;
+  const out = current.outer;
+  const ip  = inn.compute();
+  const fp  = out.compute(ip);
+
+  const distNames = {binomial:'Binomial',geometric:'Geometric',poisson:'Poisson',
+                     normal:'Normal',uniform:'Uniform',exponential:'Exponential'};
+
+  function parStr(params, dist){
+    if(dist==='binomial')    return `n = ${params.n}, p = ${params.p}`;
+    if(dist==='geometric')   return `p = ${params.p}`;
+    if(dist==='poisson')     return `λ = ${params.lambda}`;
+    if(dist==='normal')      return `μ = ${params.mu}, σ = ${params.sigma}`;
+    if(dist==='uniform')     return `a = ${params.a}, b = ${params.b}`;
+    if(dist==='exponential') return `λ = ${params.lambda}`;
+  }
+  function outerParStr(){
+    const op = out.params;
+    const ipd = ip.toFixed(6);
+    if(out.dist==='binomial')  return `n = ${op.n}, p = ${ipd} (from Step 1)`;
+    if(out.dist==='geometric') return `p = ${ipd} (from Step 1)`;
+    if(out.dist==='poisson')   return `λ = ${op.lambda||ipd}`;
+    return '';
+  }
+
+  const innerQd = inn.op==='between'
+    ? `P(${inn.qv} &lt; X &lt; ${inn.qv2})`
+    : `P(X ${opSym(inn.op)} ${inn.qv})`;
+  const outerQd = out.op==='between'
+    ? `P(${out.qv} &lt; Y &lt; ${out.qv2})`
+    : `P(Y ${opSym(out.op)} ${out.qv})`;
+
+  document.getElementById('solBody').innerHTML = `
+    <div class="sol-step">
+      <h3>Step 1 — Inner Distribution</h3>
+      <p class="sol-line"><strong>Distribution:</strong> ${distNames[inn.dist]}</p>
+      <p class="sol-line"><strong>Parameters:</strong> ${parStr(inn.params,inn.dist)}</p>
+      <p class="sol-line"><strong>Probability required:</strong> ${innerQd}</p>
+      <p class="sol-line"><strong>Value:</strong> ${innerQd} = <span class="sol-val">${ip.toFixed(6)}</span></p>
+    </div>
+    <hr class="sol-div">
+    <div class="sol-step">
+      <h3>Step 2 — Outer Distribution</h3>
+      <p class="sol-line"><strong>Distribution:</strong> ${distNames[out.dist]}</p>
+      <p class="sol-line"><strong>Parameters:</strong> ${outerParStr()}</p>
+      <p class="sol-line"><strong>Probability required:</strong> ${outerQd}</p>
+      <p class="sol-line"><strong>Final answer:</strong> ${outerQd} = <span class="sol-val">${fp.toFixed(6)}</span> &approx; <span class="sol-val">${fp.toFixed(4)}</span></p>
+    </div>`;
+
+  document.getElementById('solCard').style.display='block';
+  document.getElementById('solCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ═══════════════════════════════════════════════════════════
+   KATEX RENDER
+   ═══════════════════════════════════════════════════════════ */
+function renderMath(){
+  renderMathInElement(document.body,{
+    delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],
+    throwOnError:false
+  });
+}
+window.addEventListener('load', renderMath);
+</script>
+</body>
+</html>
