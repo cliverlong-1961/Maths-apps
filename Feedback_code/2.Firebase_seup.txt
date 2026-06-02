@@ -1,0 +1,11 @@
+One-time Firebase setup (~5 minutes)
+
+1. Go to console.firebase.google.com, create a project called maths-apps-feedback
+
+2. Build → Realtime Database → Create database → Start in test mode → choose Europe West location
+
+3. Gear → Project settings → Your apps → Add web app → copy the firebaseConfig values
+
+4. Paste them into firebase-config.js replacing the YOUR_... placeholders
+
+5.In the console, Realtime Database → Rules, set .read: false, .write: true (students can submit, but not read each other's comments)

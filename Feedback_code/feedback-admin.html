@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Admin — Maths Apps</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, serif;
+    background: #f8f7f2;
+    color: #1a2b4a;
+    min-height: 100vh;
+    padding: 0;
+  }
+  header {
+    background: #1a2b4a;
+    color: #f0c040;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 { font-size: 20px; font-weight: 500; }
+  header p  { font-size: 13px; opacity: 0.75; margin-top: 2px; }
+
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .setup-box {
+    background: #fff3cd; border: 1px solid #ffc107;
+    border-radius: 10px; padding: 18px 22px; margin-bottom: 28px;
+    font-size: 14px; line-height: 1.6; color: #6b4200;
+  }
+  .setup-box h3 { font-size: 15px; margin-bottom: 8px; }
+  .setup-box code { background: #ffe699; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .controls {
+    display: flex; gap: 14px; align-items: flex-end;
+    flex-wrap: wrap; margin-bottom: 28px;
+  }
+  .ctrl-group { display: flex; flex-direction: column; gap: 5px; }
+  .ctrl-group label { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ctrl-group input, .ctrl-group select {
+    padding: 8px 12px; border: 1.5px solid #ccc; border-radius: 6px;
+    font-family: Georgia, serif; font-size: 14px; background: #fff;
+    color: #1a2b4a;
+  }
+  .ctrl-group input:focus, .ctrl-group select:focus {
+    outline: none; border-color: #1a2b4a;
+  }
+  .ctrl-group.api-key input { width: 280px; font-family: monospace; }
+
+  .btn {
+    padding: 9px 22px; border: none; border-radius: 6px;
+    cursor: pointer; font-family: Georgia, serif; font-size: 14px;
+    font-weight: 500; transition: background 0.15s;
+  }
+  .btn-primary   { background: #1a2b4a; color: #f0c040; }
+  .btn-primary:hover { background: #243760; }
+  .btn-secondary { background: #e8e4d8; color: #1a2b4a; }
+  .btn-secondary:hover { background: #d8d3c5; }
+  .btn:disabled  { opacity: 0.5; cursor: not-allowed; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px; margin-bottom: 28px;
+  }
+  .stat-card {
+    background: #fff; border-radius: 10px;
+    border: 1px solid #ddd; padding: 14px 18px;
+  }
+  .stat-card .stat-val { font-size: 28px; font-weight: 500; color: #1a2b4a; }
+  .stat-card .stat-lbl { font-size: 12px; color: #888; margin-top: 2px; }
+
+  .section-title {
+    font-size: 16px; font-weight: 500;
+    border-bottom: 2px solid #f0c040;
+    padding-bottom: 6px; margin-bottom: 18px;
+  }
+
+  .summary-box {
+    background: #fff; border-radius: 10px;
+    border: 1px solid #ddd; padding: 20px 24px;
+    margin-bottom: 28px; line-height: 1.75;
+    font-size: 15px; white-space: pre-wrap;
+    min-height: 80px;
+  }
+  .summary-box.loading { color: #aaa; font-style: italic; }
+  .summary-box.empty   { color: #bbb; font-style: italic; font-size: 14px; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    background: #fff; border-radius: 10px;
+    overflow: hidden; font-size: 13px;
+  }
+  thead tr { background: #1a2b4a; color: #f0c040; }
+  th { padding: 11px 14px; text-align: left; font-weight: 500; }
+  td { padding: 10px 14px; border-bottom: 1px solid #eee; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8f7f2; }
+
+  .badge {
+    display: inline-block; padding: 3px 9px;
+    border-radius: 12px; font-size: 11px; font-weight: 600;
+  }
+  .badge-question   { background: #dbeafe; color: #1e40af; }
+  .badge-error      { background: #fee2e2; color: #991b1b; }
+  .badge-suggestion { background: #fef3c7; color: #92400e; }
+
+  .filter-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn {
+    padding: 5px 14px; border: 1.5px solid #ccc;
+    border-radius: 14px; background: #fff; cursor: pointer;
+    font-family: Georgia, serif; font-size: 13px; color: #555;
+  }
+  .filter-btn.active { border-color: #1a2b4a; background: #1a2b4a; color: #f0c040; }
+
+  .empty-state {
+    text-align: center; padding: 48px 24px; color: #aaa;
+    font-style: italic; font-size: 15px;
+  }
+
+  #error-bar {
+    display: none; background: #fee2e2; border: 1px solid #fca5a5;
+    border-radius: 8px; padding: 12px 18px; margin-bottom: 20px;
+    color: #991b1b; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Maths Apps — Student Feedback</h1>
+    <p>Admin dashboard &mdash; private</p>
+  </div>
+  <span id="last-updated" style="font-size:12px; opacity:0.7;"></span>
+</header>
+
+<div class="main">
+
+  <div class="setup-box" id="setup-warning">
+    <h3>&#9888; First-time setup</h3>
+    <p>Enter your <strong>Firebase config</strong> values in <code>firebase-config.js</code>, then enter your
+    <strong>Claude API key</strong> below to enable the AI summary feature.
+    Your key is stored only in your browser's local storage and never sent anywhere except Anthropic's API.
+    See the comment block in <code>firebase-config.js</code> for Firebase setup instructions.</p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group api-key">
+      <label>Anthropic API key (for summaries)</label>
+      <input type="password" id="api-key-input" placeholder="sk-ant-…" />
+    </div>
+    <div class="ctrl-group">
+      <label>Filter by page</label>
+      <select id="page-filter"><option value="">All pages</option></select>
+    </div>
+    <div class="ctrl-group">
+      <label>Days to show</label>
+      <select id="days-filter">
+        <option value="7">Last 7 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="0">All time</option>
+      </select>
+    </div>
+    <div style="display:flex; gap:10px; align-items:flex-end; padding-bottom:0;">
+      <button class="btn btn-primary" id="load-btn">Load feedback</button>
+      <button class="btn btn-secondary" id="summarise-btn" disabled>&#10024; AI summary</button>
+      <button class="btn btn-secondary" id="export-btn" disabled>&#8595; Export CSV</button>
+    </div>
+  </div>
+
+  <div id="error-bar"></div>
+
+  <!-- Stats -->
+  <div class="stats-row" id="stats-row" style="display:none;">
+    <div class="stat-card"><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Total entries</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-q">0</div><div class="stat-lbl">Questions</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-e">0</div><div class="stat-lbl">Errors reported</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-s">0</div><div class="stat-lbl">Suggestions</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-pages">0</div><div class="stat-lbl">Distinct pages</div></div>
+  </div>
+
+  <!-- AI Summary -->
+  <div id="summary-section" style="display:none;">
+    <p class="section-title">AI summary</p>
+    <div class="summary-box empty" id="summary-box">
+      Click "AI summary" to generate a summary of the current filtered feedback.
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div id="table-section" style="display:none;">
+    <p class="section-title">Entries</p>
+    <div class="filter-row" id="type-filters">
+      <button class="filter-btn active" data-type="all">All</button>
+      <button class="filter-btn" data-type="question">&#10067; Questions</button>
+      <button class="filter-btn" data-type="error">&#128027; Errors</button>
+      <button class="filter-btn" data-type="suggestion">&#128161; Suggestions</button>
+    </div>
+    <div id="table-wrap"></div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- Your config -->
+<script src="firebase-config.js"></script>
+
+<script>
+/* ─── Globals ─────────────────────────────────────────── */
+let allEntries = [];
+let filtered   = [];
+let typeFilter = 'all';
+
+const apiKeyInput   = document.getElementById('api-key-input');
+const loadBtn       = document.getElementById('load-btn');
+const summariseBtn  = document.getElementById('summarise-btn');
+const exportBtn     = document.getElementById('export-btn');
+const pageFilter    = document.getElementById('page-filter');
+const daysFilter    = document.getElementById('days-filter');
+const errorBar      = document.getElementById('error-bar');
+const summaryBox    = document.getElementById('summary-box');
+
+/* Persist API key in localStorage */
+const SAVED_KEY = localStorage.getItem('fb_admin_claude_key') || '';
+if (SAVED_KEY) apiKeyInput.value = SAVED_KEY;
+apiKeyInput.addEventListener('input', () => {
+  localStorage.setItem('fb_admin_claude_key', apiKeyInput.value.trim());
+});
+
+/* ─── Load feedback from Firebase ────────────────────── */
+loadBtn.addEventListener('click', loadFeedback);
+
+async function loadFeedback() {
+  clearError();
+  loadBtn.disabled = true;
+  loadBtn.textContent = 'Loading…';
+
+  try {
+    const db  = firebase.database();
+    const snap = await db.ref('feedback').once('value');
+    const raw  = snap.val() || {};
+    allEntries = Object.values(raw).sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+
+    /* Populate page filter */
+    const pages = [...new Set(allEntries.map(e => e.page))].sort();
+    pageFilter.innerHTML = '<option value="">All pages</option>';
+    pages.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p; opt.textContent = p;
+      pageFilter.appendChild(opt);
+    });
+
+    applyFilters();
+    document.getElementById('stats-row').style.display    = 'grid';
+    document.getElementById('summary-section').style.display = 'block';
+    document.getElementById('table-section').style.display   = 'block';
+    summariseBtn.disabled = false;
+    exportBtn.disabled    = false;
+    document.getElementById('last-updated').textContent =
+      'Updated ' + new Date().toLocaleTimeString();
+
+  } catch (err) {
+    showError('Could not load feedback: ' + err.message +
+              '. Check firebase-config.js values and database rules.');
+  } finally {
+    loadBtn.disabled = false;
+    loadBtn.textContent = 'Load feedback';
+  }
+}
+
+/* ─── Filter ──────────────────────────────────────────── */
+pageFilter.addEventListener('change', applyFilters);
+daysFilter.addEventListener('change', applyFilters);
+
+document.getElementById('type-filters').addEventListener('click', function(e) {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  typeFilter = btn.dataset.type;
+  applyFilters();
+});
+
+function applyFilters() {
+  const page = pageFilter.value;
+  const days = parseInt(daysFilter.value, 10);
+  const cutoff = days > 0 ? new Date(Date.now() - days * 86400000).toISOString() : '';
+
+  filtered = allEntries.filter(e => {
+    if (page && e.page !== page) return false;
+    if (cutoff && e.timestamp < cutoff) return false;
+    if (typeFilter !== 'all' && e.type !== typeFilter) return false;
+    return true;
+  });
+
+  updateStats();
+  renderTable();
+}
+
+function updateStats() {
+  const all = allEntries; /* stats always over all loaded entries */
+  document.getElementById('st-total').textContent  = all.length;
+  document.getElementById('st-q').textContent      = all.filter(e => e.type === 'question').length;
+  document.getElementById('st-e').textContent      = all.filter(e => e.type === 'error').length;
+  document.getElementById('st-s').textContent      = all.filter(e => e.type === 'suggestion').length;
+  document.getElementById('st-pages').textContent  = new Set(all.map(e => e.page)).size;
+}
+
+function renderTable() {
+  const wrap = document.getElementById('table-wrap');
+  if (!filtered.length) {
+    wrap.innerHTML = '<div class="empty-state">No entries match the current filter.</div>';
+    return;
+  }
+
+  let rows = filtered.map(e => {
+    const d = new Date(e.timestamp);
+    const ds = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    const ts = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+    const badgeClass = 'badge-' + (e.type || 'question');
+    const typeLabel  = { question:'Question', error:'Error', suggestion:'Suggestion' }[e.type] || e.type;
+    return `<tr>
+      <td style="white-space:nowrap; color:#888;">${ds}<br><span style="font-size:11px;">${ts}</span></td>
+      <td><code style="font-size:12px; color:#555;">${escHtml(e.page || '')}</code></td>
+      <td><span class="badge ${badgeClass}">${typeLabel}</span></td>
+      <td>${escHtml(e.comment || '')}</td>
+    </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `<table>
+    <thead><tr>
+      <th>Date</th><th>Page</th><th>Type</th><th>Comment</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+/* ─── AI Summary ──────────────────────────────────────── */
+summariseBtn.addEventListener('click', generateSummary);
+
+async function generateSummary() {
+  const key = apiKeyInput.value.trim();
+  if (!key) {
+    showError('Please enter your Anthropic API key above.');
+    return;
+  }
+  if (!filtered.length) {
+    showError('No entries to summarise (try relaxing the filters).');
+    return;
+  }
+
+  summariseBtn.disabled = true;
+  summariseBtn.textContent = 'Summarising…';
+  summaryBox.className = 'summary-box loading';
+  summaryBox.textContent = 'Generating summary…';
+
+  /* Build a compact JSON payload for Claude */
+  const payload = filtered.map(e => ({
+    page:    e.page,
+    type:    e.type,
+    comment: e.comment,
+    date:    e.timestamp.substring(0, 10)
+  }));
+
+  const prompt = `You are helping a maths teacher review student feedback about interactive web apps covering AS/A-level Mathematics.
+
+Here is the feedback in JSON format (${payload.length} entries):
+${JSON.stringify(payload, null, 2)}
+
+Please produce a concise summary in plain text (no markdown, no bullet symbols) with these sections:
+
+OVERVIEW
+One paragraph covering: how many entries, date range, spread across pages, dominant feedback types.
+
+KEY QUESTIONS
+List the most common or important student questions, grouped by page where relevant.
+
+ERRORS REPORTED
+Any bugs or mistakes students flagged, grouped by page.
+
+SUGGESTIONS
+Noteworthy suggestions for improvement.
+
+RECOMMENDED ACTIONS
+2-5 clear actions the teacher should take, in priority order.
+
+Keep the whole summary under 400 words.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type':         'application/json',
+        'x-api-key':            key,
+        'anthropic-version':    '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true'
+      },
+      body: JSON.stringify({
+        model:      'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages:   [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error((err.error && err.error.message) || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    const text = data.content.map(b => b.text || '').join('');
+    summaryBox.className = 'summary-box';
+    summaryBox.textContent = text;
+
+  } catch (err) {
+    summaryBox.className = 'summary-box empty';
+    summaryBox.textContent = '';
+    showError('Summary failed: ' + err.message);
+  } finally {
+    summariseBtn.disabled = false;
+    summariseBtn.textContent = '✨ AI summary';
+  }
+}
+
+/* ─── Export CSV ──────────────────────────────────────── */
+exportBtn.addEventListener('click', function () {
+  if (!filtered.length) return;
+  const header = 'timestamp,page,type,comment\n';
+  const rows   = filtered.map(e =>
+    [e.timestamp, e.page, e.type, '"' + (e.comment||'').replace(/"/g,'""') + '"'].join(',')
+  ).join('\n');
+  const blob   = new Blob([header + rows], { type: 'text/csv' });
+  const url    = URL.createObjectURL(blob);
+  const a      = document.createElement('a');
+  a.href = url; a.download = 'maths-apps-feedback.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* ─── Helpers ─────────────────────────────────────────── */
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function showError(msg) {
+  errorBar.textContent = msg;
+  errorBar.style.display = 'block';
+  setTimeout(() => { errorBar.style.display = 'none'; }, 8000);
+}
+function clearError() {
+  errorBar.style.display = 'none';
+}
+</script>
+</body>
+</html>

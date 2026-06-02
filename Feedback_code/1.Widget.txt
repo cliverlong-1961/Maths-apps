@@ -1,0 +1,6 @@
+Adding the widget to each app — paste two lines just before </body>:
+
+<script src="firebase-config.js"></script>
+<script src="feedback-widget.js"></script>
+
+That's it. The button appears fixed at the bottom-right of every page automatically.
