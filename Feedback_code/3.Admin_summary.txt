@@ -1,0 +1,11 @@
+Admin summary page
+Open feedback-admin.html locally in your browser (it never needs to be hosted publicly — it can live anywhere on your machine). Enter your Anthropic API key once (saved to your browser's local storage), then:
+
+
+Load feedback → see all entries in a filterable table with stats
+
+Filter by page, date range, or type
+
+Click AI summary → Claude reads all the filtered entries and gives you a structured report: key questions, errors found, suggestions, and recommended actions
+
+Export CSV if you want a spreadsheet

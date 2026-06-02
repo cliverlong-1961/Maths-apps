@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Feedback Display</title>
+    <!-- Import the Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // Your Firebase project configuration
+        // IMPORTANT: Replace with your actual project config
+		const firebaseConfig = {
+		  apiKey: "AIzaSyAsofJ-PWPpqjdKaKKNb1pJvoxaDHrvU_w",
+		  authDomain: "maths-apps-feedback.firebaseapp.com",
+		  databaseURL: "https://maths-apps-feedback-default-rtdb.europe-west1.firebasedatabase.app",
+		  projectId: "maths-apps-feedback",
+		  storageBucket: "maths-apps-feedback.firebasestorage.app",
+		  messagingSenderId: "122455032663",
+		  appId: "1:122455032663:web:a69c8a6927aa3c5b13f412",
+		  measurementId: "G-0BEL8RSMS2"
+		};
+	
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Get a reference to the 'feedback' node in your database
+        // This assumes your feedback items are stored directly under a 'feedback' path
+        const feedbackRef = ref(database, 'feedback');
+
+        // Get the HTML element where feedback will be displayed
+        const feedbackList = document.getElementById('feedback-list');
+
+        // Listen for new feedback items being added
+        onChildAdded(feedbackRef, (snapshot) => {
+            const feedbackItem = snapshot.val();
+            const feedbackId = snapshot.key; // The unique ID for this feedback item
+
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <h3>Feedback ID: ${feedbackId}</h3>
+                <p><strong>Comment:</strong> ${feedbackItem.comment}</p>
+                <p><strong>Page:</strong> ${feedbackItem.page}</p>
+                <p><strong>Timestamp:</strong> ${new Date(feedbackItem.timestamp).toLocaleString()}</p>
+                <p><strong>Type:</strong> ${feedbackItem.type}</p>
+                <p><strong>URL:</strong> ${feedbackItem.url}</p>
+                <p><strong>User Agent:</strong> ${feedbackItem.userAgent}</p>
+            `;
+            feedbackList.appendChild(listItem);
+        });
+
+        console.log("Firebase initialized and listening for feedback...");
+    </script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #feedback-list { list-style: none; padding: 0; }
+        #feedback-list li {
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        #feedback-list li h3 { margin-top: 0; color: #333; }
+        #feedback-list li p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>User Feedback</h1>
+    <ul id="feedback-list">
+        <!-- Feedback items will be displayed here -->
+    </ul>
+</body>
+</html>

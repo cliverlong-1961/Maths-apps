@@ -21,12 +21,29 @@
             color: #007acc;
         }
     </style>
+
+    <!-- !!! IMPORTANT: Add this Import Map !!! -->
+    <script type="importmap">
+      {
+        "imports": {
+          "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+          "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js",
+          "firebase/database": "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
+        }
+      }
+    </script>
 </head>
 <body>
     <h1>Welcome</h1>
     <a href="Mechanics/@mech-home.html">Mechanics</a>
     <a href="Pure/@Pure-links.html">Pure</a>
     <a href="Stats/@Stats-links.html">Stats</a>
-   
+
+    <!-- !!! Ensure these scripts have type="module" and are placed at the end of <body> !!! -->
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <script  src="./Feedback_code/firebase-config.js"></script>
+    <script  src="./Feedback_code/feedback-widget.js"></script>
 </body>
 </html>

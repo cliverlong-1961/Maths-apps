@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Analyser — Maths Apps</title>
+<style>
+  :root {
+    --navy:      #1a2b4a;
+    --navy-dark: #111d33;
+    --navy-mid:  #243760;
+    --gold:      #f0c040;
+    --gold-pale: #fdf3c8;
+    --gold-mid:  #d4a017;
+    --cream:     #faf8f2;
+    --cream2:    #f2efe4;
+    --ink:       #1a2020;
+    --muted:     #6b7280;
+    --border:    #e0ddd4;
+
+    --q-bg:   #dbeafe; --q-txt: #1e3a8a; --q-bdr: #93c5fd;
+    --e-bg:   #fee2e2; --e-txt: #7f1d1d; --e-bdr: #fca5a5;
+    --s-bg:   #d1fae5; --s-txt: #064e3b; --s-bdr: #6ee7b7;
+    --info-bg:#fffbeb; --info-txt:#78350f; --info-bdr:#fcd34d;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--navy);
+    padding: 0 40px;
+    display: flex; align-items: stretch;
+    border-bottom: 3px solid var(--gold);
+  }
+  .hd-brand {
+    padding: 20px 0;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    padding-right: 28px; margin-right: 28px;
+  }
+  .hd-brand h1 {
+    color: var(--gold); font-size: 20px; font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .hd-brand p { color: rgba(240,192,64,0.55); font-size: 12px; margin-top: 3px; }
+  .hd-tabs { display: flex; align-items: stretch; gap: 4px; }
+  .tab-btn {
+    background: none; border: none; color: rgba(255,255,255,0.55);
+    padding: 0 18px; cursor: pointer; font-family: Georgia, serif;
+    font-size: 14px; border-bottom: 3px solid transparent;
+    margin-bottom: -3px; transition: all 0.15s;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .hd-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .hd-status { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+  /* ── Layout ── */
+  .page { display: none; padding: 36px 40px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── Config panel ── */
+  .config-card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px; margin-bottom: 28px;
+  }
+  .config-card h2 { font-size: 15px; color: var(--navy); margin-bottom: 18px; }
+  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cfg-field { display: flex; flex-direction: column; gap: 6px; }
+  .cfg-field label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .cfg-field input, .cfg-field select {
+    padding: 9px 13px; border: 1.5px solid var(--border);
+    border-radius: 7px; font-family: Georgia, serif; font-size: 14px;
+    background: var(--cream); color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .cfg-field input:focus, .cfg-field select:focus {
+    outline: none; border-color: var(--navy);
+    background: #fff;
+  }
+  .cfg-field.full { grid-column: 1 / -1; }
+
+  .action-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 22px; border-radius: 7px; border: none;
+    cursor: pointer; font-family: Georgia, serif; font-size: 14px;
+    font-weight: 500; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn-primary   { background: var(--navy); color: var(--gold); }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-gold      { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: var(--gold-mid); color: #fff; }
+  .btn-ghost     { background: #fff; color: var(--navy); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--navy); background: var(--cream2); }
+  .btn-danger    { background: #fee2e2; color: #7f1d1d; border: 1px solid #fca5a5; }
+  .btn-danger:hover { background: #fca5a5; }
+  .btn:disabled  { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+  .btn-sm { padding: 7px 14px; font-size: 13px; }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 12px; margin-bottom: 28px;
+  }
+  .stat {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 18px;
+    border-top: 3px solid var(--navy);
+  }
+  .stat-val { font-size: 26px; font-weight: 500; color: var(--navy); line-height: 1; }
+  .stat-lbl { font-size: 12px; color: var(--muted); margin-top: 5px; }
+  .stat.s-q  { border-top-color: #3b82f6; }
+  .stat.s-e  { border-top-color: #ef4444; }
+  .stat.s-s  { border-top-color: #10b981; }
+
+  /* ── Section heading ── */
+  .section-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .section-hd h2 {
+    font-size: 17px; color: var(--navy);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-hd h2::after {
+    content: ''; display: block; height: 2px; width: 40px;
+    background: var(--gold);
+  }
+
+  /* ── App selector chips ── */
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chip {
+    padding: 5px 14px; border: 1.5px solid var(--border);
+    border-radius: 20px; background: #fff; cursor: pointer;
+    font-family: Georgia, serif; font-size: 13px; color: var(--muted);
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--navy); color: var(--navy); }
+  .chip.active { border-color: var(--navy); background: var(--navy); color: var(--gold); }
+
+  /* ── Raw entries table ── */
+  .entries-table-wrap { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse;
+    background: #fff; border-radius: 10px;
+    overflow: hidden; font-size: 13px;
+    border: 1px solid var(--border);
+  }
+  thead tr { background: var(--navy); }
+  th { padding: 11px 14px; text-align: left; font-weight: 500; color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--cream2); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--cream); }
+
+  .badge {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 12px; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .badge-question   { background: var(--q-bg); color: var(--q-txt); border: 1px solid var(--q-bdr); }
+  .badge-error      { background: var(--e-bg); color: var(--e-txt); border: 1px solid var(--e-bdr); }
+  .badge-suggestion { background: var(--s-bg); color: var(--s-txt); border: 1px solid var(--s-bdr); }
+
+  /* ── Report ── */
+  #report-area { display: none; }
+
+  .report-meta {
+    background: var(--navy); color: rgba(255,255,255,0.8);
+    border-radius: 10px 10px 0 0; padding: 14px 22px;
+    font-size: 13px; display: flex; gap: 28px;
+  }
+  .report-meta strong { color: var(--gold); }
+
+  .report-body {
+    background: #fff; border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 10px 10px;
+    padding: 28px;
+  }
+
+  .report-overview {
+    background: var(--gold-pale); border: 1px solid #fde68a;
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 28px;
+    font-size: 14px; line-height: 1.75; color: #4a3600;
+  }
+
+  .app-report { margin-bottom: 36px; }
+  .app-report-title {
+    font-size: 17px; color: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 7px; margin-bottom: 16px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .app-report-title span {
+    font-size: 12px; color: var(--muted); font-weight: 400;
+  }
+
+  .issues-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .issues-grid { grid-template-columns: 1fr; } }
+
+  .issue-card {
+    border-radius: 9px; padding: 15px 17px;
+    border: 1px solid var(--border); position: relative;
+    overflow: hidden;
+  }
+  .issue-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .issue-card.type-error   { background: #fff8f8; border-color: var(--e-bdr); }
+  .issue-card.type-error::before   { background: #ef4444; }
+  .issue-card.type-question { background: #f0f7ff; border-color: var(--q-bdr); }
+  .issue-card.type-question::before { background: #3b82f6; }
+  .issue-card.type-suggestion { background: #f0fdf6; border-color: var(--s-bdr); }
+  .issue-card.type-suggestion::before { background: #10b981; }
+
+  .issue-header {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 8px; margin-bottom: 8px;
+  }
+  .issue-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .issue-count {
+    font-size: 11px; white-space: nowrap; padding: 2px 8px;
+    border-radius: 10px; background: var(--cream2);
+    color: var(--muted); flex-shrink: 0;
+  }
+  .issue-desc { font-size: 13px; color: #444; line-height: 1.6; margin-bottom: 10px; }
+  .issue-quotes { margin-bottom: 10px; }
+  .issue-quote {
+    font-size: 12px; font-style: italic; color: var(--muted);
+    border-left: 3px solid var(--border); padding-left: 9px;
+    margin-bottom: 5px; line-height: 1.5;
+  }
+  .issue-action {
+    font-size: 12px; color: var(--navy-mid);
+    background: var(--cream2); border-radius: 5px;
+    padding: 6px 10px;
+  }
+  .issue-action strong { color: var(--navy); }
+
+  .sev-high   { color: #dc2626; }
+  .sev-medium { color: #d97706; }
+  .sev-low    { color: #16a34a; }
+
+  /* ── Loading / spinner ── */
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(240,192,64,0.3);
+    border-top-color: var(--gold); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-panel {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 10px; padding: 48px; text-align: center;
+  }
+  .loading-panel p { margin-top: 16px; color: var(--muted); font-size: 14px; }
+  .loading-bar-wrap {
+    height: 4px; background: var(--cream2); border-radius: 2px;
+    overflow: hidden; margin: 14px auto; width: 240px;
+  }
+  .loading-bar {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--navy));
+    border-radius: 2px; animation: loadpulse 1.5s ease-in-out infinite;
+    transform-origin: left;
+  }
+  @keyframes loadpulse {
+    0%   { width: 0%; }
+    50%  { width: 75%; }
+    100% { width: 100%; }
+  }
+
+  /* ── Error/info bar ── */
+  .bar {
+    border-radius: 8px; padding: 13px 18px; margin-bottom: 18px;
+    font-size: 14px; display: none;
+  }
+  .bar-error { background: var(--e-bg); border: 1px solid var(--e-bdr); color: var(--e-txt); }
+  .bar-info  { background: var(--info-bg); border: 1px solid var(--info-bdr); color: var(--info-txt); }
+  .bar-success { background: var(--s-bg); border: 1px solid var(--s-bdr); color: var(--s-txt); }
+
+  /* ── Cleanup page ── */
+  .cleanup-card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px; max-width: 600px;
+  }
+  .cleanup-card h2 { font-size: 16px; color: var(--navy); margin-bottom: 6px; }
+  .cleanup-card p  { font-size: 14px; color: var(--muted); margin-bottom: 22px; line-height: 1.6; }
+  .age-row { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+  .age-row label { font-size: 14px; color: var(--ink); }
+  .age-row input[type=number] {
+    width: 90px; padding: 9px 12px;
+    border: 1.5px solid var(--border); border-radius: 7px;
+    font-family: Georgia, serif; font-size: 15px; font-weight: 500;
+    color: var(--navy); text-align: center;
+    background: var(--cream);
+  }
+  .age-row input[type=number]:focus { outline: none; border-color: var(--navy); }
+
+  .confirm-box {
+    background: var(--e-bg); border: 1px solid var(--e-bdr);
+    border-radius: 8px; padding: 18px 20px; margin-top: 18px;
+    display: none;
+  }
+  .confirm-box p { color: var(--e-txt); font-size: 14px; margin-bottom: 14px; }
+  .confirm-box .btn-row { display: flex; gap: 10px; }
+
+  .log-area {
+    margin-top: 22px; background: var(--navy-dark); border-radius: 8px;
+    padding: 16px; font-family: monospace; font-size: 12px;
+    color: #7dd3ac; max-height: 200px; overflow-y: auto; display: none;
+    line-height: 1.7;
+  }
+
+  .empty-state {
+    text-align: center; padding: 60px 24px;
+    color: var(--muted); font-style: italic; font-size: 15px;
+  }
+
+  /* ── Print ── */
+  @media print {
+    header, .config-card, .action-row, .chip-row, .btn { display: none !important; }
+    #report-area { display: block !important; }
+    .page { padding: 0; display: block !important; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd-brand">
+    <h1>Feedback Analyser</h1>
+    <p>maths-apps.crlong.uk</p>
+  </div>
+  <nav class="hd-tabs">
+    <button class="tab-btn active" onclick="showTab('analyse')">Analysis &amp; Report</button>
+    <button class="tab-btn" onclick="showTab('browse')">Browse Entries</button>
+    <button class="tab-btn" onclick="showTab('cleanup')">Cleanup</button>
+  </nav>
+  <div class="hd-right">
+    <span class="hd-status" id="db-status">Not connected</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════
+     TAB 1 — ANALYSE
+═══════════════════════════════════════════════════════ -->
+<div class="page active" id="tab-analyse">
+
+  <!-- Config -->
+  <div class="config-card">
+    <h2>Settings</h2>
+    <div class="config-grid">
+      <div class="cfg-field">
+        <label>Anthropic API key</label>
+        <input type="password" id="api-key" placeholder="sk-ant-…" />
+      </div>
+      <div class="cfg-field">
+        <label>Date range</label>
+        <select id="date-range">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="0">All time</option>
+        </select>
+      </div>
+      <div class="cfg-field">
+        <label>Focus on</label>
+        <select id="focus-type">
+          <option value="all">All feedback types</option>
+          <option value="error">Errors only</option>
+          <option value="question">Questions only</option>
+          <option value="suggestion">Suggestions only</option>
+        </select>
+      </div>
+      <div class="cfg-field">
+        <label>Report detail level</label>
+        <select id="detail-level">
+          <option value="standard">Standard</option>
+          <option value="brief">Brief (overview only)</option>
+          <option value="detailed">Detailed (all quotes)</option>
+        </select>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary" id="load-btn" onclick="loadFeedback()">
+        Load feedback
+      </button>
+      <button class="btn btn-gold" id="analyse-btn" disabled onclick="runAnalysis()">
+        &#10024; Generate report
+      </button>
+      <button class="btn btn-ghost btn-sm" id="print-btn" onclick="window.print()" style="display:none;">
+        &#128438; Print / save PDF
+      </button>
+      <span id="entry-count" style="font-size:13px; color:var(--muted);"></span>
+    </div>
+  </div>
+
+  <div class="bar bar-error" id="err-bar"></div>
+  <div class="bar bar-info"  id="info-bar"></div>
+
+  <!-- Stats -->
+  <div class="stats-strip" id="stats-strip" style="display:none;">
+    <div class="stat">
+      <div class="stat-val" id="st-total">0</div>
+      <div class="stat-lbl">Total entries</div>
+    </div>
+    <div class="stat s-q">
+      <div class="stat-val" id="st-q">0</div>
+      <div class="stat-lbl">Questions</div>
+    </div>
+    <div class="stat s-e">
+      <div class="stat-val" id="st-e">0</div>
+      <div class="stat-lbl">Errors reported</div>
+    </div>
+    <div class="stat s-s">
+      <div class="stat-val" id="st-s">0</div>
+      <div class="stat-lbl">Suggestions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="st-apps">0</div>
+      <div class="stat-lbl">Distinct apps</div>
+    </div>
+  </div>
+
+  <!-- App filter chips -->
+  <div id="chip-section" style="display:none;">
+    <div class="section-hd">
+      <h2>Select apps to include</h2>
+    </div>
+    <div class="chip-row" id="chip-row"></div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-panel" id="loading-panel" style="display:none;">
+    <div class="spinner" style="width:32px; height:32px; border-width:3px;"></div>
+    <p id="loading-msg">Analysing feedback with Claude…</p>
+    <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  </div>
+
+  <!-- Report -->
+  <div id="report-area"></div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TAB 2 — BROWSE
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="tab-browse">
+
+  <div class="config-card">
+    <h2>Browse raw entries</h2>
+    <div class="config-grid">
+      <div class="cfg-field">
+        <label>Filter by app</label>
+        <select id="browse-page-filter"><option value="">All apps</option></select>
+      </div>
+      <div class="cfg-field">
+        <label>Filter by type</label>
+        <select id="browse-type-filter">
+          <option value="">All types</option>
+          <option value="question">Questions</option>
+          <option value="error">Errors</option>
+          <option value="suggestion">Suggestions</option>
+        </select>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary btn-sm" onclick="renderBrowseTable()">Apply filter</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportCSV()">&#8595; Export CSV</button>
+    </div>
+  </div>
+
+  <div class="bar bar-error" id="browse-err-bar"></div>
+  <div id="browse-table-wrap">
+    <div class="empty-state">Load feedback on the Analysis tab first.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TAB 3 — CLEANUP
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="tab-cleanup">
+
+  <div class="cleanup-card">
+    <h2>Delete old entries</h2>
+    <p>
+      Removes feedback entries from the Firebase database that are older than
+      a specified number of days. This helps keep the database tidy.
+      This action cannot be undone — export a CSV first if you want a record.
+    </p>
+
+    <div class="age-row">
+      <label for="age-days">Delete entries older than</label>
+      <input type="number" id="age-days" value="90" min="1" max="3650" />
+      <label>days</label>
+    </div>
+
+    <button class="btn btn-ghost" onclick="previewCleanup()">Preview what will be deleted</button>
+
+    <div class="confirm-box" id="confirm-box">
+      <p id="confirm-msg"></p>
+      <div class="btn-row">
+        <button class="btn btn-danger" onclick="doCleanup()">Yes, delete these entries</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('confirm-box').style.display='none'">Cancel</button>
+      </div>
+    </div>
+
+    <div class="bar bar-success" id="cleanup-ok-bar" style="margin-top:16px;"></div>
+    <div class="bar bar-error"   id="cleanup-err-bar" style="margin-top:16px;"></div>
+
+    <div class="log-area" id="cleanup-log"></div>
+  </div>
+
+</div>
+
+<!-- Firebase SDK loads synchronously, then firebase-config.js calls initializeApp -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════ */
+let allEntries    = [];
+let filteredEntries = [];
+let selectedApps  = new Set();
+let cleanupKeys   = {};   /* key → timestamp for cleanup preview */
+
+/* Persist API key */
+const savedKey = localStorage.getItem('fb_claude_key') || '';
+if (savedKey) document.getElementById('api-key').value = savedKey;
+document.getElementById('api-key').addEventListener('input', e => {
+  localStorage.setItem('fb_claude_key', e.target.value.trim());
+});
+
+/* ══════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════ */
+function showTab(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════════════════
+   FIREBASE LOAD
+══════════════════════════════════════════════════════════ */
+async function loadFeedback() {
+  clearBars();
+  const loadBtn = document.getElementById('load-btn');
+  loadBtn.disabled = true;
+  loadBtn.innerHTML = '<span class="spinner"></span> Loading…';
+
+  try {
+    await waitForFirebase();
+    const db   = firebase.database();
+    const snap = await db.ref('feedback').once('value');
+    const raw  = snap.val() || {};
+
+    allEntries = Object.entries(raw).map(([key, val]) => ({ ...val, _key: key }))
+                   .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+
+    document.getElementById('db-status').textContent =
+      allEntries.length + ' entries loaded';
+
+    buildFiltered();
+    updateStats();
+    buildChips();
+    populateBrowseFilters();
+
+    document.getElementById('stats-strip').style.display = 'grid';
+    document.getElementById('chip-section').style.display = 'block';
+    document.getElementById('analyse-btn').disabled = false;
+    document.getElementById('entry-count').textContent =
+      filteredEntries.length + ' entries match current filters';
+
+    showInfo('Loaded ' + allEntries.length + ' entries from Firebase.');
+
+  } catch (err) {
+    showError('Could not load from Firebase: ' + err.message);
+  } finally {
+    loadBtn.disabled = false;
+    loadBtn.textContent = 'Reload feedback';
+  }
+}
+
+function waitForFirebase() {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    const check = setInterval(() => {
+      attempts++;
+      if (window.firebase && firebase.database && firebase.apps && firebase.apps.length > 0) {
+        clearInterval(check); resolve();
+      } else if (attempts > 80) {
+        clearInterval(check);
+        let hint = 'Firebase did not initialise.';
+        if (!window.firebase)              hint = 'Firebase SDK did not load — check firebase-config.js is in the same folder.';
+        else if (!firebase.apps || !firebase.apps.length) hint = 'Firebase SDK loaded but initializeApp was not called — check your API key and config values in firebase-config.js.';
+        reject(new Error(hint));
+      }
+    }, 100);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════
+   FILTERS
+══════════════════════════════════════════════════════════ */
+function buildFiltered() {
+  const days      = parseInt(document.getElementById('date-range').value, 10);
+  const typeF     = document.getElementById('focus-type').value;
+  const cutoff    = days > 0 ? new Date(Date.now() - days * 86400000).toISOString() : '';
+
+  filteredEntries = allEntries.filter(e => {
+    if (cutoff && e.timestamp < cutoff) return false;
+    if (typeF !== 'all' && e.type !== typeF) return false;
+    if (selectedApps.size > 0 && !selectedApps.has(e.page)) return false;
+    return true;
+  });
+
+  document.getElementById('entry-count').textContent =
+    filteredEntries.length + ' entries match current filters';
+}
+
+/* ══════════════════════════════════════════════════════════
+   STATS
+══════════════════════════════════════════════════════════ */
+function updateStats() {
+  const src = allEntries;
+  document.getElementById('st-total').textContent = src.length;
+  document.getElementById('st-q').textContent     = src.filter(e => e.type === 'question').length;
+  document.getElementById('st-e').textContent     = src.filter(e => e.type === 'error').length;
+  document.getElementById('st-s').textContent     = src.filter(e => e.type === 'suggestion').length;
+  document.getElementById('st-apps').textContent  = new Set(src.map(e => e.page)).size;
+}
+
+/* ══════════════════════════════════════════════════════════
+   APP CHIPS
+══════════════════════════════════════════════════════════ */
+function buildChips() {
+  const pages = [...new Set(allEntries.map(e => e.page))].sort();
+  const row   = document.getElementById('chip-row');
+  row.innerHTML = '';
+
+  const allChip = document.createElement('button');
+  allChip.className = 'chip active';
+  allChip.textContent = 'All apps';
+  allChip.dataset.page = '__all__';
+  allChip.addEventListener('click', () => {
+    selectedApps.clear();
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    allChip.classList.add('active');
+    buildFiltered();
+  });
+  row.appendChild(allChip);
+
+  pages.forEach(p => {
+    const c = document.createElement('button');
+    c.className = 'chip';
+    c.textContent = p;
+    c.dataset.page = p;
+    const count = allEntries.filter(e => e.page === p).length;
+    c.textContent = p + ' (' + count + ')';
+    c.addEventListener('click', () => {
+      if (selectedApps.has(p)) {
+        selectedApps.delete(p);
+        c.classList.remove('active');
+      } else {
+        selectedApps.add(p);
+        c.classList.add('active');
+        allChip.classList.remove('active');
+      }
+      if (selectedApps.size === 0) allChip.classList.add('active');
+      buildFiltered();
+    });
+    row.appendChild(c);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════
+   AI ANALYSIS
+══════════════════════════════════════════════════════════ */
+async function runAnalysis() {
+  const key = document.getElementById('api-key').value.trim();
+  if (!key) { showError('Enter your Anthropic API key in the Settings above.'); return; }
+
+  buildFiltered();
+
+  if (!filteredEntries.length) {
+    showError('No entries match the current filters. Try widening the date range or changing the type filter.');
+    return;
+  }
+
+  clearBars();
+  document.getElementById('loading-panel').style.display = 'block';
+  document.getElementById('report-area').style.display = 'none';
+  document.getElementById('report-area').innerHTML = '';
+  document.getElementById('analyse-btn').disabled = true;
+  document.getElementById('print-btn').style.display = 'none';
+
+  const detail = document.getElementById('detail-level').value;
+
+  setLoadingMsg('Preparing data for analysis…');
+
+  /* Group by app page */
+  const grouped = {};
+  filteredEntries.forEach(e => {
+    if (!grouped[e.page]) grouped[e.page] = [];
+    grouped[e.page].push({ type: e.type, comment: e.comment, date: e.timestamp.substring(0,10) });
+  });
+
+  const appCount   = Object.keys(grouped).length;
+  const totalCount = filteredEntries.length;
+  const days       = document.getElementById('date-range').value;
+  const typeF      = document.getElementById('focus-type').value;
+
+  setLoadingMsg('Sending ' + totalCount + ' entries to Claude for analysis…');
+
+  const detailInstruction = {
+    brief:    'Be concise. One sentence per issue description. Omit example quotes.',
+    standard: 'Include 1-2 short student quotes per issue where available.',
+    detailed: 'Include up to 3 student quotes per issue and give a detailed action.'
+  }[detail];
+
+  const prompt = `You are analysing student feedback for an AS/A-level Mathematics interactive web app suite created by a teacher.
+
+The feedback is grouped by app page. Each entry has a type (error, question, or suggestion) and a student comment.
+
+Your task is to identify DISTINCT issues — group similar comments together into a single named issue rather than listing every comment separately. An issue is distinct if it refers to a different mathematical concept, a different part of the app, or a different kind of problem.
+
+${detailInstruction}
+
+Respond ONLY with valid JSON (no markdown, no backticks, no preamble). The structure must be exactly:
+
+{
+  "overview": "2-3 sentence overall summary of the feedback",
+  "apps": [
+    {
+      "page": "filename.html",
+      "entryCount": 5,
+      "issues": [
+        {
+          "type": "error|question|suggestion",
+          "title": "Short title of the distinct issue (max 8 words)",
+          "severity": "high|medium|low",
+          "count": 2,
+          "description": "What the issue is about",
+          "quotes": ["student quote 1", "student quote 2"],
+          "action": "Specific recommended action for the teacher"
+        }
+      ]
+    }
+  ],
+  "topActions": [
+    "Most important action across all apps",
+    "Second most important action",
+    "Third most important action"
+  ]
+}
+
+severity guide: high = bug/error preventing understanding, medium = confusion needing clarification, low = minor improvement.
+
+Here is the feedback data:
+${JSON.stringify(grouped, null, 2)}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key':    key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true'
+      },
+      body: JSON.stringify({
+        model:      'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        messages:   [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error((err.error && err.error.message) || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    const raw  = data.content.map(b => b.text || '').join('');
+
+    /* Strip any accidental markdown fences */
+    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    const report = JSON.parse(clean);
+
+    setLoadingMsg('Rendering report…');
+    renderReport(report, totalCount, days, typeF);
+
+  } catch (err) {
+    document.getElementById('loading-panel').style.display = 'none';
+    showError('Analysis failed: ' + err.message);
+    document.getElementById('analyse-btn').disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER REPORT
+══════════════════════════════════════════════════════════ */
+function renderReport(report, totalCount, days, typeF) {
+  document.getElementById('loading-panel').style.display = 'none';
+  document.getElementById('analyse-btn').disabled = false;
+  document.getElementById('print-btn').style.display = 'inline-flex';
+
+  const area    = document.getElementById('report-area');
+  const dateStr = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
+  const daysTxt = days === '0' ? 'all time' : 'last ' + days + ' days';
+  const typeTxt = typeF === 'all' ? 'all types' : typeF + 's only';
+
+  let html = `
+    <div class="report-meta">
+      <span>Generated: <strong>${dateStr}</strong></span>
+      <span>Period: <strong>${daysTxt}</strong></span>
+      <span>Type filter: <strong>${typeTxt}</strong></span>
+      <span>Entries analysed: <strong>${totalCount}</strong></span>
+      <span>Apps: <strong>${report.apps.length}</strong></span>
+    </div>
+    <div class="report-body">
+  `;
+
+  /* Overview */
+  html += `<div class="report-overview"><strong>Overview &mdash;</strong> ${escHtml(report.overview)}</div>`;
+
+  /* Top actions */
+  if (report.topActions && report.topActions.length) {
+    html += `<div style="margin-bottom:28px;">
+      <div class="section-hd"><h2>Recommended actions</h2></div>
+      <div style="display:flex; flex-direction:column; gap:8px;">`;
+    report.topActions.forEach((a, i) => {
+      html += `<div style="display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid var(--border); border-radius:8px; padding:12px 16px;">
+        <span style="background:var(--navy); color:var(--gold); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0;">${i+1}</span>
+        <span style="font-size:14px; color:var(--ink); line-height:1.5;">${escHtml(a)}</span>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  /* Per-app sections */
+  (report.apps || []).forEach(app => {
+    html += `<div class="app-report">
+      <div class="app-report-title">
+        ${escHtml(app.page)}
+        <span>${app.entryCount} entr${app.entryCount === 1 ? 'y' : 'ies'}, ${app.issues.length} distinct issue${app.issues.length === 1 ? '' : 's'}</span>
+      </div>
+      <div class="issues-grid">`;
+
+    (app.issues || []).forEach(issue => {
+      const sevClass = { high:'sev-high', medium:'sev-medium', low:'sev-low' }[issue.severity] || '';
+      const sevLabel = { high:'High priority', medium:'Medium priority', low:'Low priority' }[issue.severity] || '';
+      const typeClass = 'type-' + (issue.type || 'question');
+      const typeLabel = { error:'Error', question:'Question', suggestion:'Suggestion' }[issue.type] || issue.type;
+
+      let quotesHtml = '';
+      if (issue.quotes && issue.quotes.length) {
+        quotesHtml = '<div class="issue-quotes">' +
+          issue.quotes.map(q => `<div class="issue-quote">"${escHtml(q)}"</div>`).join('') +
+          '</div>';
+      }
+
+      html += `<div class="issue-card ${typeClass}">
+        <div class="issue-header">
+          <div class="issue-title">${escHtml(issue.title)}</div>
+          <span class="issue-count">${issue.count || 1} report${(issue.count||1)===1?'':'s'}</span>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:9px; flex-wrap:wrap;">
+          <span class="badge badge-${issue.type}">${typeLabel}</span>
+          <span style="font-size:11px; padding:3px 8px; border-radius:10px; background:var(--cream2);" class="${sevClass}">${sevLabel}</span>
+        </div>
+        <div class="issue-desc">${escHtml(issue.description)}</div>
+        ${quotesHtml}
+        ${issue.action ? `<div class="issue-action"><strong>Action:</strong> ${escHtml(issue.action)}</div>` : ''}
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  html += `</div>`; /* /report-body */
+
+  area.innerHTML = html;
+  area.style.display = 'block';
+  area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ══════════════════════════════════════════════════════════
+   BROWSE TAB
+══════════════════════════════════════════════════════════ */
+function populateBrowseFilters() {
+  const sel = document.getElementById('browse-page-filter');
+  const pages = [...new Set(allEntries.map(e => e.page))].sort();
+  sel.innerHTML = '<option value="">All apps</option>';
+  pages.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p; sel.appendChild(o);
+  });
+  renderBrowseTable();
+}
+
+function renderBrowseTable() {
+  const pageF = document.getElementById('browse-page-filter').value;
+  const typeF = document.getElementById('browse-type-filter').value;
+
+  if (!allEntries.length) return;
+
+  let rows = allEntries.filter(e => {
+    if (pageF && e.page !== pageF) return false;
+    if (typeF && e.type !== typeF) return false;
+    return true;
+  });
+
+  const wrap = document.getElementById('browse-table-wrap');
+
+  if (!rows.length) {
+    wrap.innerHTML = '<div class="empty-state">No entries match this filter.</div>';
+    return;
+  }
+
+  wrap.innerHTML = `<div class="entries-table-wrap"><table>
+    <thead><tr>
+      <th>Date</th><th>App</th><th>Type</th><th>Comment</th>
+    </tr></thead>
+    <tbody>
+      ${rows.map(e => {
+        const d  = new Date(e.timestamp);
+        const ds = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+        const ts = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        const typeLabel = { error:'Error', question:'Question', suggestion:'Suggestion' }[e.type] || e.type;
+        return `<tr>
+          <td style="white-space:nowrap; color:var(--muted); font-size:12px;">${ds}<br>${ts}</td>
+          <td><code style="font-size:12px;">${escHtml(e.page||'')}</code></td>
+          <td><span class="badge badge-${e.type||'question'}">${typeLabel}</span></td>
+          <td style="max-width:420px;">${escHtml(e.comment||'')}</td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+function exportCSV() {
+  if (!allEntries.length) return;
+  const header = 'timestamp,page,type,comment\n';
+  const rows   = allEntries.map(e =>
+    [e.timestamp, e.page, e.type, '"' + (e.comment||'').replace(/"/g,'""') + '"'].join(',')
+  ).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'maths-feedback-' + new Date().toISOString().substring(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CLEANUP TAB
+══════════════════════════════════════════════════════════ */
+async function previewCleanup() {
+  clearCleanupBars();
+  document.getElementById('confirm-box').style.display = 'none';
+  document.getElementById('cleanup-log').style.display  = 'none';
+
+  const days = parseInt(document.getElementById('age-days').value, 10);
+  if (isNaN(days) || days < 1) {
+    showCleanupError('Please enter a number of days (minimum 1).');
+    return;
+  }
+
+  try {
+    await waitForFirebase();
+    const db    = firebase.database();
+    const snap  = await db.ref('feedback').once('value');
+    const raw   = snap.val() || {};
+    const cutoff = new Date(Date.now() - days * 86400000).toISOString();
+
+    cleanupKeys = {};
+    Object.entries(raw).forEach(([key, val]) => {
+      if (val.timestamp < cutoff) cleanupKeys[key] = val.timestamp;
+    });
+
+    const count = Object.keys(cleanupKeys).length;
+    const box   = document.getElementById('confirm-box');
+    const msg   = document.getElementById('confirm-msg');
+
+    if (count === 0) {
+      showCleanupOk('No entries are older than ' + days + ' days. Nothing to delete.');
+      return;
+    }
+
+    msg.textContent = `This will permanently delete ${count} entr${count===1?'y':'ies'} older than ${days} days (before ${new Date(cutoff).toLocaleDateString('en-GB', {day:'2-digit',month:'long',year:'numeric'})}). This cannot be undone.`;
+    box.style.display = 'block';
+
+  } catch (err) {
+    showCleanupError('Could not read database: ' + err.message);
+  }
+}
+
+async function doCleanup() {
+  document.getElementById('confirm-box').style.display = 'none';
+  clearCleanupBars();
+
+  const log  = document.getElementById('cleanup-log');
+  log.style.display = 'block';
+  log.textContent   = '';
+
+  const keys  = Object.keys(cleanupKeys);
+  let deleted = 0;
+  let failed  = 0;
+
+  try {
+    await waitForFirebase();
+    const db = firebase.database();
+
+    for (const key of keys) {
+      try {
+        await db.ref('feedback/' + key).remove();
+        deleted++;
+        log.textContent += '✓ Deleted entry from ' + cleanupKeys[key].substring(0,10) + '\n';
+        log.scrollTop = log.scrollHeight;
+      } catch (e) {
+        failed++;
+        log.textContent += '✗ Failed: ' + key + ' — ' + e.message + '\n';
+      }
+    }
+
+    const msg = `Deleted ${deleted} entr${deleted===1?'y':'ies'}.` +
+                (failed > 0 ? ` ${failed} failed — check database rules.` : '');
+    showCleanupOk(msg);
+
+    /* Reload allEntries */
+    allEntries = allEntries.filter(e => !cleanupKeys[e._key]);
+    updateStats();
+    document.getElementById('db-status').textContent = allEntries.length + ' entries loaded';
+
+  } catch (err) {
+    showCleanupError('Cleanup failed: ' + err.message);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════ */
+function escHtml(s) {
+  return String(s||'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function setLoadingMsg(msg) {
+  document.getElementById('loading-msg').textContent = msg;
+}
+
+function showError(msg) {
+  const b = document.getElementById('err-bar');
+  b.textContent = msg; b.style.display = 'block';
+  setTimeout(() => { b.style.display = 'none'; }, 10000);
+}
+function showInfo(msg) {
+  const b = document.getElementById('info-bar');
+  b.textContent = msg; b.style.display = 'block';
+  setTimeout(() => { b.style.display = 'none'; }, 5000);
+}
+function clearBars() {
+  ['err-bar','info-bar'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+}
+function showCleanupOk(msg) {
+  const b = document.getElementById('cleanup-ok-bar');
+  b.textContent = msg; b.style.display = 'block';
+}
+function showCleanupError(msg) {
+  const b = document.getElementById('cleanup-err-bar');
+  b.textContent = msg; b.style.display = 'block';
+}
+function clearCleanupBars() {
+  ['cleanup-ok-bar','cleanup-err-bar'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+  onload="doInit()"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Georgia,'Times New Roman',serif;background:#f4f6fb;color:#1a2035;line-height:1.75}
@@ -115,9 +115,9 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
 
 <h3>Why not simply use a Binomial?</h3>
 <p>The overall probability of a defective pen is:</p>
-<div class="fbox">\[\mathrm{P(defective)} = 0.64\times 0.03 + 0.36\times 0.06 = 0.0192 + 0.0216 = 0.0408\]</div>
-<p>It might be tempting to write \(X\sim B(10,\,0.0408)\) — but this gives the <em>wrong answer</em>. The simple Binomial assumes each pen independently has probability 0.0408 of being defective, with that probability identical for all pens. The reality is different: the actual defect probability for each pen depends on which machine made it, and all ten pens in the sample face the <em>same machine</em>.</p>
-<div class="note">&#9888;&ensp;Using \(X\sim B(10,\,0.0408)\) gives \(\mathrm{P}(X=2)\approx 0.0537\). The correct mixture answer is \(\approx 0.0559\) — an underestimate of about 4%. We'll see exactly why in Section 2.</div>
+<div class="fbox" id="s1-pdef">\[\mathrm{P(defective)} = 0.64\times 0.03 + 0.36\times 0.06 = 0.0192 + 0.0216 = 0.0408\]</div>
+<p id="s1-tempting">It might be tempting to write \(X\sim B(10,\,0.0408)\) — but this gives the <em>wrong answer</em>. The simple Binomial assumes each pen independently has probability 0.0408 of being defective, with that probability identical for all pens. The reality is different: the actual defect probability for each pen depends on which machine made it, and all ten pens in the sample face the <em>same machine</em>.</p>
+<div class="note" id="s1-note">&#9888;&ensp;Using \(X\sim B(10,\,0.0408)\) gives \(\mathrm{P}(X=2)\approx 0.0537\). The correct mixture answer is \(\approx 0.0559\) — an underestimate of about 4%. We'll see exactly why in Section 2.</div>
 </section>
 
 <!-- ═══════════════════ SECTION 2 ═══════════════════ -->
@@ -132,7 +132,7 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
 
 <p>For our factory, conditioning on the machine that produced the sampled pens gives two conditional Binomial distributions:</p>
 
-<div class="fbox" style="text-align:left;padding-left:2.5rem">
+<div class="fbox" id="s2-dists" style="text-align:left;padding-left:2.5rem">
   \[X \mid A \;\sim\; B(10,\;0.03)\]
   \[X \mid B \;\sim\; B(10,\;0.06)\]
 </div>
@@ -154,26 +154,26 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
   <line x1="290" y1="68" x2="155" y2="148" stroke="#1a6eb5" stroke-width="2" marker-end="url(#a2)"/>
   <line x1="390" y1="68" x2="525" y2="148" stroke="#c9a227" stroke-width="2" marker-end="url(#a2)"/>
   <!-- Branch probability labels -->
-  <text x="195" y="115" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#1a6eb5">P(A) = 0.64</text>
-  <text x="485" y="115" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#b07d00">P(B) = 0.36</text>
+  <text x="206" y="115" text-anchor="end" font-family="Georgia,serif" font-size="13" fill="#1a6eb5" id="svg-pA">P(A) = 0.64</text>
+  <text x="474" y="115" text-anchor="start" font-family="Georgia,serif" font-size="13" fill="#b07d00" id="svg-pB">P(B) = 0.36</text>
   <!-- Machine A box -->
   <rect x="60" y="148" width="190" height="54" rx="8" fill="white" stroke="#1a6eb5" stroke-width="1.5"/>
   <text x="155" y="170" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#1a3a5c">Machine A</text>
-  <text x="155" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#555">X | A ~ B(10, 0.03)</text>
+  <text x="155" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#555" id="svg-distA">X | A ~ B(10, 0.03)</text>
   <!-- Machine B box -->
   <rect x="430" y="148" width="190" height="54" rx="8" fill="white" stroke="#c9a227" stroke-width="1.5"/>
   <text x="525" y="170" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#1a3a5c">Machine B</text>
-  <text x="525" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#555">X | B ~ B(10, 0.06)</text>
+  <text x="525" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#555" id="svg-distB">X | B ~ B(10, 0.06)</text>
   <!-- Down arrows -->
   <line x1="155" y1="202" x2="155" y2="240" stroke="#999" stroke-width="1.5" marker-end="url(#a2)"/>
   <line x1="525" y1="202" x2="525" y2="240" stroke="#999" stroke-width="1.5" marker-end="url(#a2)"/>
   <!-- Contribution boxes -->
   <rect x="60" y="240" width="190" height="40" rx="6" fill="#eef4fb" stroke="#1a6eb5" stroke-width="1"/>
   <text x="155" y="256" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#444">Weighted contribution:</text>
-  <text x="155" y="273" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#1a6eb5">0.7 × P(X = k | A)</text>
+  <text x="155" y="273" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#1a6eb5" id="svg-wA">0.7 × P(X = k | A)</text>
   <rect x="430" y="240" width="190" height="40" rx="6" fill="#fffdf0" stroke="#c9a227" stroke-width="1"/>
   <text x="525" y="256" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#444">Weighted contribution:</text>
-  <text x="525" y="273" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#b07d00">0.3 × P(X = k | B)</text>
+  <text x="525" y="273" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#b07d00" id="svg-wB">0.3 × P(X = k | B)</text>
   <!-- Plus -->
   <text x="340" y="275" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#1a3a5c">+</text>
 </svg>
@@ -181,14 +181,14 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
 <h3>The general mixture formula</h3>
 <p>For a sample of size \(n\) drawn from a two-machine mixture:</p>
 <div class="fbox">
-\[\mathrm{P}(X = k) = w_A\binom{n}{k}p_A^k(1-p_A)^{n-k} \;+\; w_B\binom{n}{k}p_B^k(1-p_B)^{n-k}\]
+\[\mathrm{P}(X = k) = w_A\dbinom{n}{k}p_A^k(1-p_A)^{n-k} \;+\; w_B\dbinom{n}{k}p_B^k(1-p_B)^{n-k}\]
 </div>
 <p>where \(w_A + w_B = 1\) are the mixture weights (proportions of production), and \(p_A,\,p_B\) are the conditional defect probabilities.</p>
 
 <h3>Why is the simple Binomial wrong?</h3>
-<p>The simple \(B(10, 0.038)\) model assumes the ten bulbs independently have probability 0.038 each of being defective — it treats the process as homogeneous. The mixture model recognises that all ten sampled bulbs came from the <em>same</em> machine, which is unknown. This extra uncertainty increases the variance. Formally:</p>
+<p id="s2-simple-p">The simple \(B(10, 0.038)\) model assumes the ten bulbs independently have probability 0.038 each of being defective — it treats the process as homogeneous. The mixture model recognises that all ten sampled bulbs came from the <em>same</em> machine, which is unknown. This extra uncertainty increases the variance. Formally:</p>
 
-<div class="fbox" style="text-align:left;padding-left:2.5rem">
+<div class="fbox" id="s2-ex-formula" style="text-align:left;padding-left:2.5rem">
 \[\mathrm{E}[X] = n\bigl(w_A p_A + w_B p_B\bigr) = 10 \times 0.0408 = 0.408\quad\text{(same for both models)}\]
 \[\mathrm{Var}(X)_{\text{mixture}} \;>\; \mathrm{Var}(X)_{B(10,\,0.0408)}\quad\text{(mixture has extra variance)}\]
 </div>
@@ -203,47 +203,41 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
   <div class="step-lbl blue">Step 1</div>
   <h3>State the conditional distributions</h3>
   <p>Let \(X\) be the number of defective pens in a sample of 10. Conditioning on the machine:</p>
-  \[X \mid A \;\sim\; B(10,\;0.03), \qquad X \mid B \;\sim\; B(10,\;0.06)\]
+  <div id="s3-step1-dist">\[X \mid A \;\sim\; B(10,\;0.03), \qquad X \mid B \;\sim\; B(10,\;0.06)\]</div>
 </div>
 
 <div class="step">
   <div class="step-lbl blue">Step 2</div>
   <h3>Apply the Law of Total Probability</h3>
-  \[\mathrm{P}(X = 2) = \mathrm{P}(X = 2 \mid A)\,\mathrm{P}(A) + \mathrm{P}(X = 2 \mid B)\,\mathrm{P}(B)\]
-  \[\mathrm{P}(X = 2) = 0.64 \times \mathrm{P}(X = 2 \mid A) \;+\; 0.36 \times \mathrm{P}(X = 2 \mid B)\]
+  <div id="s3-step2-math">\[\mathrm{P}(X = 2) = \mathrm{P}(X = 2 \mid A)\,\mathrm{P}(A) + \mathrm{P}(X = 2 \mid B)\,\mathrm{P}(B)\]
+  \[\mathrm{P}(X = 2) = 0.64 \times \mathrm{P}(X = 2 \mid A) \;+\; 0.36 \times \mathrm{P}(X = 2 \mid B)\]</div>
 </div>
 
 <div class="step">
   <div class="step-lbl blue">Step 3</div>
-  <h3>Calculate P(X = 2 | A) using X | A ~ B(10, 0.03)</h3>
-  \[\mathrm{P}(X = 2 \mid A) = \binom{10}{2}(0.03)^2(0.97)^8\]
-  \[= 45 \times 0.0009 \times 0.78374\]
-  \[= 0.03174\]
+  <h3 id="s3-step3-h">Calculate P(X = 2 | A) using X | A ~ B(10, 0.03)</h3>
+  <div id="s3-step3-math"></div>
 </div>
 
 <div class="step">
   <div class="step-lbl blue">Step 4</div>
-  <h3>Calculate P(X = 2 | B) using X | B ~ B(10, 0.06)</h3>
-  \[\mathrm{P}(X = 2 \mid B) = \binom{10}{2}(0.06)^2(0.94)^8\]
-  \[= 45 \times 0.0036 \times 0.60957\]
-  \[= 0.09875\]
+  <h3 id="s3-step4-h">Calculate P(X = 2 | B) using X | B ~ B(10, 0.06)</h3>
+  <div id="s3-step4-math"></div>
 </div>
 
 <div class="step">
   <div class="step-lbl gold">Final Step</div>
   <h3>Combine the weighted contributions</h3>
-  \[\mathrm{P}(X = 2) = 0.64 \times 0.03174 + 0.36 \times 0.09875\]
-  \[= 0.02031 + 0.03555\]
-  \[= 0.05586\]
+  <div id="s3-final-math"></div>
 </div>
 
-<div class="ans">
+<div class="ans" id="s3-answer">
   <p style="opacity:0.7;font-size:0.85rem;margin-bottom:0.2rem">Answer</p>
   <div class="num">\(\mathrm{P}(X = 2) \approx 0.0559\)</div>
   <p>Approximately a 5.6% chance of exactly 2 defective pens in the sample</p>
 </div>
 
-<div class="note">
+<div class="note" id="s3-note">
   <strong>Comparison:</strong>&ensp;The simple \(B(10,\,0.0408)\) model gives
   \(\binom{10}{2}(0.0408)^2(0.9592)^8 \approx 0.0537\) — an underestimate of about 4%.
   The discrepancy grows for larger values of \(k\), since the mixture distribution has a heavier tail.
@@ -253,19 +247,19 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
 <!-- ═══════════════════ SECTION 4 ═══════════════════ -->
 <section id="s4" style="display:none">
 <h2>The Full Probability Distribution</h2>
-<p>The table and chart below show the complete distribution of \(X\) under the mixture model, compared to the simple \(B(10,\,0.038)\) approximation. The value \(k=2\) is highlighted.</p>
+<p id="s4-desc">The table and chart below show the complete distribution of \(X\) under the mixture model, compared to the simple \(B(10,\,0.038)\) approximation. The value \(k=2\) is highlighted.</p>
 
 <div style="background:white;border:1px solid #d5e2f0;border-radius:8px;padding:1rem 1rem 0.5rem;margin:1.2rem 0">
   <svg id="d4svg" viewBox="0 0 640 250" width="100%"></svg>
   <div class="legend">
     <span><span class="lsq" style="background:#1a6eb5"></span>Mixture P(X = k)</span>
-    <span><span class="lsq" style="background:none;border:2px solid #c9a227"></span>Simple B(10, 0.0408)</span>
+    <span><span class="lsq" style="background:none;border:2px solid #c9a227"></span><span id="s4-legend-simple">Simple B(10, 0.0408)</span></span>
     <span><span class="lsq" style="background:#1a3a5c"></span>k = 2 highlighted</span>
   </div>
 </div>
 
 <table class="dt" id="d4tbl">
-  <thead><tr><th>k</th><th>Mixture P(X = k)</th><th>Simple B(10, 0.0408)</th><th>Difference</th></tr></thead>
+  <thead id="s4-thead"><tr><th>k</th><th>Mixture P(X = k)</th><th>Simple B(10, 0.0408)</th><th>Difference</th></tr></thead>
   <tbody id="d4body"></tbody>
 </table>
 </section>
@@ -319,18 +313,13 @@ table.dt tr.hl td{background:#ddeeff;font-weight:bold;color:#1a6eb5}
 </main>
 
 <script>
-// ─── Navigation ───────────────────────────────────────────────
-function show(n){
-  for(let i=1;i<=5;i++) document.getElementById('s'+i).style.display = i===n?'':'none';
-  document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('active',i===n-1));
-  if(n===4) build4();
-  if(n===5) upd();
-}
+// ── Problem constants (single source of truth) ─────────────────────────────
+const PROB = { n:10, wA:0.64, pA:0.03, pB:0.06, k0:2 };
 
-// ─── Maths helpers ────────────────────────────────────────────
+// ── Maths helpers ──────────────────────────────────────────────────────────
 function C(n,k){
   if(k<0||k>n) return 0; if(k===0||k===n) return 1;
-  let r=1; for(let i=0;i<Math.min(k,n-k);i++) r=r*(n-i)/(i+1); return r;
+  let r=1; for(let i=0;i<Math.min(k,n-k);i++) r=r*(n-i)/(i+1); return Math.round(r);
 }
 function bp(n,k,p){
   if(p<=0) return k===0?1:0;
@@ -338,8 +327,208 @@ function bp(n,k,p){
   return C(n,k)*Math.pow(p,k)*Math.pow(1-p,n-k);
 }
 function mix(n,k,wA,pA,pB){ return wA*bp(n,k,pA)+(1-wA)*bp(n,k,pB); }
+function dp(x,d){ return x.toFixed(d); }
 
-// ─── SVG chart builder ───────────────────────────────────────
+// ── Navigation ────────────────────────────────────────────────────────────
+function show(n){
+  for(let i=1;i<=5;i++) document.getElementById('s'+i).style.display = i===n?'':'none';
+  document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('active',i===n-1));
+  if(n===4) build4();
+  if(n===5) upd();
+}
+
+// ── Inject all computed static content ────────────────────────────────────
+function computeStatics(){
+  const {n,wA,pA,pB,k0} = PROB;
+  const wB  = 1 - wA;
+  const ps  = wA*pA + wB*pB;           // simple-Binomial p
+  const Cnk = C(n,k0);                  // C(10,2) = 45
+  const pAk = bp(n,k0,pA);             // P(X=k0 | A)
+  const pBk = bp(n,k0,pB);             // P(X=k0 | B)
+  const pmix    = wA*pAk + wB*pBk;     // mixture answer
+  const psimple = bp(n,k0,ps);         // simple-Binomial answer
+  const pctDiff = Math.abs((pmix - psimple)/psimple*100);
+
+  const pAkPow  = Math.pow(pA,k0);     // 0.03^2
+  const qAnkPow = Math.pow(1-pA,n-k0); // 0.97^8
+  const pBkPow  = Math.pow(pB,k0);     // 0.06^2
+  const qBnkPow = Math.pow(1-pB,n-k0); // 0.94^8
+
+  const el = id => document.getElementById(id);
+
+  // ── Section 1: P(defective) formula ──────────────────────────────────────
+  el('s1-pdef').innerHTML =
+    `\\[\\mathrm{P(defective)} = ${wA}\\times ${pA} + ${wB}\\times ${pB} ` +
+    `= ${dp(wA*pA,4)} + ${dp(wB*pB,4)} = ${dp(ps,4)}\\]`;
+
+  // ── Section 1: note ───────────────────────────────────────────────────────
+  el('s1-note').innerHTML =
+    `&#9888;&ensp;Using \\(X\\sim B(${n},\\,${dp(ps,4)})\\) gives ` +
+    `\\(\\mathrm{P}(X=${k0})\\approx ${dp(psimple,4)}\\). ` +
+    `The correct mixture answer is \\(\\approx ${dp(pmix,4)}\\) ` +
+    `— an underestimate of about ${Math.round(pctDiff)}%. We'll see exactly why in Section 2.`;
+
+  // ── Section 2: SVG labels ─────────────────────────────────────────────────
+  el('svg-pA').textContent = `P(A) = ${wA}`;
+  el('svg-pB').textContent = `P(B) = ${wB}`;
+  el('svg-distA').textContent = `X | A ~ B(${n}, ${pA})`;
+  el('svg-distB').textContent = `X | B ~ B(${n}, ${pB})`;
+  el('svg-wA').textContent   = `${wA} \u00d7 P(X = k | A)`;   // fix: was 0.7
+  el('svg-wB').textContent   = `${wB} \u00d7 P(X = k | B)`;   // fix: was 0.3
+
+  // ── Section 2: conditional distributions fbox ─────────────────────────────
+  el('s2-dists').innerHTML =
+    `\\[X \\mid A \\;\\sim\\; B(${n},\\;${pA})\\]` +
+    `\\[X \\mid B \\;\\sim\\; B(${n},\\;${pB})\\]`;
+
+  // ── Section 2: "simple model" paragraph (fix wrong p value) ───────────────
+  el('s2-simple-p').innerHTML =
+    `The simple \\(B(${n},\\,${dp(ps,4)})\\) model assumes the ${n} bulbs independently ` +
+    `have probability ${dp(ps,4)} each of being defective — it treats the process as homogeneous. ` +
+    `The mixture model recognises that all ${n} sampled bulbs came from the <em>same</em> machine, ` +
+    `which is unknown. This extra uncertainty increases the variance. Formally:`;
+
+  // ── Section 2: E[X] / Var formula ────────────────────────────────────────
+  el('s2-ex-formula').innerHTML =
+    `\\[\\mathrm{E}[X] = n\\bigl(w_A p_A + w_B p_B\\bigr) = ` +
+    `${n} \\times ${dp(ps,4)} = ${dp(n*ps,4)}\\quad\\text{(same for both models)}\\]` +
+    `\\[\\mathrm{Var}(X)_{\\text{mixture}} \\;>\\; ` +
+    `\\mathrm{Var}(X)_{B(${n},\\,${dp(ps,4)})}\\quad\\text{(mixture has extra variance)}\\]`;
+
+  // ── Section 3: Step 1 distributions ──────────────────────────────────────
+  el('s3-step1-dist').innerHTML =
+    `\\[X \\mid A \\;\\sim\\; B(${n},\\;${pA}), \\qquad X \\mid B \\;\\sim\\; B(${n},\\;${pB})\\]`;
+
+  // ── Section 3: Step 2 formula ─────────────────────────────────────────────
+  el('s3-step2-math').innerHTML =
+    `\\[\\mathrm{P}(X = ${k0}) = \\mathrm{P}(X = ${k0} \\mid A)\\,\\mathrm{P}(A) + ` +
+    `\\mathrm{P}(X = ${k0} \\mid B)\\,\\mathrm{P}(B)\\]` +
+    `\\[\\mathrm{P}(X = ${k0}) = ${wA} \\times \\mathrm{P}(X = ${k0} \\mid A) \\;+\\; ` +
+    `${wB} \\times \\mathrm{P}(X = ${k0} \\mid B)\\]`;
+
+  // ── Section 3: Step 3 h3 + calculation ───────────────────────────────────
+  el('s3-step3-h').textContent =
+    `Calculate P(X = ${k0} | A) using X | A ~ B(${n}, ${pA})`;
+  el('s3-step3-math').innerHTML =
+    `\\[\\mathrm{P}(X = ${k0} \\mid A) = \\binom{${n}}{${k0}}(${pA})^{${k0}}(${1-pA})^{${n-k0}}\\]` +
+    `\\[= ${Cnk} \\times ${dp(pAkPow,4)} \\times ${dp(qAnkPow,5)}\\]` +
+    `\\[= ${dp(pAk,5)}\\]`;
+
+  // ── Section 3: Step 4 h3 + calculation ───────────────────────────────────
+  el('s3-step4-h').textContent =
+    `Calculate P(X = ${k0} | B) using X | B ~ B(${n}, ${pB})`;
+  el('s3-step4-math').innerHTML =
+    `\\[\\mathrm{P}(X = ${k0} \\mid B) = \\binom{${n}}{${k0}}(${pB})^{${k0}}(${1-pB})^{${n-k0}}\\]` +
+    `\\[= ${Cnk} \\times ${dp(pBkPow,4)} \\times ${dp(qBnkPow,5)}\\]` +
+    `\\[= ${dp(pBk,5)}\\]`;
+
+  // ── Section 3: Final step ─────────────────────────────────────────────────
+  el('s3-final-math').innerHTML =
+    `\\[\\mathrm{P}(X = ${k0}) = ${wA} \\times ${dp(pAk,5)} + ${wB} \\times ${dp(pBk,5)}\\]` +
+    `\\[= ${dp(wA*pAk,5)} + ${dp(wB*pBk,5)}\\]` +
+    `\\[= ${dp(pmix,5)}\\]`;
+
+  // ── Section 3: Answer box ─────────────────────────────────────────────────
+  el('s3-answer').innerHTML =
+    `<p style="opacity:0.7;font-size:0.85rem;margin-bottom:0.2rem">Answer</p>` +
+    `<div class="num">\\(\\mathrm{P}(X = ${k0}) \\approx ${dp(pmix,4)}\\)</div>` +
+    `<p>Approximately ${dp(pmix*100,1)}% chance of exactly ${k0} defective pens in the sample</p>`;
+
+  // ── Section 3: Comparison note ────────────────────────────────────────────
+  el('s3-note').innerHTML =
+    `<strong>Comparison:</strong>&ensp;The simple \\(B(${n},\\,${dp(ps,4)})\\) model gives ` +
+    `\\(\\binom{${n}}{${k0}}(${dp(ps,4)})^{${k0}}(${dp(1-ps,4)})^{${n-k0}} \\approx ${dp(psimple,4)}\\) ` +
+    `— an underestimate of about ${Math.round(pctDiff)}%. ` +
+    `The discrepancy grows for larger values of \\(k\\), since the mixture distribution has a heavier tail.`;
+
+  // ── Section 4: description paragraph ─────────────────────────────────────
+  el('s4-desc').innerHTML =
+    `The table and chart below show the complete distribution of \\(X\\) under the mixture model, ` +
+    `compared to the simple \\(B(${n},\\,${dp(ps,4)})\\) approximation. ` +
+    `The value \\(k=${k0}\\) is highlighted.`;
+
+  // ── Section 4: table header ───────────────────────────────────────────────
+  el('s4-thead').innerHTML =
+    `<tr><th>k</th><th>Mixture P(X = k)</th>` +
+    `<th>Simple B(${n}, ${dp(ps,4)})</th><th>Difference</th></tr>`;
+  // ── Section 4: chart legend ───────────────────────────────────────────────
+  el('s4-legend-simple').textContent = `Simple B(${n}, ${dp(ps,4)})`;
+
+  // ── Section 1: explanatory prose paragraph ────────────────────────────────
+  el('s1-tempting').innerHTML =
+    `It might be tempting to write \\(X\\sim B(${n},\\,${dp(ps,4)})\\) — but this gives the <em>wrong answer</em>. ` +
+    `The simple Binomial assumes each pen independently has probability ${dp(ps,4)} of being defective, ` +
+    `with that probability identical for all pens. The reality is different: the actual defect probability ` +
+    `for each pen depends on which machine made it, and all ${n} pens in the sample face the <em>same machine</em>.`;
+}
+
+// ── Section 4 chart + table ────────────────────────────────────────────────
+function build4(){
+  const {n,wA,pA,pB,k0} = PROB;
+  const wB = 1 - wA;
+  const ps = wA*pA + wB*pB;
+  const mix4=[], sim4=[];
+  for(let k=0;k<=n;k++){ mix4.push(mix(n,k,wA,pA,pB)); sim4.push(bp(n,k,ps)); }
+  const sv=document.getElementById('d4svg');
+  const W=640,H=250,pl=48,pr=14,pt=18,pb=38;
+  const maxP=Math.max(...mix4,...sim4)*1.18||0.01;
+  const bw=(W-pl-pr)/(n+2);
+  const cx=j=>pl+(j+0.5)*bw;
+  const ys=p=>H-pb-(p/maxP)*(H-pt-pb);
+  let h='';
+  for(let t=0;t<=4;t++){
+    const p=(maxP/4)*t,y=ys(p);
+    h+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#e8ecf4" stroke-width="1"/>`;
+    h+=`<text x="${pl-5}" y="${y+4}" text-anchor="end" font-size="10" fill="#999" font-family="Arial,sans-serif">${(p*100).toFixed(1)}%</text>`;
+  }
+  h+=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="#ccc" stroke-width="1"/>`;
+  for(let k=0;k<=n;k++){
+    const x=cx(k),isHL=k===k0;
+    const mH=H-pb-ys(mix4[k]),sH=H-pb-ys(sim4[k]);
+    if(mH>0) h+=`<rect x="${x-bw*0.4}" y="${ys(mix4[k])}" width="${bw*0.4}" height="${mH}" fill="${isHL?'#1a3a5c':'#1a6eb5'}" rx="2"/>`;
+    if(sH>0) h+=`<rect x="${x}" y="${ys(sim4[k])}" width="${bw*0.35}" height="${sH}" fill="none" stroke="#c9a227" stroke-width="1.5" rx="2"/>`;
+    h+=`<text x="${x-bw*0.1}" y="${H-pb+13}" text-anchor="middle" font-size="10.5" fill="${isHL?'#1a3a5c':'#777'}" font-family="Arial,sans-serif" font-weight="${isHL?'bold':'normal'}">${k}</text>`;
+  }
+  sv.innerHTML=h;
+  let rows='';
+  for(let k=0;k<=n;k++){
+    const diff=mix4[k]-sim4[k];
+    rows+=`<tr${k===k0?' class="hl"':''}><td>${k}</td><td>${mix4[k].toFixed(5)}</td><td>${sim4[k].toFixed(5)}</td><td>${(diff>=0?'+':'')+diff.toFixed(5)}</td></tr>`;
+  }
+  document.getElementById('d4body').innerHTML=rows;
+}
+
+// ── Section 5 interactive explorer ────────────────────────────────────────
+function upd(){
+  const wA=parseInt(document.getElementById('slwA').value)/100;
+  const pA=parseInt(document.getElementById('slpA').value)/100;
+  const pB=parseInt(document.getElementById('slpB').value)/100;
+  const n=parseInt(document.getElementById('sln').value);
+  let k=parseInt(document.getElementById('slk').value);
+  if(k>n){k=n;document.getElementById('slk').value=n;}
+  document.getElementById('slk').max=n;
+  document.getElementById('vwA').textContent=wA.toFixed(2);
+  document.getElementById('vwB').textContent=(1-wA).toFixed(2);
+  document.getElementById('vpA').textContent=(pA*100).toFixed(0)+'%';
+  document.getElementById('vpB').textContent=(pB*100).toFixed(0)+'%';
+  document.getElementById('vn').textContent=n;
+  document.getElementById('vk').textContent=k;
+  const pAk=bp(n,k,pA), pBk=bp(n,k,pB);
+  const pmx=wA*pAk+(1-wA)*pBk;
+  document.getElementById('rA').textContent=pAk.toFixed(5);
+  document.getElementById('rB').textContent=pBk.toFixed(5);
+  document.getElementById('rM').textContent=pmx.toFixed(5);
+  document.getElementById('fml').innerHTML=
+    `P(X = ${k}) &nbsp;=&nbsp; ${wA.toFixed(2)} &times; ${pAk.toFixed(5)} &nbsp;+&nbsp; ${(1-wA).toFixed(2)} &times; ${pBk.toFixed(5)} &nbsp;=&nbsp; <strong>${pmx.toFixed(5)}</strong>`;
+  const probs=[],stA=[],stB=[];
+  for(let j=0;j<=n;j++){
+    const a=wA*bp(n,j,pA), b=(1-wA)*bp(n,j,pB);
+    probs.push(a+b); stA.push(a); stB.push(b);
+  }
+  drawChart('e5svg',n,probs,k,{A:stA,B:stB});
+}
+
+// ── SVG chart builder ─────────────────────────────────────────────────────
 function drawChart(svgId,n,probs,hlk,stacks){
   const sv=document.getElementById(svgId);
   const W=640,H=250,pl=48,pr=14,pt=18,pb=38;
@@ -348,7 +537,6 @@ function drawChart(svgId,n,probs,hlk,stacks){
   const cx=j=>pl+(j+0.5)*bw;
   const ys=p=>H-pb-(p/maxP)*(H-pt-pb);
   let h='';
-  // gridlines
   for(let t=0;t<=4;t++){
     const p=(maxP/4)*t, y=ys(p);
     h+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#e8ecf4" stroke-width="1"/>`;
@@ -371,74 +559,15 @@ function drawChart(svgId,n,probs,hlk,stacks){
   sv.innerHTML=h;
 }
 
-// ─── Section 4 ────────────────────────────────────────────────
-function build4(){
-  const n=10,wA=0.64,pA=0.03,pB=0.06,ps=0.0408;
-  const mix4=[],sim4=[];
-  for(let k=0;k<=n;k++){ mix4.push(mix(n,k,wA,pA,pB)); sim4.push(bp(n,k,ps)); }
-  // chart — mixture bars then simple outline bars
-  const sv=document.getElementById('d4svg');
-  const W=640,H=250,pl=48,pr=14,pt=18,pb=38;
-  const maxP=Math.max(...mix4,...sim4)*1.18||0.01;
-  const bw=(W-pl-pr)/(n+2);
-  const cx=j=>pl+(j+0.5)*bw;
-  const ys=p=>H-pb-(p/maxP)*(H-pt-pb);
-  let h='';
-  for(let t=0;t<=4;t++){
-    const p=(maxP/4)*t,y=ys(p);
-    h+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#e8ecf4" stroke-width="1"/>`;
-    h+=`<text x="${pl-5}" y="${y+4}" text-anchor="end" font-size="10" fill="#999" font-family="Arial,sans-serif">${(p*100).toFixed(1)}%</text>`;
-  }
-  h+=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="#ccc" stroke-width="1"/>`;
-  for(let k=0;k<=n;k++){
-    const x=cx(k),isHL=k===2;
-    const mH=H-pb-ys(mix4[k]),sH=H-pb-ys(sim4[k]);
-    if(mH>0) h+=`<rect x="${x-bw*0.4}" y="${ys(mix4[k])}" width="${bw*0.4}" height="${mH}" fill="${isHL?'#1a3a5c':'#1a6eb5'}" rx="2"/>`;
-    if(sH>0) h+=`<rect x="${x}" y="${ys(sim4[k])}" width="${bw*0.35}" height="${sH}" fill="none" stroke="#c9a227" stroke-width="1.5" rx="2"/>`;
-    h+=`<text x="${x-bw*0.1}" y="${H-pb+13}" text-anchor="middle" font-size="10.5" fill="${isHL?'#1a3a5c':'#777'}" font-family="Arial,sans-serif" font-weight="${isHL?'bold':'normal'}">${k}</text>`;
-  }
-  sv.innerHTML=h;
-  // table
-  let rows='';
-  for(let k=0;k<=n;k++){
-    const diff=(mix4[k]-sim4[k]);
-    const diffStr=(diff>=0?'+':'')+diff.toFixed(5);
-    rows+=`<tr${k===2?' class="hl"':''}><td>${k}</td><td>${mix4[k].toFixed(5)}</td><td>${sim4[k].toFixed(5)}</td><td>${diffStr}</td></tr>`;
-  }
-  document.getElementById('d4body').innerHTML=rows;
-}
-
-// ─── Section 5 ────────────────────────────────────────────────
-function upd(){
-  const wA=parseInt(document.getElementById('slwA').value)/100;
-  const pA=parseInt(document.getElementById('slpA').value)/100;
-  const pB=parseInt(document.getElementById('slpB').value)/100;
-  const n=parseInt(document.getElementById('sln').value);
-  let k=parseInt(document.getElementById('slk').value);
-  if(k>n){k=n;document.getElementById('slk').value=n;}
-  document.getElementById('slk').max=n;
-
-  document.getElementById('vwA').textContent=wA.toFixed(2);
-  document.getElementById('vwB').textContent=(1-wA).toFixed(2);
-  document.getElementById('vpA').textContent=(pA*100).toFixed(0)+'%';
-  document.getElementById('vpB').textContent=(pB*100).toFixed(0)+'%';
-  document.getElementById('vn').textContent=n;
-  document.getElementById('vk').textContent=k;
-
-  const pAk=bp(n,k,pA), pBk=bp(n,k,pB);
-  const pmx=wA*pAk+(1-wA)*pBk;
-  document.getElementById('rA').textContent=pAk.toFixed(5);
-  document.getElementById('rB').textContent=pBk.toFixed(5);
-  document.getElementById('rM').textContent=pmx.toFixed(5);
-  document.getElementById('fml').innerHTML=
-    `P(X = ${k}) &nbsp;=&nbsp; ${wA.toFixed(2)} &times; ${pAk.toFixed(5)} &nbsp;+&nbsp; ${(1-wA).toFixed(2)} &times; ${pBk.toFixed(5)} &nbsp;=&nbsp; <strong>${pmx.toFixed(5)}</strong>`;
-
-  const probs=[],stA=[],stB=[];
-  for(let j=0;j<=n;j++){
-    const a=wA*bp(n,j,pA), b=(1-wA)*bp(n,j,pB);
-    probs.push(a+b); stA.push(a); stB.push(b);
-  }
-  drawChart('e5svg',n,probs,k,{A:stA,B:stB});
+// ── Entry point: compute statics, then render KaTeX ───────────────────────
+function doInit(){
+  computeStatics();
+  renderMathInElement(document.body,{
+    delimiters:[
+      {left:'\\[',right:'\\]',display:true},
+      {left:'\\(',right:'\\)',display:false}
+    ]
+  });
 }
 </script>
 </body>
