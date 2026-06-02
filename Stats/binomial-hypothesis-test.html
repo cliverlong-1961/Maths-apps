@@ -7,10 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body, {delimiters:[
-    {left:'\\[',right:'\\]',display:true},
-    {left:'\\(',right:'\\)',display:false}
-  ]});"></script>
+  onload="doInit()"></script>
 
 <style>
   :root {
@@ -348,9 +345,9 @@
 
   <h3>The Random Variable and Hypotheses</h3>
   <p>
-    Let \(X\) be the number of successes in \(S\) independent trials,
-    where each trial has probability \(p\) of success.
-    Under certain conditions (discussed below), \(X\sim B(S,\,p)\).
+    Let <span class="math-inline">X</span> be the number of successes in <span class="math-inline">S</span> independent trials,
+    where each trial has probability <span class="math-inline">p</span> of success.
+    Under certain conditions (discussed below), <span class="math-inline">X\sim B(S,\,p)</span>.
   </p>
 
   <div class="formula-block">
@@ -361,47 +358,47 @@
 
   <div class="two-col">
     <div class="col-card">
-      <h4>Null Hypothesis \(H_0\)</h4>
-      <p>The default assumption — that the probability of success equals some specified value \(k\):</p>
+      <h4>Null Hypothesis <span class="math-inline">H_0</span></h4>
+      <p>The default assumption — that the probability of success equals some specified value <span class="math-inline">k</span>:</p>
       <div class="formula-block">\[H_0 : p = k\]</div>
-      <p>We <em>assume</em> \(H_0\) is true when we perform calculations.</p>
+      <p>We <em>assume</em> <span class="math-inline">H_0</span> is true when we perform calculations.</p>
     </div>
     <div class="col-card">
-      <h4>Alternative Hypothesis \(H_1\)</h4>
-      <p>The claim we are testing — that \(p\) differs from \(k\) in a particular direction:</p>
+      <h4>Alternative Hypothesis <span class="math-inline">H_1</span></h4>
+      <p>The claim we are testing — that <span class="math-inline">p</span> differs from <span class="math-inline">k</span> in a particular direction:</p>
       <div class="formula-block">\[H_1: p < k \quad\text{or}\quad H_1: p > k\]</div>
       <p>These are <em>one-tailed</em> tests (lower or upper tail).</p>
     </div>
   </div>
 
-  <h3>The Significance Level \(\alpha\)</h3>
+  <h3>The Significance Level <span class="math-inline">\alpha</span></h3>
   <p>
-    The <strong>significance level</strong> \(\alpha\) (commonly \(0.05\) or \(0.01\)) is the threshold probability
-    below which we consider our observed result too unlikely under \(H_0\). It controls the risk
+    The <strong>significance level</strong> <span class="math-inline">\alpha</span> (commonly <span class="math-inline">0.05</span> or <span class="math-inline">0.01</span>) is the threshold probability
+    below which we consider our observed result too unlikely under <span class="math-inline">H_0</span>. It controls the risk
     of a <em>Type I error</em> — incorrectly rejecting a true null hypothesis.
   </p>
 
   <div class="info-box gold">
     <strong>Key quantities:</strong><br>
-    \(k\) — the hypothesised probability of success under \(H_0\)<br>
-    \(S\) — the sample size (number of trials)<br>
-    \(C\) — the observed number of successes in the sample<br>
-    \(\alpha\) — the significance level
+    <span class="math-inline">k</span> — the hypothesised probability of success under <span class="math-inline">H_0</span><br>
+    <span class="math-inline">S</span> — the sample size (number of trials)<br>
+    <span class="math-inline">C</span> — the observed number of successes in the sample<br>
+    <span class="math-inline">\alpha</span> — the significance level
   </div>
 
   <h3>The Procedure in Brief</h3>
   <ol class="step-list">
-    <li>State \(H_0: p = k\) and \(H_1\) (lower or upper tail).</li>
-    <li>Assume \(H_0\) is true, so \(X \sim B(S,\, k)\).</li>
-    <li>Observe \(C\) successes in the sample.</li>
-    <li>Calculate the probability of a result <em>at least as extreme</em> as \(C\), in the direction of \(H_1\).</li>
-    <li>If this probability \(\leq \alpha\), reject \(H_0\); otherwise, do not reject \(H_0\).</li>
+    <li>State <span class="math-inline">H_0: p = k</span> and <span class="math-inline">H_1</span> (lower or upper tail).</li>
+    <li>Assume <span class="math-inline">H_0</span> is true, so <span class="math-inline">X \sim B(S,\, k)</span>.</li>
+    <li>Observe <span class="math-inline">C</span> successes in the sample.</li>
+    <li>Calculate the probability of a result <em>at least as extreme</em> as <span class="math-inline">C</span>, in the direction of <span class="math-inline">H_1</span>.</li>
+    <li>If this probability <span class="math-inline">\leq \alpha</span>, reject <span class="math-inline">H_0</span>; otherwise, do not reject <span class="math-inline">H_0</span>.</li>
   </ol>
 
   <div class="info-box">
-    <strong>Why "at least as extreme"?</strong> We don't just ask how likely exactly \(C\) successes are —
+    <strong>Why "at least as extreme"?</strong> We don't just ask how likely exactly <span class="math-inline">C</span> successes are —
     we ask how likely it is to see something <em>as surprising or more surprising</em> than what we observed.
-    This cumulative probability is compared to \(\alpha\).
+    This cumulative probability is compared to <span class="math-inline">\alpha</span>.
   </div>
 </div>
 
@@ -411,36 +408,36 @@
 
   <p>
     The fundamental idea is a <strong>proof by contradiction</strong> applied to probability.
-    We temporarily assume \(H_0\) is true, then ask:
-    <em>"If \(H_0\) were true, how likely would it be to observe a result as extreme as — or more extreme than — what we actually saw?"</em>
+    We temporarily assume <span class="math-inline">H_0</span> is true, then ask:
+    <em>"If <span class="math-inline">H_0</span> were true, how likely would it be to observe a result as extreme as — or more extreme than — what we actually saw?"</em>
   </p>
 
   <div class="key-idea">
-    <strong>The p-value principle:</strong> If the observed result would be very unlikely under \(H_0\),
-    then \(H_0\) is probably not true — and we reject it.
-    The threshold for "very unlikely" is the significance level \(\alpha\).
+    <strong>The p-value principle:</strong> If the observed result would be very unlikely under <span class="math-inline">H_0</span>,
+    then <span class="math-inline">H_0</span> is probably not true — and we reject it.
+    The threshold for "very unlikely" is the significance level <span class="math-inline">\alpha</span>.
   </div>
 
   <h3>Tail Direction and Extremeness</h3>
   <p>
-    The meaning of "extreme" depends on \(H_1\). The direction of \(H_1\) tells us
-    <em>which way</em> we expect the data to deviate from \(H_0\) if \(H_0\) is false.
+    The meaning of "extreme" depends on <span class="math-inline">H_1</span>. The direction of <span class="math-inline">H_1</span> tells us
+    <em>which way</em> we expect the data to deviate from <span class="math-inline">H_0</span> if <span class="math-inline">H_0</span> is false.
   </p>
 
   <div class="two-col">
     <div class="col-card lower">
-      <h4><span class="tag lower">Lower tail</span> &nbsp;\(H_1: p < k\)</h4>
+      <h4><span class="tag lower">Lower tail</span> &nbsp;<span class="math-inline">H_1: p &lt; k</span></h4>
       <p>
-        We suspect \(p\) is <em>smaller</em> than \(k\).
-        A surprisingly <strong>small</strong> number of successes supports \(H_1\).
+        We suspect <span class="math-inline">p</span> is <em>smaller</em> than <span class="math-inline">k</span>.
+        A surprisingly <strong>small</strong> number of successes supports <span class="math-inline">H_1</span>.
         Extremeness means "unusually few successes".
       </p>
     </div>
     <div class="col-card upper">
-      <h4><span class="tag upper">Upper tail</span> &nbsp;\(H_1: p > k\)</h4>
+      <h4><span class="tag upper">Upper tail</span> &nbsp;<span class="math-inline">H_1: p &gt; k</span></h4>
       <p>
-        We suspect \(p\) is <em>larger</em> than \(k\).
-        A surprisingly <strong>large</strong> number of successes supports \(H_1\).
+        We suspect <span class="math-inline">p</span> is <em>larger</em> than <span class="math-inline">k</span>.
+        A surprisingly <strong>large</strong> number of successes supports <span class="math-inline">H_1</span>.
         Extremeness means "unusually many successes".
       </p>
     </div>
@@ -449,76 +446,76 @@
   <h3>Accumulating the Probability</h3>
   <p>
     Because we want the probability of a result "as extreme or more extreme", we must
-    <em>accumulate</em> probabilities across all values of \(X\) that are at least as extreme as \(C\).
-    This is why a <strong>cumulative probability</strong> — not just \(P(X=C)\) — is computed.
+    <em>accumulate</em> probabilities across all values of <span class="math-inline">X</span> that are at least as extreme as <span class="math-inline">C</span>.
+    This is why a <strong>cumulative probability</strong> — not just <span class="math-inline">P(X=C)</span> — is computed.
   </p>
 
   <div class="info-box orange">
-    <strong>Why not just use \(P(X = C)\)?</strong><br>
+    <strong>Why not just use <span class="math-inline">P(X = C)</span>?</strong><br>
     For a continuous distribution the probability of any single exact value is zero,
-    but even for discrete distributions, using only \(P(X=C)\) would under-count
-    the evidence against \(H_0\). We should count all outcomes <em>at least as contradictory</em>
-    to \(H_0\) as the one we observed.
+    but even for discrete distributions, using only <span class="math-inline">P(X=C)</span> would under-count
+    the evidence against <span class="math-inline">H_0</span>. We should count all outcomes <em>at least as contradictory</em>
+    to <span class="math-inline">H_0</span> as the one we observed.
   </div>
 
   <h3>The Decision Rule</h3>
 
   <div class="two-col">
     <div class="col-card lower">
-      <h4>If \(H_1: p < k\)</h4>
+      <h4>If <span class="math-inline">H_1: p &lt; k</span></h4>
       <div class="formula-block">\[P(X \leq C) \leq \alpha \Rightarrow \text{Reject } H_0\]</div>
     </div>
     <div class="col-card upper">
-      <h4>If \(H_1: p > k\)</h4>
+      <h4>If <span class="math-inline">H_1: p &gt; k</span></h4>
       <div class="formula-block">\[P(X \geq C) \leq \alpha \Rightarrow \text{Reject } H_0\]</div>
     </div>
   </div>
 
   <p>
-    If the cumulative probability exceeds \(\alpha\), the result is not sufficiently unusual under \(H_0\),
-    so we <strong>do not reject \(H_0\)</strong>. (We never "accept \(H_0\)" — we simply lack evidence to reject it.)
+    If the cumulative probability exceeds <span class="math-inline">\alpha</span>, the result is not sufficiently unusual under <span class="math-inline">H_0</span>,
+    so we <strong>do not reject <span class="math-inline">H_0</span></strong>. (We never "accept <span class="math-inline">H_0</span>" — we simply lack evidence to reject it.)
   </p>
 
   <div class="info-box green">
-    <strong>Remember:</strong> all probability calculations are done assuming \(H_0\) is true,
-    i.e. using \(X \sim B(S, k)\). The observed value \(C\) is fixed; we calculate
+    <strong>Remember:</strong> all probability calculations are done assuming <span class="math-inline">H_0</span> is true,
+    i.e. using <span class="math-inline">X \sim B(S, k)</span>. The observed value <span class="math-inline">C</span> is fixed; we calculate
     how probable it and more extreme outcomes would be under that model.
   </div>
 </div>
 
 <!-- ===== SECTION 3: LOWER TAIL ===== -->
 <div id="lower" class="section">
-  <h2>3. The Lower Tail Test &nbsp;<span class="tag lower">\(H_1: p < k\)</span></h2>
+  <h2>3. The Lower Tail Test &nbsp;<span class="tag lower"><span class="math-inline">H_1: p &lt; k</span></span></h2>
 
   <h3>When is this test used?</h3>
   <p>
     Use a lower tail test when you have reason to believe the true probability of success
-    may be <em>less than</em> the claimed value \(k\). The observed number of successes \(C\)
+    may be <em>less than</em> the claimed value <span class="math-inline">k</span>. The observed number of successes <span class="math-inline">C</span>
     provides the evidence.
   </p>
 
   <div class="info-box">
-    <strong>Example context:</strong> A manufacturer claims that \(20\%\) of items are defective
-    (\(p = 0.20\)). A quality inspector suspects the rate has <em>decreased</em> following
-    process improvements. Testing on a sample of \(S\) items with \(C\) defectives found,
-    the test is \(H_0: p = 0.20\), \(H_1: p < 0.20\).
+    <strong>Example context:</strong> A manufacturer claims that <span class="math-inline">20\%</span> of items are defective
+    (<span class="math-inline">p = 0.20</span>). A quality inspector suspects the rate has <em>decreased</em> following
+    process improvements. Testing on a sample of <span class="math-inline">S</span> items with <span class="math-inline">C</span> defectives found,
+    the test is <span class="math-inline">H_0: p = 0.20</span>, <span class="math-inline">H_1: p &lt; 0.20</span>.
   </div>
 
   <h3>The Probability to Calculate</h3>
   <p>
-    Assuming \(H_0\) is true (\(X \sim B(S, k)\)), we compute:
+    Assuming <span class="math-inline">H_0</span> is true (<span class="math-inline">X \sim B(S, k)</span>), we compute:
   </p>
   <div class="formula-block">
     \[P(X \leq C) = \sum_{r=0}^{C} \binom{S}{r} k^r (1-k)^{S-r}\]
   </div>
   <p>
-    This is the probability of observing \(C\) successes <strong>or fewer</strong> if \(H_0\) were true.
+    This is the probability of observing <span class="math-inline">C</span> successes <strong>or fewer</strong> if <span class="math-inline">H_0</span> were true.
   </p>
 
   <h3>Visual Interpretation</h3>
   <p>
-    The diagram below shows a binomial distribution. The shaded bars represent \(P(X \leq C)\)
-    — the probability mass in the <strong>lower tail</strong>, accumulated from 0 up to \(C\).
+    The diagram below shows a binomial distribution. The shaded bars represent <span class="math-inline">P(X \leq C)</span>
+    — the probability mass in the <strong>lower tail</strong>, accumulated from 0 up to <span class="math-inline">C</span>.
   </p>
 
   <div class="chart-wrap">
@@ -529,40 +526,40 @@
   <h3>The Decision</h3>
   <div class="two-col">
     <div class="col-card lower">
-      <h4>Reject \(H_0\) if:</h4>
+      <h4>Reject <span class="math-inline">H_0</span> if:</h4>
       <div class="formula-block">\[P(X \leq C) \leq \alpha\]</div>
       <p>The observed result falls in the <strong>critical region</strong>.</p>
-      <p>There is sufficient evidence at the \(\alpha\) significance level to conclude \(p < k\).</p>
+      <p>There is sufficient evidence at the <span class="math-inline">\alpha</span> significance level to conclude <span class="math-inline">p &lt; k</span>.</p>
     </div>
     <div class="col-card">
-      <h4>Do not reject \(H_0\) if:</h4>
+      <h4>Do not reject <span class="math-inline">H_0</span> if:</h4>
       <div class="formula-block">\[P(X \leq C) > \alpha\]</div>
-      <p>The result is not sufficiently unusual under \(H_0\).</p>
-      <p>There is insufficient evidence to conclude \(p < k\).</p>
+      <p>The result is not sufficiently unusual under <span class="math-inline">H_0</span>.</p>
+      <p>There is insufficient evidence to conclude <span class="math-inline">p &lt; k</span>.</p>
     </div>
   </div>
 
   <h3>Worked Example</h3>
   <div class="info-box gold">
     <p>
-      A die is rolled \(S = 20\) times. Under \(H_0\), each roll has \(p = \tfrac{1}{6} \approx 0.167\)
+      A die is rolled <span class="math-inline">S = 20</span> times. Under <span class="math-inline">H_0</span>, each roll has <span class="math-inline">p = \tfrac{1}{6} \approx 0.167</span>
       chance of showing a six. A player suspects the die gives <em>fewer</em> sixes than expected.
-      In the experiment, \(C = 1\) six is observed. Test at \(\alpha = 0.05\).
+      In the experiment, <span class="math-inline">C = 1</span> six is observed. Test at <span class="math-inline">\alpha = 0.05</span>.
     </p>
     <p>
-      \(H_0: p = \tfrac{1}{6}\), &nbsp; \(H_1: p < \tfrac{1}{6}\), &nbsp; \(X \sim B(20, \tfrac{1}{6})\)
+      <span class="math-inline">H_0: p = \tfrac{1}{6}</span>, &nbsp; <span class="math-inline">H_1: p &lt; \tfrac{1}{6}</span>, &nbsp; <span class="math-inline">X \sim B(20, \tfrac{1}{6})</span>
     </p>
     <p>
-      \(P(X \leq 1) = P(X=0) + P(X=1)\)
+      <span class="math-inline">P(X \leq 1) = P(X=0) + P(X=1)</span>
     </p>
     <p>
-      \(= \left(\tfrac{5}{6}\right)^{20} + \binom{20}{1}\left(\tfrac{1}{6}\right)\left(\tfrac{5}{6}\right)^{19}\)
+      <span class="math-inline">= \left(\tfrac{5}{6}\right)^{20} + \binom{20}{1}\left(\tfrac{1}{6}\right)\left(\tfrac{5}{6}\right)^{19}</span>
     </p>
     <p>
-      \(\approx 0.0261 + 0.1043 = 0.1304\)
+      <span id="s3-approx"></span>
     </p>
-    <p>
-      Since \(0.1304 > 0.05\), we <strong>do not reject \(H_0\)</strong>. There is insufficient evidence
+    <p id="s3-conclusion">
+      Since <span class="math-inline">0.1304 &gt; 0.05</span>, we <strong>do not reject <span class="math-inline">H_0</span></strong>. There is insufficient evidence
       at the 5% level that the die produces fewer sixes than expected.
     </p>
   </div>
@@ -570,30 +567,30 @@
 
 <!-- ===== SECTION 4: UPPER TAIL ===== -->
 <div id="upper" class="section">
-  <h2>4. The Upper Tail Test &nbsp;<span class="tag upper">\(H_1: p > k\)</span></h2>
+  <h2>4. The Upper Tail Test &nbsp;<span class="tag upper"><span class="math-inline">H_1: p &gt; k</span></span></h2>
 
   <h3>When is this test used?</h3>
   <p>
     Use an upper tail test when you have reason to believe the true probability of success
-    may be <em>greater than</em> the claimed value \(k\). The observed number of successes \(C\)
+    may be <em>greater than</em> the claimed value <span class="math-inline">k</span>. The observed number of successes <span class="math-inline">C</span>
     provides the evidence.
   </p>
 
   <div class="info-box">
     <strong>Example context:</strong> A new teaching method is claimed to produce a pass rate
-    of \(p = 0.70\). A researcher suspects the method is <em>better</em> than claimed.
-    After applying it to \(S\) students, \(C\) pass. The test is \(H_0: p = 0.70\), \(H_1: p > 0.70\).
+    of <span class="math-inline">p = 0.70</span>. A researcher suspects the method is <em>better</em> than claimed.
+    After applying it to <span class="math-inline">S</span> students, <span class="math-inline">C</span> pass. The test is <span class="math-inline">H_0: p = 0.70</span>, <span class="math-inline">H_1: p &gt; 0.70</span>.
   </div>
 
   <h3>The Probability to Calculate</h3>
   <p>
-    Assuming \(H_0\) is true (\(X \sim B(S, k)\)), we compute:
+    Assuming <span class="math-inline">H_0</span> is true (<span class="math-inline">X \sim B(S, k)</span>), we compute:
   </p>
   <div class="formula-block">
     \[P(X \geq C) = \sum_{r=C}^{S} \binom{S}{r} k^r (1-k)^{S-r}\]
   </div>
   <p>
-    This is the probability of observing \(C\) successes <strong>or more</strong> if \(H_0\) were true.
+    This is the probability of observing <span class="math-inline">C</span> successes <strong>or more</strong> if <span class="math-inline">H_0</span> were true.
   </p>
 
   <p>
@@ -605,8 +602,8 @@
 
   <h3>Visual Interpretation</h3>
   <p>
-    The diagram below shows a binomial distribution. The shaded bars represent \(P(X \geq C)\)
-    — the probability mass in the <strong>upper tail</strong>, accumulated from \(C\) upwards.
+    The diagram below shows a binomial distribution. The shaded bars represent <span class="math-inline">P(X \geq C)</span>
+    — the probability mass in the <strong>upper tail</strong>, accumulated from <span class="math-inline">C</span> upwards.
   </p>
 
   <div class="chart-wrap">
@@ -617,36 +614,34 @@
   <h3>The Decision</h3>
   <div class="two-col">
     <div class="col-card upper">
-      <h4>Reject \(H_0\) if:</h4>
+      <h4>Reject <span class="math-inline">H_0</span> if:</h4>
       <div class="formula-block">\[P(X \geq C) \leq \alpha\]</div>
       <p>The observed result falls in the <strong>critical region</strong>.</p>
-      <p>There is sufficient evidence at the \(\alpha\) significance level to conclude \(p > k\).</p>
+      <p>There is sufficient evidence at the <span class="math-inline">\alpha</span> significance level to conclude <span class="math-inline">p &gt; k</span>.</p>
     </div>
     <div class="col-card">
-      <h4>Do not reject \(H_0\) if:</h4>
+      <h4>Do not reject <span class="math-inline">H_0</span> if:</h4>
       <div class="formula-block">\[P(X \geq C) > \alpha\]</div>
-      <p>The result is not sufficiently unusual under \(H_0\).</p>
-      <p>There is insufficient evidence to conclude \(p > k\).</p>
+      <p>The result is not sufficiently unusual under <span class="math-inline">H_0</span>.</p>
+      <p>There is insufficient evidence to conclude <span class="math-inline">p &gt; k</span>.</p>
     </div>
   </div>
 
   <h3>Worked Example</h3>
   <div class="info-box gold">
     <p>
-      A coin is tossed \(S = 15\) times. Under \(H_0\), the probability of heads is \(p = 0.5\).
-      A gambler suspects the coin is biased towards heads. They observe \(C = 11\) heads.
-      Test at \(\alpha = 0.05\).
+      A coin is tossed <span class="math-inline">S = 15</span> times. Under <span class="math-inline">H_0</span>, the probability of heads is <span class="math-inline">p = 0.5</span>.
+      A gambler suspects the coin is biased towards heads. They observe <span class="math-inline">C = 11</span> heads.
+      Test at <span class="math-inline">\alpha = 0.05</span>.
     </p>
     <p>
-      \(H_0: p = 0.5\), &nbsp; \(H_1: p > 0.5\), &nbsp; \(X \sim B(15, 0.5)\)
+      <span class="math-inline">H_0: p = 0.5</span>, &nbsp; <span class="math-inline">H_1: p &gt; 0.5</span>, &nbsp; <span class="math-inline">X \sim B(15, 0.5)</span>
     </p>
     <p>
-      \(P(X \geq 11) = 1 - P(X \leq 10) \approx 1 - 0.9408 = 0.0592\)
+      <span id="s4-calc"></span>
     </p>
     <p>
-      Since \(0.0592 > 0.05\), we <strong>do not reject \(H_0\)</strong>. There is insufficient
-      evidence at the 5% level that the coin is biased towards heads. (Note: this would be
-      rejected at the 10% level.)
+      <span id="s4-conclusion"></span>
     </p>
   </div>
 </div>
@@ -657,8 +652,8 @@
 
   <p>
     This is perhaps the most conceptually important question in the test: why does
-    \(H_1: p < k\) lead us to compute \(P(X \leq C)\), and \(H_1: p > k\) lead to
-    \(P(X \geq C)\)? The answer comes from thinking carefully about what "extreme" means
+    <span class="math-inline">H_1: p &lt; k</span> lead us to compute <span class="math-inline">P(X \leq C)</span>, and <span class="math-inline">H_1: p &gt; k</span> lead to
+    <span class="math-inline">P(X \geq C)</span>? The answer comes from thinking carefully about what "extreme" means
     in each case.
   </p>
 
@@ -666,37 +661,37 @@
 
   <div class="key-idea">
     <strong>Rule:</strong> We always compute the probability of outcomes that are
-    <em>at least as supportive of \(H_1\)</em> — and therefore at least as damaging to \(H_0\) —
-    as the observed result \(C\).
-    The inequality direction in the cumulative probability matches the inequality in \(H_1\).
+    <em>at least as supportive of <span class="math-inline">H_1</span></em> — and therefore at least as damaging to <span class="math-inline">H_0</span> —
+    as the observed result <span class="math-inline">C</span>.
+    The inequality direction in the cumulative probability matches the inequality in <span class="math-inline">H_1</span>.
   </div>
 
   <hr class="divider">
 
-  <h3>Case 1: \(H_1: p < k\) &nbsp;→&nbsp; Compute \(P(X \leq C)\)</h3>
+  <h3>Case 1: <span class="math-inline">H_1: p &lt; k</span> &nbsp;→&nbsp; Compute <span class="math-inline">P(X \leq C)</span></h3>
 
   <p>
-    If \(p\) is truly less than \(k\), we expect the number of successes to be
-    <strong>smaller</strong> than the mean \(Sk\) under \(H_0\).
-    So the evidence <em>against</em> \(H_0\) and <em>for</em> \(H_1\) comes in the form of
-    <strong>a small value of \(X\)</strong>.
+    If <span class="math-inline">p</span> is truly less than <span class="math-inline">k</span>, we expect the number of successes to be
+    <strong>smaller</strong> than the mean <span class="math-inline">Sk</span> under <span class="math-inline">H_0</span>.
+    So the evidence <em>against</em> <span class="math-inline">H_0</span> and <em>for</em> <span class="math-inline">H_1</span> comes in the form of
+    <strong>a small value of <span class="math-inline">X</span></strong>.
   </p>
 
   <div class="info-box">
-    Think of it this way: if the true \(p\) is small, successes are rare,
-    so the data should show <em>few</em> successes. Observing a small \(C\) is
-    therefore consistent with \(H_1: p < k\).
+    Think of it this way: if the true <span class="math-inline">p</span> is small, successes are rare,
+    so the data should show <em>few</em> successes. Observing a small <span class="math-inline">C</span> is
+    therefore consistent with <span class="math-inline">H_1: p &lt; k</span>.
   </div>
 
   <p>
-    Now, if \(C\) successes is strong evidence against \(H_0\), then observing
-    <em>even fewer</em> successes — say \(C-1, C-2, \ldots, 0\) — would be
-    <strong>even stronger</strong> evidence against \(H_0\).
-    All values from \(0\) to \(C\) are "at least as extreme" as \(C\) in the lower direction.
+    Now, if <span class="math-inline">C</span> successes is strong evidence against <span class="math-inline">H_0</span>, then observing
+    <em>even fewer</em> successes — say <span class="math-inline">C-1, C-2, \ldots, 0</span> — would be
+    <strong>even stronger</strong> evidence against <span class="math-inline">H_0</span>.
+    All values from <span class="math-inline">0</span> to <span class="math-inline">C</span> are "at least as extreme" as <span class="math-inline">C</span> in the lower direction.
   </p>
 
   <p>
-    Therefore, we accumulate probability from \(0\) up to and including \(C\):
+    Therefore, we accumulate probability from <span class="math-inline">0</span> up to and including <span class="math-inline">C</span>:
   </p>
 
   <div class="formula-block">
@@ -704,38 +699,38 @@
   </div>
 
   <div class="info-box green">
-    <strong>Why include outcomes smaller than \(C\)?</strong><br>
-    If observing \(C\) successes gives evidence against \(H_0\), observing \(C-1\) or fewer
+    <strong>Why include outcomes smaller than <span class="math-inline">C</span>?</strong><br>
+    If observing <span class="math-inline">C</span> successes gives evidence against <span class="math-inline">H_0</span>, observing <span class="math-inline">C-1</span> or fewer
     would give <em>even more</em> evidence. We must count all such outcomes in our probability
     — otherwise we would underestimate how unlikely the tail is.
   </div>
 
   <hr class="divider">
 
-  <h3>Case 2: \(H_1: p > k\) &nbsp;→&nbsp; Compute \(P(X \geq C)\)</h3>
+  <h3>Case 2: <span class="math-inline">H_1: p &gt; k</span> &nbsp;→&nbsp; Compute <span class="math-inline">P(X \geq C)</span></h3>
 
   <p>
-    If \(p\) is truly greater than \(k\), we expect the number of successes to be
-    <strong>larger</strong> than the mean \(Sk\) under \(H_0\).
-    So the evidence <em>against</em> \(H_0\) and <em>for</em> \(H_1\) comes in the form of
-    <strong>a large value of \(X\)</strong>.
+    If <span class="math-inline">p</span> is truly greater than <span class="math-inline">k</span>, we expect the number of successes to be
+    <strong>larger</strong> than the mean <span class="math-inline">Sk</span> under <span class="math-inline">H_0</span>.
+    So the evidence <em>against</em> <span class="math-inline">H_0</span> and <em>for</em> <span class="math-inline">H_1</span> comes in the form of
+    <strong>a large value of <span class="math-inline">X</span></strong>.
   </p>
 
   <div class="info-box">
-    Think of it this way: if the true \(p\) is large, successes are frequent,
-    so the data should show <em>many</em> successes. Observing a large \(C\) is
-    therefore consistent with \(H_1: p > k\).
+    Think of it this way: if the true <span class="math-inline">p</span> is large, successes are frequent,
+    so the data should show <em>many</em> successes. Observing a large <span class="math-inline">C</span> is
+    therefore consistent with <span class="math-inline">H_1: p &gt; k</span>.
   </div>
 
   <p>
-    If \(C\) successes is strong evidence against \(H_0\), then observing
-    <em>even more</em> successes — say \(C+1, C+2, \ldots, S\) — would be
-    <strong>even stronger</strong> evidence against \(H_0\).
-    All values from \(C\) to \(S\) are "at least as extreme" as \(C\) in the upper direction.
+    If <span class="math-inline">C</span> successes is strong evidence against <span class="math-inline">H_0</span>, then observing
+    <em>even more</em> successes — say <span class="math-inline">C+1, C+2, \ldots, S</span> — would be
+    <strong>even stronger</strong> evidence against <span class="math-inline">H_0</span>.
+    All values from <span class="math-inline">C</span> to <span class="math-inline">S</span> are "at least as extreme" as <span class="math-inline">C</span> in the upper direction.
   </p>
 
   <p>
-    Therefore, we accumulate probability from \(C\) up to \(S\):
+    Therefore, we accumulate probability from <span class="math-inline">C</span> up to <span class="math-inline">S</span>:
   </p>
 
   <div class="formula-block">
@@ -743,8 +738,8 @@
   </div>
 
   <div class="info-box green">
-    <strong>Why include outcomes larger than \(C\)?</strong><br>
-    If observing \(C\) successes gives evidence against \(H_0\), observing \(C+1\) or more
+    <strong>Why include outcomes larger than <span class="math-inline">C</span>?</strong><br>
+    If observing <span class="math-inline">C</span> successes gives evidence against <span class="math-inline">H_0</span>, observing <span class="math-inline">C+1</span> or more
     would give <em>even more</em> evidence. We must count all such outcomes in our probability
     — otherwise we would underestimate how unlikely the tail is.
   </div>
@@ -756,7 +751,7 @@
   <table>
     <thead>
       <tr>
-        <th>Alternative \(H_1\)</th>
+        <th>Alternative <span class="math-inline">H_1</span></th>
         <th>Direction of evidence</th>
         <th>"More extreme" means</th>
         <th>Cumulative probability</th>
@@ -764,45 +759,45 @@
     </thead>
     <tbody>
       <tr>
-        <td>\(H_1: p < k\)</td>
-        <td>Small \(X\) supports \(H_1\)</td>
-        <td>Even fewer successes: \(X < C\)</td>
-        <td>\(P(X \leq C)\) &nbsp;<span class="tag lower">lower tail</span></td>
+        <td><span class="math-inline">H_1: p &lt; k</span></td>
+        <td>Small <span class="math-inline">X</span> supports <span class="math-inline">H_1</span></td>
+        <td>Even fewer successes: <span class="math-inline">X &lt; C</span></td>
+        <td><span class="math-inline">P(X \leq C)</span> &nbsp;<span class="tag lower">lower tail</span></td>
       </tr>
       <tr>
-        <td>\(H_1: p > k\)</td>
-        <td>Large \(X\) supports \(H_1\)</td>
-        <td>Even more successes: \(X > C\)</td>
-        <td>\(P(X \geq C)\) &nbsp;<span class="tag upper">upper tail</span></td>
+        <td><span class="math-inline">H_1: p &gt; k</span></td>
+        <td>Large <span class="math-inline">X</span> supports <span class="math-inline">H_1</span></td>
+        <td>Even more successes: <span class="math-inline">X &gt; C</span></td>
+        <td><span class="math-inline">P(X \geq C)</span> &nbsp;<span class="tag upper">upper tail</span></td>
       </tr>
     </tbody>
   </table>
 
   <div class="key-idea">
     <strong>The memory aid:</strong> The inequality in the cumulative probability
-    <strong>matches</strong> the inequality in \(H_1\).
+    <strong>matches</strong> the inequality in <span class="math-inline">H_1</span>.
     <br><br>
-    \(H_1: p \mathbf{<} k \;\Rightarrow\; P(X \,\mathbf{\leq}\, C)\) &emsp;&emsp;
-    \(H_1: p \mathbf{>} k \;\Rightarrow\; P(X \,\mathbf{\geq}\, C)\)
+    <span class="math-inline">H_1: p \mathbf{&lt;} k \;\Rightarrow\; P(X \,\mathbf{\leq}\, C)</span> &emsp;&emsp;
+    <span class="math-inline">H_1: p \mathbf{&gt;} k \;\Rightarrow\; P(X \,\mathbf{\geq}\, C)</span>
     <br><br>
-    This works because \(H_1\) tells you which direction is "extreme" — and you accumulate
-    probability in that same direction from \(C\) outward.
+    This works because <span class="math-inline">H_1</span> tells you which direction is "extreme" — and you accumulate
+    probability in that same direction from <span class="math-inline">C</span> outward.
   </div>
 
   <hr class="divider">
 
   <h3>A Useful Way to Think About It</h3>
   <p>
-    Imagine you are a sceptic trying to challenge \(H_0\). You observe \(C\) successes.
-    You ask: <em>"What is the probability that a world where \(H_0\) is true would produce
+    Imagine you are a sceptic trying to challenge <span class="math-inline">H_0</span>. You observe <span class="math-inline">C</span> successes.
+    You ask: <em>"What is the probability that a world where <span class="math-inline">H_0</span> is true would produce
     a result this extreme, or more so, in the direction I'm investigating?"</em>
   </p>
   <p>
-    For \(H_1: p < k\), "more extreme in the direction I'm investigating" means
-    <em>fewer</em> successes, so you look left from \(C\) on the distribution.
-    For \(H_1: p > k\), it means <em>more</em> successes, so you look right.
-    In both cases you include \(C\) itself, because you want the probability of
-    \(C\) <em>or worse</em> (from \(H_0\)'s point of view).
+    For <span class="math-inline">H_1: p &lt; k</span>, "more extreme in the direction I'm investigating" means
+    <em>fewer</em> successes, so you look left from <span class="math-inline">C</span> on the distribution.
+    For <span class="math-inline">H_1: p &gt; k</span>, it means <em>more</em> successes, so you look right.
+    In both cases you include <span class="math-inline">C</span> itself, because you want the probability of
+    <span class="math-inline">C</span> <em>or worse</em> (from <span class="math-inline">H_0</span>'s point of view).
   </p>
 </div>
 
@@ -814,23 +809,23 @@
 
   <div class="calc-grid">
     <div class="field">
-      <label>Sample size \(S\) (number of trials)</label>
+      <label>Sample size <span class="math-inline">S</span> (number of trials)</label>
       <input type="number" id="inp-S" value="20" min="1" max="200">
     </div>
     <div class="field">
-      <label>Hypothesised probability \(k\) (under \(H_0\))</label>
+      <label>Hypothesised probability <span class="math-inline">k</span> (under <span class="math-inline">H_0</span>)</label>
       <input type="number" id="inp-k" value="0.3" min="0.001" max="0.999" step="0.001">
     </div>
     <div class="field">
-      <label>Observed successes \(C\)</label>
+      <label>Observed successes <span class="math-inline">C</span></label>
       <input type="number" id="inp-C" value="3" min="0">
     </div>
     <div class="field">
-      <label>Significance level \(\alpha\)</label>
+      <label>Significance level <span class="math-inline">\alpha</span></label>
       <input type="number" id="inp-alpha" value="0.05" min="0.001" max="0.5" step="0.001">
     </div>
     <div class="field">
-      <label>Alternative hypothesis \(H_1\)</label>
+      <label>Alternative hypothesis <span class="math-inline">H_1</span></label>
       <select id="inp-tail">
         <option value="lower">p &lt; k &nbsp;(lower tail)</option>
         <option value="upper">p &gt; k &nbsp;(upper tail)</option>
@@ -851,7 +846,18 @@
 </main>
 
 <script>
-// ---- Navigation ----
+// ── Problem constants (single source of truth) ────────────────────────────
+const PROB = { n:10, wA:0.64, pA:0.03, pB:0.06, k0:2 };
+
+// ── Illustrative chart parameters ─────────────────────────────────────────
+const CHART_LOWER = { S:18, k:0.4, C:5  };
+const CHART_UPPER = { S:18, k:0.4, C:12 };
+
+// ── Worked-example parameters ─────────────────────────────────────────────
+const EX3 = { S:20, p:1/6, C:1,  alpha:0.05 };
+const EX4 = { S:15, p:0.5, C:11, alpha:0.05 };
+
+// ── Navigation ────────────────────────────────────────────────────────────
 function show(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -861,182 +867,207 @@ function show(id, btn) {
   if (id === 'upper') drawUpperChart();
 }
 
-// ---- Binomial helpers ----
+// ── Binomial helpers ──────────────────────────────────────────────────────
 function logFactorial(n) {
-  let s = 0;
-  for (let i = 2; i <= n; i++) s += Math.log(i);
-  return s;
+  let s = 0; for (let i = 2; i <= n; i++) s += Math.log(i); return s;
 }
 function logBinom(n, r) {
   return logFactorial(n) - logFactorial(r) - logFactorial(n - r);
 }
 function binomPMF(n, k, r) {
   if (r < 0 || r > n) return 0;
+  if (k <= 0) return r === 0 ? 1 : 0;
+  if (k >= 1) return r === n ? 1 : 0;
   return Math.exp(logBinom(n, r) + r * Math.log(k) + (n - r) * Math.log(1 - k));
 }
 function binomCDF_le(n, k, c) {
-  let s = 0;
-  for (let r = 0; r <= c; r++) s += binomPMF(n, k, r);
-  return s;
+  let s = 0; for (let r = 0; r <= c; r++) s += binomPMF(n, k, r); return s;
 }
 function binomCDF_ge(n, k, c) {
-  let s = 0;
-  for (let r = c; r <= n; r++) s += binomPMF(n, k, r);
-  return s;
+  let s = 0; for (let r = c; r <= n; r++) s += binomPMF(n, k, r); return s;
+}
+function dp(x, d) { return x.toFixed(d); }
+
+// ── Inline KaTeX helper ───────────────────────────────────────────────────
+// Wraps LaTeX source in a span for later rendering by renderInlineMath()
+function mi(latex) {
+  return `<span class="math-inline">${latex}</span>`;
 }
 
-// ---- Generic chart drawing ----
+// ── Inject all computed static content ───────────────────────────────────
+function computeStatics() {
+  const el = id => document.getElementById(id);
+
+  // ── Section 3 worked example ─────────────────────────────────────────────
+  {
+    const { S, p, C, alpha } = EX3;
+    const PX0  = Math.pow(1 - p, S);
+    const PX1  = binomPMF(S, p, 1);
+    const PXle = PX0 + PX1;
+    const reject = PXle <= alpha;
+
+    el('s3-approx').innerHTML = mi(
+      `\\approx ${dp(PX0,4)} + ${dp(PX1,4)} = ${dp(PXle,4)}`
+    );
+
+    el('s3-conclusion').innerHTML =
+      `Since ${mi(`${dp(PXle,4)} ${reject ? '\\leq' : '>'} ${alpha}`)}, we ` +
+      (reject
+        ? `<strong>reject ${mi('H_0')}</strong>. There is sufficient evidence at the ${alpha*100}% level that the die produces fewer sixes than expected.`
+        : `<strong>do not reject ${mi('H_0')}</strong>. There is insufficient evidence at the ${alpha*100}% level that the die produces fewer sixes than expected.`);
+  }
+
+  // ── Section 4 worked example ─────────────────────────────────────────────
+  {
+    const { S, p, C, alpha } = EX4;
+    const PXle_Cm1 = binomCDF_le(S, p, C - 1);
+    const PXge_C   = binomCDF_ge(S, p, C);
+    const reject   = PXge_C <= alpha;
+
+    el('s4-calc').innerHTML = mi(
+      `P(X \\geq ${C}) = 1 - P(X \\leq ${C-1}) \\approx 1 - ${dp(PXle_Cm1,4)} = ${dp(PXge_C,4)}`
+    );
+
+    el('s4-conclusion').innerHTML =
+      `Since ${mi(`${dp(PXge_C,4)} ${reject ? '\\leq' : '>'} ${alpha}`)}, we ` +
+      (reject
+        ? `<strong>reject ${mi('H_0')}</strong>. There is sufficient evidence at the ${alpha*100}% level that the coin is biased towards heads.`
+        : `<strong>do not reject ${mi('H_0')}</strong>. There is insufficient evidence at the ${alpha*100}% level that the coin is biased towards heads. (Note: this would be rejected at the ${alpha*100*2}% level.)`);
+  }
+}
+
+// ── Generic chart drawing ─────────────────────────────────────────────────
 function drawBinomChart(svgId, S, k, C, tail, highlightColor, unshadeColor) {
   const svg = document.getElementById(svgId);
   if (!svg) return;
   const W = 620, H = 260;
   const padL = 38, padR = 20, padT = 25, padB = 45;
-  const cW = W - padL - padR;
-  const cH = H - padT - padB;
-
-  // Compute probs
-  const probs = [];
-  let maxP = 0;
+  const cW = W - padL - padR, cH = H - padT - padB;
+  const probs = []; let maxP = 0;
   for (let r = 0; r <= S; r++) {
-    const p = binomPMF(S, k, r);
-    probs.push(p);
-    if (p > maxP) maxP = p;
+    const p = binomPMF(S, k, r); probs.push(p); if (p > maxP) maxP = p;
   }
   maxP *= 1.15;
-
-  const n = S + 1;
-  const bw = cW / n;
-  const barW = Math.max(2, bw * 0.72);
-
-  let html = `<rect width="${W}" height="${H}" fill="#f9fbfe" rx="4"/>`;
-
-  // Axes
-  html += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+cH}" stroke="#555" stroke-width="1.2"/>`;
-  html += `<line x1="${padL}" y1="${padT+cH}" x2="${padL+cW}" y2="${padT+cH}" stroke="#555" stroke-width="1.2"/>`;
-
-  // Y ticks
+  const bw = cW / (S + 1), barW = Math.max(2, bw * 0.72);
+  let h = `<rect width="${W}" height="${H}" fill="#f9fbfe" rx="4"/>`;
+  h += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+cH}" stroke="#555" stroke-width="1.2"/>`;
+  h += `<line x1="${padL}" y1="${padT+cH}" x2="${padL+cW}" y2="${padT+cH}" stroke="#555" stroke-width="1.2"/>`;
   for (let t = 0; t <= 4; t++) {
-    const frac = t / 4;
-    const yy = padT + cH - frac * cH;
-    const val = (frac * maxP).toFixed(3);
-    html += `<line x1="${padL-4}" y1="${yy}" x2="${padL}" y2="${yy}" stroke="#555" stroke-width="1"/>`;
-    html += `<text x="${padL-7}" y="${yy+4}" text-anchor="end" font-size="10" fill="#555" font-family="Georgia">${val}</text>`;
+    const frac = t/4, yy = padT + cH - frac*cH, val = (frac*maxP).toFixed(3);
+    h += `<line x1="${padL-4}" y1="${yy}" x2="${padL}" y2="${yy}" stroke="#555" stroke-width="1"/>`;
+    h += `<text x="${padL-7}" y="${yy+4}" text-anchor="end" font-size="10" fill="#555" font-family="Georgia">${val}</text>`;
   }
-
-  // Bars
   for (let r = 0; r <= S; r++) {
-    const bh = (probs[r] / maxP) * cH;
-    const bx = padL + r * bw + (bw - barW) / 2;
-    const by = padT + cH - bh;
-    let fill;
-    if (tail === 'lower') fill = r <= C ? highlightColor : unshadeColor;
-    else fill = r >= C ? highlightColor : unshadeColor;
-    html += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}"
-               fill="${fill}" stroke="white" stroke-width="0.5" rx="1"/>`;
+    const bh = (probs[r]/maxP)*cH, bx = padL + r*bw + (bw-barW)/2, by = padT+cH-bh;
+    const fill = tail === 'lower' ? (r <= C ? highlightColor : unshadeColor)
+                                  : (r >= C ? highlightColor : unshadeColor);
+    h += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" fill="${fill}" stroke="white" stroke-width="0.5" rx="1"/>`;
   }
-
-  // X labels — only if not too many bars
   const step = S <= 20 ? 1 : S <= 40 ? 2 : S <= 80 ? 5 : 10;
   for (let r = 0; r <= S; r += step) {
-    const cx = padL + r * bw + bw / 2;
-    html += `<text x="${cx.toFixed(1)}" y="${padT+cH+14}" text-anchor="middle" font-size="10"
-               fill="#444" font-family="Georgia">${r}</text>`;
+    const cx = padL + r*bw + bw/2;
+    h += `<text x="${cx.toFixed(1)}" y="${padT+cH+14}" text-anchor="middle" font-size="10" fill="#444" font-family="Georgia">${r}</text>`;
   }
-
-  // Axis labels
-  html += `<text x="${padL + cW/2}" y="${H-4}" text-anchor="middle" font-size="11"
-             fill="#334" font-family="Georgia,serif" font-style="italic">Number of successes x</text>`;
-  html += `<text x="12" y="${padT + cH/2}" text-anchor="middle" font-size="11"
-             fill="#334" font-family="Georgia,serif" font-style="italic"
-             transform="rotate(-90, 12, ${padT + cH/2})">P(X = x)</text>`;
-
-  // C marker line
-  const cx0 = padL + C * bw + bw / 2;
-  html += `<line x1="${cx0.toFixed(1)}" y1="${padT}" x2="${cx0.toFixed(1)}" y2="${padT+cH}"
-             stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="5,3"/>`;
-  html += `<text x="${(cx0+4).toFixed(1)}" y="${padT+13}" font-size="10" fill="#8b6914" font-family="Georgia">C=${C}</text>`;
-
-  // Legend
+  h += `<text x="${padL+cW/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="#334" font-family="Georgia,serif" font-style="italic">Number of successes x</text>`;
+  h += `<text x="12" y="${padT+cH/2}" text-anchor="middle" font-size="11" fill="#334" font-family="Georgia,serif" font-style="italic" transform="rotate(-90, 12, ${padT+cH/2})">P(X = x)</text>`;
+  const cx0 = padL + C*bw + bw/2;
+  h += `<line x1="${cx0.toFixed(1)}" y1="${padT}" x2="${cx0.toFixed(1)}" y2="${padT+cH}" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  h += `<text x="${(cx0+4).toFixed(1)}" y="${padT+13}" font-size="10" fill="#8b6914" font-family="Georgia">C=${C}</text>`;
   const lx = padL + cW - 180;
-  html += `<rect x="${lx}" y="${padT+2}" width="12" height="12" fill="${highlightColor}" rx="2"/>`;
-  const tailLabel = tail === 'lower' ? 'P(X ≤ C) — shaded' : 'P(X ≥ C) — shaded';
-  html += `<text x="${lx+16}" y="${padT+12}" font-size="10" fill="#334" font-family="Georgia">${tailLabel}</text>`;
-  html += `<rect x="${lx}" y="${padT+18}" width="12" height="12" fill="${unshadeColor}" rx="2"/>`;
-  html += `<text x="${lx+16}" y="${padT+28}" font-size="10" fill="#334" font-family="Georgia">Unshaded region</text>`;
-
-  svg.innerHTML = html;
+  h += `<rect x="${lx}" y="${padT+2}" width="12" height="12" fill="${highlightColor}" rx="2"/>`;
+  h += `<text x="${lx+16}" y="${padT+12}" font-size="10" fill="#334" font-family="Georgia">${tail === 'lower' ? 'P(X \u2264 C) \u2014 shaded' : 'P(X \u2265 C) \u2014 shaded'}</text>`;
+  h += `<rect x="${lx}" y="${padT+18}" width="12" height="12" fill="${unshadeColor}" rx="2"/>`;
+  h += `<text x="${lx+16}" y="${padT+28}" font-size="10" fill="#334" font-family="Georgia">Unshaded region</text>`;
+  svg.innerHTML = h;
 }
 
 function drawLowerChart() {
-  drawBinomChart('lower-chart', 18, 0.4, 5, 'lower', '#ef4444cc', '#93c5fdcc');
+  const { S, k, C } = CHART_LOWER;
+  drawBinomChart('lower-chart', S, k, C, 'lower', '#ef4444cc', '#93c5fdcc');
 }
 function drawUpperChart() {
-  drawBinomChart('upper-chart', 18, 0.4, 12, 'upper', '#16a34acc', '#93c5fdcc');
+  const { S, k, C } = CHART_UPPER;
+  drawBinomChart('upper-chart', S, k, C, 'upper', '#16a34acc', '#93c5fdcc');
 }
 
-// ---- Calculator ----
+// ── Calculator ────────────────────────────────────────────────────────────
 function runCalc() {
-  const S = parseInt(document.getElementById('inp-S').value);
-  const k = parseFloat(document.getElementById('inp-k').value);
-  const C = parseInt(document.getElementById('inp-C').value);
+  const S     = parseInt(document.getElementById('inp-S').value);
+  const k     = parseFloat(document.getElementById('inp-k').value);
+  const C     = parseInt(document.getElementById('inp-C').value);
   const alpha = parseFloat(document.getElementById('inp-alpha').value);
-  const tail = document.getElementById('inp-tail').value;
-
+  const tail  = document.getElementById('inp-tail').value;
   if (isNaN(S)||isNaN(k)||isNaN(C)||isNaN(alpha)||S<1||k<=0||k>=1||C<0||C>S||alpha<=0||alpha>=1) {
-    alert('Please check your inputs. Ensure 0 < k < 1, 0 ≤ C ≤ S, 0 < α < 1.');
+    alert('Please check your inputs. Ensure 0 < k < 1, 0 \u2264 C \u2264 S, 0 < \u03b1 < 1.');
     return;
   }
-
-  const prob = tail === 'lower' ? binomCDF_le(S, k, C) : binomCDF_ge(S, k, C);
-  const reject = prob <= alpha;
+  const prob    = tail === 'lower' ? binomCDF_le(S, k, C) : binomCDF_ge(S, k, C);
+  const reject  = prob <= alpha;
   const probStr = prob.toFixed(5);
   const alphaStr = alpha.toFixed(4);
-  const h1Str = tail === 'lower' ? 'p &lt; ' + k : 'p &gt; ' + k;
-  const cumStr = tail === 'lower' ? `P(X &le; ${C})` : `P(X &ge; ${C})`;
-  const compareStr = tail === 'lower' ? `P(X &le; ${C}) = ${probStr}` : `P(X &ge; ${C}) = ${probStr}`;
+  const h1Str   = tail === 'lower' ? `p &lt; ${k}` : `p &gt; ${k}`;
+  const cumStr  = tail === 'lower' ? `P(X &le; ${C})` : `P(X &ge; ${C})`;
+  const compareStr = `${cumStr} = ${probStr}`;
 
-  const resultDiv = document.getElementById('calc-result');
-  const textDiv = document.getElementById('calc-text');
+  const resultDiv  = document.getElementById('calc-result');
+  const textDiv    = document.getElementById('calc-text');
   const verdictDiv = document.getElementById('calc-verdict');
   resultDiv.style.display = 'block';
 
   textDiv.innerHTML = `
     <p><strong>Setup:</strong></p>
     <p style="padding-left:14px">
-      \(H_0: p = ${k}\) &emsp; \(H_1: ${h1Str}\) &emsp; \(X \\sim B(${S},\\, ${k})\)<br>
-      Sample size \(S = ${S}\), &nbsp; Observed successes \(C = ${C}\), &nbsp; \(\\alpha = ${alpha}\)
+      ${mi(`H_0: p = ${k}`)} &emsp; ${mi(`H_1: ${h1Str.replace('&lt;','<').replace('&gt;','>')}`)} &emsp; ${mi(`X \\sim B(${S},\\, ${k})`)}<br>
+      Sample size ${mi(`S = ${S}`)}, &nbsp; Observed successes ${mi(`C = ${C}`)}, &nbsp; ${mi(`\\alpha = ${alpha}`)}
     </p>
     <p style="margin-top:10px"><strong>Calculation:</strong></p>
     <p style="padding-left:14px">
-      Assuming \(H_0\) is true, compute ${cumStr} under \(X \\sim B(${S},\\, ${k})\):<br>
+      Assuming ${mi('H_0')} is true, compute ${cumStr} under ${mi(`X \\sim B(${S},\\, ${k})`)}<br>
       <span style="font-size:1.05em">${compareStr}</span>
     </p>
     <p style="margin-top:10px"><strong>Comparison:</strong></p>
     <p style="padding-left:14px">
-      ${compareStr} &ensp; ${reject ? '&le;' : '&gt;'} &ensp; \(\\alpha = ${alphaStr}\)
-    </p>
-  `;
+      ${compareStr} &ensp; ${reject ? '&le;' : '&gt;'} &ensp; ${mi(`\\alpha = ${alphaStr}`)}
+    </p>`;
 
   verdictDiv.className = 'verdict ' + (reject ? 'reject' : 'accept');
-  if (reject) {
-    verdictDiv.innerHTML = `✗ Reject H₀ — there is sufficient evidence at the ${(alpha*100).toFixed(1)}% significance level that ${h1Str}`;
-  } else {
-    verdictDiv.innerHTML = `✓ Do not reject H₀ — there is insufficient evidence at the ${(alpha*100).toFixed(1)}% significance level to conclude ${h1Str}`;
-  }
+  verdictDiv.innerHTML = reject
+    ? `\u2717 Reject H\u2080 \u2014 there is sufficient evidence at the ${(alpha*100).toFixed(1)}% significance level that ${h1Str}`
+    : `\u2713 Do not reject H\u2080 \u2014 there is insufficient evidence at the ${(alpha*100).toFixed(1)}% significance level to conclude ${h1Str}`;
 
-  // Re-render KaTeX in result
-  if (window.renderMathInElement) {
-    renderMathInElement(resultDiv, {
-      delimiters:[
-        {left:'\\[',right:'\\]',display:true},
-        {left:'\\(',right:'\\)',display:false}
-      ]
-    });
-  }
-
-  // Draw distribution chart
+  // Render the inline math we just injected, then redraw chart
+  renderInlineMath(resultDiv);
   drawBinomChart('calc-dist-svg', S, k, C, tail,
     tail === 'lower' ? '#ef4444cc' : '#16a34acc', '#93c5fdcc');
+}
+
+// ── Math rendering ────────────────────────────────────────────────────────
+function renderInlineMath(root) {
+  (root || document).querySelectorAll('.math-inline').forEach(function(span) {
+    if (span.dataset.rendered) return;  // skip already-rendered
+    try {
+      katex.render(span.textContent, span, {
+        throwOnError: false,
+        displayMode:  false,
+        strict:       false
+      });
+      span.dataset.rendered = '1';
+    } catch(e) { /* leave as plain text */ }
+  });
+}
+
+// ── Entry point ───────────────────────────────────────────────────────────
+function doInit() {
+  computeStatics();
+
+  // Render display math \[...\] blocks (auto-render handles these reliably)
+  renderMathInElement(document.body, {
+    delimiters: [{ left: '\\[', right: '\\]', display: true }],
+    throwOnError: false
+  });
+
+  // Render all inline math spans directly with katex.render()
+  renderInlineMath();
 }
 </script>
 
