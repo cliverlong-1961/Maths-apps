@@ -202,6 +202,10 @@
     });
 
     selectedType = 'question';
+
+    /* Reset submit button — it may have been disabled/relabelled during send */
+    const sb = document.getElementById('fb-submit-btn');
+    if (sb) { sb.disabled = false; sb.textContent = 'Send ↗'; }
   }
 
   function closeModal() {
