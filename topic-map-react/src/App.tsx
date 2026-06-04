@@ -1,0 +1,53 @@
+import { useState } from "react";
+
+import TopicMap from "./components/TopicMap";
+
+import { differentiationTopics } from "./data/differentiation";
+import { integrationTopics } from "./data/integration";
+
+export default function App() {
+  const [page, setPage] = useState(1);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 p-4">
+      
+      {/* Header */}
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 mb-6 text-center">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Topic Maps
+        </h1>
+
+        {/* Navigation */}
+        <div className="flex flex-wrap justify-center gap-3">
+          <button
+            onClick={() => setPage(1)}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              page === 1
+                ? "bg-purple-500 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Diff Map
+          </button>
+          <button
+            onClick={() => setPage(2)}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              page === 2
+                ? "bg-purple-500 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Int Map
+          </button>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-4xl mx-auto">
+        {page === 1 && <TopicMap topics={differentiationTopics} title="Differentiation Map" />}
+        {page === 2 && <TopicMap topics={integrationTopics} title="Integration Map" />}
+      </div>
+
+    </div>
+  );
+}
