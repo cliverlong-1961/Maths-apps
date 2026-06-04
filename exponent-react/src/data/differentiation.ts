@@ -1,4 +1,6 @@
-export const differentiationTopics = [
+import type { Topic } from "../types/Topic";
+
+export const differentiationTopics: Topic[] = [
   {
     id: "functions",
     title: "Functions",

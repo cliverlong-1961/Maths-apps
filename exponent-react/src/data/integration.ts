@@ -20,8 +20,7 @@ export const integrationTopics: Topic[] = [
   {
     id: "antiderivative",
     title: "Integration as Anti-Differentiation",
-    summary:
-      "Integration reverses differentiation.",
+    summary: "Integration reverses differentiation.",
     specRef: "Integration",
     dependsOn: ["functions", "differentiation"],
   },
@@ -29,8 +28,7 @@ export const integrationTopics: Topic[] = [
   {
     id: "power-rule-integration",
     title: "Power Rule for Integration",
-    summary:
-      "Integrate xⁿ using ∫xⁿdx = xⁿ⁺¹/(n+1) + c.",
+    summary: "Integrate xⁿ using ∫xⁿdx = xⁿ⁺¹/(n+1) + c.",
     specRef: "Integration",
     dependsOn: ["antiderivative"],
   },
@@ -38,8 +36,7 @@ export const integrationTopics: Topic[] = [
   {
     id: "indefinite-integrals",
     title: "Indefinite Integrals",
-    summary:
-      "Find families of functions using integration.",
+    summary: "Find families of functions using integration.",
     specRef: "Integration",
     dependsOn: ["power-rule-integration"],
   },
@@ -47,8 +44,7 @@ export const integrationTopics: Topic[] = [
   {
     id: "definite-integrals",
     title: "Definite Integrals",
-    summary:
-      "Evaluate an integral between two limits.",
+    summary: "Evaluate an integral between two limits.",
     specRef: "Integration",
     dependsOn: ["indefinite-integrals"],
   },
@@ -56,26 +52,25 @@ export const integrationTopics: Topic[] = [
   {
     id: "fundamental-theorem",
     title: "Fundamental Theorem of Calculus",
-    summary:
-      "Connects differentiation and definite integration.",
+    summary: "Connects differentiation and definite integration.",
     specRef: "Integration",
     dependsOn: [
       "differentiation",
-      "definite-integrals"
+      "definite-integrals",
     ],
   },
 
   {
     id: "area-under-curve",
     title: "Area Under a Curve",
-    summary:
-      "Use definite integrals to calculate areas.",
+    summary: "Use definite integrals to calculate areas.",
     specRef: "Integration",
     dependsOn: [
       "definite-integrals",
-      "fundamental-theorem"
+      "fundamental-theorem",
     ],
   },
+
   {
     id: "integration-by-parts",
     title: "Integration by Parts",
@@ -83,9 +78,9 @@ export const integrationTopics: Topic[] = [
     specRef: "Integration",
     dependsOn: [
       "indefinite-integrals",
-      "product-rule"
     ],
   },
+
   {
     id: "integration-by-substitution",
     title: "Integration by Substitution",
@@ -93,7 +88,6 @@ export const integrationTopics: Topic[] = [
     specRef: "Integration",
     dependsOn: [
       "indefinite-integrals",
-      "chain-rule"
     ],
   },
 ];
