@@ -1764,6 +1764,57 @@
                     </p>
                 </div>
 
+                <div class="definitions-section">
+                    <h3>Fundamental Euclidean geometric property</h3>
+                    <p>There is a basic property of angles that is needed and used in most proofs, that is so 'obvious' it seems silly to even need to state it. However, if we are trying to build proofs from the simplest components or parts, we need this property. We can describe it as 'The whole is equal to the sum of its parts' or 'Every object is made by adding together parts it is made from'. In Euclidean geometry this can be applied as: If we split any angle by drawing a line through the vertex of the angle creating two new angles then the size (*) of the original angle is equal to the sum of the size of the smaller angles.</p>
+                    <!-- Angle splitting diagram -->
+                    <div style="text-align: center; margin: 24px auto 8px; max-width: 260px;">
+                        <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; display: block;">
+
+                            <!--
+                                Vertex V = (60, 160)
+                                Base ray:  0°  → (220, 160)
+                                Split ray: 20° → (210.4, 105.3)   [all rays use r=160]
+                                Top ray:   54° → (154.0, 30.6)
+                                Sector arcs use r=110:
+                                  Blue  arc: (170.0,160.0) → (163.4,122.4)
+                                  Amber arc: (163.4,122.4) → (124.7, 71.0)
+                                All three share (163.4,122.4) as the shared boundary point.
+                            -->
+
+                            <!-- Blue sector: base (0°) to split (20°) -->
+                            <path d="M 60,160 L 170,160 A 110,110 0 0,0 163.4,122.4 Z" fill="#cce8f4" opacity="0.8"/>
+
+                            <!-- Amber sector: split (20°) to top (54°) -->
+                            <path d="M 60,160 L 163.4,122.4 A 110,110 0 0,0 124.7,71.0 Z" fill="#fde8c0" opacity="0.9"/>
+
+                            <!-- Base ray: 0° -->
+                            <line x1="60" y1="160" x2="220" y2="160" stroke="#2c3e50" stroke-width="2.2"/>
+
+                            <!-- Top ray: 54° -->
+                            <line x1="60" y1="160" x2="154" y2="31" stroke="#2c3e50" stroke-width="2.2"/>
+
+                            <!-- Splitting ray: 20° — same direction as sector boundary -->
+                            <line x1="60" y1="160" x2="210.4" y2="105.3" stroke="#e07b39" stroke-width="1.8" stroke-dasharray="6,3"/>
+
+                            <!-- Vertex dot -->
+                            <circle cx="60" cy="160" r="3" fill="#2c3e50"/>
+
+                            <!-- α label inside blue sector (midpoint ~10°, r=100) -->
+                            <text x="158" y="148" font-size="15" fill="#2980b9" font-family="Georgia, serif" font-style="italic">α</text>
+
+                            <!-- β label inside amber sector (midpoint ~37°, r=100) -->
+                            <text x="137" y="104" font-size="15" fill="#c87020" font-family="Georgia, serif" font-style="italic">β</text>
+
+                            <!-- Equation label -->
+                            <text x="140" y="188" font-size="13" fill="#34495e" font-family="Georgia, serif" text-anchor="middle">α + β = whole angle</text>
+
+                        </svg>
+                        <p style="font-size: 0.85em; color: #7f8c8d; margin-top: 4px;">A line from the vertex splits the angle into two parts</p>
+                    </div>
+                    <p class="footnote">(*) We have to ignore what is meant by 'the size of an angle'. If you are interested in this look up 'measure theory'.</p>
+                </div>
+
                 <h2>Available proofs</h2>
                 
                 <div class="topic-grid">
@@ -1777,7 +1828,7 @@
                         <p style="font-size: 0.95em; line-height: 1.7; margin: 12px 0;">There are some basic definitions or properties of objects that we accept as true to be our starting point for the proof. One task is to make these definitions or properties as simple as possible. These are as follows:</p>
                         <ul style="font-size: 0.95em; margin-left: 20px; line-height: 1.7; margin-bottom: 12px;">
                             <li style="margin-bottom: 8px;">Adjacent angles on a straight line formed by a straight line standing on the base, if those angles are equal, they are both a right angle (notice no mention of 90 degrees).</li>
-                            <li>If an angle is split by a straight line from the vertex, the sum of the two created angles is equal to the size of the original angle. This is equivalent to: if two adjacent angles of any size are placed adjacent to each other, with the same vertex, the resulting angle is equal in size to the sum of the two angles.</li>
+                            <li>(see above) If an angle is split by a straight line from the vertex, the sum of the two created angles is equal to the size of the original angle. This is equivalent to: if two adjacent angles of any size are placed adjacent to each other, with the same vertex, the resulting angle is equal in size to the sum of the two angles.</li>
                         </ul>
                         <p style="font-size: 0.95em; line-height: 1.7; margin-bottom: 12px;">Let us accept we "know" what an "angle" is.</p>
                         <span class="topic-link" id="proof-adjacent-angles-link" onclick="toggleProof('proof-adjacent-angles')">View Proof →</span>
