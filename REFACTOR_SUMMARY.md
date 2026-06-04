@@ -88,22 +88,53 @@ cd exponent-react
 npm run build
 ```
 
-### Deployment Structure
+### Deployment to Vercel
 
-After building, the apps can be deployed as:
+Each React app should be deployed to Vercel as a separate project:
 
+#### Option A: Deploy via Vercel CLI
+
+```bash
+# Deploy exponent-react
+cd exponent-react
+npx vercel --prod
+
+# Deploy topic-map-react
+cd topic-map-react
+npx vercel --prod
 ```
-maths-apps/
-├── index.html (root navigation)
-├── exponent-react/dist/ (Exponent App)
-└── topic-map-react/dist/ (Topic Maps App)
-```
+
+#### Option B: Deploy via GitHub Integration
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) and sign in
+3. Click "Add New Project"
+4. Import your GitHub repository
+5. Configure the project:
+   - **For Exponent App:**
+     - Root Directory: `exponent-react`
+     - Build Command: `npm run build`
+     - Output Directory: `dist`
+   - **For Topic Maps:**
+     - Root Directory: `topic-map-react`
+     - Build Command: `npm run build`
+     - Output Directory: `dist`
+6. Click "Deploy"
 
 ### Access
 
 - **Root page:** Navigate to `index.html` to see links to all apps
-- **Exponent App:** Click "Exponent App" or go to `exponent-react/dist/index.html`
-- **Topic Maps:** Click "Topic Maps" or go to `topic-map-react/dist/index.html`
+- **Exponent App:** Click "Exponent App" link (points to your Vercel deployment)
+- **Topic Maps:** Click "Topic Maps" link (points to your Vercel deployment)
+
+### Updating Links After Deployment
+
+After deploying to Vercel, update the links in `index.html` with your actual Vercel URLs:
+
+```html
+<a href="https://your-actual-exponent-app.vercel.app">Exponent App</a>
+<a href="https://your-actual-topic-map-app.vercel.app">Topic Maps</a>
+```
 
 ## Testing
 
