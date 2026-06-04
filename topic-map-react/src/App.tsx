@@ -4,6 +4,7 @@ import TopicMap from "./components/TopicMap";
 
 import { differentiationTopics } from "./data/differentiation";
 import { integrationTopics } from "./data/integration";
+import { trigonometryTopics } from "./data/trigonometry";
 
 export default function App() {
   const [page, setPage] = useState(1);
@@ -39,6 +40,16 @@ export default function App() {
           >
             Int Map
           </button>
+          <button
+            onClick={() => setPage(3)}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              page === 3
+                ? "bg-purple-500 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Trig Map
+          </button>
         </div>
       </div>
 
@@ -46,6 +57,7 @@ export default function App() {
       <div className="max-w-4xl mx-auto">
         {page === 1 && <TopicMap topics={differentiationTopics} title="Differentiation Map" />}
         {page === 2 && <TopicMap topics={integrationTopics} title="Integration Map" />}
+        {page === 3 && <TopicMap topics={trigonometryTopics} title="Trigonometry Map" />}
       </div>
 
     </div>
