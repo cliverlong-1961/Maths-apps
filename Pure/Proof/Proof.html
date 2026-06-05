@@ -394,6 +394,12 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Navigate to the section specified in the URL hash on page load
+            const initialHash = window.location.hash.slice(1);
+            if (initialHash && document.getElementById(initialHash)) {
+                showSection(initialHash);
+            }
+
             renderMathInElement(document.body, {
                 delimiters: [
                     {left: '\\[', right: '\\]', display: true},
@@ -403,60 +409,80 @@
             });
         });
 
+        // Handle browser back/forward navigation between sections
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.slice(1);
+            if (hash && document.getElementById(hash)) {
+                // Navigate without pushing a new history entry
+                const sections = document.querySelectorAll('.section');
+                sections.forEach(section => section.classList.remove('active'));
+                const target = document.getElementById(hash);
+                target.classList.add('active');
+                const meta = sectionMeta[hash];
+                if (meta) {
+                    document.querySelector('header h1').textContent = meta.header;
+                    document.querySelector('.subtitle').textContent = meta.subtitle;
+                }
+                document.getElementById('navigation').style.display = 'block';
+                window.scrollTo(0, 0);
+            } else {
+                // No hash — return to intro
+                const sections = document.querySelectorAll('.section');
+                sections.forEach(section => section.classList.remove('active'));
+                document.getElementById('intro').classList.add('active');
+                document.querySelector('header h1').textContent = sectionMeta['intro'].header;
+                document.querySelector('.subtitle').textContent = sectionMeta['intro'].subtitle;
+                document.getElementById('navigation').style.display = 'none';
+                window.scrollTo(0, 0);
+            }
+        });
+
+        // Section metadata: header text and subtitle for each section
+        const sectionMeta = {
+            'intro':                   { header: 'Basic proof terminology and concepts',       subtitle: '' },
+            'number-systems':          { header: 'Number systems',                             subtitle: 'Definitions and properties of the main number systems' },
+            'algebraic':               { header: 'Algebraic proofs',                           subtitle: 'Fundamental algebraic identities and their proofs' },
+            'algebraic-basic':         { header: 'Basic algebra',                              subtitle: 'Fundamental algebraic identities' },
+            'algebraic-inequalities':  { header: 'Algebraic inequalities',                     subtitle: 'Fundamental inequality proofs' },
+            'moduli-cases':            { header: 'Moduli and cases',                           subtitle: 'Basic real number proofs involving moduli and cases' },
+            'number-theory':           { header: 'Basic number theory',                        subtitle: 'Fundamental definitions and proofs in number theory' },
+            'real-numbers':            { header: 'Proofs involving real numbers',              subtitle: 'Fundamental theorems and proofs about real numbers' },
+            'geometric':               { header: 'Basic geometric proofs',                     subtitle: 'Fundamental theorems and proofs in geometry' },
+            'contradiction':           { header: 'Proof by contradiction',                     subtitle: 'Proofs using reductio ad absurdum' },
+            'preliminary-properties':  { header: 'Preliminary properties required in proofs', subtitle: 'Foundational properties used in mathematical proof' },
+            'resources':               { header: 'Good proof resources',                       subtitle: 'Helpful books, websites, and tools for learning mathematical proof' }
+        };
+
         function showSection(sectionId) {
             // Hide all sections
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.remove('active'));
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update header based on section
-            const header = document.querySelector('header h1');
-            const subtitle = document.querySelector('.subtitle');
-            
-            if (sectionId === 'intro') {
-                header.textContent = 'Basic proof terminology and concepts';
-                subtitle.textContent = '';
-            } else if (sectionId === 'number-systems') {
-                header.textContent = 'Number systems';
-                subtitle.textContent = 'Definitions and properties of the main number systems';
-            } else if (sectionId === 'algebraic') {
-                header.textContent = 'Algebraic proofs';
-                subtitle.textContent = 'Fundamental algebraic identities and their proofs';
-            } else if (sectionId === 'algebraic-basic') {
-                header.textContent = 'Basic algebra';
-                subtitle.textContent = 'Fundamental algebraic identities';
-            } else if (sectionId === 'algebraic-inequalities') {
-                header.textContent = 'Algebraic inequalities';
-                subtitle.textContent = 'Fundamental inequality proofs';
-             } else if (sectionId === 'moduli-cases') {
-                header.textContent = 'Moduli and cases';
-                subtitle.textContent = 'Basic real number proofs involving moduli and cases';
 
-            } else if (sectionId === 'number-theory') {
-                header.textContent = 'Basic number theory';
-                subtitle.textContent = 'Fundamental definitions and proofs in number theory';
-            } else if (sectionId === 'real-numbers') {
-                header.textContent = 'Proofs involving real numbers';
-                subtitle.textContent = 'Fundamental theorems and proofs about real numbers';
-            } else if (sectionId === 'geometric') {
-                header.textContent = 'Basic geometric proofs';
-                subtitle.textContent = 'Fundamental theorems and proofs in geometry';
-            } else if (sectionId === 'contradiction') {
-                header.textContent = 'Proof by contradiction';
-                subtitle.textContent = 'Proofs using reductio ad absurdum';
-            } else if (sectionId === 'preliminary-properties') {
-                header.textContent = 'Preliminary properties required in proofs';
-                subtitle.textContent = 'Foundational properties used in mathematical proof';
-            } else if (sectionId === 'resources') {
-                header.textContent = 'Good proof resources';
-                subtitle.textContent = 'Helpful books, websites, and tools for learning mathematical proof';
+            // Show selected section
+            const target = document.getElementById(sectionId);
+            if (!target) return;
+            target.classList.add('active');
+
+            // Update header and subtitle
+            const meta = sectionMeta[sectionId];
+            if (meta) {
+                document.querySelector('header h1').textContent = meta.header;
+                document.querySelector('.subtitle').textContent = meta.subtitle;
             }
-            
+
+            // Show/hide the breadcrumb navigation bar
+            document.getElementById('navigation').style.display = (sectionId === 'intro') ? 'none' : 'block';
+
+            // Update the URL hash so the section can be linked to directly
+            if (sectionId === 'intro') {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            } else {
+                history.pushState(null, '', '#' + sectionId);
+            }
+
             // Scroll to top
             window.scrollTo(0, 0);
-            
+
             // Re-render math after showing new section
             renderMathInElement(document.body, {
                 delimiters: [
@@ -517,7 +543,7 @@
         </header>
 
         <nav class="nav-breadcrumb" id="navigation" style="display: none;">
-            <button onclick="showSection('intro'); document.getElementById('navigation').style.display='none';">← Back to Introduction</button>
+            <button onclick="showSection('intro');">← Back to Introduction</button>
         </nav>
 
         <main>
@@ -554,14 +580,14 @@
                     <div class="cta-section">
                         <p class="cta-text">Ready to explore mathematical proofs?</p>
                         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                        <button class="btn-primary" onclick="showSection('preliminary-properties'); document.getElementById('navigation').style.display='block';">Preliminary Properties →</button>
-                            <button class="btn-primary" onclick="showSection('number-systems'); document.getElementById('navigation').style.display='block';">Number Systems →</button>
-                            <button class="btn-primary" onclick="showSection('algebraic'); document.getElementById('navigation').style.display='block';">Algebraic Proofs →</button>
-                            <button class="btn-primary" onclick="showSection('number-theory'); document.getElementById('navigation').style.display='block';">Number Theory →</button>
-                            <button class="btn-primary" onclick="showSection('real-numbers'); document.getElementById('navigation').style.display='block';">Real Number Proofs →</button>
-                            <button class="btn-primary" onclick="showSection('geometric'); document.getElementById('navigation').style.display='block';">Geometric Proofs →</button>
-                            <button class="btn-primary" onclick="showSection('contradiction'); document.getElementById('navigation').style.display='block';">Proof by Contradiction →</button>
-                            <button class="btn-primary" onclick="showSection('resources'); document.getElementById('navigation').style.display='block';">Useful Resources →</button>
+                        <button class="btn-primary" onclick="showSection('preliminary-properties');">Preliminary Properties →</button>
+                            <button class="btn-primary" onclick="showSection('number-systems');">Number Systems →</button>
+                            <button class="btn-primary" onclick="showSection('algebraic');">Algebraic Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('number-theory');">Number Theory →</button>
+                            <button class="btn-primary" onclick="showSection('real-numbers');">Real Number Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('geometric');">Geometric Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('contradiction');">Proof by Contradiction →</button>
+                            <button class="btn-primary" onclick="showSection('resources');">Useful Resources →</button>
                         </div>
                     </div>
                 </div>
@@ -1561,7 +1587,7 @@
                 <div class="definitions-section">
                     <h3>Types of number</h3>
                     <p>For definitions of the main types of numbers used in these proofs, see: 
-                    <button class="topic-link" onclick="showSection('number-systems'); document.getElementById('navigation').style.display='block';">Number systems →</button></p>
+                    <button class="topic-link" onclick="showSection('number-systems');">Number systems →</button></p>
                 </div>
 
                 <div class="definitions-section">
