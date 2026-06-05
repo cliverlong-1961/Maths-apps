@@ -1344,31 +1344,59 @@
                         </div>
                     </article>
 
-                    <article class="topic-card disabled">
+                    <article class="topic-card">
                         <h3>AM-GM inequality</h3>
                         <div class="formula">
                             \[\frac{a + b}{2} \geq \sqrt{ab}\]
                         </div>
-                        <p class="description">The arithmetic mean is greater than or equal to the geometric mean.</p>
-                        <button class="topic-link">Coming Soon</button>
-                    </article>
+                        <p class="description">For non-negative real numbers \(a\) and \(b\), prove that their arithmetic mean is greater than or equal to their geometric mean.</p>
+                        <button class="topic-link" id="proof-amgm-link" onclick="toggleProof('proof-amgm')">View Proof →</button>
 
-                    <article class="topic-card disabled">
-                        <h3>Cauchy-Schwarz inequality</h3>
-                        <div class="formula">
-                            \[(ac + bd)^2 \leq (a^2 + b^2)(c^2 + d^2)\]
-                        </div>
-                        <p class="description">Fundamental inequality with applications in many areas of mathematics.</p>
-                        <button class="topic-link">Coming Soon</button>
-                    </article>
+                        <div id="proof-amgm" class="proof-container">
+                            <div class="proof-header">Proof: AM-GM Inequality</div>
 
-                    <article class="topic-card disabled">
-                        <h3>Triangle inequality</h3>
-                        <div class="formula">
-                            \[|a + b| \leq |a| + |b|\]
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Start from a known truth</div>
+                                <div class="step-content">
+                                    For any real number \(x\), we know that the square of \(x\) is non-negative:
+                                    \[(\sqrt{a} - \sqrt{b})^2 \geq 0\]
+                                    This holds for all \(a, b \geq 0\), since square roots of non-negative numbers are real.
+                                </div>
+                                <div class="step-justification">The square of any real number is non-negative</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Expand the square</div>
+                                <div class="step-content">
+                                    Expanding the left side:
+                                    \[(\sqrt{a} - \sqrt{b})^2 = a - 2\sqrt{ab} + b \geq 0\]
+                                </div>
+                                <div class="step-justification">Expanding \((p - q)^2 = p^2 - 2pq + q^2\) with \(p = \sqrt{a}\), \(q = \sqrt{b}\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Rearrange</div>
+                                <div class="step-content">
+                                    Adding \(2\sqrt{ab}\) to both sides:
+                                    \[a + b \geq 2\sqrt{ab}\]
+                                    Dividing both sides by 2:
+                                    \[\frac{a + b}{2} \geq \sqrt{ab}\]
+                                </div>
+                                <div class="step-justification">Dividing by 2 preserves the inequality since \(2 > 0\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 4: Equality condition</div>
+                                <div class="step-content">
+                                    Equality holds when \((\sqrt{a} - \sqrt{b})^2 = 0\), i.e. when \(\sqrt{a} = \sqrt{b}\), i.e. when \(a = b\).
+                                </div>
+                                <div class="step-justification">A square equals zero only when the expression inside is zero</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> For all non-negative real numbers \(a, b\), we have \(\dfrac{a+b}{2} \geq \sqrt{ab}\), with equality if and only if \(a = b\). ∎
+                            </div>
                         </div>
-                        <p class="description">The absolute value of a sum is at most the sum of absolute values.</p>
-                        <button class="topic-link">Coming Soon</button>
                     </article>
 
                     <article class="topic-card disabled">
@@ -1414,6 +1442,67 @@
                 <h2>Moduli proofs</h2>
                 
                 <div class="topic-grid">
+                    <article class="topic-card">
+                        <h3>Triangle inequality</h3>
+                        <div class="formula">
+                            \[|a + b| \leq |a| + |b|\]
+                        </div>
+                        <p class="description">For all real numbers \(a\) and \(b\), prove that the absolute value of their sum is at most the sum of their absolute values.</p>
+                        <button class="topic-link" id="proof-triangle-ineq-link" onclick="toggleProof('proof-triangle-ineq')">View Proof →</button>
+
+                        <div id="proof-triangle-ineq" class="proof-container">
+                            <div class="proof-header">Proof: Triangle Inequality</div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Establish a key bound</div>
+                                <div class="step-content">
+                                    For any real number \(x\), it is always the case that:
+                                    \[x \leq |x| \quad \text{and} \quad -x \leq |x|\]
+                                    Applying this to \(a\) and \(b\):
+                                    \[a \leq |a|, \qquad b \leq |b|\]
+                                    \[-a \leq |a|, \qquad -b \leq |b|\]
+                                </div>
+                                <div class="step-justification">By definition of absolute value: \(|x| = x\) if \(x \geq 0\), and \(|x| = -x\) if \(x &lt; 0\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Square both sides</div>
+                                <div class="step-content">
+                                    Since both sides of \(|a+b| \leq |a|+|b|\) are non-negative, the inequality holds if and only if its square holds:
+                                    \[|a + b|^2 = (a + b)^2 = a^2 + 2ab + b^2\]
+                                    \[(|a| + |b|)^2 = |a|^2 + 2|a||b| + |b|^2 = a^2 + 2|ab| + b^2\]
+                                </div>
+                                <div class="step-justification">\(|x|^2 = x^2\) for all real \(x\); also \(|a||b| = |ab|\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Compare the squares</div>
+                                <div class="step-content">
+                                    Subtracting:
+                                    \[(|a|+|b|)^2 - |a+b|^2 = 2|ab| - 2ab = 2(|ab| - ab)\]
+                                    Since \(ab \leq |ab|\) for all real \(a, b\), we have \(|ab| - ab \geq 0\), and therefore:
+                                    \[(|a|+|b|)^2 - |a+b|^2 \geq 0 \implies |a+b|^2 \leq (|a|+|b|)^2\]
+                                </div>
+                                <div class="step-justification">Using \(x \leq |x|\) applied to \(x = ab\)</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Step 4: Take square roots</div>
+                                <div class="step-content">
+                                    Since both \(|a+b|\) and \(|a|+|b|\) are non-negative, taking square roots preserves the inequality:
+                                    \[|a + b| \leq |a| + |b|\]
+                                    Equality holds when \(|ab| = ab\), i.e. when \(ab \geq 0\) — meaning \(a\) and \(b\) have the same sign, or at least one is zero.
+                                </div>
+                                <div class="step-justification">The square root function is increasing on \([0, \infty)\)</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> For all \(a, b \in \mathbb{R}\), \(|a + b| \leq |a| + |b|\), with equality if and only if \(ab \geq 0\). ∎
+                            </div>
+                        </div>
+                    </article>
+
+
                     <article class="topic-card">
                         <h3>Product of moduli</h3>
                         <div class="formula">
