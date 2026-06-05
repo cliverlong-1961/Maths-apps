@@ -119,14 +119,14 @@
   <div class="content">
 
     <!-- PAGE 0: Welcome -->
-    <div class="page active" id="page-0">
+    <div class="page active" id="welcome">
       <h2 class="blue">Algebraic Fractions Practice</h2>
       <p>This app generates random questions about algebraic fractions such as adding two fractions together to form a single expression or splitting a single expression into separate, partial, fractions.</p>
       <p>An algebraic fraction is also known as a <strong class="blue">rational expression</strong>.</p>
     </div>
 
     <!-- PAGE 1: Addition -->
-    <div class="page" id="page-1">
+    <div class="page" id="adding-fractions">
       <h2 class="blue">Adding Algebraic Fractions</h2>
       <p>Combine these fractions into a single expression:</p>
       <div class="problem-box blue-border" id="addProblemBox"></div>
@@ -144,7 +144,7 @@
     </div>
 
     <!-- PAGE 2: Partial Fractions -->
-    <div class="page" id="page-2">
+    <div class="page" id="partial-fractions">
       <h2 class="blue">Partial Fraction Decomposition</h2>
       <p>Split this expression into simpler fractions:</p>
       <div class="problem-box blue-border" id="pfProblemBox"></div>
@@ -160,7 +160,7 @@
     </div>
 
     <!-- PAGE 3: Practice Mode -->
-    <div class="page" id="page-3">
+    <div class="page" id="practice">
       <h2 class="blue">Ready to Practice?</h2>
       <p>Choose your difficulty level and start solving problems!</p>
       <div class="diff-btns">
@@ -170,7 +170,7 @@
     </div>
 
     <!-- PAGE 4: Medium -->
-    <div class="page" id="page-4">
+    <div class="page" id="simplify">
       <h2 class="yellow">Simplify the Following Algebraic Fraction</h2>
       <p>Simplify this rational expression by cancelling common factors:</p>
       <div class="problem-box yellow-border" id="medProblemBox"></div>
@@ -186,7 +186,7 @@
     </div>
 
     <!-- PAGE 5: Hard -->
-    <div class="page" id="page-5">
+    <div class="page" id="division">
       <h2 class="red">Perform the Following Algebraic Division</h2>
       <p>Divide the numerator by the denominator and express as quotient + remainder/divisor:</p>
       <div class="problem-box red-border" id="hardProblemBox"></div>
@@ -428,21 +428,29 @@ function newProblem(key) {
   if (key === 'hard') problems.hard = genHard();
   answerVisible[key] = false;
   document.getElementById(ansBoxIds[key]).style.display = 'none';
-  const btn = document.querySelector(`#page-${pageForKey(key)} .btn-purple`);
+  const btn = document.querySelector(`#${pageForKey(key)} .btn-purple`);
   if (btn) btn.textContent = 'Show Answer';
   renderers[key]();
 }
 
 function pageForKey(k) {
-  return {add:1, pf:2, med:4, hard:5}[k];
+  return {add:'adding-fractions', pf:'partial-fractions', med:'simplify', hard:'division'}[k];
 }
 
 function toggleAnswer(key) {
   answerVisible[key] = !answerVisible[key];
   const box = document.getElementById(ansBoxIds[key]);
   box.style.display = answerVisible[key] ? 'block' : 'none';
-  const btn = document.querySelector(`#page-${pageForKey(key)} .btn-purple`);
+  const btn = document.querySelector(`#${pageForKey(key)} .btn-purple`);
   if (btn) btn.textContent = answerVisible[key] ? 'Hide Answer' : 'Show Answer';
+}
+
+// ── Page ID mapping ───────────────────────────────────────────────────────
+const PAGE_IDS = ['welcome', 'adding-fractions', 'partial-fractions', 'practice', 'simplify', 'division'];
+
+function pageIndexFromHash(hash) {
+  const idx = PAGE_IDS.indexOf(hash);
+  return idx >= 0 ? idx : -1;
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────
@@ -457,16 +465,33 @@ function buildDots() {
   }
 }
 
-function goTo(n) {
+function goTo(n, skipHistory) {
   if (n < 0 || n >= TOTAL_PAGES) return;
-  document.getElementById('page-' + currentPage).classList.remove('active');
+  document.getElementById(PAGE_IDS[currentPage]).classList.remove('active');
   currentPage = n;
-  document.getElementById('page-' + currentPage).classList.add('active');
+  document.getElementById(PAGE_IDS[currentPage]).classList.add('active');
   document.getElementById('pageIndicator').textContent = `Page ${currentPage+1} of ${TOTAL_PAGES}`;
   document.getElementById('btnPrev').disabled = currentPage === 0;
   document.getElementById('btnNext').disabled = currentPage === TOTAL_PAGES - 1;
   buildDots();
+  // Update URL hash (Proof.html pattern)
+  if (!skipHistory) {
+    if (currentPage === 0) {
+      history.pushState(null, '', window.location.pathname + window.location.search);
+    } else {
+      history.pushState(null, '', '#' + PAGE_IDS[currentPage]);
+    }
+  }
 }
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', function() {
+  const hash = window.location.hash.slice(1);
+  const idx = hash ? pageIndexFromHash(hash) : 0;
+  if (idx >= 0) {
+    goTo(idx, true);
+  }
+});
 
 // ── Init ──────────────────────────────────────────────────────────────────
 problems.add  = genAdd();
@@ -474,8 +499,16 @@ problems.pf   = genPF();
 problems.med  = genMed();
 problems.hard = genHard();
 renderAdd(); renderPF(); renderMed(); renderHard();
-buildDots();
-document.getElementById('btnPrev').disabled = true;
+
+// Navigate to hash on page load (Proof.html pattern)
+const initialHash = window.location.hash.slice(1);
+const initialPage = initialHash ? pageIndexFromHash(initialHash) : 0;
+if (initialPage > 0) {
+  goTo(initialPage, true);
+} else {
+  buildDots();
+  document.getElementById('btnPrev').disabled = true;
+}
 </script>
 </body>
 </html>
