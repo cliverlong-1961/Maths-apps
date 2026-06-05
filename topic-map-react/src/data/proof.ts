@@ -16,6 +16,7 @@ export const proofTopics: Topic[] = [
     summary:
       "Check every possible case to establish a result. e.g. given that p is a prime number such that 3 < p < 25, prove by exhaustion that (p − 1)(p + 1) is a multiple of 12.",
     specRef: "1.1",
+    url: "https://maths-apps.crlong.uk/Pure/Proof/Proof.html#number-theory",
     dependsOn: ["proof-by-deduction"],
   },
   {
@@ -32,7 +33,7 @@ export const proofTopics: Topic[] = [
     summary:
       "Assume the negation of the statement and derive a logical contradiction. Includes proof of the irrationality of √2 and the infinity of primes, and application to unfamiliar proofs.",
     specRef: "1.1",
-    url: "https://maths-apps.crlong.uk/Pure/Proof/Proof.html",
+    url: "https://maths-apps.crlong.uk/Pure/Proof/Proof.html#contradiction",
     dependsOn: ["proof-by-deduction"],
   },
 ];
