@@ -38,7 +38,7 @@ export const differentiationTopics: Topic[] = [
   {
     id: "stationary-points",
     title: "Stationary Points",
-    URL: "https://maths-apps.crlong.uk/Pure/St_pts_and_2dn_deriv/Stationary-points.html",
+    url: "https://maths-apps.crlong.uk/Pure/St_pts_and_2dn_deriv/Stationary-points.html",
     dependsOn: ["power-rule"],
   },
   {
