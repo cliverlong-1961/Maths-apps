@@ -250,6 +250,19 @@ export default function TopicMap({ topics, title }: TopicMapProps) {
               </p>
             )}
 
+            {selectedTopic.url && (
+              <p style={{ marginBottom: "1rem" }}>
+                <a
+                  href={selectedTopic.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#6d28d9", textDecoration: "underline" }}
+                >
+                  Open resource ↗
+                </a>
+              </p>
+            )}
+
             <h4 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Prerequisites</h4>
 
             {selectedTopic.dependsOn.length > 0 ? (

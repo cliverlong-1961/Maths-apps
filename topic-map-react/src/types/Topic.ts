@@ -3,5 +3,6 @@ export type Topic = {
   title: string;
   summary?: string;
   specRef?: string;
+  url?: string;
   dependsOn: string[];
 };
