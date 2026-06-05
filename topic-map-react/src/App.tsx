@@ -7,6 +7,7 @@ import { integrationTopics } from "./data/integration";
 import { trigonometryTopics } from "./data/trigonometry";
 import { sequencesAndSeriesTopics } from "./data/sequencesAndSeries";
 import { coordinateGeometryTopics } from "./data/coordinateGeometry";
+import { proofTopics } from "./data/proof";
 
 export default function App() {
   const [page, setPage] = useState(1);
@@ -72,6 +73,16 @@ export default function App() {
           >
             Coord geom
           </button>
+          <button
+            onClick={() => setPage(6)}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              page === 6
+                ? "bg-purple-500 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Proof
+          </button>
         </div>
       </div>
 
@@ -82,6 +93,7 @@ export default function App() {
         {page === 3 && <TopicMap topics={trigonometryTopics} title="Trigonometry Map" />}
         {page === 4 && <TopicMap topics={sequencesAndSeriesTopics} title="Sequences & Series Map" />}
         {page === 5 && <TopicMap topics={coordinateGeometryTopics} title="Coordinate Geometry Map" />}
+        {page === 6 && <TopicMap topics={proofTopics} title="Proof Map" />}
       </div>
 
     </div>
