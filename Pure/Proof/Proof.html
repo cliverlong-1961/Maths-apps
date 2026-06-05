@@ -1825,10 +1825,12 @@
                         </div>
                         <p class="description">Adjacent angles formed by a straight line standing on a base always sum to two right angles.</p>
                         <h4 style="font-size: 1.05em; font-weight: normal; color: #34495e; margin: 14px 0 8px;">Preliminaries</h4>
-                        <p style="font-size: 0.95em; line-height: 1.7; margin: 12px 0;">There are some basic definitions or properties of objects that we accept as true to be our starting point for the proof. One task is to make these definitions or properties as simple as possible. These are as follows:</p>
-                        <ul style="font-size: 0.95em; margin-left: 20px; line-height: 1.7; margin-bottom: 12px;">
-                            <li style="margin-bottom: 8px;">Adjacent angles on a straight line formed by a straight line standing on the base, if those angles are equal, they are both a right angle (notice no mention of 90 degrees).</li>
-                            <li>(see above) If an angle is split by a straight line from the vertex, the sum of the two created angles is equal to the size of the original angle. This is equivalent to: if two adjacent angles of any size are placed adjacent to each other, with the same vertex, the resulting angle is equal in size to the sum of the two angles.</li>
+                        <p style="font-size: 0.95em; line-height: 1.7; margin: 12px 0;">
+							There are some basic definitions or properties of objects that we accept as true to be our starting point for the proof. 
+							One task is to make these definitions or properties as simple as possible. To be used in the proof:</p>
+                        <ul style="font-size: 0.95em; margin-left: 20px; line-height: 1.7; margin-bottom: 12px;">        
+                            <li>(see from above) If an angle is split by a straight line from the vertex, the sum of the two created angles is equal to the size of the original angle.</li>
+							<li style="margin-bottom: 8px;">Special case when the adjacent angles on a straight line are equal.</li>
                         </ul>
                         <p style="font-size: 0.95em; line-height: 1.7; margin-bottom: 12px;">Let us accept we "know" what an "angle" is.</p>
                         <span class="topic-link" id="proof-adjacent-angles-link" onclick="toggleProof('proof-adjacent-angles')">View Proof →</span>
@@ -1851,7 +1853,20 @@
                                         <!-- Right angle symbol RIGHT (between vertical and right horizontal) -->
                                         <polyline points="100,110 112,110 112,98 100,98" fill="none" stroke="#2c3e50" stroke-width="1.8"/>
                                     </svg>
-                                    <p style="font-size: 0.88em; color: #34495e; margin-top: -12px;">Definition of right angle</p>
+                                    <p style="font-size: 0.88em; color: #34495e; margin-top: -12px;">1.1 Definition of right angle</p>
+                                </div>
+
+                                <!-- Diagram 1.2: Size of straight line angle -->
+                                <div style="text-align: center; flex: 1; min-width: 180px; max-width: 240px;">
+                                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                                        <!-- Horizontal base line -->
+                                        <line x1="20" y1="110" x2="180" y2="110" stroke="#2c3e50" stroke-width="2.5"/>
+                                        <!-- Semi-circular arc above the centre of the line, radius 60 -->
+                                        <path d="M 80,110 A 20,20 0 0,1 120,110" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                                        <!-- Label "Angle size = 2 right-angles" 10px above the arc top (arc top is at y=50, so label at y=40) -->
+                                        <text x="100" y="50" font-size="11" fill="#34495e" font-family="Georgia, serif" text-anchor="middle">Angle size = 2 right-angles</text>
+                                    </svg>
+                                    <p style="font-size: 0.88em; color: #34495e; margin-top: -12px;">1.2 Size of straight line angle</p>
                                 </div>
 
                                 <!-- Diagram 2: Adjacent angles on a straight line -->
@@ -1877,7 +1892,7 @@
                                         <!-- Label β (right/acute angle) -->
                                         <text x="119" y="107" font-size="14" fill="#3498db" font-family="Georgia, serif">&#946;</text>
                                     </svg>
-                                    <p style="font-size: 0.88em; color: #34495e; margin-top: -12px;">Adjacent angles on a straight line</p>
+                                    <p style="font-size: 0.88em; color: #34495e; margin-top: -12px;">2. Adjacent angles on a straight line</p>
                                 </div>
 
                             </div>
@@ -1886,14 +1901,19 @@
                             <div class="proof-step">
                                 <div class="step-number">Step 1</div>
                                 <div class="step-content">
-                                    A straight line erected on another straight line where the angles created are equal — each new angle is a right angle, and the angle of a straight line is two right angles.
+                                    A (half) straight line constructed (drawn) on another straight line where the angles created are <strong>equal</strong>,
+                                     each new angle is defined as a right angle. 
+                                     Since the whole (angle) is the sum of its parts, the angle of a straight line is two right angles (in size).
                                 </div>
                             </div>
 
                             <div class="proof-step">
                                 <div class="step-number">Step 2</div>
                                 <div class="step-content">
-                                    If we raise a straight line on a base so the angles created are <em>not</em> equal, then since the angle on a straight line is still two right angles, the adjacent angles on a straight line always add up to two right angles.
+                                    If we construct (draw) a straight line on the base line, so the angles created are <em>not</em> equal, 
+                                    then since the (size of the) angle on a straight line is two right angles (from step 1), 
+                                    and adjacent angles add up to the whole (given property),
+                                    the adjacent angles on a straight line always add up to two right angles.
                                 </div>
                             </div>
 

@@ -6,6 +6,7 @@ import { differentiationTopics } from "./data/differentiation";
 import { integrationTopics } from "./data/integration";
 import { trigonometryTopics } from "./data/trigonometry";
 import { sequencesAndSeriesTopics } from "./data/sequencesAndSeries";
+import { coordinateGeometryTopics } from "./data/coordinateGeometry";
 
 export default function App() {
   const [page, setPage] = useState(1);
@@ -61,6 +62,16 @@ export default function App() {
           >
             Seq &amp; Series Map
           </button>
+          <button
+            onClick={() => setPage(5)}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              page === 5
+                ? "bg-purple-500 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Coord geom
+          </button>
         </div>
       </div>
 
@@ -70,6 +81,7 @@ export default function App() {
         {page === 2 && <TopicMap topics={integrationTopics} title="Integration Map" />}
         {page === 3 && <TopicMap topics={trigonometryTopics} title="Trigonometry Map" />}
         {page === 4 && <TopicMap topics={sequencesAndSeriesTopics} title="Sequences & Series Map" />}
+        {page === 5 && <TopicMap topics={coordinateGeometryTopics} title="Coordinate Geometry Map" />}
       </div>
 
     </div>
