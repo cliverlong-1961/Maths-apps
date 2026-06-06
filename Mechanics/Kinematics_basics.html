@@ -381,7 +381,7 @@
             });
         });
 
-        function showSection(sectionId) {
+        function showSection(sectionId, skipHistory) {
             // Hide all sections
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.remove('active'));
@@ -438,7 +438,16 @@
             
             // Scroll to top
             window.scrollTo(0, 0);
-            
+
+            // Update URL hash (without triggering popstate)
+            if (!skipHistory) {
+                if (sectionId === 'intro') {
+                    history.pushState(null, '', window.location.pathname + window.location.search);
+                } else {
+                    history.pushState(null, '', '#' + sectionId);
+                }
+            }
+
             // Re-render math after showing new section
             renderMathInElement(document.body, {
                 delimiters: [
@@ -449,6 +458,20 @@
             });
         }
         
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function () {
+            const hash = window.location.hash.slice(1);
+            showSection(hash || 'intro', true);
+        });
+
+        // Navigate to hash on initial page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                showSection(hash, true);
+            }
+        });
+
         function toggleSolution(solutionId) {
             const solution = document.getElementById(solutionId);
             if (solution.style.display === 'none') {
