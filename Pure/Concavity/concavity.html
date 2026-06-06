@@ -851,15 +851,43 @@
 
     
     <script>
+        // Section metadata: titles for each page
+        const pageMeta = {
+            'home':               { title: 'Concavity Explorer' },
+            'concave-animation':  { title: 'Concave Down' },
+            'convex-animation':   { title: 'Concave Up (Convex)' },
+            'tangent-concave':    { title: 'Tangents to Concave Down' },
+            'tangent-convex':     { title: 'Tangents to Concave Up' },
+            'concave-math':       { title: 'Concave Down Mathematics' },
+            'convex-math':        { title: 'Convex Mathematics' },
+            'second-deriv-tpts':  { title: 'Second Derivative and Turning Points' },
+            'summary-curvature':  { title: 'Summary: f\'\'(x) and Curvature' }
+        };
+
         // Page Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
-            
-            window.scrollTo(0,0);   // reset scroll to top
-            
+
+            window.scrollTo(0, 0);
+
+            // Update URL hash (home = no hash)
+            if (pageId === 'home') {
+                history.pushState(null, '', window.location.pathname + window.location.search);
+            } else {
+                history.pushState(null, '', '#' + pageId);
+            }
+
+            // Update document title
+            const meta = pageMeta[pageId];
+            if (meta) {
+                document.title = pageId === 'home'
+                    ? 'Concavity Explorer'
+                    : meta.title + ' — Concavity Explorer';
+            }
+
             // Start animations when showing animation pages
             if (pageId === 'concave-animation') {
                 setTimeout(() => initConcaveAnimation(), 100);
@@ -878,9 +906,54 @@
                     drawconcaveDownExample();
                     drawConcaveUpExample();
                 }, 100);
-
             }
         }
+
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function () {
+            const hash = window.location.hash.slice(1);
+            const targetId = (hash && document.getElementById(hash)) ? hash : 'home';
+            // Navigate without pushing another history entry
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+            const meta = pageMeta[targetId];
+            if (meta) {
+                document.title = targetId === 'home'
+                    ? 'Concavity Explorer'
+                    : meta.title + ' — Concavity Explorer';
+            }
+            window.scrollTo(0, 0);
+            // Re-trigger animations / graphs for the restored page
+            if (targetId === 'concave-animation') setTimeout(() => initConcaveAnimation(), 100);
+            else if (targetId === 'convex-animation') setTimeout(() => initConvexAnimation(), 100);
+            else if (targetId === 'tangent-concave') setTimeout(() => initTangentConcaveAnimation(), 100);
+            else if (targetId === 'tangent-convex') setTimeout(() => initTangentConvexAnimation(), 100);
+            else if (targetId === 'concave-math') setTimeout(() => drawConcaveMathGraph(), 100);
+            else if (targetId === 'convex-math') setTimeout(() => drawConvexMathGraph(), 100);
+            else if (targetId === 'summary-curvature') setTimeout(() => { drawconcaveDownExample(); drawConcaveUpExample(); }, 100);
+        });
+
+        // On page load: navigate to section from URL hash if present
+        document.addEventListener('DOMContentLoaded', function () {
+            const initialHash = window.location.hash.slice(1);
+            if (initialHash && document.getElementById(initialHash)) {
+                // Activate the target page without pushing a new history entry
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                document.getElementById(initialHash).classList.add('active');
+                const meta = pageMeta[initialHash];
+                if (meta) {
+                    document.title = meta.title + ' — Concavity Explorer';
+                }
+                window.scrollTo(0, 0);
+                if (initialHash === 'concave-animation') setTimeout(() => initConcaveAnimation(), 100);
+                else if (initialHash === 'convex-animation') setTimeout(() => initConvexAnimation(), 100);
+                else if (initialHash === 'tangent-concave') setTimeout(() => initTangentConcaveAnimation(), 100);
+                else if (initialHash === 'tangent-convex') setTimeout(() => initTangentConvexAnimation(), 100);
+                else if (initialHash === 'concave-math') setTimeout(() => drawConcaveMathGraph(), 100);
+                else if (initialHash === 'convex-math') setTimeout(() => drawConvexMathGraph(), 100);
+                else if (initialHash === 'summary-curvature') setTimeout(() => { drawconcaveDownExample(); drawConcaveUpExample(); }, 100);
+            }
+        });
         
         // Draw graph for Tricky Stationary Points page
         function drawTrickyPointsGraph() {
