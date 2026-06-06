@@ -1669,14 +1669,14 @@
         </div>
 
     <script>
-        function showPage(pageId) {
+        function showPage(pageId, skipHistory) {
             // Hide all pages
             const pages = document.querySelectorAll('.page');
             pages.forEach(page => page.classList.remove('active'));
-            
+
             // Show selected page
             document.getElementById(pageId).classList.add('active');
-            
+
             // Scroll to top
             window.scrollTo(0, 0);
 
@@ -1684,7 +1684,16 @@
             document.body.style.background = pageId === 'page-polar-vectors'
                 ? '#ffffff'
                 : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-            
+
+            // Update URL hash
+            if (!skipHistory) {
+                if (pageId === 'page-home') {
+                    history.pushState(null, '', window.location.pathname + window.location.search);
+                } else {
+                    history.pushState(null, '', '#' + pageId);
+                }
+            }
+
             // Start appropriate animation
             if (pageId === 'page-spring') {
                 animateSpring();
@@ -1697,6 +1706,20 @@
                 animateOffAxis();
             }
         }
+
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function () {
+            const hash = window.location.hash.slice(1);
+            showPage(hash || 'page-home', true);
+        });
+
+        // Navigate to hash on initial page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                showPage(hash, true);
+            }
+        });
 
         // Horizontal Simple Harmonic Motion animation
         function animateSpring() {

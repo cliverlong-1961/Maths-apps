@@ -412,47 +412,65 @@
             });
         });
 
-        function showSection(sectionId) {
+        function showSection(sectionId, skipHistory) {
             // Hide all sections
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.remove('active'));
-            
+
             // Show selected section
             document.getElementById(sectionId).classList.add('active');
-            
+
             // Update header based on section
             const header = document.querySelector('header h1');
             const subtitle = document.querySelector('.subtitle');
-            
+            const nav = document.getElementById('navigation');
+
             if (sectionId === 'intro') {
                 header.textContent = 'Important actions when tackling a projectiles question';
                 subtitle.textContent = '';
+                if (nav) nav.style.display = 'none';
             } else if (sectionId === 'reading-question') {
                 header.textContent = 'Reading the question';
                 subtitle.textContent = 'Identifying projectile motion problems';
+                if (nav) nav.style.display = 'block';
             } else if (sectionId === 'drawing-diagrams') {
                 header.textContent = 'Drawing diagrams';
                 subtitle.textContent = 'Visualizing projectile motion problems';
+                if (nav) nav.style.display = 'block';
             } else if (sectionId === 'basic-concepts') {
                 header.textContent = 'Basic concepts and notation';
                 subtitle.textContent = 'Fundamental principles of projectile motion';
+                if (nav) nav.style.display = 'block';
             } else if (sectionId === 'solution-method') {
                 header.textContent = 'Solution method';
                 subtitle.textContent = 'Systematic approach to solving projectile problems';
+                if (nav) nav.style.display = 'block';
             } else if (sectionId === 'kinematics') {
                 header.textContent = 'Kinematic equations';
                 subtitle.textContent = 'Mathematical framework for projectile motion';
+                if (nav) nav.style.display = 'block';
             } else if (sectionId === 'examples') {
                 header.textContent = 'Worked examples';
                 subtitle.textContent = 'Step-by-step solutions to common problems';
+                if (nav) nav.style.display = 'block';
             } else if (sectionId === 'standard-results') {
                 header.textContent = 'Standard results';
                 subtitle.textContent = 'Key formulas for projectile motion';
+                if (nav) nav.style.display = 'block';
             }
-            
+
             // Scroll to top
             window.scrollTo(0, 0);
-            
+
+            // Update URL hash
+            if (!skipHistory) {
+                if (sectionId === 'intro') {
+                    history.pushState(null, '', window.location.pathname + window.location.search);
+                } else {
+                    history.pushState(null, '', '#' + sectionId);
+                }
+            }
+
             // Re-render math after showing new section
             renderMathInElement(document.body, {
                 delimiters: [
@@ -462,6 +480,20 @@
                 throwOnError: false
             });
         }
+
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function () {
+            const hash = window.location.hash.slice(1);
+            showSection(hash || 'intro', true);
+        });
+
+        // Navigate to hash on initial page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                showSection(hash, true);
+            }
+        });
 
         function toggleDerivation(id) {
             const derivation = document.getElementById(id);
@@ -488,7 +520,7 @@
         </header>
 
         <nav class="nav-breadcrumb" id="navigation" style="display: none;">
-            <button onclick="showSection('intro'); document.getElementById('navigation').style.display='none';">← Back to Introduction</button>
+            <button onclick="showSection('intro')">← Back to Introduction</button>
         </nav>
 
         <main>
@@ -513,13 +545,13 @@
                     <div class="cta-section">
                         <p class="cta-text">Ready to explore projectile motion in detail?</p>
                         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                            <button class="btn-primary" onclick="showSection('reading-question'); document.getElementById('navigation').style.display='block';">Reading the Question →</button>
-                            <button class="btn-primary" onclick="showSection('basic-concepts'); document.getElementById('navigation').style.display='block';">Basic Concepts and Notation →</button>
-                            <button class="btn-primary" onclick="showSection('drawing-diagrams'); document.getElementById('navigation').style.display='block';">Drawing Diagrams →</button>
-                            <button class="btn-primary" onclick="showSection('solution-method'); document.getElementById('navigation').style.display='block';">Solution Method →</button>
-                            <button class="btn-primary" onclick="showSection('kinematics'); document.getElementById('navigation').style.display='block';">Kinematic Equations →</button>
-                            <button class="btn-primary" onclick="showSection('standard-results'); document.getElementById('navigation').style.display='block';">Standard Results →</button>
-                            <button class="btn-primary" onclick="showSection('examples'); document.getElementById('navigation').style.display='block';">Worked Examples →</button>
+                            <button class="btn-primary" onclick="showSection('reading-question')">Reading the Question →</button>
+                            <button class="btn-primary" onclick="showSection('basic-concepts')">Basic Concepts and Notation →</button>
+                            <button class="btn-primary" onclick="showSection('drawing-diagrams')">Drawing Diagrams →</button>
+                            <button class="btn-primary" onclick="showSection('solution-method')">Solution Method →</button>
+                            <button class="btn-primary" onclick="showSection('kinematics')">Kinematic Equations →</button>
+                            <button class="btn-primary" onclick="showSection('standard-results')">Standard Results →</button>
+                            <button class="btn-primary" onclick="showSection('examples')">Worked Examples →</button>
                         </div>
                     </div>
                 </div>

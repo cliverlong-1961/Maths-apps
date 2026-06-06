@@ -1866,12 +1866,19 @@ h4 {
 
 <script>
 // ── Navigation ──
-function goTo(id) {
+function goTo(id, skipHistory) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelector(`[data-section="${id}"]`).classList.add('active');
   window.scrollTo(0, 0);
+  if (!skipHistory) {
+    if (id === 's1') {
+      history.pushState(null, '', window.location.pathname + window.location.search);
+    } else {
+      history.pushState(null, '', '#' + id);
+    }
+  }
   if (window.renderMathInElement) {
     renderMathInElement(document.getElementById(id), {
       delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]
@@ -1881,6 +1888,20 @@ function goTo(id) {
 
 document.querySelectorAll('.nav-item').forEach(item => {
   item.addEventListener('click', () => goTo(item.dataset.section));
+});
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', function () {
+  const hash = window.location.hash.slice(1);
+  goTo(hash || 's1', true);
+});
+
+// Navigate to hash on initial page load
+document.addEventListener('DOMContentLoaded', function () {
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    goTo(hash, true);
+  }
 });
 
 // ── Step-by-step logic ──

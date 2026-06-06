@@ -258,7 +258,7 @@
             }
         }
 
-        function showSection(id) {
+        function showSection(id, skipHistory) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             const nav = document.getElementById('navigation');
@@ -271,6 +271,13 @@
             document.querySelector('header h1').textContent = title;
             document.querySelector('.subtitle').textContent = sub;
             window.scrollTo(0, 0);
+            if (!skipHistory) {
+                if (id === 'intro') {
+                    history.pushState(null, '', window.location.pathname + window.location.search);
+                } else {
+                    history.pushState(null, '', '#' + id);
+                }
+            }
             renderMathInElement(document.body, {
                 delimiters: [
                     {left: '\\[', right: '\\]', display: true},
@@ -279,6 +286,18 @@
                 throwOnError: false
             });
         }
+
+        window.addEventListener('popstate', function () {
+            const hash = window.location.hash.slice(1);
+            showSection(hash || 'intro', true);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                showSection(hash, true);
+            }
+        });
     </script>
 </head>
 <body>
