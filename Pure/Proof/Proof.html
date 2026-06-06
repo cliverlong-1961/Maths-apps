@@ -441,12 +441,14 @@
         const sectionMeta = {
             'intro':                   { header: 'Basic proof terminology and concepts',       subtitle: '' },
             'number-systems':          { header: 'Number systems',                             subtitle: 'Definitions and properties of the main number systems' },
+            'setting-context':         { header: 'Setting the context',                        subtitle: 'Identifying the mathematical objects and structure a proof is about' },
             'algebraic':               { header: 'Algebraic proofs',                           subtitle: 'Fundamental algebraic identities and their proofs' },
             'algebraic-basic':         { header: 'Basic algebra',                              subtitle: 'Fundamental algebraic identities' },
             'algebraic-inequalities':  { header: 'Algebraic inequalities',                     subtitle: 'Fundamental inequality proofs' },
             'moduli-cases':            { header: 'Moduli and cases',                           subtitle: 'Basic real number proofs involving moduli and cases' },
             'number-theory':           { header: 'Basic number theory',                        subtitle: 'Fundamental definitions and proofs in number theory' },
             'real-numbers':            { header: 'Proofs involving real numbers',              subtitle: 'Fundamental theorems and proofs about real numbers' },
+            'counter-examples':        { header: 'Counter-examples',                           subtitle: 'Propositions that seem true but are false — disproved by a single example' },
             'geometric':               { header: 'Basic geometric proofs',                     subtitle: 'Fundamental theorems and proofs in geometry' },
             'contradiction':           { header: 'Proof by contradiction',                     subtitle: 'Proofs using reductio ad absurdum' },
             'preliminary-properties':  { header: 'Preliminary properties required in proofs', subtitle: 'Foundational properties used in mathematical proof' },
@@ -582,9 +584,11 @@
                         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                         <button class="btn-primary" onclick="showSection('preliminary-properties');">Preliminary Properties →</button>
                             <button class="btn-primary" onclick="showSection('number-systems');">Number Systems →</button>
+                            <button class="btn-primary" onclick="showSection('setting-context');">Setting the Context →</button>
                             <button class="btn-primary" onclick="showSection('algebraic');">Algebraic Proofs →</button>
                             <button class="btn-primary" onclick="showSection('number-theory');">Number Theory →</button>
                             <button class="btn-primary" onclick="showSection('real-numbers');">Real Number Proofs →</button>
+                            <button class="btn-primary" onclick="showSection('counter-examples');">Counter-examples →</button>
                             <button class="btn-primary" onclick="showSection('geometric');">Geometric Proofs →</button>
                             <button class="btn-primary" onclick="showSection('contradiction');">Proof by Contradiction →</button>
                             <button class="btn-primary" onclick="showSection('resources');">Useful Resources →</button>
@@ -911,6 +915,45 @@
             <!-- close Div here ?? -->
 
                 
+            </section>
+
+            <!-- Setting / Context Section -->
+            <section id="setting-context" class="section">
+
+                <nav class="nav-breadcrumb">
+                    <button onclick="showSection('intro');">← Back to home</button>
+                </nav>
+
+                <div class="definitions-section">
+                    <h3>Setting the context</h3>
+
+                    <p>
+                        It is important to know which <em>mathematical objects</em> the proof is about. For example, is the proof about:
+                        integers, positive integers, real numbers, rational numbers, or something else?
+                        This is important to recognise before attempting the proof since this tells us what operations are valid
+                        and can be used in the proof.
+                    </p>
+
+                    <p style="margin-top: 14px;">
+                        Look at the <button style="background:none; border:none; color:#3498db; cursor:pointer; font-size:1em; padding:0; text-decoration:underline;" onclick="showSection('number-systems');">Number systems</button> section
+                        and notice rules like <em>"</em>\(a + b\) is an integer if \(a\) and \(b\) are integers.<em>"</em>
+                        The part after the word <strong>if</strong> — <em>"</em>\(a\) and \(b\) are integers<em>"</em> — is different from what comes before it.
+                        The part after <strong>if</strong> is usually what we <em>assume</em> to be true, and it is the starting point for a direct proof.
+                    </p>
+
+                    <p style="margin-top: 14px;">
+                        More formally, this context — the collection of objects and the operations permitted on them — is called the
+                        <strong>structure</strong> used in the proof.
+                    </p>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="showSection('number-systems');">Number Systems →</button>
+                        <button class="btn-primary" onclick="showSection('algebraic');">Algebraic Proofs →</button>
+                    </div>
+                </div>
+
             </section>
 
             <!-- Algebraic Proofs Section -->
@@ -1901,6 +1944,170 @@
                         <button class="btn-primary" onclick="showSection('moduli-cases');">Moduli and cases →</button>
                     </div>
                 </div>
+            </section>
+
+            <!-- Counter-examples Section -->
+            <section id="counter-examples" class="section">
+
+                <nav class="nav-breadcrumb">
+                    <button onclick="showSection('intro');">← Back to home</button>
+                </nav>
+
+                <div class="definitions-section">
+                    <h3>What is a counter-example?</h3>
+                    <p>
+                        A <strong>counter-example</strong> is a single specific instance that disproves a general statement.
+                        To prove that a proposition of the form <em>"for all \(x\), property \(P(x)\) holds"</em> is <strong>false</strong>,
+                        it is enough to exhibit just one value of \(x\) for which \(P(x)\) fails.
+                        No matter how convincing a pattern looks, one counter-example is sufficient to demolish it entirely.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        Counter-examples are important in mathematics because they:
+                    </p>
+                    <ul style="margin: 10px 0 0 25px; line-height: 1.9;">
+                        <li>show the limits of a result — exactly where and why it breaks down</li>
+                        <li>guard against over-generalisation from patterns observed in small cases</li>
+                        <li>motivate the need for careful hypotheses in theorems</li>
+                        <li>remind us that plausibility is not proof</li>
+                    </ul>
+                </div>
+
+                <h2>Propositions disproved by counter-example</h2>
+
+                <div class="topic-grid">
+
+                    <!-- Counter-example 1: integers -->
+                    <article class="topic-card">
+                        <h3>A false proposition about integers</h3>
+                        <div class="formula">
+                            \[n^2 + n + 41 \text{ is prime for every non-negative integer } n\]
+                        </div>
+                        <p class="description">
+                            The expression \(n^2 + n + 41\) produces primes for \(n = 0, 1, 2, \ldots, 39\) — forty consecutive cases.
+                            This striking pattern, discovered by Euler, makes the proposition feel compelling.
+                            Yet the general statement is false.
+                        </p>
+
+                        <button class="topic-link"
+                                id="proof-ce-integers-link"
+                                onclick="toggleProof('proof-ce-integers')">
+                                View Counter-example →
+                        </button>
+
+                        <div id="proof-ce-integers" class="proof-container">
+                            <div class="proof-header">Counter-example: \(n^2 + n + 41\) is not always prime</div>
+
+                            <div style="background:#e8f8f0; border-left:4px solid #27ae60; border-radius:4px; padding:12px 16px; margin-bottom:18px;">
+                                <span style="font-weight:bold; color:#1a6e3e;">&#x2717; Disproof by Counter-example</span>
+                                <span style="color:#1a5c34;"> — To disprove a "for all" statement we need only one failing case.</span>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Observe the pattern for small \(n\)</div>
+                                <div class="step-content">
+                                    Computing the first several values:
+                                    \[
+                                    \begin{array}{c|c|l}
+                                    n & n^2+n+41 & \text{prime?} \\ \hline
+                                    0 & 41 & \checkmark \\
+                                    1 & 43 & \checkmark \\
+                                    2 & 47 & \checkmark \\
+                                    3 & 53 & \checkmark \\
+                                    \vdots & \vdots & \vdots \\
+                                    39 & 1601 & \checkmark
+                                    \end{array}
+                                    \]
+                                    Every value from \(n = 0\) to \(n = 39\) is prime. The pattern appears unbreakable.
+                                </div>
+                                <div class="step-justification">40 consecutive successes makes the proposition seem very likely to be true</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">The counter-example: \(n = 40\)</div>
+                                <div class="step-content">
+                                    Substitute \(n = 40\):
+                                    \[40^2 + 40 + 41 = 1600 + 40 + 41 = 1681\]
+                                    Now factorise \(1681\):
+                                    \[1681 = 41 \times 41 = 41^2\]
+                                    Since \(1681 = 41^2\) has a factor other than 1 and itself, it is <strong>not prime</strong>.
+                                </div>
+                                <div class="step-justification">We can see <em>why</em> it fails at \(n=40\): substituting \(n = 41k - 1\) for any integer \(k\) always gives a multiple of 41, since \((41k-1)^2 + (41k-1) + 41 = 41(41k^2 - k + 1)\)</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> The single case \(n = 40\) gives \(n^2 + n + 41 = 41^2\), which is composite.
+                                Therefore the proposition <em>"</em>\(n^2 + n + 41\) is prime for every non-negative integer \(n\)<em>"</em> is <strong>false</strong>. &#8718;
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Counter-example 2: real numbers -->
+                    <article class="topic-card">
+                        <h3>A false proposition about real numbers</h3>
+                        <div class="formula">
+                            \[\text{For all } x \in \mathbb{R},\quad \sqrt{x^2} = x\]
+                        </div>
+                        <p class="description">
+                            Squaring a number and then taking the square root seems like it should simply return the original number.
+                            For positive reals the formula works perfectly, and it is easy to assume it holds for all real numbers.
+                            Yet the general statement is false.
+                        </p>
+
+                        <button class="topic-link"
+                                id="proof-ce-reals-link"
+                                onclick="toggleProof('proof-ce-reals')">
+                                View Counter-example →
+                        </button>
+
+                        <div id="proof-ce-reals" class="proof-container">
+                            <div class="proof-header">Counter-example: \(\sqrt{x^2} = x\) does not hold for all \(x \in \mathbb{R}\)</div>
+
+                            <div style="background:#e8f8f0; border-left:4px solid #27ae60; border-radius:4px; padding:12px 16px; margin-bottom:18px;">
+                                <span style="font-weight:bold; color:#1a6e3e;">&#x2717; Disproof by Counter-example</span>
+                                <span style="color:#1a5c34;"> — To disprove a "for all" statement we need only one failing case.</span>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">Why the formula seems true</div>
+                                <div class="step-content">
+                                    For any positive real, for example \(x = 5\):
+                                    \[\sqrt{5^2} = \sqrt{25} = 5 = x \quad \checkmark\]
+                                    For \(x = 0\):
+                                    \[\sqrt{0^2} = \sqrt{0} = 0 = x \quad \checkmark\]
+                                    The formula works in every case one is likely to try first — positive numbers and zero.
+                                </div>
+                                <div class="step-justification">Positive reals and zero satisfy the formula, which is why it looks universally true</div>
+                            </div>
+
+                            <div class="proof-step">
+                                <div class="step-number">The counter-example: \(x = -3\)</div>
+                                <div class="step-content">
+                                    Substitute \(x = -3\):
+                                    \[\sqrt{(-3)^2} = \sqrt{9} = 3\]
+                                    But \(x = -3\), so \(\sqrt{x^2} = 3 \ne -3 = x\).
+                                    <br><br>
+                                    The formula fails because the square root function \(\sqrt{\phantom{x}}\) is defined to return the
+                                    <em>non-negative</em> square root. The correct identity for all real \(x\) is:
+                                    \[\sqrt{x^2} = |x|\]
+                                    which equals \(x\) only when \(x \geq 0\).
+                                </div>
+                                <div class="step-justification">\(\sqrt{\phantom{x}} : \mathbb{R}_{\geq 0} \to \mathbb{R}_{\geq 0}\) is defined as the principal (non-negative) square root, so \(\sqrt{9} = 3\), never \(-3\)</div>
+                            </div>
+
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Taking \(x = -3\) gives \(\sqrt{x^2} = 3 \ne -3 = x\).
+                                Therefore the proposition <em>"</em>\(\sqrt{x^2} = x\) for all \(x \in \mathbb{R}\)<em>"</em> is <strong>false</strong>.
+                                The correct statement is \(\sqrt{x^2} = |x|\) for all \(x \in \mathbb{R}\). &#8718;
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="color: #7f8c8d;">More counter-examples will be added to this collection over time.</p>
+                </div>
+
             </section>
 
             <!-- Geometric Proofs Section -->
