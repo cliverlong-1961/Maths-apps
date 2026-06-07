@@ -947,22 +947,43 @@
 
     <script>
         // Page Navigation
-        function showPage(pageId) {
+        function showPage(pageId, skipHistory) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
-            
-             window.scrollTo(0,0);   // force top
-            
+
+            window.scrollTo(0,0);   // force top
+
+            if (!skipHistory) {
+                if (pageId === 'home') {
+                    history.pushState(null, '', window.location.pathname + window.location.search);
+                } else {
+                    history.pushState(null, '', '#' + pageId);
+                }
+            }
+
             // Start animations when showing animation pages
-            if 
-              (pageId === 'alternative-tests') {
+            if (pageId === 'alternative-tests') {
                 setTimeout(() => drawAlternativeTestGraph(), 100);
             } else if (pageId === 'inflection-nonstationary') {
                 setTimeout(() => drawInflectionNonStationaryGraph(), 100);
             }
         }
+
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function () {
+            const hash = window.location.hash.slice(1);
+            showPage(hash || 'home', true);
+        });
+
+        // Navigate to hash on initial page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                showPage(hash, true);
+            }
+        });
         
         // Draw graph for Tricky Stationary Points page
         // replaced by desmos screenshots
