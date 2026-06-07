@@ -437,7 +437,7 @@
      SECTION 0 — INTRODUCTION
 ════════════════════════════════════════ -->
 <section class="section active" id="s0">
-  <h2><span class="number">Section 1</span>Why Friction Matters</h2>
+  <h2>Why Friction Matters</h2>
   <hr class="hr">
 
   <p class="intro-lead">"Why do objects <em>stop</em> moving?" — a more useful question than "why do they move?"</p>
@@ -614,7 +614,7 @@
      SECTION 1 — FRICTION LAW
 ════════════════════════════════════════ -->
 <section class="section" id="s1">
-  <h2><span class="number">Section 2</span>The Friction Law</h2>
+  <h2>The Friction Law</h2>
   <hr class="hr">
 
   <h3>The Coefficient of Friction</h3>
@@ -710,7 +710,7 @@
      SECTION 2 — HORIZONTAL PLANE
 ════════════════════════════════════════ -->
 <section class="section" id="s2">
-  <h2><span class="number">Section 3</span>Horizontal Plane Problems</h2>
+  <h2>Horizontal Plane Problems</h2>
   <hr class="hr">
 
   <p>When a block rests on a horizontal surface with no vertical component of applied force, the normal contact force simply equals the weight:</p>
@@ -834,7 +834,7 @@
      SECTION 3 — INCLINED PLANES
 ════════════════════════════════════════ -->
 <section class="section" id="s3">
-  <h2><span class="number">Section 4</span>Rough Inclined Planes</h2>
+  <h2>Rough Inclined Planes</h2>
   <hr class="hr">
 
   <h3>Setting Up the Equations</h3>
@@ -1073,7 +1073,7 @@
      SECTION 4 — ANGLED FORCES
 ════════════════════════════════════════ -->
 <section class="section" id="s4">
-  <h2><span class="number">Section 5</span>Forces at Angles &amp; Static Particles</h2>
+  <h2>Forces at Angles &amp; Static Particles</h2>
   <hr class="hr">
 
   <p>When a force is applied at an angle (not parallel to the surface), its vertical component affects the normal contact force $R$, which in turn changes the maximum friction.</p>
@@ -1279,7 +1279,7 @@
      SECTION 5 — QUESTIONS
 ════════════════════════════════════════ -->
 <section class="section" id="s5">
-  <h2><span class="number">Section 6</span>Practice Questions</h2>
+  <h2>Practice Questions</h2>
   <hr class="hr">
   <p>Attempt each question before revealing the answer. Use $g = 9.8\text{ m s}^{-2}$.</p>
 
@@ -1420,11 +1420,34 @@
 </main>
 
 <script>
-  function showSection(i) {
+  function showSection(i, skipHistory) {
     document.querySelectorAll('.section').forEach((s,idx) => s.classList.toggle('active', idx===i));
     document.querySelectorAll('nav button').forEach((b,idx) => b.classList.toggle('active', idx===i));
     window.scrollTo({top:0, behavior:'smooth'});
+    if (!skipHistory) {
+      if (i === 0) {
+        history.pushState(null, '', window.location.pathname + window.location.search);
+      } else {
+        history.pushState(null, '', '#s' + i);
+      }
+    }
   }
+
+  // Handle browser back/forward navigation
+  window.addEventListener('popstate', function () {
+    const hash = window.location.hash.slice(1);
+    const i = hash.startsWith('s') ? parseInt(hash.slice(1), 10) : 0;
+    showSection(isNaN(i) ? 0 : i, true);
+  });
+
+  // Navigate to hash on initial page load
+  document.addEventListener('DOMContentLoaded', function () {
+    const hash = window.location.hash.slice(1);
+    if (hash.startsWith('s')) {
+      const i = parseInt(hash.slice(1), 10);
+      if (!isNaN(i)) showSection(i, true);
+    }
+  });
 
   function toggleEx(id) {
     const el = document.getElementById(id);
