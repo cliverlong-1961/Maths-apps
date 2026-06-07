@@ -1677,7 +1677,7 @@ function rz(id){
 }
 function tog(el){el.classList.toggle('open');}
 
-function go(m){
+function go(m, skipHistory){
   document.querySelectorAll('.module').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('mod'+m).classList.add('on');
@@ -1687,7 +1687,30 @@ function go(m){
   if(!inited[m]){initMod(m);inited[m]=true;}
   injectBottomNav(m);
   window.scrollTo({top:0,behavior:'smooth'});
+  if(!skipHistory){
+    if(m===0){
+      history.pushState(null,'',window.location.pathname+window.location.search);
+    } else {
+      history.pushState(null,'','#mod'+m);
+    }
+  }
 }
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', function(){
+  const hash = window.location.hash.slice(1);
+  const m = hash.startsWith('mod') ? parseInt(hash.slice(3), 10) : 0;
+  go(isNaN(m) ? 0 : m, true);
+});
+
+// Navigate to hash on initial page load
+document.addEventListener('DOMContentLoaded', function(){
+  const hash = window.location.hash.slice(1);
+  if(hash.startsWith('mod')){
+    const m = parseInt(hash.slice(3), 10);
+    if(!isNaN(m)) go(m, true);
+  }
+});
 
 function mkTabFn(){
   return function(btn,id){
