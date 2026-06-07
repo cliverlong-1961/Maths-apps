@@ -167,7 +167,7 @@ function Divider() {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function TopicMap({ topics, title }: TopicMapProps) {
+export default function TopicMap({ topics }: TopicMapProps) {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [mode, setMode] = useState<"focus" | "full">("focus");
   const [sidebarFilter, setSidebarFilter] = useState("");
