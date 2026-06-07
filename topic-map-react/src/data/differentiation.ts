@@ -53,4 +53,10 @@ export const differentiationTopics: Topic[] = [
   
   dependsOn: ["power-rule"],
   },
+  {
+  id: "implicit-diffn",
+  title: "Implicit Differentiation",
+  url: "https://maths-apps.crlong.uk/Pure/practise-probs/implicit-diffn/implicit-differentiation.html",
+  dependsOn: ["chain-rule"],
+  },
 ];
