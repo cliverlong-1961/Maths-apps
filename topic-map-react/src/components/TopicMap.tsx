@@ -154,17 +154,21 @@ export default function TopicMap({ topics, title }: TopicMapProps) {
       const nodeSpacing = 250;
       const levelWidth = (topicsAtSameLevel.length - 1) * nodeSpacing;
 
-      return {
-        id: topic.id,
-        position: {
-          x: 400 - levelWidth / 2 + positionInLevel * nodeSpacing,
-          y: 50 + (topicLevel - 1) * 180,
-        },
-        data: {
-          label: topic.title,
-        },
-      };
-    });
+		return {
+		    id: topic.id,
+		    position: {
+		      x: 400 - levelWidth / 2 + positionInLevel * nodeSpacing,
+		      y: 50 + (topicLevel - 1) * 180,
+		    },
+		    data: {
+		      label: topic.title,
+		      url: topic.url,
+		    },
+		    style: topic.url
+		      ? { background: "#ffe4e6", border: "1px solid #fda4af" }
+		      : undefined,
+		  };
+		});
 
     const calculatedEdges: Edge[] = topics.flatMap(topic =>
       topic.dependsOn.map(dep => ({
