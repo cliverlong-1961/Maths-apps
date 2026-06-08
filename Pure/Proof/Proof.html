@@ -442,6 +442,7 @@
             'intro':                   { header: 'Basic proof terminology and concepts',       subtitle: '' },
             'number-systems':          { header: 'Number systems',                             subtitle: 'Definitions and properties of the main number systems' },
             'setting-context':         { header: 'Setting the context',                        subtitle: 'Identifying the mathematical objects and structure a proof is about' },
+            'if-then':                 { header: 'If \u2026 then \u2026',                       subtitle: 'Direct proofs and the conditional statement' },
             'algebraic':               { header: 'Algebraic proofs',                           subtitle: 'Fundamental algebraic identities and their proofs' },
             'algebraic-basic':         { header: 'Basic algebra',                              subtitle: 'Fundamental algebraic identities' },
             'algebraic-inequalities':  { header: 'Algebraic inequalities',                     subtitle: 'Fundamental inequality proofs' },
@@ -585,6 +586,7 @@
                         <button class="btn-primary" onclick="showSection('preliminary-properties');">Preliminary Properties →</button>
                             <button class="btn-primary" onclick="showSection('number-systems');">Number Systems →</button>
                             <button class="btn-primary" onclick="showSection('setting-context');">Setting the Context →</button>
+                            <button class="btn-primary" onclick="showSection('if-then');">If &hellip; then &hellip; →</button>
                             <button class="btn-primary" onclick="showSection('algebraic');">Algebraic Proofs →</button>
                             <button class="btn-primary" onclick="showSection('number-theory');">Number Theory →</button>
                             <button class="btn-primary" onclick="showSection('real-numbers');">Real Number Proofs →</button>
@@ -781,6 +783,23 @@
                                 This allows chaining equalities in logical arguments.
                             </div>
                         </div>
+
+                        <div class="proof-step">
+                            <div class="step-number">11. Inequalities and Order</div>
+                            <div class="step-content">
+                                For all real numbers \(a, b, c\):
+                                <br><br>
+                                <strong>Trichotomy.</strong> Exactly one of the following is true:
+                                \[a < b, \quad a = b, \quad a > b.\]
+                                <strong>Transitivity.</strong> If \(a < b\) and \(b < c\), then
+                                \[a < c.\]
+                                <strong>Addition preserves order.</strong> If \(a < b\), then
+                                \[a + c < b + c.\]
+                                <strong>Multiplication by a positive number preserves order.</strong> If \(a < b\) and \(c > 0\), then
+                                \[ac < bc.\]
+                                These are often taken as the fundamental inequality axioms.
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -950,6 +969,127 @@
                 <div style="margin-top: 30px; text-align: center;">
                     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                         <button class="btn-primary" onclick="showSection('number-systems');">Number Systems →</button>
+                        <button class="btn-primary" onclick="showSection('algebraic');">Algebraic Proofs →</button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- If ... then ... Section -->
+            <section id="if-then" class="section">
+
+                <nav class="nav-breadcrumb">
+                    <button onclick="showSection('intro');">← Back to home</button>
+                </nav>
+
+                <h2>Direct Proofs</h2>
+
+                <div class="definitions-section">
+                    <h3>The <em>If &hellip; then &hellip;</em> statement</h3>
+
+                    <p>
+                        A good place to start to understand mathematical proof is with the <em>If &hellip; then &hellip;</em> statement.
+                        Devlin clarifies that this is <strong>the conditional</strong> rather than <strong>implication</strong> — for reasons explained in more detail in a sub-section to this page.
+                    </p>
+
+                    <p>
+                        Before we dive into that detail, a challenge with a lot of claims (statements, propositions, conjectures) that we are asked to prove
+                        is that the claim is <em>not</em> written in the <em>If &hellip; then &hellip;</em> format.
+                        (Very) often a useful first step in constructing a proof is to convert the claim into
+                        <em>If &hellip; then &hellip;</em> format.
+                    </p>
+
+                    <div class="definition-highlight">
+                        <strong>Key habit:</strong> Before attempting a proof, rewrite the claim in the form
+                        <em>&ldquo;If [hypothesis], then [conclusion].&rdquo;</em>
+                        This makes it clear what you are <em>assuming</em> and what you are trying to <em>deduce</em>.
+                    </div>
+                </div>
+
+                <!-- Two-column conversion table -->
+                <div class="definitions-section" style="margin-top: 30px;">
+                    <h3>Recognising the <em>If &hellip; then &hellip;</em> structure in disguise</h3>
+
+                    <p style="margin-bottom: 20px;">
+                        Mathematical claims appear in many different linguistic forms.
+                        The table below shows common wordings together with their logically equivalent
+                        <em>If &hellip; then &hellip;</em> translation.
+                        Practise spotting these patterns — rewriting a claim in conditional form is often the very first step of a direct proof.
+                    </p>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width:100%; border-collapse: collapse; font-size: 1em; line-height: 1.7;">
+                            <thead>
+                                <tr style="background:#f0f4f8; border-bottom: 2px solid #3498db;">
+                                    <th style="text-align:left; padding: 12px 16px; font-weight: 600; color: #2c3e50; width:50%;">Original wording</th>
+                                    <th style="text-align:left; padding: 12px 16px; font-weight: 600; color: #2c3e50; width:50%;">Equivalent <em>If &hellip; then &hellip;</em> form</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px 16px;">Whenever \(n\) is an odd integer, \(n^2\) is odd.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(n\) is an odd integer, then \(n^2\) is odd.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0; background:#f9f9f9;">
+                                    <td style="padding: 12px 16px;">Show that \(x^2 - 5x + 6 = 0\) if \(x = 2\) or \(x = 3\).</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(x = 2\) or \(x = 3\), then \(x^2 - 5x + 6 = 0\).</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px 16px;">Prove that \(a^2 + b^2 \geq 2ab\) for all real numbers \(a\) and \(b\).</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(a\) and \(b\) are real numbers, then \(a^2 + b^2 \geq 2ab\).</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0; background:#f9f9f9;">
+                                    <td style="padding: 12px 16px;">A sufficient condition for \(n\) to be divisible by 4 is that \(n\) is divisible by 8.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(n\) is divisible by 8, then \(n\) is divisible by 4.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px 16px;">\(n\) being even is a necessary condition for \(n^2\) to be even.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(n^2\) is even, then \(n\) is even.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0; background:#f9f9f9;">
+                                    <td style="padding: 12px 16px;">Show that \(p\) is prime given that \(p &gt; 1\) and \(p\) has no divisors other than 1 and itself.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(p &gt; 1\) and the only divisors of \(p\) are 1 and \(p\), then \(p\) is prime.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px 16px;">Every square number is non-negative.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(n\) is a real number, then \(n^2 \geq 0\).</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0; background:#f9f9f9;">
+                                    <td style="padding: 12px 16px;">The product of two negative integers is positive.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(a &lt; 0\) and \(b &lt; 0\) are integers, then \(ab &gt; 0\).</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px 16px;">For \(n\) to be divisible by 6, it is sufficient that \(n\) is divisible by both 2 and 3.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(n\) is divisible by both 2 and 3, then \(n\) is divisible by 6.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0; background:#f9f9f9;">
+                                    <td style="padding: 12px 16px;">Provided that \(x &gt; 0\), we have \(\sqrt{x} &gt; 0\).</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(x &gt; 0\), then \(\sqrt{x} &gt; 0\).</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px 16px;">Let \(a\) and \(b\) be integers. Show that \(a - b\) is even, assuming \(a\) and \(b\) are both odd.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(a\) and \(b\) are both odd integers, then \(a - b\) is even.</td>
+                                </tr>
+                                <tr style="background:#f9f9f9;">
+                                    <td style="padding: 12px 16px;">Only if \(n\) is odd can \(n^2\) be odd.</td>
+                                    <td style="padding: 12px 16px; background:#fafcff;">If \(n^2\) is odd, then \(n\) is odd.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p style="margin-top: 20px;">
+                        Notice that some phrasings &mdash; such as <em>&ldquo;necessary condition&rdquo;</em>, <em>&ldquo;only if&rdquo;</em>,
+                        and <em>&ldquo;show that &hellip; if &hellip;&rdquo;</em> &mdash; reverse the order of hypothesis and conclusion compared
+                        to the <em>If &hellip; then &hellip;</em> form.
+                        Take particular care with these: identifying which part is the <em>assumption</em> and which is the <em>goal</em>
+                        is the essential first step.
+                    </p>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="showSection('setting-context');">← Setting the Context</button>
                         <button class="btn-primary" onclick="showSection('algebraic');">Algebraic Proofs →</button>
                     </div>
                 </div>
