@@ -2,13 +2,22 @@ import type { Topic } from "../types/Topic";
 
 export const proofTopics: Topic[] = [
   {
+    id: "statements",
+    title: "Statements",
+    summary:
+      "Need to clearly identify what is a statement and its relationship to True/False.",
+    specRef: "1.1",
+    url: "https://maths-apps.crlong.uk/Pure/Proof/Proof.html",
+    dependsOn: [],
+  },
+  {
     id: "proof-by-deduction",
     title: "Direct Proof",
     summary:
       "Proceed from given assumptions through a series of logical steps to a conclusion. e.g. use completing the square to prove n² − 6n + 10 is positive for all n; differentiation from first principles for small positive integer powers of x; proving results for arithmetic and geometric series. This is the most commonly used method of proof throughout the specification.",
     specRef: "1.1",
-    url: "https://maths-apps.crlong.uk/Pure/Proof/Proof.html",
-    dependsOn: [],
+    url: "https://maths-apps.crlong.uk/Pure/Proof/Proof.html#if-then",
+    dependsOn: ["statements"],
   },
   {
     id: "proof-by-exhaustion",
