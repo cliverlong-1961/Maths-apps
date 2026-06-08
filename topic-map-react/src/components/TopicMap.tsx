@@ -1,8 +1,8 @@
-import { ReactFlow, ReactFlowProvider } from "reactflow";
+import { ReactFlow, ReactFlowProvider, Position, useReactFlow } from "reactflow";
 import type { Node, Edge } from "reactflow";
 import "reactflow/dist/style.css";
 import type { Topic } from "../types/Topic";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface TopicMapProps {
   topics: Topic[];
@@ -165,12 +165,88 @@ function Divider() {
   return <div style={{ height: "1px", backgroundColor: "#e5e7eb", margin: "2px 0" }} />;
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Inner canvas component (must be inside ReactFlowProvider to use useReactFlow) ──
+function FlowCanvas({ nodes, edges, mode, setMode, selectedTopicId, hasCycles, onNodeClick }: {
+  nodes: Node[];
+  edges: Edge[];
+  mode: "focus" | "full";
+  setMode: (m: "focus" | "full") => void;
+  selectedTopicId: string | null;
+  hasCycles: boolean;
+  onNodeClick: (id: string) => void;
+}) {
+  const { fitView } = useReactFlow();
+  const showDisplayAll = mode === "focus" && selectedTopicId !== null;
+
+  // Fit on initial mount
+  useEffect(() => {
+    const timer = setTimeout(() => fitView({ padding: 0.18, duration: 0 }), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Re-fit whenever selected topic or mode changes
+  useEffect(() => {
+    if (mode === "focus") {
+      const timer = setTimeout(() => {
+        fitView({ padding: 0.18, duration: 400 });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedTopicId, mode]);
+
+  return (
+    <>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodeClick={(_, node) => onNodeClick(node.id)}
+        panOnScroll
+        zoomOnScroll={false}
+        zoomOnPinch
+      />
+
+      {/* Cycles warning */}
+      {hasCycles && (
+        <div style={{
+          position: "absolute", top: 10, left: 10, zIndex: 10,
+          padding: "6px 10px", backgroundColor: "#fef3c7",
+          border: "1px solid #f59e0b", borderRadius: "6px",
+          color: "#92400e", fontSize: "12px",
+        }}>
+          ⚠️ Circular dependencies detected
+        </div>
+      )}
+
+      {/* Toolbar */}
+      <div style={{
+        position: "absolute", top: 10, right: 10,
+        display: "flex", gap: "6px", zIndex: 10,
+      }}>
+        {showDisplayAll && (
+          <>
+            <ToolbarButton active={false} onClick={() => fitView({ padding: 0.15, duration: 400 })}>
+              Display All
+            </ToolbarButton>
+            <div style={{ width: "10px" }} />
+          </>
+        )}
+        <ToolbarButton active={mode === "focus"} onClick={() => setMode("focus")}>
+          Focus
+        </ToolbarButton>
+        <ToolbarButton active={mode === "full"} onClick={() => setMode("full")}>
+          Full map
+        </ToolbarButton>
+      </div>
+    </>
+  );
+}
+
 
 export default function TopicMap({ topics }: TopicMapProps) {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [mode, setMode] = useState<"focus" | "full">("focus");
   const [sidebarFilter, setSidebarFilter] = useState("");
+  const [panelOpen, setPanelOpen] = useState(false);
 
   const getSuccessors = (id: string) =>
     topics.filter((t) => t.dependsOn.includes(id)).map((t) => t.id);
@@ -188,14 +264,63 @@ export default function TopicMap({ topics }: TopicMapProps) {
     const levelMemo = new Map<string, number>();
     const visTopics = topics.filter((t) => visibleIds.includes(t.id));
 
+    // ── Horizontal focus layout ──────────────────────────────────────────────
+    // In focus mode with a selection: focal node centred, prereqs left, successors right.
+    const isFocusMode = mode === "focus" && selectedTopicId !== null;
+    const focusPositions = new Map<string, { x: number; y: number }>();
+
+    if (isFocusMode && selectedTopicId) {
+      const NODE_W = 160;   // approximate node width
+      const COL_GAP = 250;  // horizontal gap between columns — wider = smoother bezier curves
+      const ROW_GAP = 90;   // vertical gap between nodes in the same column
+
+      const prereqIds = getPredecessors(selectedTopicId);
+      const successorIds = getSuccessors(selectedTopicId);
+
+      // Centre column: focal node
+      focusPositions.set(selectedTopicId, { x: 0, y: 0 });
+
+      // Left column: predecessors, stacked vertically and centred
+      prereqIds.forEach((id, i) => {
+        const totalH = (prereqIds.length - 1) * ROW_GAP;
+        focusPositions.set(id, {
+          x: -(NODE_W + COL_GAP),
+          y: i * ROW_GAP - totalH / 2,
+        });
+      });
+
+      // Right column: successors, stacked vertically and centred
+      successorIds.forEach((id, i) => {
+        const totalH = (successorIds.length - 1) * ROW_GAP;
+        focusPositions.set(id, {
+          x: NODE_W + COL_GAP,
+          y: i * ROW_GAP - totalH / 2,
+        });
+      });
+    }
+
     const calculatedNodes: Node[] = visTopics.map((topic) => {
-      const topicLevel = getLevel(topics, topic.id, levelMemo);
-      const topicsAtSameLevel = visTopics.filter(
-        (t) => getLevel(topics, t.id, levelMemo) === topicLevel
-      );
-      const positionInLevel = topicsAtSameLevel.findIndex((t) => t.id === topic.id);
-      const nodeSpacing = 250;
-      const levelWidth = (topicsAtSameLevel.length - 1) * nodeSpacing;
+      // ── Position ──────────────────────────────────────────────────────────
+      let position: { x: number; y: number };
+
+      if (isFocusMode && focusPositions.has(topic.id)) {
+        // Offset so the whole layout is nicely centred in the canvas
+        const raw = focusPositions.get(topic.id)!;
+        position = { x: raw.x + 400, y: raw.y + 280 };
+      } else {
+        // Full-map layout: existing vertical level-based positioning
+        const topicLevel = getLevel(topics, topic.id, levelMemo);
+        const topicsAtSameLevel = visTopics.filter(
+          (t) => getLevel(topics, t.id, levelMemo) === topicLevel
+        );
+        const positionInLevel = topicsAtSameLevel.findIndex((t) => t.id === topic.id);
+        const nodeSpacing = 250;
+        const levelWidth = (topicsAtSameLevel.length - 1) * nodeSpacing;
+        position = {
+          x: 400 - levelWidth / 2 + positionInLevel * nodeSpacing,
+          y: 50 + (topicLevel - 1) * 180,
+        };
+      }
 
       const isSelected = topic.id === selectedTopicId;
       const isPrereq = selectedTopicId ? getPredecessors(selectedTopicId).includes(topic.id) : false;
@@ -212,10 +337,13 @@ export default function TopicMap({ topics }: TopicMapProps) {
 
       return {
         id: topic.id,
-        position: {
-          x: 400 - levelWidth / 2 + positionInLevel * nodeSpacing,
-          y: 50 + (topicLevel - 1) * 180,
-        },
+        position,
+        sourcePosition: isFocusMode
+          ? (isSelected ? Position.Right : isPrereq ? Position.Right : Position.Left)
+          : Position.Bottom,
+        targetPosition: isFocusMode
+          ? (isSelected ? Position.Left : isLeadsTo ? Position.Left : Position.Right)
+          : Position.Top,
         data: { label: topic.title },
         style: {
           background: bg, border, color,
@@ -260,7 +388,10 @@ export default function TopicMap({ topics }: TopicMapProps) {
   const prereqs = selectedTopic ? getPredecessors(selectedTopic.id) : [];
   const leadsTo = selectedTopic ? getSuccessors(selectedTopic.id) : [];
 
-  const selectTopic = (id: string) => setSelectedTopicId(id);
+  const selectTopic = (id: string) => {
+    setSelectedTopicId(id);
+    setPanelOpen(true);
+  };
 
   return (
     <div style={{
@@ -308,29 +439,6 @@ export default function TopicMap({ topics }: TopicMapProps) {
       {/* ── Map canvas ── */}
       <div style={{ flex: 1, position: "relative", minWidth: 0, backgroundColor: "#fafafa" }}>
 
-        {hasCycles && (
-          <div style={{
-            position: "absolute", top: 10, left: 10, zIndex: 10,
-            padding: "6px 10px", backgroundColor: "#fef3c7",
-            border: "1px solid #f59e0b", borderRadius: "6px",
-            color: "#92400e", fontSize: "12px",
-          }}>
-            ⚠️ Circular dependencies detected
-          </div>
-        )}
-
-        <div style={{
-          position: "absolute", top: 10, right: 10,
-          display: "flex", gap: "6px", zIndex: 10,
-        }}>
-          <ToolbarButton active={mode === "focus"} onClick={() => setMode("focus")}>
-            Focus
-          </ToolbarButton>
-          <ToolbarButton active={mode === "full"} onClick={() => setMode("full")}>
-            Full map
-          </ToolbarButton>
-        </div>
-
         {!selectedTopicId && (
           <div style={{
             position: "absolute", bottom: 14, left: "50%",
@@ -342,141 +450,210 @@ export default function TopicMap({ topics }: TopicMapProps) {
         )}
 
         <ReactFlowProvider>
-          <ReactFlow
+          <FlowCanvas
             nodes={nodes}
             edges={edges}
-            fitView
-            onNodeClick={(_, node) => selectTopic(node.id)}
+            mode={mode}
+            setMode={setMode}
+            selectedTopicId={selectedTopicId}
+            hasCycles={hasCycles}
+            onNodeClick={selectTopic}
           />
         </ReactFlowProvider>
       </div>
 
       {/* ── Detail panel ── */}
       <div style={{
-        width: selectedTopic ? "220px" : "0px",
-        minWidth: selectedTopic ? "220px" : "0px",
-        borderLeft: selectedTopic ? "1px solid #e5e7eb" : "none",
-        display: "flex", flexDirection: "column",
+        display: "flex",
+        flexDirection: "row",
+        borderLeft: "1px solid #e5e7eb",
         backgroundColor: "#fff",
-        overflowY: selectedTopic ? "auto" : "hidden",
-        overflow: selectedTopic ? "auto" : "hidden",
         transition: "width 0.2s ease, min-width 0.2s ease",
+        overflow: "hidden",
+        width: panelOpen ? "240px" : "32px",
+        minWidth: panelOpen ? "240px" : "32px",
+        position: "relative",
       }}>
-        {selectedTopic && (
-          <div style={{
-            width: "220px", padding: "14px 14px 20px",
-            display: "flex", flexDirection: "column", gap: "11px",
+
+        {/* ── Collapsed strip (always visible) ── */}
+        <div
+          onClick={() => setPanelOpen(!panelOpen)}
+          title={panelOpen ? "Collapse panel" : "Expand topic detail"}
+          style={{
+            width: "32px",
+            minWidth: "32px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            backgroundColor: panelOpen ? "#f3f0e8" : "#f9f8f6",
+            borderRight: panelOpen ? "1px solid #e5e7eb" : "none",
+            gap: "10px",
+            userSelect: "none",
+            transition: "background 0.15s",
+          }}
+        >
+          {/* Chevron arrow */}
+          <span style={{
+            fontSize: "14px",
+            color: selectedTopicId ? NAVY : "#ccc",
+            transform: panelOpen ? "rotate(0deg)" : "rotate(180deg)",
+            transition: "transform 0.2s ease",
+            lineHeight: 1,
           }}>
+            ›
+          </span>
 
-            {/* Close */}
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button
-                onClick={() => setSelectedTopicId(null)}
-                aria-label="Close panel"
-                style={{
-                  background: "none", border: "none", cursor: "pointer",
-                  color: "#bbb", fontSize: "16px", lineHeight: 1, padding: "0 2px",
-                }}
-              >
-                ✕
-              </button>
-            </div>
+          {/* Vertical label */}
+          <span style={{
+            fontSize: "11px",
+            fontWeight: 600,
+            color: selectedTopicId ? NAVY : "#ccc",
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+            whiteSpace: "nowrap",
+            transition: "color 0.15s",
+          }}>
+            Topic detail
+          </span>
+        </div>
 
-            {/* Title */}
-            <div>
-              <DetailLabel>Topic</DetailLabel>
-              <div style={{ fontSize: "15px", fontWeight: 600, color: NAVY, lineHeight: 1.4 }}>
-                {selectedTopic.title}
+        {/* ── Expanded content ── */}
+        <div style={{
+          width: "208px",
+          minWidth: "208px",
+          overflowY: "auto",
+          opacity: panelOpen ? 1 : 0,
+          transition: "opacity 0.15s ease",
+          pointerEvents: panelOpen ? "auto" : "none",
+        }}>
+          {selectedTopic ? (
+            <div style={{
+              padding: "14px 14px 20px",
+              display: "flex", flexDirection: "column", gap: "11px",
+            }}>
+
+              {/* Close */}
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  onClick={() => { setSelectedTopicId(null); setPanelOpen(false); }}
+                  aria-label="Close panel"
+                  style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    color: "#bbb", fontSize: "16px", lineHeight: 1, padding: "0 2px",
+                  }}
+                >
+                  ✕
+                </button>
               </div>
-            </div>
 
-            <Divider />
-
-            {/* Spec ref */}
-            {selectedTopic.specRef && (
+              {/* Title */}
               <div>
-                <DetailLabel>Spec reference</DetailLabel>
-                <span style={{
-                  display: "inline-block", fontSize: "11px", padding: "3px 8px",
-                  borderRadius: "6px", backgroundColor: GOLD_LIGHT,
-                  color: NAVY, border: `1px solid ${GOLD}`,
+                <DetailLabel>Topic</DetailLabel>
+                <div style={{ fontSize: "15px", fontWeight: 600, color: NAVY, lineHeight: 1.4 }}>
+                  {selectedTopic.title}
+                </div>
+              </div>
+
+              <Divider />
+
+              {/* Spec ref */}
+              {selectedTopic.specRef && (
+                <div>
+                  <DetailLabel>Spec reference</DetailLabel>
+                  <span style={{
+                    display: "inline-block", fontSize: "11px", padding: "3px 8px",
+                    borderRadius: "6px", backgroundColor: GOLD_LIGHT,
+                    color: NAVY, border: `1px solid ${GOLD}`,
+                  }}>
+                    {selectedTopic.specRef}
+                  </span>
+                </div>
+              )}
+
+              {/* Summary */}
+              {selectedTopic.summary && (
+                <div>
+                  <DetailLabel>Summary</DetailLabel>
+                  <p style={{ fontSize: "12px", color: "#555", lineHeight: 1.6, margin: 0 }}>
+                    {selectedTopic.summary}
+                  </p>
+                </div>
+              )}
+
+              <Divider />
+
+              {/* Prerequisites */}
+              <div>
+                <DetailLabel>Prerequisites</DetailLabel>
+                {prereqs.length > 0 ? (
+                  <div>
+                    {prereqs.map((id) => (
+                      <Chip key={id} label={getTitle(topics, id)} variant="prereq" onClick={() => selectTopic(id)} />
+                    ))}
+                  </div>
+                ) : (
+                  <span style={{ fontSize: "12px", color: "#bbb", fontStyle: "italic" }}>None</span>
+                )}
+              </div>
+
+              {/* Leads to */}
+              <div>
+                <DetailLabel>Leads to</DetailLabel>
+                {leadsTo.length > 0 ? (
+                  <div>
+                    {leadsTo.map((id) => (
+                      <Chip key={id} label={getTitle(topics, id)} variant="leadsto" onClick={() => selectTopic(id)} />
+                    ))}
+                  </div>
+                ) : (
+                  <span style={{ fontSize: "12px", color: "#bbb", fontStyle: "italic" }}>None</span>
+                )}
+              </div>
+
+              <Divider />
+
+              {/* Start button or placeholder */}
+              {selectedTopic.url ? (
+                <a
+                  href={selectedTopic.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "block", padding: "9px", textAlign: "center",
+                    fontSize: "13px", fontWeight: 600,
+                    fontFamily: "'Crimson Pro', Georgia, serif",
+                    backgroundColor: NAVY, color: GOLD,
+                    borderRadius: "8px", textDecoration: "none",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  Start this topic ↗
+                </a>
+              ) : (
+                <div style={{
+                  padding: "9px", textAlign: "center", fontSize: "12px",
+                  color: "#bbb", border: "1px dashed #d1d5db",
+                  borderRadius: "8px", fontStyle: "italic",
                 }}>
-                  {selectedTopic.specRef}
-                </span>
-              </div>
-            )}
-
-            {/* Summary */}
-            {selectedTopic.summary && (
-              <div>
-                <DetailLabel>Summary</DetailLabel>
-                <p style={{ fontSize: "12px", color: "#555", lineHeight: 1.6, margin: 0 }}>
-                  {selectedTopic.summary}
-                </p>
-              </div>
-            )}
-
-            <Divider />
-
-            {/* Prerequisites */}
-            <div>
-              <DetailLabel>Prerequisites</DetailLabel>
-              {prereqs.length > 0 ? (
-                <div>
-                  {prereqs.map((id) => (
-                    <Chip key={id} label={getTitle(topics, id)} variant="prereq" onClick={() => selectTopic(id)} />
-                  ))}
+                  No app linked yet
                 </div>
-              ) : (
-                <span style={{ fontSize: "12px", color: "#bbb", fontStyle: "italic" }}>None</span>
               )}
+
             </div>
-
-            {/* Leads to */}
-            <div>
-              <DetailLabel>Leads to</DetailLabel>
-              {leadsTo.length > 0 ? (
-                <div>
-                  {leadsTo.map((id) => (
-                    <Chip key={id} label={getTitle(topics, id)} variant="leadsto" onClick={() => selectTopic(id)} />
-                  ))}
-                </div>
-              ) : (
-                <span style={{ fontSize: "12px", color: "#bbb", fontStyle: "italic" }}>None</span>
-              )}
+          ) : (
+            <div style={{
+              padding: "20px 14px", fontSize: "12px",
+              color: "#bbb", fontStyle: "italic", textAlign: "center",
+            }}>
+              Select a topic to see details
             </div>
+          )}
+        </div>
 
-            <Divider />
-
-            {/* Start button or placeholder */}
-            {selectedTopic.url ? (
-              <a
-                href={selectedTopic.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "block", padding: "9px", textAlign: "center",
-                  fontSize: "13px", fontWeight: 600,
-                  fontFamily: "'Crimson Pro', Georgia, serif",
-                  backgroundColor: NAVY, color: GOLD,
-                  borderRadius: "8px", textDecoration: "none",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                Start this topic ↗
-              </a>
-            ) : (
-              <div style={{
-                padding: "9px", textAlign: "center", fontSize: "12px",
-                color: "#bbb", border: "1px dashed #d1d5db",
-                borderRadius: "8px", fontStyle: "italic",
-              }}>
-                No app linked yet
-              </div>
-            )}
-
-          </div>
-        )}
       </div>
     </div>
   );

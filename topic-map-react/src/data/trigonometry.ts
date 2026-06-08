@@ -104,4 +104,28 @@ export const trigonometryTopics: Topic[] = [
     specRef: "Trigonometry",
     dependsOn: ["sine-rule", "cosine-rule"],
   },
+
+  {
+    id: "trig-identities",
+    title: "Trigonometric Identities (sin, cos, tan)",
+    summary: "Addition formulae and double-angle identities for sin, cos and tan.",
+    specRef: "Trigonometry",
+    dependsOn: ["pythagorean-identity", "tan-identity", "unit-circle"],
+  },
+
+  {
+    id: "reciprocal-trig",
+    title: "Reciprocal Trigonometric Functions",
+    summary: "Define and use sec θ = 1/cos θ, cosec θ = 1/sin θ, cot θ = 1/tan θ.",
+    specRef: "Trigonometry",
+    dependsOn: ["trig-graphs", "pythagorean-identity"],
+  },
+
+  {
+    id: "reciprocal-identities",
+    title: "Identities for sec, cosec and cot",
+    summary: "Use 1 + tan²θ = sec²θ and 1 + cot²θ = cosec²θ and related identities.",
+    specRef: "Trigonometry",
+    dependsOn: ["trig-identities", "reciprocal-trig"],
+  },
 ];

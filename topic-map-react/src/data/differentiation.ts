@@ -2,22 +2,30 @@ import type { Topic } from "../types/Topic";
 
 export const differentiationTopics: Topic[] = [
   {
-    id: "functions",
-    title: "Functions",
-    
-    dependsOn: [],
-  },
-  {
     id: "gradients",
     title: "Gradients",
     
     dependsOn: [],
   },
+
+  {
+    id: "functions",
+    title: "Functions",
+    
+    dependsOn: [],
+  },
+
   {
     id: "limits",
     title: "Limits",
     
     dependsOn: [],
+  },
+    {
+    id: "curvature",
+    title: "Curvature",
+    url: "https://maths-apps.crlong.uk/Pure/Concavity/concavity.html",
+    dependsOn: ["gradients"],
   },
   {
     id: "derivative-definition",
@@ -39,8 +47,9 @@ export const differentiationTopics: Topic[] = [
     id: "stationary-points",
     title: "Stationary Points",
     url: "https://maths-apps.crlong.uk/Pure/St_pts_and_2dn_deriv/Stationary-points.html",
-    dependsOn: ["power-rule"],
+    dependsOn: ["power-rule","gradients"],
   },
+
   {
   id: "chain-rule",
   title: "Chain Rule",
