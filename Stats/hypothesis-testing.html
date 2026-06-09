@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hypothesis Testing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]})"></script>
+<style>
+:root{
+  --navy:#1a3a6b;--navy2:#122a50;--gold:#c9a227;--goldf:#f5e9b8;
+  --bg:#f0f3fa;--card:#fff;--text:#1a1a2e;--muted:#5a6280;--border:#cdd3e0;
+  --teal:#0f6e56;--red:#a32d2d;--purple:#533bb7;--cyan:#0e6a6a;
+  --orange:#b85c00;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#0d1e3d 0%,#1a3a6b 100%);color:#fff;padding:1.6rem 1.5rem 0;border-bottom:3px solid var(--gold);}
+.hdr-top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem;}
+.hdr-top h1{font-size:1.55rem;font-weight:normal;letter-spacing:.04em;}
+.badge{background:var(--gold);color:#000;font-family:Arial,sans-serif;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:3px;letter-spacing:.08em;}
+.hdr-top p{font-family:Arial,sans-serif;font-size:.85rem;color:#9fb2cc;margin-left:auto;}
+
+/* ── PROGRESS DOTS ── */
+.progress-row{display:flex;align-items:center;gap:.35rem;padding:.4rem 0 .6rem;flex-wrap:wrap;}
+.pdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.35);cursor:pointer;transition:background .2s,border-color .2s;position:relative;}
+.pdot.visited{background:var(--gold);border-color:var(--gold);}
+.pdot:hover::after{content:attr(data-label);position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#000c;color:#fff;font-family:Arial;font-size:.7rem;padding:2px 6px;border-radius:3px;white-space:nowrap;pointer-events:none;}
+.prog-label{font-family:Arial;font-size:.72rem;color:#9fb2cc;margin-right:.3rem;}
+
+/* ── NAV ── */
+nav{display:flex;gap:0;overflow-x:auto;padding-bottom:0;}
+nav::-webkit-scrollbar{height:4px;}
+nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);}
+.nb{background:transparent;color:#9fb2cc;border:none;padding:.5rem .8rem;font-family:Arial,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.04em;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;text-transform:uppercase;}
+.nb:hover{color:#fff;}
+.nb.on{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* ── MAIN ── */
+.container{max-width:880px;margin:0 auto;padding:1.5rem 1.25rem 3rem;}
+.module{display:none;}
+.module.on{display:block;}
+
+/* ── MODULE HEADER ── */
+.mhdr{margin-bottom:1.2rem;}
+.mtag{font-family:Arial,sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
+.mhdr h2{font-size:1.6rem;font-weight:normal;color:var(--navy);}
+
+/* ── CONCEPT BOX ── */
+.concept{background:var(--goldf);border-left:4px solid var(--gold);padding:1rem 1.1rem;border-radius:0 6px 6px 0;margin-bottom:1.2rem;font-size:.95rem;line-height:1.65;}
+
+/* ── CANVAS BOX ── */
+.cbox{background:#fff;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:.9rem;}
+canvas{display:block;width:100%;}
+
+/* ── CONTROLS ── */
+.ctrls{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.9rem;}
+.btn{font-family:Arial,sans-serif;font-size:.82rem;font-weight:700;padding:.4rem .9rem;border-radius:4px;cursor:pointer;letter-spacing:.04em;transition:background .15s,color .15s;}
+.btn-solid{background:var(--navy);color:#fff;border:2px solid var(--navy);}
+.btn-solid:hover{background:var(--navy2);}
+.btn-outline{background:#fff;color:var(--navy);border:2px solid var(--navy);}
+.btn-outline:hover{background:var(--bg);}
+.btn-gold{background:var(--gold);color:#000;border:2px solid var(--gold);}
+.btn-gold:hover{filter:brightness(1.08);}
+.btn-teal{background:var(--teal);color:#fff;border:2px solid var(--teal);}
+.btn-teal:hover{filter:brightness(1.1);}
+.btn-red{background:var(--red);color:#fff;border:2px solid var(--red);}
+
+/* ── STATUS LINE ── */
+.status{font-family:Arial,sans-serif;font-size:.84rem;color:var(--muted);text-align:center;margin:.4rem 0;}
+.status.accept{color:var(--teal);font-weight:700;}
+.status.reject{color:var(--red);font-weight:700;}
+
+/* ── SUB-TABS ── */
+.stabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.stab{padding:.35rem .85rem;font-family:Arial,sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.05em;border:1.5px solid var(--border);border-radius:3px;cursor:pointer;background:var(--bg);color:var(--muted);text-transform:uppercase;}
+.stab.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.spanel{display:none;}
+.spanel.on{display:block;}
+
+/* ── FORMULA DISPLAY ── */
+.fdisp{background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:1.1rem 1.4rem;text-align:center;margin:1rem 0;font-size:1.1rem;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:.85rem;margin:1rem 0;}
+.tbl th{background:var(--navy);color:#fff;padding:.45rem .7rem;text-align:left;}
+.tbl td{padding:.4rem .7rem;border-bottom:1px solid var(--border);}
+.tbl tr:nth-child(even) td{background:#f7f9fc;}
+
+/* ── SLIDER ROW ── */
+.slider-row{display:flex;align-items:center;gap:.8rem;margin:.8rem 0;font-family:Arial,sans-serif;font-size:.88rem;}
+.slider-row input[type=range]{flex:1;}
+.slider-val{min-width:3.5rem;text-align:right;font-weight:700;color:var(--navy);}
+
+/* ── CHALLENGE CARDS ── */
+.challenges{margin-top:1.5rem;}
+.challenges h3,.mistakes h3{font-family:Arial,sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;}
+.mistakes{margin-top:1rem;}
+.ccard{border:1.5px solid var(--border);border-radius:6px;margin-bottom:.6rem;overflow:hidden;}
+.ccard.mistake{border-color:#e8b4b4;}
+.ccard-q{background:var(--bg);padding:.7rem 1rem;cursor:pointer;font-family:Arial,sans-serif;font-size:.88rem;font-weight:700;color:var(--navy);display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.ccard.mistake .ccard-q{background:#fff5f5;color:var(--red);}
+.ccard-q::after{content:'▶';font-size:.7rem;flex-shrink:0;transition:transform .2s;}
+.ccard-q.open::after{transform:rotate(90deg);}
+.ccard-a{display:none;padding:.7rem 1rem;font-size:.9rem;line-height:1.6;background:#fff;border-top:1px solid var(--border);}
+.ccard.mistake .ccard-a{background:#fff8f8;}
+.ccard-q.open + .ccard-a{display:block;}
+
+/* ── NOTE BOX ── */
+.note{background:#eef2ff;border-left:4px solid var(--purple);padding:.8rem 1rem;border-radius:0 6px 6px 0;margin:1rem 0;font-size:.9rem;line-height:1.6;}
+.note.teal{background:#e6f6f1;border-color:var(--teal);}
+.note.red{background:#fdf0f0;border-color:var(--red);}
+.note.gold{background:var(--goldf);border-color:var(--gold);}
+
+/* ── FLOW STEPS ── */
+.flow-box{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1.2rem;margin:1rem 0;}
+.flow-box h3{font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:1rem;}
+.flow-step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:.8rem;}
+.flow-num{background:var(--navy);color:#fff;font-family:Arial;font-size:.8rem;font-weight:700;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.flow-text{font-size:.9rem;line-height:1.55;}
+.flow-text strong{color:var(--navy);}
+
+/* ── SUMMARY GRID ── */
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1rem 0;}
+.sum-card{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1rem 1.2rem;}
+.sum-card h3{font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;}
+.sum-card p,.sum-card li{font-size:.88rem;line-height:1.7;}
+.sum-card ul{padding-left:1.1rem;}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:560px){.two-col{grid-template-columns:1fr;}}
+
+/* ── BOTTOM MODULE NAV ── */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 0 .5rem;border-top:1px solid var(--border);margin-top:2.5rem;gap:1rem;}
+.mod-nav-info{font-family:Arial;font-size:.8rem;color:var(--muted);text-align:center;flex:1;}
+.mod-nav .btn{min-width:90px;}
+
+.sdiv{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+
+/* ── RESULT BOX ── */
+.result-box{background:#fff;border:2px solid var(--border);border-radius:8px;padding:1.1rem 1.3rem;margin:1rem 0;font-family:Arial,sans-serif;font-size:.92rem;line-height:1.7;}
+.result-box.accept{border-color:var(--teal);background:#e6f6f1;}
+.result-box.reject{border-color:var(--red);background:#fdf0f0;}
+.result-box .verdict{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;}
+.result-box.accept .verdict{color:var(--teal);}
+.result-box.reject .verdict{color:var(--red);}
+
+/* ── INPUT ROW ── */
+.inp-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:.6rem 0;font-family:Arial,sans-serif;font-size:.9rem;}
+.inp-row label{color:var(--navy);font-weight:700;min-width:120px;}
+.inp-row input[type=number]{width:90px;padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;}
+.inp-row select{padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;}
+
+/* ── BINOM TABLE GRID ── */
+.binom-highlight{background:var(--goldf);font-weight:700;color:var(--navy);}
+.binom-reject{background:#fdf0f0;color:var(--red);font-weight:700;}
+.binom-cr{background:#fdf0f0;color:var(--red);}
+</style>
+</head>
+<body>
+
+<header>
+<div class="hdr-top">
+  <h1>&#967;² Hypothesis Testing</h1>
+  <span class="badge">A-Level Statistics</span>
+  <p>From the null hypothesis to the conclusion — step by step</p>
+</div>
+<div class="progress-row">
+  <span class="prog-label">Progress:</span>
+  <div class="pdot visited" id="pd0" data-label="1 Introduction" onclick="go(0)"></div>
+  <div class="pdot" id="pd1" data-label="2 The Language" onclick="go(1)"></div>
+  <div class="pdot" id="pd2" data-label="3 Significance Levels" onclick="go(2)"></div>
+  <div class="pdot" id="pd3" data-label="4 One-tailed Tests" onclick="go(3)"></div>
+  <div class="pdot" id="pd4" data-label="5 Two-tailed Tests" onclick="go(4)"></div>
+  <div class="pdot" id="pd5" data-label="6 Critical Regions" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="7 Interactive Test" onclick="go(6)"></div>
+  <div class="pdot" id="pd7" data-label="8 p-values" onclick="go(7)"></div>
+  <div class="pdot" id="pd8" data-label="9 Type I &amp; II Errors" onclick="go(8)"></div>
+  <div class="pdot" id="pd9" data-label="10 Worked Examples" onclick="go(9)"></div>
+  <div class="pdot" id="pd11" data-label="11 Why Hypothesis Tests?" onclick="go(11)"></div>
+  <div class="pdot" id="pd12" data-label="12 Correlation Test (PMCC)" onclick="go(12)"></div>
+  <div class="pdot" id="pd13" data-label="13 Normal Distribution Test" onclick="go(13)"></div>
+  <div class="pdot" id="pd10" data-label="Summary" onclick="go(10)"></div>
+</div>
+<nav id="nav">
+  <button class="nb on" data-m="0" onclick="go(0)">1&hairsp;Intro</button>
+  <button class="nb" data-m="1" onclick="go(1)">2&hairsp;Language</button>
+  <button class="nb" data-m="2" onclick="go(2)">3&hairsp;Significance</button>
+  <button class="nb" data-m="3" onclick="go(3)">4&hairsp;One-tailed</button>
+  <button class="nb" data-m="4" onclick="go(4)">5&hairsp;Two-tailed</button>
+  <button class="nb" data-m="5" onclick="go(5)">6&hairsp;Critical&nbsp;Regions</button>
+  <button class="nb" data-m="6" onclick="go(6)">7&hairsp;Interactive</button>
+  <button class="nb" data-m="7" onclick="go(7)">8&hairsp;p-values</button>
+  <button class="nb" data-m="8" onclick="go(8)">9&hairsp;Errors</button>
+  <button class="nb" data-m="9" onclick="go(9)">10&hairsp;Examples</button>
+  <button class="nb" data-m="11" onclick="go(11)">11&hairsp;Motivation</button>
+  <button class="nb" data-m="12" onclick="go(12)">12&hairsp;PMCC&nbsp;Test</button>
+  <button class="nb" data-m="13" onclick="go(13)">13&hairsp;Normal&nbsp;Mean</button>
+  <button class="nb" data-m="10" onclick="go(10)">&#9654;&hairsp;Summary</button>
+</nav>
+</header>
+
+<div class="container">
+
+<!-- ═══ MODULE 0: INTRODUCTION ═══ -->
+<section class="module on" id="mod0">
+<div class="mhdr"><div class="mtag">Module 1</div><h2>What is Hypothesis Testing?</h2></div>
+
+<div class="concept">
+  <strong>Core idea:</strong> Hypothesis testing is a formal method for using sample data to decide whether there is enough evidence to reject a particular claim about a population. We never "prove" anything — we are finding how unlikely (low probability) the actual outcome of our test has been if we assume the null hypothesis was true.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  A <strong>statistic</strong> is any numerical quantity calculated solely from the values in a sample. Examples include the sample mean, sample standard deviation, sample proportion and sample correlation coefficient.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  This contrasts with a <strong>parameter</strong>, which is a numerical quantity describing an entire population.
+  For example, if you measure the heights of 50 students chosen from a whole school:
+</p>
+<div class="note teal" style="margin-bottom:1rem;">
+  The <strong>average height of those 50 students</strong> is a <em>sample statistic</em>.<br>
+  The <strong>average height of all students in the school</strong> is a <em>population parameter</em>.
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Two starting situations</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">A starting point for hypothesis testing is usually one of two situations.</p>
+
+<div class="two-col" style="margin-bottom:1rem;">
+  <div class="sum-card">
+    <h3>Situation 1</h3>
+    <p>Some process has been operating for a long time and its behaviour is well understood — for example, the proportion of faulty items or the mean output is known to be stable. A change is made to try to improve the process, data are collected from the modified process, and we calculate statistics from the sample to test whether the change has had the desired effect.</p>
+  </div>
+  <div class="sum-card">
+    <h3>Situation 2</h3>
+    <p>A claim is made about a population parameter — for example, that the mean mass of products is 350 g or that for an item selected at random from a population the probability the selected item is faulty is 0.02 — and we wish to test whether the available evidence supports that claim.</p>
+  </div>
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">In both situations we take a sample and calculate one or more statistics from the sample data.</p>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">The null hypothesis and the p-value</h3>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  The <strong>null hypothesis</strong>, denoted \(H_0\), represents the original situation or claim that we assume to be true unless the sample provides sufficiently strong evidence against it.
+</p>
+<ul style="font-size:.95rem;line-height:1.9;margin-bottom:.8rem;padding-left:1.4rem;">
+  <li>In Situation 1, the null hypothesis is usually that the process has <em>not</em> changed and that any differences observed in the sample are due solely to random variation.</li>
+  <li>In Situation 2, the null hypothesis is that the claim we have been given is true.</li>
+</ul>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  We then determine how unusual the observed statistic would be if the null hypothesis were true. This is done by calculating a <strong>p-value</strong>: the probability of obtaining the observed value of the statistic, or a value even more extreme, assuming the null hypothesis is true.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Even if the null hypothesis is true, random sampling variation means that different samples will produce different statistics. The observed statistic may therefore differ from what we expected purely by chance. The question is whether the difference is small enough to be reasonably explained by chance variation, or so large that it provides evidence against the null hypothesis.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  If the p-value is less than the chosen <strong>significance level</strong>, the observed result is considered sufficiently inconsistent with the null hypothesis that we reject it.
+</p>
+
+<div class="note gold" style="margin-bottom:1rem;">
+  <strong>Example outcomes:</strong><br>
+  In Situation 1 we may conclude that a change made to a manufacturing process has significantly reduced the proportion of faulty products.<br>
+  In Situation 2 we may conclude that there is sufficient evidence to reject a claim such as the mean mass of products being 350 g.
+</div>
+
+<div class="note red" style="margin-bottom:1rem;">
+  <strong>Important:</strong> Rejecting the null hypothesis does not <em>prove</em> that it is false. The observed sample and statistic could still have arisen purely by chance even when the null hypothesis is true. However, if such an outcome would be sufficiently unlikely — less likely than the chosen significance level — we regard the evidence as strong enough to reject \(H_0\).<br><br>
+  In other words, there is always some possibility that we reject a null hypothesis that is actually true. The significance level controls how willing we are to accept that risk.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  Suppose a manufacturer claims that exactly 30% of the sweets in a bag are red. You open a bag of 20 sweets and find only 2 are red. Is this just bad luck, or is the 30% claim actually wrong? Hypothesis testing gives us a rigorous way to answer this question.
+</p>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  The key idea is: <em>assume the claim is true</em>, then ask — how probable is it to observe something as extreme as (or more extreme than) what we actually saw? If that probability is very small, we have grounds to doubt the claim.
+</p>
+
+<div class="flow-box">
+  <h3>The Basic Framework</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>State the hypotheses.</strong> Set up a null hypothesis \(H_0\) (the claim to test) and an alternative hypothesis \(H_1\) (what we believe if \(H_0\) is wrong).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Choose a significance level.</strong> Decide, before collecting data, how small a probability counts as "surprising" — typically \(\alpha = 0.05\) or \(\alpha = 0.01\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Identify the test statistic and its distribution</strong> under \(H_0\). For A-level, this is usually a count \(X \sim B(n,p)\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Calculate the probability</strong> of observing a result as extreme as (or more extreme than) the observed value, assuming \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Compare with \(\alpha\).</strong> If this probability \(\leq \alpha\), reject \(H_0\). Otherwise, do not reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>State a conclusion in context.</strong> Always refer back to the original situation.</div></div>
+</div>
+
+<div class="note teal">
+  <strong>Why "do not reject" rather than "accept"?</strong><br>
+  Failing to find evidence against \(H_0\) is not the same as proving \(H_0\) is true. The data may simply be consistent with \(H_0\) — but consistent with other hypotheses too. We never "prove" the null; we only judge whether the evidence is strong enough to doubt it.
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why do we assume \(H_0\) is true to begin with?</div>
+  <div class="ccard-a">The logic mirrors a legal presumption of innocence. We assume the null (the "status quo") and ask: if it really were true, how likely is the observed data? Only if the data is highly unlikely under \(H_0\) do we have grounds to reject it. This structure means the burden of proof lies with the data, not with the hypothesis.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What does "statistically significant" mean?</div>
+  <div class="ccard-a">"Statistically significant" simply means the observed result is unlikely enough (under \(H_0\)) to fall below the chosen significance level \(\alpha\). It does <em>not</em> automatically mean the result is practically important or large — a tiny real-world difference can be statistically significant with a large enough sample.</div></div>
+</div>
+<div id="bnav0"></div>
+</section>
+
+<!-- ═══ MODULE 1: THE LANGUAGE ═══ -->
+<section class="module" id="mod1">
+<div class="mhdr"><div class="mtag">Module 2</div><h2>The Language of Hypothesis Testing</h2></div>
+
+<div class="concept">
+  Hypothesis testing has its own precise vocabulary. Getting the language right is essential — especially in exam answers, where every word in the conclusion carries marks.
+</div>
+
+<table class="tbl">
+  <tr><th>Term</th><th>Meaning</th></tr>
+  <tr><td><strong>Null hypothesis \(H_0\)</strong></td><td>The default assumption about the population parameter. Always states an exact value, e.g. \(p = 0.3\).</td></tr>
+  <tr><td><strong>Alternative hypothesis \(H_1\)</strong></td><td>What we conclude if \(H_0\) is rejected. States the direction of change (or simply that a change has occurred). Determines whether the test is one- or two-tailed.</td></tr>
+  <tr><td><strong>Test statistic</strong></td><td>A numerical value calculated from the sample data that is used to decide between \(H_0\) and \(H_1\). Its probability distribution under \(H_0\) must be known. Examples: the count of successes \(X\) in a binomial test; the sample mean \(\bar{X}\) in a Normal mean test; the sample PMCC \(r\) in a correlation test.</td></tr>
+  <tr><td><strong>Significance level \(\alpha\)</strong></td><td>The threshold probability chosen <em>before</em> the test. If the p-value falls below \(\alpha\), the result is declared significant and \(H_0\) is rejected. Common choices are 5% and 1%.</td></tr>
+  <tr><td><strong>p-value</strong></td><td>The probability, calculated assuming \(H_0\) is true, of obtaining a test statistic at least as extreme as the one observed. A small p-value means the observed result would be unlikely if \(H_0\) were true.</td></tr>
+  <tr><td><strong>Critical region</strong></td><td>The set of values of the test statistic for which \(H_0\) is rejected — i.e. the values so extreme that they fall below the significance level.</td></tr>
+  <tr><td><strong>Critical value</strong></td><td>The boundary of the critical region. The test statistic must be at least as extreme as the critical value in order to reject \(H_0\).</td></tr>
+  <tr><td><strong>Reject \(H_0\)</strong></td><td>The p-value is less than \(\alpha\): the observed result is sufficiently unlikely under \(H_0\) that we conclude \(H_1\) is supported. We say the result is <em>statistically significant</em> at level \(\alpha\).</td></tr>
+  <tr><td><strong>Do not reject \(H_0\)</strong></td><td>The p-value is greater than or equal to \(\alpha\): insufficient evidence to favour \(H_1\). This does <em>not</em> mean \(H_0\) is proved true — only that the data are consistent with it.</td></tr>
+</table>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Setting up the hypotheses</h3>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  For binomial tests, the parameter being tested is the probability of success \(p\). We write \(p_0\) for the specific numerical value stated in the null hypothesis — for example, if \(H_0\) claims the probability is 0.3, then \(p_0 = 0.3\). The null hypothesis always takes the form:
+</p>
+
+<div class="fdisp">\[H_0 : p = p_0\]</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  The alternative hypothesis is chosen based on the research question, <em>before</em> looking at the data:
+</p>
+
+<div class="two-col" style="margin:1rem 0;">
+  <div class="note teal"><strong>One-tailed (lower):</strong><br>\(H_1 : p < p_0\)<br><br>Use when there is prior reason to suspect the true probability is <em>smaller</em> than \(p_0\).</div>
+  <div class="note teal"><strong>One-tailed (upper):</strong><br>\(H_1 : p > p_0\)<br><br>Use when there is prior reason to suspect the true probability is <em>larger</em> than \(p_0\).</div>
+</div>
+<div class="note" style="margin-top:0;"><strong>Two-tailed:</strong> \(H_1 : p \neq p_0\) — use when the question asks whether the probability has <em>changed</em> from \(p_0\), with no prior reason to expect a particular direction.</div>
+
+<div class="note red" style="margin-top:1rem;">
+  <strong>Common errors in writing hypotheses:</strong><br>
+  ✗ &nbsp;Using the sample statistic: e.g. writing \(H_0: \bar{x} = 50\). The null hypothesis is always a statement about the <em>population parameter</em>, not the sample. The correct form is \(H_0: \mu = 50\), where \(\mu\) is the population mean.<br><br>
+  ✗ &nbsp;Using an inequality in \(H_0\): e.g. writing \(H_0: p \leq 0.3\). The null hypothesis must state an exact value so that the probability distribution of the test statistic is fully determined. Always use \(H_0: p = 0.3\).
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">The Binomial Model</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  When testing a proportion, the test statistic \(X\) counts the number of successes in \(n\) independent trials, each with probability \(p\) of success. Under \(H_0\), the exact value \(p_0\) is assumed to be true, so:
+</p>
+<div class="fdisp">\[X \sim B(n,\, p_0)\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  We observe a value \(x\) and compute the p-value — the probability of getting a result at least as extreme as \(x\) in the direction of \(H_1\). This p-value is then compared with \(\alpha\) to reach a decision. The full procedure is covered in the next modules.
+</p>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why must \(H_0\) contain an equals sign?</div>
+  <div class="ccard-a">To calculate the p-value we need to know the probability distribution of the test statistic exactly. An exact value — e.g. \(p = 0.3\) — fully determines the distribution \(B(n, 0.3)\), so every probability can be computed. An inequality like \(p \leq 0.3\) is consistent with infinitely many distributions (one for each value of \(p\) up to 0.3), so no single calculation is possible. We therefore always test at the specific boundary value stated in \(H_0\).</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">How do I choose between a one-tailed and a two-tailed test?</div>
+  <div class="ccard-a">The choice must come from the research question, decided <em>before</em> seeing the data. Ask: does the question specify a direction? "Has the proportion <em>decreased</em>?" → one-tailed lower. "Is the drug <em>more</em> effective?" → one-tailed upper. "Has the proportion <em>changed</em>?" → two-tailed. If you pick the direction after seeing that, say, the sample proportion is higher than \(p_0\) and then write \(H_1: p > p_0\), you have effectively halved the evidence needed to reject \(H_0\), which inflates the false-alarm rate.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why do we say "do not reject \(H_0\)" rather than "accept \(H_0\)"?</div>
+  <div class="ccard-a">A high p-value tells us the observed data are consistent with \(H_0\) — but the same data may also be consistent with many other hypotheses. Failing to find evidence against \(H_0\) is not the same as proving it is true. The phrase "do not reject" keeps the logic honest: we have simply failed to accumulate sufficient evidence against the null, not demonstrated that it is correct.</div></div>
+</div>
+<div id="bnav1"></div>
+</section>
+
+<!-- ═══ MODULE 2: SIGNIFICANCE LEVELS ═══ -->
+<section class="module" id="mod2">
+<div class="mhdr"><div class="mtag">Module 3</div><h2>Significance Levels</h2></div>
+
+<div class="concept">
+  The significance level \(\alpha\) is the probability of rejecting \(H_0\) when it is actually true — i.e. the probability of a false alarm. Choosing \(\alpha\) is a judgement about how much risk of a false alarm is acceptable.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  Common choices are \(\alpha = 0.05\) (5%) and \(\alpha = 0.01\) (1%). The choice should reflect the consequences of an incorrect rejection:
+</p>
+
+<div class="two-col">
+  <div class="sum-card">
+    <h3>5% Level</h3>
+    <p>Suitable when an incorrect rejection has moderate consequences. Used in most A-level problems unless stated otherwise. "There is a 1 in 20 chance of wrongly rejecting a true \(H_0\)."</p>
+  </div>
+  <div class="sum-card">
+    <h3>1% Level</h3>
+    <p>Used when the cost of a false alarm is high (e.g. recalling a medicine, scrapping a production line). Harder to reject \(H_0\), so requires stronger evidence.</p>
+  </div>
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin:1rem 0 .6rem;">
+  With a discrete distribution like the Binomial, we often cannot achieve the exact significance level we want. The actual significance level (also called the <em>actual size</em>) is the probability of falling in the critical region under \(H_0\), which may be slightly below \(\alpha\).
+</p>
+
+<div class="note gold">
+  <strong>Example:</strong> \(X \sim B(20, 0.3)\) under \(H_0\). Testing \(H_1: p < 0.3\) at 5%. We need the largest \(c\) such that \(P(X \leq c) \leq 0.05\).<br><br>
+  \(P(X \leq 2) = 0.0355\) ✓ &nbsp;|&nbsp; \(P(X \leq 3) = 0.1071\) ✗<br><br>
+  So the critical region is \(X \leq 2\), and the <strong>actual significance level is 3.55%</strong> (not exactly 5%).
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Visualising the significance level</h3>
+<p style="font-size:.93rem;color:var(--muted);margin-bottom:.6rem;">Adjust \(n\), \(p_0\) and \(\alpha\) to see the binomial distribution and where the critical region falls.</p>
+
+<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(n\) =</label><input type="range" id="sl2n" min="5" max="30" value="20" oninput="upd2()"><span class="slider-val" id="sv2n">20</span></div>
+<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(p_0\) =</label><input type="range" id="sl2p" min="5" max="95" value="30" oninput="upd2()"><span class="slider-val" id="sv2p">0.30</span></div>
+<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(\alpha\) =</label>
+  <select id="sel2a" onchange="upd2()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+    <option value="0.10">10%</option>
+    <option value="0.05" selected>5%</option>
+    <option value="0.025">2.5%</option>
+    <option value="0.01">1%</option>
+  </select>
+  &nbsp;
+  <select id="sel2tail" onchange="upd2()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+    <option value="lower">Lower tail (\(H_1: p < p_0\))</option>
+    <option value="upper">Upper tail (\(H_1: p > p_0\))</option>
+    <option value="two">Two-tailed (\(H_1: p \neq p_0\))</option>
+  </select>
+</div>
+<div class="cbox"><canvas id="c2" height="220"></canvas></div>
+<div id="stat2" class="status" style="font-size:.9rem;"></div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why can't we always achieve exactly 5%?</div>
+  <div class="ccard-a">With a discrete distribution the probabilities come in distinct "jumps". Between \(P(X \leq 2)\) and \(P(X \leq 3)\) there is nothing in between — the cumulative probabilities jump straight from 3.55% to 10.71% in the example above. So no integer critical value gives exactly 5%. We must choose the largest critical region whose probability does not exceed \(\alpha\).</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does a smaller \(\alpha\) make the test "better"?</div>
+  <div class="ccard-a">Not necessarily — it depends what you mean by "better". A smaller \(\alpha\) reduces the probability of a false alarm (Type I error), but it also makes it harder to detect a real effect (increases the Type II error probability). The two types of error trade off against each other for a fixed sample size. Increasing \(n\) is the way to reduce both simultaneously.</div></div>
+</div>
+<div id="bnav2"></div>
+</section>
+
+<!-- ═══ MODULE 3: ONE-TAILED TESTS ═══ -->
+<section class="module" id="mod3">
+<div class="mhdr"><div class="mtag">Module 4</div><h2>One-Tailed Tests</h2></div>
+
+<div class="concept">
+  A one-tailed test is used when, <em>before seeing the data</em>, we have a specific directional suspicion — either that \(p\) has decreased, or that it has increased.
+</div>
+
+<div class="stabs">
+  <button class="stab on" onclick="stab3(this,'s3a')">Lower tail</button>
+  <button class="stab" onclick="stab3(this,'s3b')">Upper tail</button>
+</div>
+
+<!-- Lower tail -->
+<div class="spanel on" id="s3a">
+<h3 style="font-family:Georgia;font-size:1.1rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Lower-tail test: \(H_1: p < p_0\)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  We are looking for evidence that \(p\) is <em>smaller</em> than claimed. Extreme results are small values of \(X\). The p-value is the probability of getting \(X \leq x_{obs}\):
+</p>
+<div class="fdisp">\[\text{p-value} = P(X \leq x_{obs}) \quad \text{where } X \sim B(n, p_0)\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  If \(\text{p-value} \leq \alpha\), reject \(H_0\).
+</p>
+<div class="note gold">
+  <strong>Worked example:</strong> A coin is tossed 15 times. The manufacturer claims it is fair (\(p = 0.5\)). It lands heads only 3 times. Test at 5% whether there is evidence that the coin is biased towards tails.<br><br>
+  \(H_0: p = 0.5\) &emsp; \(H_1: p < 0.5\) &emsp; \(X \sim B(15, 0.5)\) under \(H_0\).<br><br>
+  \(P(X \leq 3) = P(X=0)+P(X=1)+P(X=2)+P(X=3)\)<br>
+  \(= 0.00003 + 0.00046 + 0.00320 + 0.01389 = 0.01758\)<br><br>
+  Since \(0.01758 < 0.05\), we <strong>reject \(H_0\)</strong>. There is significant evidence at the 5% level that the coin is biased towards tails.
+</div>
+</div>
+
+<!-- Upper tail -->
+<div class="spanel" id="s3b">
+<h3 style="font-family:Georgia;font-size:1.1rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Upper-tail test: \(H_1: p > p_0\)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  We are looking for evidence that \(p\) is <em>larger</em> than claimed. Extreme results are large values of \(X\). The p-value is the probability of getting \(X \geq x_{obs}\):
+</p>
+<div class="fdisp">\[\text{p-value} = P(X \geq x_{obs}) = 1 - P(X \leq x_{obs} - 1)\]</div>
+<div class="note gold">
+  <strong>Worked example:</strong> A drug trial claims 40% of patients improve without treatment. With the new drug, 14 out of 20 patients improve. Test at 5% whether the drug is effective.<br><br>
+  \(H_0: p = 0.4\) &emsp; \(H_1: p > 0.4\) &emsp; \(X \sim B(20, 0.4)\) under \(H_0\).<br><br>
+  \(P(X \geq 14) = 1 - P(X \leq 13) = 1 - 0.9935 = 0.0065\)<br><br>
+  Since \(0.0065 < 0.05\), we <strong>reject \(H_0\)</strong>. There is significant evidence at the 5% level that the drug increases the proportion who improve.
+</div>
+</div>
+
+<div class="mistakes"><h3>Common mistakes</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">For an upper-tail test, calculating \(P(X \leq x_{obs})\) instead of \(P(X \geq x_{obs})\)</div>
+  <div class="ccard-a">The p-value must capture how extreme the observation is in the direction of \(H_1\). For \(H_1: p > p_0\), large \(X\) is the "surprising" direction, so we need the upper-tail probability \(P(X \geq x_{obs})\). Using the lower tail gives the probability of the opposite kind of extremeness — the answer will be wrong and will typically lead to the wrong conclusion.</div></div>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Choosing the tail direction after seeing the data</div>
+  <div class="ccard-a">The alternative hypothesis must be chosen based on the research question <em>before</em> looking at the data. If you pick the direction that makes your result look more significant after seeing it, you have effectively doubled your significance level. This is a serious statistical error sometimes called "p-hacking".</div></div>
+</div>
+<div id="bnav3"></div>
+</section>
+
+<!-- ═══ MODULE 4: TWO-TAILED TESTS ═══ -->
+<section class="module" id="mod4">
+<div class="mhdr"><div class="mtag">Module 5</div><h2>Two-Tailed Tests</h2></div>
+
+<div class="concept">
+  A two-tailed test is used when we simply want to know whether \(p\) has changed from \(p_0\), without a prior reason to expect a particular direction.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  For \(H_1: p \neq p_0\), both very small and very large values of \(X\) are evidence against \(H_0\). We split the significance level equally between the two tails:
+</p>
+
+<div class="fdisp">\[\text{Each tail uses } \frac{\alpha}{2}\]</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  For the observed value \(x_{obs}\), find which tail it falls in, then compare the tail probability with \(\dfrac{\alpha}{2}\):
+</p>
+
+<table class="tbl">
+  <tr><th>If \(x_{obs}\) is small (below the mean)</th><th>If \(x_{obs}\) is large (above the mean)</th></tr>
+  <tr><td>p-value for this tail \(= P(X \leq x_{obs})\)</td><td>p-value for this tail \(= P(X \geq x_{obs})\)</td></tr>
+  <tr><td>Reject \(H_0\) if \(P(X \leq x_{obs}) \leq \dfrac{\alpha}{2}\)</td><td>Reject \(H_0\) if \(P(X \geq x_{obs}) \leq \dfrac{\alpha}{2}\)</td></tr>
+</table>
+
+<div class="note gold" style="margin-top:1rem;">
+  <strong>Worked example:</strong> A spinner is claimed to give red with probability 0.25. In 30 spins it gives red 12 times. Test at 5% whether the probability has changed.<br><br>
+  \(H_0: p = 0.25\) &emsp; \(H_1: p \neq 0.25\) &emsp; \(X \sim B(30, 0.25)\) under \(H_0\).<br><br>
+  Mean under \(H_0\): \(np = 7.5\). Since \(12 > 7.5\), test the upper tail.<br><br>
+  \(P(X \geq 12) = 1 - P(X \leq 11) = 1 - 0.9558 = 0.0442\)<br><br>
+  Compare with \(\alpha/2 = 0.025\): &nbsp; \(0.0442 > 0.025\).<br><br>
+  <strong>Do not reject \(H_0\).</strong> Insufficient evidence at the 5% level that the probability of red has changed.
+</div>
+
+<div class="note" style="margin-top:.5rem;">
+  <strong>Note on the two-tail p-value:</strong> An alternative convention is to double the smaller one-tail probability and compare with \(\alpha\) directly. Both methods are equivalent. At A-level, the "compare each tail with \(\alpha/2\)" approach is clearest.
+</div>
+
+<div class="mistakes"><h3>Common mistakes</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Comparing the tail probability with \(\alpha\) instead of \(\alpha/2\) in a two-tailed test</div>
+  <div class="ccard-a">This is the most common error. In a two-tailed test the significance level is split between two tails, so each tail is tested at \(\alpha/2\). Comparing the one-tail probability with \(\alpha\) rather than \(\alpha/2\) is effectively performing a one-tailed test at \(\alpha\) — it doubles the probability of a false alarm.</div></div>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Using both tails simultaneously (computing \(P(X \leq x)\) AND \(P(X \geq x)\))</div>
+  <div class="ccard-a">You only need to work with the tail in which the observed value lies. If \(x_{obs}\) is above the mean, compute the upper tail probability and compare with \(\alpha/2\). If it is below the mean, compute the lower tail and compare with \(\alpha/2\). Adding both probabilities together is not the correct approach.</div></div>
+</div>
+<div id="bnav4"></div>
+</section>
+
+<!-- ═══ MODULE 5: CRITICAL REGIONS ═══ -->
+<section class="module" id="mod5">
+<div class="mhdr"><div class="mtag">Module 6</div><h2>Critical Regions</h2></div>
+
+<div class="concept">
+  The critical region (or rejection region) is the set of values of the test statistic that lead to rejecting \(H_0\). Identifying the critical region in advance is an alternative — and often more efficient — approach to hypothesis testing.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Instead of computing a p-value each time, we can work out once which values of \(X\) would lead to rejection. Then for any observation we simply check: is \(x_{obs}\) in the critical region?
+</p>
+
+<div class="flow-box">
+  <h3>Finding the Critical Region: Lower Tail</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">Find the largest value \(c\) such that \(P(X \leq c) \leq \alpha\).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">The critical region is \(\{0, 1, 2, \ldots, c\}\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">The actual significance level is \(P(X \leq c)\), which may be less than \(\alpha\).</div></div>
+</div>
+
+<div class="flow-box">
+  <h3>Finding the Critical Region: Upper Tail</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">Find the smallest value \(c\) such that \(P(X \geq c) \leq \alpha\).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">The critical region is \(\{c, c+1, \ldots, n\}\).</div></div>
+</div>
+
+<div class="flow-box">
+  <h3>Finding the Critical Region: Two-Tailed</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">Find the largest \(c_L\) with \(P(X \leq c_L) \leq \alpha/2\). Lower critical region: \(X \leq c_L\).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">Find the smallest \(c_U\) with \(P(X \geq c_U) \leq \alpha/2\). Upper critical region: \(X \geq c_U\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">The acceptance region is \(c_L < X < c_U\).</div></div>
+</div>
+
+<div class="note gold">
+  <strong>Example:</strong> \(X \sim B(25, 0.4)\) under \(H_0\), test \(H_1: p \neq 0.4\) at 5%.<br><br>
+  Lower tail (\(\alpha/2 = 0.025\)): &nbsp;\(P(X \leq 5) = 0.0294 > 0.025\); &nbsp;\(P(X \leq 4) = 0.0095 \leq 0.025\). &nbsp;So \(c_L = 4\).<br><br>
+  Upper tail (\(\alpha/2 = 0.025\)): &nbsp;\(P(X \geq 15) = 0.0344 > 0.025\); &nbsp;\(P(X \geq 16) = 0.0138 \leq 0.025\). &nbsp;So \(c_U = 16\).<br><br>
+  Critical region: \(X \leq 4\) or \(X \geq 16\). Actual significance level: \(0.0095 + 0.0138 = 2.33\%\).
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.6rem;">Critical Region Explorer</h3>
+<p style="font-size:.93rem;color:var(--muted);margin-bottom:.8rem;">Set the parameters and test type to find the critical region automatically.</p>
+<div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.6rem;">
+  <div class="slider-row" style="flex:1;min-width:200px;"><label style="min-width:50px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(n\) =</label><input type="range" id="sl5n" min="5" max="40" value="25" oninput="upd5()"><span class="slider-val" id="sv5n">25</span></div>
+  <div class="slider-row" style="flex:1;min-width:200px;"><label style="min-width:50px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(p_0\) =</label><input type="range" id="sl5p" min="5" max="95" value="40" oninput="upd5()"><span class="slider-val" id="sv5p">0.40</span></div>
+</div>
+<div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;">
+  <select id="sel5a" onchange="upd5()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="0.05" selected>α = 5%</option><option value="0.025">α = 2.5%</option><option value="0.01">α = 1%</option></select>
+  <select id="sel5tail" onchange="upd5()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="lower">Lower tail</option><option value="upper">Upper tail</option><option value="two" selected>Two-tailed</option></select>
+</div>
+<div class="cbox"><canvas id="c5" height="220"></canvas></div>
+<div id="stat5" style="font-family:Arial;font-size:.88rem;color:var(--navy);text-align:center;margin-top:.3rem;"></div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the "acceptance region"?</div>
+  <div class="ccard-a">The acceptance region is simply the complement of the critical region — the set of values for which we do not reject \(H_0\). If the test statistic falls in the acceptance region we have insufficient evidence to reject \(H_0\). The name is slightly misleading: we are not "accepting" that \(H_0\) is true, only failing to reject it.</div></div>
+</div>
+<div id="bnav5"></div>
+</section>
+
+<!-- ═══ MODULE 6: INTERACTIVE TEST ═══ -->
+<section class="module" id="mod6">
+<div class="mhdr"><div class="mtag">Module 7</div><h2>Interactive Hypothesis Test</h2></div>
+
+<div class="concept">
+  Use this tool to carry out a complete binomial hypothesis test. Set up your hypotheses, enter the data, and the tool will walk through each step.
+</div>
+
+<div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1rem;">
+  <h3 style="font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:1rem;">Set up the test</h3>
+  <div class="inp-row"><label>\(n\) (trials)</label><input type="number" id="i6n" value="20" min="1" max="100"></div>
+  <div class="inp-row"><label>\(p_0\) (null value)</label><input type="number" id="i6p" value="0.3" min="0.01" max="0.99" step="0.01"></div>
+  <div class="inp-row"><label>\(x_{obs}\) (observed)</label><input type="number" id="i6x" value="2" min="0" max="100"></div>
+  <div class="inp-row"><label>\(\alpha\) (sig. level)</label>
+    <select id="i6a" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="0.10">10%</option><option value="0.05" selected>5%</option><option value="0.025">2.5%</option><option value="0.01">1%</option>
+    </select>
+  </div>
+  <div class="inp-row"><label>Alternative \(H_1\)</label>
+    <select id="i6h" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="lower">\(p &lt; p_0\)</option>
+      <option value="upper">\(p &gt; p_0\)</option>
+      <option value="two">\(p \neq p_0\)</option>
+    </select>
+  </div>
+  <div style="margin-top:.8rem;">
+    <button class="btn btn-gold" onclick="runTest6()">Run test ▶</button>
+  </div>
+</div>
+
+<div id="res6" style="display:none;">
+  <div class="cbox"><canvas id="c6" height="200"></canvas></div>
+  <div id="steps6" style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1.2rem;margin-top:.8rem;font-family:Arial;font-size:.9rem;line-height:1.9;"></div>
+</div>
+
+<div id="bnav6"></div>
+</section>
+
+<!-- ═══ MODULE 7: p-VALUES ═══ -->
+<section class="module" id="mod7">
+<div class="mhdr"><div class="mtag">Module 8</div><h2>p-values</h2></div>
+
+<div class="concept">
+  The p-value is the probability, computed under \(H_0\), of observing a result at least as extreme as the one obtained. It measures how surprised we should be by the data if \(H_0\) were true.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Small p-value → the observed data would be very unlikely if \(H_0\) were true → strong evidence against \(H_0\).<br>
+  Large p-value → the observed data is consistent with \(H_0\) → insufficient evidence to reject.
+</p>
+
+<table class="tbl">
+  <tr><th>Test type</th><th>p-value formula</th></tr>
+  <tr><td>Lower-tail \((H_1: p < p_0)\)</td><td>\(P(X \leq x_{obs})\)</td></tr>
+  <tr><td>Upper-tail \((H_1: p > p_0)\)</td><td>\(P(X \geq x_{obs}) = 1 - P(X \leq x_{obs}-1)\)</td></tr>
+  <tr><td>Two-tailed \((H_1: p \neq p_0)\)</td><td>Smaller of \(P(X \leq x_{obs})\) and \(P(X \geq x_{obs})\), then compare with \(\alpha/2\)</td></tr>
+</table>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">p-value Calculator</h3>
+<p style="font-size:.93rem;color:var(--muted);margin-bottom:.6rem;">Enter the parameters to compute the exact p-value using \(X \sim B(n, p_0)\).</p>
+<div style="display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:.8rem;">
+  <div class="inp-row"><label>\(n\) =</label><input type="number" id="i7n" value="20" min="1" max="100" oninput="upd7()"></div>
+  <div class="inp-row"><label>\(p_0\) =</label><input type="number" id="i7p" value="0.3" min="0.01" max="0.99" step="0.01" oninput="upd7()"></div>
+  <div class="inp-row"><label>\(x_{obs}\) =</label><input type="number" id="i7x" value="2" min="0" max="100" oninput="upd7()"></div>
+  <div class="inp-row"><label>Tail</label>
+    <select id="i7tail" onchange="upd7()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="lower">Lower</option><option value="upper">Upper</option><option value="two">Two-tailed</option>
+    </select>
+  </div>
+</div>
+<div class="cbox"><canvas id="c7" height="200"></canvas></div>
+<div id="pval7" style="font-family:Arial;font-size:1rem;text-align:center;padding:.8rem;background:#fff;border:1.5px solid var(--border);border-radius:6px;margin-top:.5rem;"></div>
+
+<div class="note red" style="margin-top:1rem;">
+  <strong>Misinterpretations of the p-value to avoid:</strong><br>
+  ✗ "The p-value is the probability that \(H_0\) is true." — Incorrect. It is the probability of the data given that \(H_0\) is true.<br>
+  ✗ "A p-value of 0.04 means there is a 4% chance we are wrong." — Incorrect.<br>
+  ✓ Correct: "If \(H_0\) were true, the probability of observing data this extreme or more extreme is 0.04."
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Can we interpret a high p-value as evidence <em>for</em> \(H_0\)?</div>
+  <div class="ccard-a">No. A high p-value means the data is consistent with \(H_0\), but it is also consistent with many other hypotheses. Absence of evidence is not evidence of absence. The only way to gather positive evidence for \(H_0\) is through a different methodology (equivalence testing or Bayesian approaches) that is beyond A-level scope.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why is 0.05 such a common threshold?</div>
+  <div class="ccard-a">Largely historical convention, popularised by the statistician R.A. Fisher in the 1920s who described results with \(p < 0.05\) as "significant". There is nothing magical about 5% — it is simply a widely adopted convention. Different fields use different thresholds (particle physics uses \(p < 0.0000003\), the "5-sigma" standard).</div></div>
+</div>
+<div id="bnav7"></div>
+</section>
+
+<!-- ═══ MODULE 8: TYPE I & II ERRORS ═══ -->
+<section class="module" id="mod8">
+<div class="mhdr"><div class="mtag">Module 9</div><h2>Type I and Type II Errors</h2></div>
+
+<div class="concept">
+  In any hypothesis test there are two ways to make an error. Understanding these is essential for interpreting results and designing studies.
+</div>
+
+<table class="tbl" style="margin-bottom:1rem;">
+  <tr><th></th><th>\(H_0\) is actually true</th><th>\(H_0\) is actually false</th></tr>
+  <tr><td><strong>Reject \(H_0\)</strong></td><td style="background:#fdf0f0;color:var(--red);font-weight:700;">Type I Error ✗</td><td style="background:#e6f6f1;color:var(--teal);font-weight:700;">Correct ✓</td></tr>
+  <tr><td><strong>Do not reject \(H_0\)</strong></td><td style="background:#e6f6f1;color:var(--teal);font-weight:700;">Correct ✓</td><td style="background:#fdf0f0;color:var(--red);font-weight:700;">Type II Error ✗</td></tr>
+</table>
+
+<div class="two-col">
+  <div class="note red">
+    <strong>Type I Error (false positive)</strong><br>
+    Rejecting \(H_0\) when it is true.<br>
+    Probability = \(\alpha\) (the significance level).<br><br>
+    Example: Concluding the coin is biased when it is actually fair.
+  </div>
+  <div class="note" style="border-color:var(--orange);background:#fff7ee;">
+    <strong>Type II Error (false negative)</strong><br>
+    Not rejecting \(H_0\) when it is false.<br>
+    Probability = \(\beta\) (depends on true \(p\) and \(n\)).<br><br>
+    Example: Failing to detect that the coin really is biased.
+  </div>
+</div>
+
+<div class="fdisp">\[P(\text{Type I Error}) = \alpha = P(\text{reject } H_0 \mid H_0 \text{ true})\]</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  For the Binomial, the Type I error probability equals the actual significance level — the probability that the test statistic falls in the critical region under \(H_0\). This is <em>at most</em> \(\alpha\) (and often slightly less due to discreteness).
+</p>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Type I Error Calculator</h3>
+<p style="font-size:.93rem;color:var(--muted);margin-bottom:.6rem;">
+  The Type I error probability is the actual probability of falling in the critical region when \(H_0\) is true.
+</p>
+<div style="display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:.8rem;">
+  <div class="slider-row" style="flex:1;min-width:180px;"><label style="font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);min-width:45px;">\(n\) =</label><input type="range" id="sl8n" min="5" max="40" value="20" oninput="upd8()"><span class="slider-val" id="sv8n">20</span></div>
+  <div class="slider-row" style="flex:1;min-width:180px;"><label style="font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);min-width:45px;">\(p_0\) =</label><input type="range" id="sl8p" min="5" max="95" value="30" oninput="upd8()"><span class="slider-val" id="sv8p">0.30</span></div>
+  <select id="sel8a" onchange="upd8()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="0.05" selected>α = 5%</option><option value="0.025">α = 2.5%</option><option value="0.01">α = 1%</option></select>
+  <select id="sel8tail" onchange="upd8()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="lower">Lower tail</option><option value="upper">Upper tail</option><option value="two">Two-tailed</option></select>
+</div>
+<div id="stat8" style="font-family:Arial;font-size:.92rem;color:var(--navy);text-align:center;margin:.5rem 0;padding:.6rem;background:#fff;border:1.5px solid var(--border);border-radius:6px;"></div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">How can we reduce both types of error simultaneously?</div>
+  <div class="ccard-a">The only way to reduce both is to increase the sample size \(n\). For a fixed \(n\), reducing \(\alpha\) (Type I) automatically increases \(\beta\) (Type II), and vice versa. A larger sample makes the test statistic concentrate more tightly around its expected value under each hypothesis, making it easier to distinguish between them.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Which type of error is more serious?</div>
+  <div class="ccard-a">It depends on the context. In medical testing (e.g. a cancer screening test), a Type II error (missing a real case) may be more serious — hence screening tests are made highly sensitive even at the cost of more false positives. In legal contexts (criminal conviction) a Type I error (convicting an innocent person) is typically considered more serious, motivating "beyond reasonable doubt" standards (very small \(\alpha\)).</div></div>
+</div>
+<div id="bnav8"></div>
+</section>
+
+<!-- ═══ MODULE 9: WORKED EXAMPLES ═══ -->
+<section class="module" id="mod9">
+<div class="mhdr"><div class="mtag">Module 10</div><h2>Worked Examples</h2></div>
+
+<div class="stabs">
+  <button class="stab on" onclick="stab9(this,'s9a')">Example 1</button>
+  <button class="stab" onclick="stab9(this,'s9b')">Example 2</button>
+  <button class="stab" onclick="stab9(this,'s9c')">Example 3</button>
+  <button class="stab" onclick="stab9(this,'s9d')">Example 4</button>
+</div>
+
+<!-- Example 1 -->
+<div class="spanel on" id="s9a">
+<p style="font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;">Lower-tail · 5% level · Small sample</p>
+<div class="concept" style="margin-bottom:1rem;">
+  A biologist claims that 40% of seeds of a certain plant germinate. A student plants 15 seeds and finds only 3 germinate. Test at the 5% significance level whether there is evidence that the germination rate is lower than claimed.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: p = 0.4\), &ensp; \(H_1: p < 0.4\)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Distribution under \(H_0\):</strong> \(X \sim B(15, 0.4)\) where \(X\) = number of seeds germinating.</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Test statistic:</strong> observed \(x = 3\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">
+    <strong>p-value:</strong><br>
+    \(P(X \leq 3) = P(X=0) + P(X=1) + P(X=2) + P(X=3)\)<br>
+    \(= \binom{15}{0}(0.4)^0(0.6)^{15} + \binom{15}{1}(0.4)^1(0.6)^{14} + \binom{15}{2}(0.4)^2(0.6)^{13} + \binom{15}{3}(0.4)^3(0.6)^{12}\)<br>
+    \(= 0.000470 + 0.004703 + 0.021567 + 0.063097 = 0.0905\)
+  </div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Decision:</strong> \(0.0905 > 0.05\), so we <strong>do not reject \(H_0\)</strong>.</div></div>
+  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>Conclusion:</strong> There is insufficient evidence at the 5% significance level to conclude that the germination rate is lower than 40%.</div></div>
+</div>
+</div>
+
+<!-- Example 2 -->
+<div class="spanel" id="s9b">
+<p style="font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;">Upper-tail · 5% level · Critical region method</p>
+<div class="concept" style="margin-bottom:1rem;">
+  A manufacturer claims that 20% of items from a production line are faulty. An inspector suspects the true rate is higher. She tests 25 items and finds 9 are faulty. Find the critical region for a one-tailed test at the 5% level and state the conclusion.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: p = 0.2\), &ensp; \(H_1: p > 0.2\)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Distribution under \(H_0\):</strong> \(X \sim B(25, 0.2)\)</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">
+    <strong>Find critical region:</strong> Find smallest \(c\) with \(P(X \geq c) \leq 0.05\).<br>
+    \(P(X \geq 8) = 1 - P(X \leq 7) = 1 - 0.8910 = 0.1090 > 0.05\)<br>
+    \(P(X \geq 9) = 1 - P(X \leq 8) = 1 - 0.9532 = 0.0468 \leq 0.05\) ✓<br>
+    Critical region: \(X \geq 9\). Actual significance level: 4.68%.
+  </div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Decision:</strong> Observed \(x = 9 \geq 9\), so \(x\) lies in the critical region. <strong>Reject \(H_0\)</strong>.</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclusion:</strong> There is significant evidence at the 5% level that the proportion of faulty items exceeds 20%.</div></div>
+</div>
+</div>
+
+<!-- Example 3 -->
+<div class="spanel" id="s9c">
+<p style="font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;">Two-tailed · 5% level</p>
+<div class="concept" style="margin-bottom:1rem;">
+  A coin is claimed to be fair. It is tossed 30 times and lands heads 19 times. Test at the 5% significance level whether the coin is biased.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: p = 0.5\), &ensp; \(H_1: p \neq 0.5\) &emsp; (no direction specified)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Distribution:</strong> \(X \sim B(30, 0.5)\). Mean = 15. Since \(19 > 15\), test upper tail.</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">
+    <strong>p-value (upper tail):</strong><br>
+    \(P(X \geq 19) = 1 - P(X \leq 18) = 1 - 0.8998 = 0.1002\)<br>
+    Compare with \(\alpha/2 = 0.025\): &ensp; \(0.1002 > 0.025\).
+  </div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Decision:</strong> Do not reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclusion:</strong> There is insufficient evidence at the 5% level to conclude that the coin is biased.</div></div>
+</div>
+</div>
+
+<!-- Example 4 -->
+<div class="spanel" id="s9d">
+<p style="font-family:Arial;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;">Two-tailed · Critical region · 1% level</p>
+<div class="concept" style="margin-bottom:1rem;">
+  A drug is claimed to be effective 35% of the time. A researcher tests it on 40 patients. Find the critical region for a two-tailed test at the 1% significance level. The drug is effective for 22 patients — state the conclusion.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: p = 0.35\), &ensp; \(H_1: p \neq 0.35\)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Distribution:</strong> \(X \sim B(40, 0.35)\). Use \(\alpha/2 = 0.005\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">
+    <strong>Lower critical value:</strong><br>
+    \(P(X \leq 7) = 0.0027 \leq 0.005\) ✓ &ensp; \(P(X \leq 8) = 0.0081 > 0.005\)<br>
+    So \(c_L = 7\).
+  </div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">
+    <strong>Upper critical value:</strong><br>
+    \(P(X \geq 21) = 0.0280 > 0.005\) &ensp; \(P(X \geq 22) = 0.0138 > 0.005\) &ensp; \(P(X \geq 23) = 0.0063 > 0.005\) &ensp; \(P(X \geq 24) = 0.0026 \leq 0.005\) ✓<br>
+    So \(c_U = 24\).
+  </div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Critical region:</strong> \(X \leq 7\) or \(X \geq 24\). Actual significance level: \(0.0027 + 0.0026 = 0.53\%\).</div></div>
+  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>Observed \(x = 22\):</strong> \(22\) is not in the critical region \((22 < 24)\). Do not reject \(H_0\).<br>There is insufficient evidence at the 1% level that the drug's effectiveness differs from 35%.</div></div>
+</div>
+</div>
+
+<div id="bnav9"></div>
+</section>
+
+<!-- ═══ MODULE 11: MOTIVATION / WHY HYPOTHESIS TESTS ═══ -->
+<section class="module" id="mod11">
+<div class="mhdr"><div class="mtag">Module 11</div><h2>Why do we need Hypothesis Tests?</h2></div>
+
+<div class="concept">
+  Before diving into formal procedures it helps to understand <em>why</em> hypothesis testing exists — what real problem it solves, and how it connects populations to samples.
+</div>
+
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Populations and samples</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Suppose we want to know something about a whole population — for example, the mean weight of all adults in a city, or the proportion of defective items from a production line. Measuring every member of the population is usually too slow, too expensive, or genuinely impossible.
+  So instead we take a <em>sample</em> and use it to draw conclusions about the population.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  The sample statistic will almost certainly differ from the true population parameter — even when nothing has changed — simply due to the randomness of sampling. The key question is therefore:
+</p>
+<div class="fdisp" style="font-size:1rem;">\[\text{Is the difference between the sample statistic and the population parameter due to chance, or is it real?}\]</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Three motivating scenarios</h3>
+
+<div class="stabs">
+  <button class="stab on" onclick="stab11(this,'s11a')">The Coin</button>
+  <button class="stab" onclick="stab11(this,'s11b')">The Bag</button>
+  <button class="stab" onclick="stab11(this,'s11c')">Real World</button>
+</div>
+
+<div class="spanel on" id="s11a">
+<div class="note gold">
+  <strong>Scenario 1 — A suspicious coin</strong><br><br>
+  A fair coin should satisfy \(P(\text{Head}) = P(\text{Tail}) = \tfrac{1}{2}\). If we flip it five times and get five heads, the probability of that happening with a fair coin is:
+  \[\left(\tfrac{1}{2}\right)^5 = \tfrac{1}{32} \approx 3.1\%\]
+  That's unusual but possible. If we got 10 heads in a row the probability drops to about 0.1%. At some point the result becomes so unlikely under the fair-coin assumption that we lose confidence in that assumption and prefer an alternative explanation: the coin is biased towards heads.
+</div>
+<p style="font-size:.95rem;line-height:1.75;margin:.8rem 0;">
+  This is the logic of hypothesis testing. We start with the null hypothesis \(H_0: p = 0.5\) (fair coin). The significance level — say 5% — is the threshold below which we judge the evidence "too unlikely to be chance". If the observed result has probability \(\leq 5\%\) under \(H_0\), we reject \(H_0\) and accept \(H_1: p > 0.5\) (biased towards heads).
+</p>
+<div class="cbox"><canvas id="c11coin" height="180"></canvas></div>
+<div class="ctrls">
+  <button class="btn btn-solid" onclick="drawCoinChart()">&#9654; Show probability vs number of heads</button>
+</div>
+</div>
+
+<div class="spanel" id="s11b">
+<div class="note teal">
+  <strong>Scenario 2 — Disks in a bag</strong><br><br>
+  Suppose we are told there are equal numbers of red, blue and green disks in a bag, so \(P(\text{Red}) = \tfrac{1}{3}\). We cannot count every disk (the total is the population) but we can draw a sample.
+</div>
+<p style="font-size:.95rem;line-height:1.75;margin:.8rem 0;">
+  If we draw 30 disks and find 18 are red, is that consistent with \(P(\text{Red}) = \tfrac{1}{3}\)? We'd expect about 10 red disks if the claim were true. Having 18 might simply be bad luck — or it might indicate there are actually more red disks than claimed. The hypothesis test tells us whether the sample provides <em>sufficient evidence</em> to doubt the original claim.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Notice the key logical move: <strong>we calculate the probability of the observed result (or worse) assuming \(H_0\) is true</strong>. We can't test \(H_1\) directly because it doesn't specify an exact value of \(p\).
+</p>
+</div>
+
+<div class="spanel" id="s11c">
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">Hypothesis testing arises naturally whenever it is impossible or impractical to measure the whole population:</p>
+<table class="tbl">
+  <tr><th>Situation</th><th>Population</th><th>Why we can't measure it all</th></tr>
+  <tr><td><strong>Destructive testing</strong> — steel beams tested to breaking point</td><td>All beams</td><td>Testing destroys them; nothing left to use</td></tr>
+  <tr><td><strong>Quality control</strong> — proportion of defective items from a machine</td><td>All items ever produced</td><td>Production is ongoing; too slow and costly</td></tr>
+  <tr><td><strong>Medical trials</strong> — does a new drug improve cure rates?</td><td>All future patients</td><td>Cannot wait to treat everyone before deciding</td></tr>
+  <tr><td><strong>Environmental testing</strong> — do new engines reduce emissions?</td><td>All engines ever made</td><td>Too many; sampling is the only feasible approach</td></tr>
+</table>
+<p style="font-size:.95rem;line-height:1.75;margin-top:.8rem;">
+  In every case the same question arises: is the difference we see in the sample real, or just random variation? Hypothesis testing provides a rigorous, agreed framework for answering it.
+</p>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why is the difference between sample and population statistics unavoidable?</div>
+  <div class="ccard-a">Different random samples from the same population will give different statistics — this is called sampling variability. Even a completely honest sample will rarely match the population parameter exactly, purely by chance. This means any observed difference could in principle be nothing more than this natural variability. The hypothesis test exists to judge how much "weight" that explanation carries.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What if we took the entire population as our sample?</div>
+  <div class="ccard-a">If you could measure every member of the population there would be no uncertainty: the sample statistic would equal the population parameter exactly and you would not need a hypothesis test at all. It is precisely because we can't do this (for the reasons in the table above) that statistical inference — and hypothesis testing — become necessary.</div></div>
+</div>
+<div id="bnav11"></div>
+</section>
+
+<!-- ═══ MODULE 12: PMCC / CORRELATION TEST ═══ -->
+<section class="module" id="mod12">
+<div class="mhdr"><div class="mtag">Module 12</div><h2>Testing for Zero Correlation (PMCC)</h2></div>
+
+<div class="concept">
+  The Product Moment Correlation Coefficient (PMCC), denoted \(\rho\) (rho) for the population and \(r\) for a sample, measures the strength and direction of a linear relationship between two variables. We can test whether any apparent correlation is genuine or just the result of chance variation.
+</div>
+
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">The parameter and the hypotheses</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  The population PMCC is \(\rho\) (always between \(-1\) and \(+1\)). The null hypothesis always states that there is <em>no</em> linear correlation in the population:
+</p>
+<div class="fdisp">\[H_0: \rho = 0\]</div>
+<div class="two-col" style="margin:.8rem 0;">
+  <div class="note teal"><strong>One-tailed (positive):</strong><br>\(H_1: \rho > 0\)<br><br>We suspect there is a <em>positive</em> correlation.</div>
+  <div class="note teal"><strong>One-tailed (negative):</strong><br>\(H_1: \rho < 0\)<br><br>We suspect there is a <em>negative</em> correlation.</div>
+</div>
+<div class="note"><strong>Two-tailed:</strong> \(H_1: \rho \neq 0\) — some correlation exists, direction unknown.</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">How to carry out the test</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Unlike the binomial test, we do <em>not</em> compute a p-value from scratch. Instead we use a table of <strong>critical values for \(r\)</strong>:
+</p>
+<div class="flow-box">
+  <h3>The PMCC Test Procedure</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>State hypotheses:</strong> \(H_0: \rho = 0\) and \(H_1\) (choose direction or two-tailed).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Calculate the sample PMCC \(r\)</strong> from the data (usually done on a calculator).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Look up the critical value</strong> from the PMCC table using the sample size \(n\) and the significance level. For a <em>two-tailed</em> test, halve the significance level before looking up.</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Compare:</strong> if \(|r|\) exceeds the critical value (i.e. \(r\) is closer to \(\pm 1\) than the critical value), reject \(H_0\). Otherwise do not reject.</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclude in context.</strong></div></div>
+</div>
+
+<div class="note gold">
+  <strong>Key rule:</strong> Reject \(H_0\) if \(r\) is closer to \(\pm 1\) than the critical value. Do <em>not</em> reject if \(r\) is closer to 0 than the critical value.
+  <br><br>For a <strong>one-tailed test</strong> (\(H_1: \rho > 0\)): reject if \(r > r_{\text{crit}}\).
+  <br>For a <strong>one-tailed test</strong> (\(H_1: \rho < 0\)): reject if \(r < -r_{\text{crit}}\).
+  <br>For a <strong>two-tailed test</strong>: reject if \(|r| > r_{\text{crit}}\) (use \(\alpha/2\) in the table).
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Critical Values Table (extract)</h3>
+<p style="font-size:.9rem;color:var(--muted);margin-bottom:.6rem;">One-tailed significance levels. For a two-tailed test at \(\alpha\), use the column for \(\alpha/2\).</p>
+<table class="tbl" id="pmccTable">
+  <tr><th>\(n\)</th><th>10% (one-tail)</th><th>5% (one-tail)</th><th>2.5% (one-tail)</th><th>1% (one-tail)</th><th>0.5% (one-tail)</th></tr>
+  <tr><td>5</td><td>0.6870</td><td>0.8054</td><td>0.8783</td><td>0.9343</td><td>0.9587</td></tr>
+  <tr><td>6</td><td>0.6084</td><td>0.7293</td><td>0.8114</td><td>0.8822</td><td>0.9172</td></tr>
+  <tr><td>7</td><td>0.5509</td><td>0.6694</td><td>0.7545</td><td>0.8329</td><td>0.8745</td></tr>
+  <tr><td>8</td><td>0.5067</td><td>0.6215</td><td>0.7067</td><td>0.7887</td><td>0.8343</td></tr>
+  <tr><td>9</td><td>0.4716</td><td>0.5822</td><td>0.6664</td><td>0.7498</td><td>0.7977</td></tr>
+  <tr><td>10</td><td>0.4428</td><td>0.5494</td><td>0.6319</td><td>0.7155</td><td>0.7646</td></tr>
+  <tr><td>12</td><td>0.3981</td><td>0.4973</td><td>0.5760</td><td>0.6581</td><td>0.7079</td></tr>
+  <tr><td>15</td><td>0.3507</td><td>0.4409</td><td>0.5140</td><td>0.5923</td><td>0.6411</td></tr>
+  <tr><td>20</td><td>0.2960</td><td>0.3783</td><td>0.4438</td><td>0.5155</td><td>0.5614</td></tr>
+  <tr><td>25</td><td>0.2573</td><td>0.3365</td><td>0.3961</td><td>0.4622</td><td>0.5052</td></tr>
+  <tr><td>30</td><td>0.2327</td><td>0.3061</td><td>0.3610</td><td>0.4226</td><td>0.4629</td></tr>
+</table>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Worked Examples</h3>
+
+<div class="stabs">
+  <button class="stab on" onclick="stab12(this,'s12a')">Example 1 (one-tail)</button>
+  <button class="stab" onclick="stab12(this,'s12b')">Example 2 (two-tail)</button>
+  <button class="stab" onclick="stab12(this,'s12c')">Interactive</button>
+</div>
+
+<div class="spanel on" id="s12a">
+<div class="concept" style="margin-bottom:1rem;">
+  A researcher measures hours of revision and exam score for 10 students. The sample PMCC is \(r = 0.582\). Test at the 5% significance level whether there is evidence of a positive correlation between revision time and exam score.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: \rho = 0\) &emsp; \(H_1: \rho > 0\) &emsp; (one-tailed, positive direction)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Sample PMCC:</strong> \(r = 0.582\), sample size \(n = 10\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Critical value:</strong> from the table, one-tail 5%, \(n = 10\): critical value \(= 0.5494\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Compare:</strong> \(r = 0.582 > 0.5494\) (i.e. \(r\) is closer to \(+1\) than the critical value). Reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclusion:</strong> There is sufficient evidence at the 5% significance level that there is a positive correlation between revision hours and exam score.</div></div>
+</div>
+</div>
+
+<div class="spanel" id="s12b">
+<div class="concept" style="margin-bottom:1rem;">
+  Data on temperature and ice-cream sales for 12 days gives \(r = 0.611\). Test at the 5% significance level whether there is evidence of a correlation (no prior expectation of direction).
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: \rho = 0\) &emsp; \(H_1: \rho \neq 0\) &emsp; (two-tailed)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Sample PMCC:</strong> \(r = 0.611\), \(n = 12\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Critical value (two-tailed at 5%):</strong> use the \(\alpha/2 = 2.5\%\) column, \(n = 12\): critical value \(= 0.5760\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Compare:</strong> \(|r| = 0.611 > 0.5760\). Reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclusion:</strong> There is sufficient evidence at the 5% level of a correlation between temperature and ice-cream sales.</div></div>
+</div>
+</div>
+
+<div class="spanel" id="s12c">
+<p style="font-size:.93rem;color:var(--muted);margin-bottom:.8rem;">Enter your sample PMCC and size to check against the critical value.</p>
+<div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1rem;">
+  <div class="inp-row"><label>Sample \(r\)</label><input type="number" id="i12r" value="0.582" min="-1" max="1" step="0.001"></div>
+  <div class="inp-row"><label>Sample size \(n\)</label><input type="number" id="i12n" value="10" min="5" max="100"></div>
+  <div class="inp-row"><label>Significance \(\alpha\)</label>
+    <select id="i12a" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="0.10">10%</option><option value="0.05" selected>5%</option><option value="0.025">2.5%</option><option value="0.01">1%</option>
+    </select>
+  </div>
+  <div class="inp-row"><label>Test type</label>
+    <select id="i12tail" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="upper">One-tailed (\(H_1: \rho > 0\))</option>
+      <option value="lower">One-tailed (\(H_1: \rho &lt; 0\))</option>
+      <option value="two">Two-tailed (\(H_1: \rho \neq 0\))</option>
+    </select>
+  </div>
+  <div style="margin-top:.8rem;"><button class="btn btn-gold" onclick="runPMCC12()">Check ▶</button></div>
+</div>
+<div id="res12" style="display:none;"></div>
+</div>
+
+<div class="mistakes"><h3>Common mistakes</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Using the full significance level for a two-tailed test</div>
+  <div class="ccard-a">For a two-tailed test you must halve the significance level before looking up the critical value. If you're testing at 5% two-tailed, you look in the 2.5% column of the PMCC table, not the 5% column. Using the wrong column makes the test too easy to reject \(H_0\).</div></div>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Choosing the direction of \(H_1\) after computing \(r\)</div>
+  <div class="ccard-a">If \(r = +0.7\) and you then write \(H_1: \rho > 0\), you have used the data to choose your test. The direction of \(H_1\) must be chosen based on the research question before the data are analysed. Otherwise the true Type I error rate is doubled.</div></div>
+</div>
+<div id="bnav12"></div>
+</section>
+
+<!-- ═══ MODULE 13: NORMAL DISTRIBUTION MEAN TEST ═══ -->
+<section class="module" id="mod13">
+<div class="mhdr"><div class="mtag">Module 13</div><h2>Hypothesis Test for a Population Mean (Normal Distribution)</h2></div>
+
+<div class="concept">
+  When the underlying variable is normally distributed and we know (or can assume) the population variance \(\sigma^2\), we can test whether the population mean \(\mu\) has changed — using the distribution of the <em>sample mean</em>.
+</div>
+
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">The Sampling Distribution of \(\bar{X}\)</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Suppose we have a large population where some variable \(X\) is distributed:
+</p>
+<div class="fdisp">\[X \sim N\!\left(\mu,\, \sigma^2\right)\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  If we take many samples of size \(n\) from this population and compute the mean \(\bar{X}\) of each sample, then those sample means follow their own normal distribution — with the same mean but a <em>smaller</em> variance:
+</p>
+<div class="fdisp">\[\bar{X} \sim N\!\left(\mu,\, \frac{\sigma^2}{n}\right)\]</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  The standard deviation of \(\bar{X}\) is \(\dfrac{\sigma}{\sqrt{n}}\), often called the <strong>standard error</strong>. The larger the sample, the tighter the distribution of sample means clusters around \(\mu\).
+</p>
+
+<div class="note gold">
+  <strong>Intuition:</strong> A single observation can be quite far from \(\mu\) by chance. But the <em>mean</em> of 25 observations is much less likely to be far from \(\mu\) — extreme values tend to cancel out. Dividing \(\sigma^2\) by \(n\) captures this: larger samples give more precise estimates of the mean.
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">The Test Procedure</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  We observe a sample of size \(n\) with mean \(\bar{x}\). We test whether this is consistent with the population having mean \(\mu_0\).
+</p>
+<div class="flow-box">
+  <h3>Steps for the Normal Mean Test</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>State hypotheses:</strong> \(H_0: \mu = \mu_0\) and \(H_1\) (choose \(\mu < \mu_0\), \(\mu > \mu_0\), or \(\mu \neq \mu_0\)).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>State the distribution under \(H_0\):</strong> \(\bar{X} \sim N\!\left(\mu_0,\, \dfrac{\sigma^2}{n}\right)\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Calculate the p-value</strong> — the probability of observing \(\bar{X}\) at least as extreme as \(\bar{x}\), using the Normal distribution.<br>Or standardise: \(Z = \dfrac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}\) and use the standard Normal \(N(0,1)\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Compare p-value with \(\alpha\)</strong> (or \(\alpha/2\) for two-tailed). Reject \(H_0\) if p-value \(\leq\) threshold.</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>State conclusion in context.</strong></div></div>
+</div>
+
+<div class="note teal" style="margin-top:.5rem;">
+  <strong>On a calculator (Casio fx):</strong> Menu → 7 (Distribution) → Normal CD for cumulative probabilities, or Inverse Normal. Input lower bound, upper bound, \(\sigma/\sqrt{n}\), \(\mu_0\). For \(P(\bar{X} \geq \bar{x})\), use lower = \(\bar{x}\), upper = \(10^{99}\).
+</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Worked Examples</h3>
+
+<div class="stabs">
+  <button class="stab on" onclick="stab13(this,'s13a')">Example 1</button>
+  <button class="stab" onclick="stab13(this,'s13b')">Example 2</button>
+  <button class="stab" onclick="stab13(this,'s13c')">Interactive</button>
+</div>
+
+<div class="spanel on" id="s13a">
+<div class="concept" style="margin-bottom:1rem;">
+  Chocolate bars are supposed to have mean weight \(\mu = 50\,\text{g}\) with \(\sigma^2 = 4\,\text{g}^2\) (i.e. \(\sigma = 2\,\text{g}\)). A quality-control inspector weighs a random sample of 25 bars and finds \(\bar{x} = 49.2\,\text{g}\). Test at the 5% level whether the mean weight has decreased.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: \mu = 50\) &emsp; \(H_1: \mu < 50\)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Distribution under \(H_0\):</strong> \(\bar{X} \sim N\!\left(50,\, \dfrac{4}{25}\right) = N(50,\, 0.16)\)</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">
+    <strong>Standardise:</strong> \(Z = \dfrac{49.2 - 50}{2/\sqrt{25}} = \dfrac{-0.8}{0.4} = -2\)<br><br>
+    \(P(\bar{X} \leq 49.2) = P(Z \leq -2) = 0.0228\)
+  </div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Compare:</strong> \(0.0228 < 0.05\). Reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclusion:</strong> There is significant evidence at the 5% level that the mean weight of chocolate bars has decreased below 50 g.</div></div>
+</div>
+</div>
+
+<div class="spanel" id="s13b">
+<div class="concept" style="margin-bottom:1rem;">
+  The reaction times of drivers are known to follow \(N(0.8,\, 0.04)\) (seconds). After a new training programme, 16 drivers have mean reaction time \(\bar{x} = 0.72\,\text{s}\). Test at the 1% significance level whether the training has changed mean reaction time.
+</div>
+<div class="flow-box">
+  <h3>Solution</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Hypotheses:</strong> \(H_0: \mu = 0.8\) &emsp; \(H_1: \mu \neq 0.8\) &emsp; (two-tailed — change, no specified direction)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Distribution under \(H_0\):</strong> \(\bar{X} \sim N\!\left(0.8,\, \dfrac{0.04}{16}\right) = N(0.8,\, 0.0025)\) &emsp; (std error = \(0.05\))</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">
+    \(\bar{x} = 0.72 < 0.8\), so test lower tail.<br>
+    \(Z = \dfrac{0.72 - 0.8}{0.05} = -1.6\)<br>
+    \(P(\bar{X} \leq 0.72) = P(Z \leq -1.6) = 0.0548\)
+  </div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Compare with \(\alpha/2 = 0.005\):</strong> \(0.0548 > 0.005\). Do not reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Conclusion:</strong> There is insufficient evidence at the 1% level that the training programme has changed mean reaction time.</div></div>
+</div>
+</div>
+
+<div class="spanel" id="s13c">
+<p style="font-size:.93rem;color:var(--muted);margin-bottom:.8rem;">Enter the parameters to carry out a Normal mean test. The calculator uses the exact Normal CDF.</p>
+<div style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1rem;">
+  <div class="inp-row"><label>\(\mu_0\) (null mean)</label><input type="number" id="i13mu" value="50" step="any"></div>
+  <div class="inp-row"><label>\(\sigma\) (pop. std dev)</label><input type="number" id="i13sig" value="2" min="0.001" step="any"></div>
+  <div class="inp-row"><label>\(n\) (sample size)</label><input type="number" id="i13n" value="25" min="1"></div>
+  <div class="inp-row"><label>\(\bar{x}\) (sample mean)</label><input type="number" id="i13xbar" value="49.2" step="any"></div>
+  <div class="inp-row"><label>Significance \(\alpha\)</label>
+    <select id="i13a" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="0.10">10%</option><option value="0.05" selected>5%</option><option value="0.025">2.5%</option><option value="0.01">1%</option>
+    </select>
+  </div>
+  <div class="inp-row"><label>Test type</label>
+    <select id="i13tail" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+      <option value="lower">\(H_1: \mu &lt; \mu_0\)</option>
+      <option value="upper">\(H_1: \mu &gt; \mu_0\)</option>
+      <option value="two">\(H_1: \mu \neq \mu_0\)</option>
+    </select>
+  </div>
+  <div style="margin-top:.8rem;"><button class="btn btn-gold" onclick="runNormal13()">Run test ▶</button></div>
+</div>
+<div id="res13" style="display:none;"></div>
+<div class="cbox" id="c13wrap" style="display:none;"><canvas id="c13" height="200"></canvas></div>
+</div>
+
+<div class="mistakes"><h3>Common mistakes</h3>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Using \(\sigma^2\) where \(\sigma\) is required (or vice versa)</div>
+  <div class="ccard-a">The distribution of the sample mean is \(\bar{X} \sim N(\mu_0, \sigma^2/n)\). The standard deviation of \(\bar{X}\) (the standard error) is \(\sigma/\sqrt{n}\), not \(\sigma^2/n\). When standardising, divide by \(\sigma/\sqrt{n}\). Confusing the variance and standard deviation is one of the most frequent errors in this topic.</div></div>
+  <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Using the distribution of \(X\) rather than \(\bar{X}\)</div>
+  <div class="ccard-a">If \(X \sim N(\mu, \sigma^2)\), a single observation has standard deviation \(\sigma\). But we observed a sample <em>mean</em> \(\bar{x}\), and the distribution of the sample mean has standard deviation \(\sigma/\sqrt{n}\). Using \(\sigma\) instead of \(\sigma/\sqrt{n}\) makes the standard error far too large and typically leads to failing to reject \(H_0\) when you should.</div></div>
+</div>
+<div id="bnav13"></div>
+</section>
+
+<!-- ═══ MODULE 10: SUMMARY ═══ -->
+<section class="module" id="mod10">
+<div class="mhdr"><div class="mtag">Summary</div><h2>Hypothesis Testing — Key Points</h2></div>
+
+<div class="sum-grid">
+  <div class="sum-card">
+    <h3>The Hypotheses</h3>
+    <ul>
+      <li>\(H_0\): always specifies exact value of parameter, e.g. \(p = 0.3\)</li>
+      <li>\(H_1\): \(p < p_0\), \(p > p_0\), or \(p \neq p_0\)</li>
+      <li>Must be set <em>before</em> data collection</li>
+      <li>Parameter is always population-level</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>The Test</h3>
+    <ul>
+      <li>Assume \(X \sim B(n, p_0)\) under \(H_0\)</li>
+      <li>Compute p-value in direction of \(H_1\)</li>
+      <li>One-tailed: compare p-value with \(\alpha\)</li>
+      <li>Two-tailed: compare p-value with \(\alpha/2\)</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Critical Regions</h3>
+    <ul>
+      <li>Lower: largest \(c\) with \(P(X \leq c) \leq \alpha\)</li>
+      <li>Upper: smallest \(c\) with \(P(X \geq c) \leq \alpha\)</li>
+      <li>Actual sig. level \(\leq \alpha\) due to discreteness</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Errors</h3>
+    <ul>
+      <li>Type I: reject \(H_0\) when true. Prob = actual sig. level</li>
+      <li>Type II: don't reject \(H_0\) when false. Prob = \(\beta\)</li>
+      <li>Larger \(n\) reduces both; \(\alpha \downarrow\) increases \(\beta\) for fixed \(n\)</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Conclusions</h3>
+    <ul>
+      <li>Always write in context of the problem</li>
+      <li>Never say "accept \(H_0\)" — say "insufficient evidence to reject"</li>
+      <li>"Significant evidence at the …% level that …"</li>
+    </ul>
+  </div>
+  <div class="sum-card">
+    <h3>Common Errors</h3>
+    <ul>
+      <li>Wrong tail in upper-tail p-value</li>
+      <li>Comparing p-value with \(\alpha\) (not \(\alpha/2\)) in two-tailed test</li>
+      <li>Choosing tail direction after seeing data</li>
+      <li>Writing \(H_0: \bar{x} = \mu\)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="flow-box" style="margin-top:1rem;">
+  <h3>The Complete Procedure — At a Glance</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">State \(H_0\) (with exact \(p_0\)) and \(H_1\) (with direction)</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">State the distribution: \(X \sim B(n, p_0)\) under \(H_0\)</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">State the observed value \(x_{obs}\)</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">Calculate the p-value (or identify the critical region)</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text">Compare with \(\alpha\) (or \(\alpha/2\)) and state reject / do not reject</div></div>
+  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text">Write a conclusion <strong>in context</strong></div></div>
+</div>
+
+<div id="bnav10"></div>
+</section>
+
+</div><!-- /container -->
+
+<script>
+// ─────────────────────────────────────────────
+// COLOURS
+// ─────────────────────────────────────────────
+const NAVY='#1a3a6b',GOLD='#c9a227',TEAL='#0f6e56',RED='#a32d2d',MUT='#5a6280',BG='#f0f3fa';
+
+// ─────────────────────────────────────────────
+// NAV / MODULE SWITCHING
+// ─────────────────────────────────────────────
+// Module order for sequential navigation (non-contiguous IDs due to inserts)
+const MOD_ORDER=[0,1,2,3,4,5,6,7,8,9,11,12,13,10];
+const visited=new Set([0]);
+const inited={};
+
+function go(m){
+  document.querySelectorAll('.module').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('mod'+m).classList.add('on');
+  document.querySelector('.nb[data-m="'+m+'"]').classList.add('on');
+  visited.add(m);
+  document.querySelectorAll('.pdot').forEach(d=>d.classList.remove('visited'));
+  visited.forEach(v=>{const d=document.getElementById('pd'+v);if(d)d.classList.add('visited');});
+  if(!inited[m]){initMod(m);inited[m]=true;}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function initMod(m){
+  if(m===2)upd2();
+  if(m===5)upd5();
+  if(m===7)upd7();
+  if(m===8)upd8();
+  if(m===11)drawCoinChart();
+}
+
+// ─────────────────────────────────────────────
+// BOTTOM NAV
+// ─────────────────────────────────────────────
+const MOD_NAMES={0:'Introduction',1:'The Language',2:'Significance Levels',3:'One-Tailed Tests',4:'Two-Tailed Tests',5:'Critical Regions',6:'Interactive Test',7:'p-values',8:'Type I & II Errors',9:'Worked Examples',11:'Motivation',12:'PMCC Test',13:'Normal Mean Test',10:'Summary'};
+function injectBottomNav(m){
+  const el=document.getElementById('bnav'+m);
+  if(!el)return;
+  const pos=MOD_ORDER.indexOf(m);
+  const prevM=pos>0?MOD_ORDER[pos-1]:-1;
+  const nextM=pos<MOD_ORDER.length-1?MOD_ORDER[pos+1]:-1;
+  const prev=prevM>=0?`<button class="btn btn-outline" onclick="go(${prevM})">&#8592; ${MOD_NAMES[prevM]}</button>`:`<span></span>`;
+  const next=nextM>=0?`<button class="btn btn-solid" onclick="go(${nextM})">${MOD_NAMES[nextM]} &#8594;</button>`:`<span></span>`;
+  el.innerHTML=`<div class="mod-nav">${prev}<div class="mod-nav-info">${pos+1} / ${MOD_ORDER.length} — ${MOD_NAMES[m]}</div>${next}</div>`;
+}
+MOD_ORDER.forEach(m=>injectBottomNav(m));
+
+// ─────────────────────────────────────────────
+// TOGGLE (accordion cards)
+// ─────────────────────────────────────────────
+function tog(btn){btn.classList.toggle('open');}
+
+// ─────────────────────────────────────────────
+// SUB-TABS
+// ─────────────────────────────────────────────
+function stab3(btn,id){
+  const mod=btn.closest('section');
+  mod.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  mod.querySelectorAll('.spanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+function stab9(btn,id){stab3(btn,id);}
+
+// ─────────────────────────────────────────────
+// BINOMIAL HELPERS
+// ─────────────────────────────────────────────
+function logFact(n){let r=0;for(let i=2;i<=n;i++)r+=Math.log(i);return r;}
+function binomPMF(n,p,k){
+  if(k<0||k>n)return 0;
+  return Math.exp(logFact(n)-logFact(k)-logFact(n-k)+k*Math.log(p)+(n-k)*Math.log(1-p));
+}
+function binomCDF(n,p,k){
+  let s=0;for(let i=0;i<=k;i++)s+=binomPMF(n,p,i);return s;
+}
+function binomUpperCDF(n,p,k){return 1-binomCDF(n,p,k-1);}
+
+// ─────────────────────────────────────────────
+// MODULE 2: DISTRIBUTION VISUALISER
+// ─────────────────────────────────────────────
+function upd2(){
+  const n=+document.getElementById('sl2n').value;
+  const p=+document.getElementById('sl2p').value/100;
+  const alpha=+document.getElementById('sel2a').value;
+  const tail=document.getElementById('sel2tail').value;
+  document.getElementById('sv2n').textContent=n;
+  document.getElementById('sv2p').textContent=p.toFixed(2);
+  drawBinomDist('c2',n,p,alpha,tail,'stat2');
+}
+
+function drawBinomDist(canvasId,n,p,alpha,tail,statId){
+  const c=document.getElementById(canvasId);if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.offsetWidth||700;c.width=W;c.height=c.height||220;
+  const H=c.height;
+  const pad={l:36,r:12,t:18,b:32};
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  // find critical region
+  let crL=-1,crU=n+1;
+  if(tail==='lower'||tail==='two'){
+    const a2=tail==='two'?alpha/2:alpha;
+    for(let k=0;k<=n;k++){if(binomCDF(n,p,k)<=a2)crL=k;}
+  }
+  if(tail==='upper'||tail==='two'){
+    const a2=tail==='two'?alpha/2:alpha;
+    for(let k=n;k>=0;k--){if(binomUpperCDF(n,p,k)<=a2)crU=k;}
+  }
+
+  // probabilities
+  const probs=[];for(let k=0;k<=n;k++)probs.push(binomPMF(n,p,k));
+  const maxP=Math.max(...probs)*1.1||0.01;
+  const bw=Math.max(2,(W-pad.l-pad.r)/(n+1)-1.5);
+  const cx=k=>pad.l+(k+0.5)*(W-pad.l-pad.r)/(n+1);
+  const cy=v=>pad.t+(1-v/maxP)*(H-pad.t-pad.b);
+
+  // draw bars
+  probs.forEach((v,k)=>{
+    const inCR=(k<=crL)||(k>=crU);
+    ctx.fillStyle=inCR?'#e87070':NAVY+'bb';
+    const x=cx(k)-bw/2,y=cy(v),h=(H-pad.b)-y;
+    if(h>0)ctx.fillRect(x,y,bw,h);
+    ctx.strokeStyle=inCR?RED:NAVY;ctx.lineWidth=1;
+    if(h>0)ctx.strokeRect(x,y,bw,h);
+  });
+
+  // axes
+  ctx.strokeStyle='#888';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+
+  // x-labels (sparse)
+  ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  const step=Math.max(1,Math.floor(n/15));
+  for(let k=0;k<=n;k+=step)ctx.fillText(k,cx(k),H-pad.b+3);
+
+  // legend
+  ctx.fillStyle=RED;ctx.fillRect(pad.l,4,10,10);
+  ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('Critical region',pad.l+13,4);
+
+  // actual significance level
+  let actSig=0;
+  if(tail==='lower')actSig=crL>=0?binomCDF(n,p,crL):0;
+  else if(tail==='upper')actSig=crU<=n?binomUpperCDF(n,p,crU):0;
+  else{actSig=(crL>=0?binomCDF(n,p,crL):0)+(crU<=n?binomUpperCDF(n,p,crU):0);}
+
+  if(statId){
+    const el=document.getElementById(statId);
+    if(el){
+      let cr='none';
+      if(tail==='lower'&&crL>=0)cr='X ≤ '+crL;
+      else if(tail==='upper'&&crU<=n)cr='X ≥ '+crU;
+      else if(tail==='two'){
+        const parts=[];
+        if(crL>=0)parts.push('X ≤ '+crL);
+        if(crU<=n)parts.push('X ≥ '+crU);
+        cr=parts.join(' or ')||'none';
+      }
+      el.textContent='Critical region: '+cr+' | Actual significance level: '+(actSig*100).toFixed(3)+'%';
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// MODULE 5: CRITICAL REGION EXPLORER
+// ─────────────────────────────────────────────
+function upd5(){
+  const n=+document.getElementById('sl5n').value;
+  const p=+document.getElementById('sl5p').value/100;
+  const alpha=+document.getElementById('sel5a').value;
+  const tail=document.getElementById('sel5tail').value;
+  document.getElementById('sv5n').textContent=n;
+  document.getElementById('sv5p').textContent=p.toFixed(2);
+  drawBinomDist('c5',n,p,alpha,tail,'stat5');
+}
+
+// ─────────────────────────────────────────────
+// MODULE 6: INTERACTIVE TEST
+// ─────────────────────────────────────────────
+function runTest6(){
+  const n=+document.getElementById('i6n').value;
+  const p=+document.getElementById('i6p').value;
+  const xo=+document.getElementById('i6x').value;
+  const alpha=+document.getElementById('i6a').value;
+  const tail=document.getElementById('i6h').value;
+  if(xo<0||xo>n||p<=0||p>=1||n<1){alert('Please check your inputs.');return;}
+
+  // pvalue
+  let pval,pvalStr,crStr;
+  if(tail==='lower'){
+    pval=binomCDF(n,p,xo);
+    pvalStr='P(X ≤ '+xo+') = '+pval.toFixed(5);
+    let cr=-1;for(let k=0;k<=n;k++){if(binomCDF(n,p,k)<=+alpha)cr=k;}
+    crStr=cr>=0?'X ≤ '+cr:'none (critical region empty)';
+  }else if(tail==='upper'){
+    pval=binomUpperCDF(n,p,xo);
+    pvalStr='P(X ≥ '+xo+') = '+pval.toFixed(5);
+    let cr=n+1;for(let k=n;k>=0;k--){if(binomUpperCDF(n,p,k)<=+alpha)cr=k;}
+    crStr=cr<=n?'X ≥ '+cr:'none';
+  }else{
+    const lo=binomCDF(n,p,xo),hi=binomUpperCDF(n,p,xo);
+    pval=Math.min(lo,hi);
+    pvalStr='min(P(X ≤ '+xo+'), P(X ≥ '+xo+')) = min('+lo.toFixed(5)+', '+hi.toFixed(5)+') = '+pval.toFixed(5);
+    let crL=-1,crU=n+1;
+    for(let k=0;k<=n;k++){if(binomCDF(n,p,k)<=+alpha/2)crL=k;}
+    for(let k=n;k>=0;k--){if(binomUpperCDF(n,p,k)<=+alpha/2)crU=k;}
+    const parts=[];if(crL>=0)parts.push('X ≤ '+crL);if(crU<=n)parts.push('X ≥ '+crU);
+    crStr=parts.join(' or ')||'none';
+  }
+
+  const threshold=tail==='two'?+alpha/2:+alpha;
+  const reject=pval<=threshold;
+  const tailStr=tail==='lower'?'p < '+p:tail==='upper'?'p > '+p:'p ≠ '+p;
+
+  const html=`
+    <div style="font-weight:700;font-size:.95rem;color:var(--navy);margin-bottom:.7rem;">Step-by-step solution</div>
+    <p><span style="color:var(--muted);font-weight:700;">Step 1 — Hypotheses:</span><br>
+    H₀: p = ${p} &emsp; H₁: ${tailStr}</p>
+    <p style="margin-top:.5rem;"><span style="color:var(--muted);font-weight:700;">Step 2 — Distribution under H₀:</span><br>
+    X ~ B(${n}, ${p})</p>
+    <p style="margin-top:.5rem;"><span style="color:var(--muted);font-weight:700;">Step 3 — Observed value:</span><br>
+    x<sub>obs</sub> = ${xo}</p>
+    <p style="margin-top:.5rem;"><span style="color:var(--muted);font-weight:700;">Step 4 — p-value:</span><br>
+    ${pvalStr}</p>
+    <p style="margin-top:.5rem;"><span style="color:var(--muted);font-weight:700;">Step 5 — Compare with ${tail==='two'?'α/2 = '+(+alpha/2):'α = '+alpha}:</span><br>
+    ${pval.toFixed(5)} ${reject?'≤':'>'} ${threshold}</p>
+    <div style="margin-top:.8rem;padding:.7rem .9rem;border-radius:6px;background:${reject?'#fdf0f0':'#e6f6f1'};border-left:4px solid ${reject?'#a32d2d':'#0f6e56'};">
+      <div style="font-weight:700;color:${reject?'var(--red)':'var(--teal)'};font-size:1rem;">${reject?'Reject H₀':'Do not reject H₀'}</div>
+      <div style="font-size:.88rem;margin-top:.3rem;">
+        ${reject
+          ?'There is significant evidence at the '+(+alpha*100)+'% level that '+tailStr+'.'
+          :'There is insufficient evidence at the '+(+alpha*100)+'% level to conclude that '+tailStr+'.'}
+      </div>
+      <div style="font-size:.84rem;color:var(--muted);margin-top:.3rem;">Critical region: ${crStr}</div>
+    </div>`;
+
+  document.getElementById('steps6').innerHTML=html;
+  document.getElementById('res6').style.display='block';
+  // draw chart
+  drawBinomDist6(n,p,xo,+alpha,tail);
+  if(window.MathJax)MathJax.typesetPromise&&MathJax.typesetPromise();
+}
+
+function drawBinomDist6(n,p,xo,alpha,tail){
+  const c=document.getElementById('c6');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.offsetWidth||700;c.width=W;c.height=200;
+  const H=200;
+  const pad={l:36,r:12,t:18,b:32};
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  const probs=[];for(let k=0;k<=n;k++)probs.push(binomPMF(n,p,k));
+  const maxP=Math.max(...probs)*1.1||0.01;
+  const bw=Math.max(2,(W-pad.l-pad.r)/(n+1)-1.5);
+  const cx=k=>pad.l+(k+0.5)*(W-pad.l-pad.r)/(n+1);
+  const cy=v=>pad.t+(1-v/maxP)*(H-pad.t-pad.b);
+
+  let crL=-1,crU=n+1;
+  if(tail==='lower'||tail==='two'){const a2=tail==='two'?alpha/2:alpha;for(let k=0;k<=n;k++){if(binomCDF(n,p,k)<=a2)crL=k;}}
+  if(tail==='upper'||tail==='two'){const a2=tail==='two'?alpha/2:alpha;for(let k=n;k>=0;k--){if(binomUpperCDF(n,p,k)<=a2)crU=k;}}
+
+  probs.forEach((v,k)=>{
+    const inCR=(k<=crL)||(k>=crU);
+    const isObs=k===xo;
+    ctx.fillStyle=isObs?GOLD:(inCR?'#e87070':NAVY+'aa');
+    const x=cx(k)-bw/2,y=cy(v),h=(H-pad.b)-y;
+    if(h>0)ctx.fillRect(x,y,bw,h);
+    ctx.strokeStyle=isObs?'#b8860b':(inCR?RED:NAVY);ctx.lineWidth=1.5;
+    if(h>0)ctx.strokeRect(x,y,bw,h);
+  });
+
+  ctx.strokeStyle='#888';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  const step=Math.max(1,Math.floor(n/15));
+  for(let k=0;k<=n;k+=step)ctx.fillText(k,cx(k),H-pad.b+3);
+
+  // legend
+  const leg=[[GOLD,'Observed'],[RED,'Critical region'],[NAVY+'aa','Accept region']];
+  let lx=pad.l;
+  leg.forEach(([col,lbl])=>{
+    ctx.fillStyle=col;ctx.fillRect(lx,4,10,10);
+    ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText(lbl,lx+13,4);lx+=ctx.measureText(lbl).width+30;
+  });
+}
+
+// ─────────────────────────────────────────────
+// MODULE 7: p-VALUE CALCULATOR
+// ─────────────────────────────────────────────
+function upd7(){
+  const n=+document.getElementById('i7n').value||20;
+  const p=+document.getElementById('i7p').value||0.3;
+  const xo=Math.min(+document.getElementById('i7x').value||2,n);
+  const tail=document.getElementById('i7tail').value;
+  if(p<=0||p>=1||n<1)return;
+
+  let pval,label;
+  if(tail==='lower'){pval=binomCDF(n,p,xo);label='P(X ≤ '+xo+') = '+pval.toFixed(6);}
+  else if(tail==='upper'){pval=binomUpperCDF(n,p,xo);label='P(X ≥ '+xo+') = '+pval.toFixed(6);}
+  else{
+    const lo=binomCDF(n,p,xo),hi=binomUpperCDF(n,p,xo);
+    pval=Math.min(lo,hi);label='min(P(X ≤ '+xo+'), P(X ≥ '+xo+')) = '+pval.toFixed(6)+' — compare with α/2';
+  }
+
+  const el=document.getElementById('pval7');
+  if(el)el.innerHTML='<strong>p-value = '+pval.toFixed(6)+'</strong><br><span style="font-size:.85rem;color:var(--muted);">'+label+'</span>';
+
+  // draw
+  const c=document.getElementById('c7');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.offsetWidth||700;c.width=W;c.height=200;
+  const H=200,pad={l:36,r:12,t:18,b:32};
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  const probs=[];for(let k=0;k<=n;k++)probs.push(binomPMF(n,p,k));
+  const maxP=Math.max(...probs)*1.1||0.01;
+  const bw=Math.max(2,(W-pad.l-pad.r)/(n+1)-1.5);
+  const cx=k=>pad.l+(k+0.5)*(W-pad.l-pad.r)/(n+1);
+  const cy=v=>pad.t+(1-v/maxP)*(H-pad.t-pad.b);
+
+  probs.forEach((v,k)=>{
+    const inPval=(tail==='lower'&&k<=xo)||(tail==='upper'&&k>=xo)||(tail==='two'&&(k<=xo&&xo<=n/2||k>=xo&&xo>n/2));
+    const isObs=k===xo;
+    ctx.fillStyle=isObs?GOLD:(inPval?'#e87070':NAVY+'aa');
+    const x=cx(k)-bw/2,y=cy(v),h=(H-pad.b)-y;
+    if(h>0)ctx.fillRect(x,y,bw,h);
+    ctx.strokeStyle=isObs?'#b8860b':(inPval?RED:NAVY);ctx.lineWidth=1.5;
+    if(h>0)ctx.strokeRect(x,y,bw,h);
+  });
+
+  ctx.strokeStyle='#888';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  const step=Math.max(1,Math.floor(n/15));
+  for(let k=0;k<=n;k+=step)ctx.fillText(k,cx(k),H-pad.b+3);
+}
+
+// ─────────────────────────────────────────────
+// MODULE 8: TYPE I ERROR
+// ─────────────────────────────────────────────
+function upd8(){
+  const n=+document.getElementById('sl8n').value;
+  const p=+document.getElementById('sl8p').value/100;
+  const alpha=+document.getElementById('sel8a').value;
+  const tail=document.getElementById('sel8tail').value;
+  document.getElementById('sv8n').textContent=n;
+  document.getElementById('sv8p').textContent=p.toFixed(2);
+
+  let crL=-1,crU=n+1,actSig=0;
+  if(tail==='lower'||tail==='two'){const a2=tail==='two'?alpha/2:+alpha;for(let k=0;k<=n;k++){if(binomCDF(n,p,k)<=a2)crL=k;}}
+  if(tail==='upper'||tail==='two'){const a2=tail==='two'?alpha/2:+alpha;for(let k=n;k>=0;k--){if(binomUpperCDF(n,p,k)<=a2)crU=k;}}
+  if(tail==='lower')actSig=crL>=0?binomCDF(n,p,crL):0;
+  else if(tail==='upper')actSig=crU<=n?binomUpperCDF(n,p,crU):0;
+  else actSig=(crL>=0?binomCDF(n,p,crL):0)+(crU<=n?binomUpperCDF(n,p,crU):0);
+
+  let crStr='none';
+  if(tail==='lower'&&crL>=0)crStr='X ≤ '+crL;
+  else if(tail==='upper'&&crU<=n)crStr='X ≥ '+crU;
+  else if(tail==='two'){const parts=[];if(crL>=0)parts.push('X ≤ '+crL);if(crU<=n)parts.push('X ≥ '+crU);crStr=parts.join(' or ')||'none';}
+
+  const el=document.getElementById('stat8');
+  if(el)el.innerHTML='Critical region: <strong>'+crStr+'</strong> &emsp;|&emsp; Actual significance level (= P(Type I error)): <strong style="color:var(--red);">'+(actSig*100).toFixed(4)+'%</strong>&emsp; (nominal α = '+(+alpha*100)+'%)';
+}
+
+// ─────────────────────────────────────────────
+// MODULE 11: SUB-TABS & COIN CHART
+// ─────────────────────────────────────────────
+function stab11(btn,id){stab3(btn,id);}
+
+function drawCoinChart(){
+  const c=document.getElementById('c11coin');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.offsetWidth||700;c.width=W;const H=180;c.height=H;
+  const pad={l:50,r:20,t:18,b:40};
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  // P(k heads in k flips) = (1/2)^k
+  const maxK=12;
+  const vals=[];for(let k=1;k<=maxK;k++)vals.push(Math.pow(0.5,k));
+  const maxV=vals[0]*1.1;
+  const bw=(W-pad.l-pad.r)/(maxK+1)-2;
+  const cx=k=>pad.l+(k)*(W-pad.l-pad.r)/(maxK+1);
+  const cy=v=>pad.t+(1-v/maxV)*(H-pad.t-pad.b);
+
+  // draw 5% line
+  ctx.strokeStyle=RED;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(pad.l,cy(0.05));ctx.lineTo(W-pad.r,cy(0.05));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=RED;ctx.font='10px Arial';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('5% line',pad.l+4,cy(0.05)-8);
+
+  vals.forEach((v,i)=>{
+    const k=i+1;
+    const inCR=v<=0.05;
+    ctx.fillStyle=inCR?'#e87070':NAVY+'bb';
+    const x=cx(k)-bw/2,y=cy(v),h=(H-pad.b)-y;
+    if(h>0)ctx.fillRect(x,y,bw,h);
+    ctx.strokeStyle=inCR?RED:NAVY;ctx.lineWidth=1;
+    if(h>0)ctx.strokeRect(x,y,bw,h);
+  });
+
+  // axes
+  ctx.strokeStyle='#888';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+
+  // y-axis labels
+  ctx.fillStyle=MUT;ctx.font='9px Arial';ctx.textAlign='right';ctx.textBaseline='middle';
+  [0.5,0.25,0.10,0.05,0.01].forEach(v=>{
+    ctx.fillText((v*100).toFixed(0)+'%',pad.l-3,cy(v));
+    ctx.strokeStyle='#ddd';ctx.lineWidth=0.5;ctx.setLineDash([2,2]);
+    ctx.beginPath();ctx.moveTo(pad.l,cy(v));ctx.lineTo(W-pad.r,cy(v));ctx.stroke();ctx.setLineDash([]);
+  });
+
+  // x-axis labels
+  ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  for(let k=1;k<=maxK;k++)ctx.fillText(k,cx(k),H-pad.b+3);
+  ctx.fillText('Number of consecutive heads',W/2,H-12);
+
+  // title
+  ctx.fillStyle=NAVY;ctx.font='bold 11px Arial';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('P(k heads in k flips) = (½)ᵏ — red bars fall below 5%',pad.l,4);
+}
+
+// ─────────────────────────────────────────────
+// MODULE 12: PMCC TEST
+// ─────────────────────────────────────────────
+function stab12(btn,id){stab3(btn,id);}
+
+// Interpolated PMCC critical values [n, 10%, 5%, 2.5%, 1%, 0.5%]
+const PMCC_TABLE=[
+  [5,0.6870,0.8054,0.8783,0.9343,0.9587],
+  [6,0.6084,0.7293,0.8114,0.8822,0.9172],
+  [7,0.5509,0.6694,0.7545,0.8329,0.8745],
+  [8,0.5067,0.6215,0.7067,0.7887,0.8343],
+  [9,0.4716,0.5822,0.6664,0.7498,0.7977],
+  [10,0.4428,0.5494,0.6319,0.7155,0.7646],
+  [11,0.4187,0.5214,0.6021,0.6851,0.7348],
+  [12,0.3981,0.4973,0.5760,0.6581,0.7079],
+  [13,0.3802,0.4762,0.5529,0.6339,0.6835],
+  [14,0.3646,0.4575,0.5325,0.6120,0.6614],
+  [15,0.3507,0.4409,0.5140,0.5923,0.6411],
+  [16,0.3383,0.4259,0.4973,0.5742,0.6226],
+  [17,0.3271,0.4124,0.4821,0.5577,0.6055],
+  [18,0.3170,0.4000,0.4683,0.5425,0.5897],
+  [19,0.3077,0.3887,0.4555,0.5285,0.5751],
+  [20,0.2960,0.3783,0.4438,0.5155,0.5614],
+  [25,0.2573,0.3365,0.3961,0.4622,0.5052],
+  [30,0.2327,0.3061,0.3610,0.4226,0.4629],
+  [35,0.2143,0.2826,0.3338,0.3912,0.4296],
+  [40,0.1997,0.2638,0.3120,0.3665,0.4026],
+  [50,0.1777,0.2353,0.2787,0.3281,0.3610],
+  [100,0.1254,0.1663,0.1975,0.2327,0.2565],
+];
+
+function pmccCritical(n,alphaTail){
+  // alphaTail is one-tail probability: 0.10,0.05,0.025,0.01,0.005
+  const col={0.10:1,0.05:2,0.025:3,0.01:4,0.005:5};
+  const c=col[alphaTail]||2;
+  // find bracketing rows
+  let lo=PMCC_TABLE[0],hi=PMCC_TABLE[PMCC_TABLE.length-1];
+  for(let i=0;i<PMCC_TABLE.length;i++){
+    if(PMCC_TABLE[i][0]<=n)lo=PMCC_TABLE[i];
+    if(PMCC_TABLE[i][0]>=n){hi=PMCC_TABLE[i];break;}
+  }
+  if(lo[0]===hi[0])return lo[c];
+  // linear interpolation in n
+  const t=(n-lo[0])/(hi[0]-lo[0]);
+  return lo[c]+t*(hi[c]-lo[c]);
+}
+
+function runPMCC12(){
+  const r=+document.getElementById('i12r').value;
+  const n=+document.getElementById('i12n').value;
+  const alpha=+document.getElementById('i12a').value;
+  const tail=document.getElementById('i12tail').value;
+  if(n<5||isNaN(r)||r<-1||r>1){alert('Please check your inputs (n ≥ 5, -1 ≤ r ≤ 1).');return;}
+
+  const alphaTail=tail==='two'?alpha/2:alpha;
+  const cv=pmccCritical(n,alphaTail);
+  let reject=false;
+  if(tail==='upper')reject=r>cv;
+  else if(tail==='lower')reject=r<-cv;
+  else reject=Math.abs(r)>cv;
+
+  const tailDesc=tail==='upper'?'ρ > 0':tail==='lower'?'ρ < 0':'ρ ≠ 0';
+  const compareStr=tail==='two'?`|r| = ${Math.abs(r).toFixed(4)} ${reject?'>':'≤'} ${cv.toFixed(4)} (critical value at α/2 = ${(alphaTail*100).toFixed(1)}%)`
+    :tail==='upper'?`r = ${r.toFixed(4)} ${reject?'>':'≤'} ${cv.toFixed(4)}`
+    :`r = ${r.toFixed(4)} ${reject?'<':'>='} ${(-cv).toFixed(4)}`;
+
+  const html=`<div style="padding:.9rem 1.1rem;border-radius:8px;background:${reject?'#fdf0f0':'#e6f6f1'};border-left:4px solid ${reject?'#a32d2d':'#0f6e56'};font-family:Arial;font-size:.9rem;line-height:1.9;">
+    <div style="font-weight:700;font-size:1rem;color:${reject?'var(--red)':'var(--teal)'};margin-bottom:.4rem;">${reject?'Reject H₀':'Do not reject H₀'}</div>
+    <p><strong>H₀:</strong> ρ = 0 &emsp; <strong>H₁:</strong> ${tailDesc}</p>
+    <p>Sample PMCC r = ${r}, n = ${n}</p>
+    <p>Critical value (${(alphaTail*100).toFixed(1)}% one-tail, n = ${n}) ≈ ${cv.toFixed(4)}</p>
+    <p>${compareStr}</p>
+    <p style="margin-top:.4rem;">${reject
+      ?`There is sufficient evidence at the ${(+alpha*100)}% level that ${tailDesc}.`
+      :`There is insufficient evidence at the ${(+alpha*100)}% level to conclude ${tailDesc}.`}</p>
+  </div>`;
+
+  const res=document.getElementById('res12');
+  res.innerHTML=html;res.style.display='block';
+}
+
+// ─────────────────────────────────────────────
+// MODULE 13: NORMAL MEAN TEST
+// ─────────────────────────────────────────────
+function stab13(btn,id){stab3(btn,id);}
+
+// Standard normal CDF (rational approximation)
+function normCDF(z){
+  const t=1/(1+0.2316419*Math.abs(z));
+  const d=0.3989422818*Math.exp(-z*z/2);
+  const p=d*t*(0.319381530+t*(-0.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
+  return z>=0?1-p:p;
+}
+function normPDF(z){return Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);}
+
+function runNormal13(){
+  const mu0=+document.getElementById('i13mu').value;
+  const sig=+document.getElementById('i13sig').value;
+  const n=+document.getElementById('i13n').value;
+  const xbar=+document.getElementById('i13xbar').value;
+  const alpha=+document.getElementById('i13a').value;
+  const tail=document.getElementById('i13tail').value;
+  if(sig<=0||n<1){alert('Please check inputs.');return;}
+
+  const se=sig/Math.sqrt(n);
+  const z=(xbar-mu0)/se;
+  let pval;
+  if(tail==='lower')pval=normCDF(z);
+  else if(tail==='upper')pval=1-normCDF(z);
+  else pval=2*Math.min(normCDF(z),1-normCDF(z));
+
+  const threshold=tail==='two'?alpha/2:alpha;
+  const reject=pval<=threshold;
+  const tailDesc=tail==='lower'?'μ < '+mu0:tail==='upper'?'μ > '+mu0:'μ ≠ '+mu0;
+
+  const html=`<div style="padding:.9rem 1.1rem;border-radius:8px;background:${reject?'#fdf0f0':'#e6f6f1'};border-left:4px solid ${reject?'#a32d2d':'#0f6e56'};font-family:Arial;font-size:.9rem;line-height:1.9;margin-bottom:.8rem;">
+    <div style="font-weight:700;font-size:1rem;color:${reject?'var(--red)':'var(--teal)'};margin-bottom:.4rem;">${reject?'Reject H₀':'Do not reject H₀'}</div>
+    <p><strong>H₀:</strong> μ = ${mu0} &emsp; <strong>H₁:</strong> ${tailDesc}</p>
+    <p>Under H₀: X̄ ~ N(${mu0}, ${(sig*sig/n).toFixed(4)}) &ensp; [std error = ${se.toFixed(4)}]</p>
+    <p>Observed x̄ = ${xbar} &ensp;→&ensp; Z = (${xbar} − ${mu0}) / ${se.toFixed(4)} = ${z.toFixed(4)}</p>
+    <p>p-value = ${tail==='two'?'2 × min(...)':''}${pval.toFixed(6)}${tail==='two'?' (compare with α/2 = '+(alpha/2)+')':' (compare with α = '+alpha+')'}</p>
+    <p>${pval.toFixed(6)} ${reject?'≤':'>'} ${threshold} &ensp;→&ensp; ${reject?'reject':'do not reject'} H₀</p>
+    <p style="margin-top:.4rem;">${reject
+      ?`There is significant evidence at the ${(+alpha*100)}% level that ${tailDesc}.`
+      :`There is insufficient evidence at the ${(+alpha*100)}% level to conclude that ${tailDesc}.`}</p>
+  </div>`;
+
+  const res=document.getElementById('res13');res.innerHTML=html;res.style.display='block';
+
+  // draw Normal curve
+  const wrap=document.getElementById('c13wrap');wrap.style.display='block';
+  const c=document.getElementById('c13');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.offsetWidth||700;c.width=W;c.height=200;
+  const H=200,pad={l:30,r:20,t:20,b:30};
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+
+  const zMin=-3.8,zMax=3.8;
+  const tx=z=>pad.l+(z-zMin)/(zMax-zMin)*(W-pad.l-pad.r);
+  const maxPDF=normPDF(0)*1.1;
+  const ty=v=>pad.t+(1-v/maxPDF)*(H-pad.t-pad.b);
+
+  // shade tail(s)
+  const shadeFn=(zFrom,zTo,col)=>{
+    ctx.fillStyle=col;ctx.beginPath();
+    ctx.moveTo(tx(zFrom),ty(0));
+    for(let i=0;i<=200;i++){const zz=zFrom+(zTo-zFrom)*i/200;ctx.lineTo(tx(zz),ty(normPDF(zz)));}
+    ctx.lineTo(tx(zTo),ty(0));ctx.closePath();ctx.fill();
+  };
+  const zObs=z;
+  if(tail==='lower')shadeFn(Math.max(zMin,zObs-0.001),Math.max(zMin,zObs+0.001)<zObs?zMin:Math.min(zObs,zMax),'rgba(168,45,45,0.25)');
+  if(tail==='lower')shadeFn(zMin,Math.min(zObs,zMax),'rgba(168,45,45,0.25)');
+  if(tail==='upper')shadeFn(Math.max(zMin,zObs),zMax,'rgba(168,45,45,0.25)');
+  if(tail==='two'){shadeFn(zMin,Math.min(-Math.abs(zObs),zMax),'rgba(168,45,45,0.25)');shadeFn(Math.max(Math.abs(zObs),zMin),zMax,'rgba(168,45,45,0.25)');}
+
+  // Normal curve
+  ctx.strokeStyle=NAVY;ctx.lineWidth=2.5;ctx.beginPath();
+  for(let i=0;i<=400;i++){const zz=zMin+(zMax-zMin)*i/400;const x=tx(zz),y=ty(normPDF(zz));i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+  ctx.stroke();
+
+  // z_obs line
+  ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(tx(zObs),pad.t);ctx.lineTo(tx(zObs),H-pad.b);ctx.stroke();ctx.setLineDash([]);
+
+  // axes
+  ctx.strokeStyle='#888';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+
+  // z labels
+  ctx.fillStyle=MUT;ctx.font='10px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  [-3,-2,-1,0,1,2,3].forEach(zz=>ctx.fillText(zz,tx(zz),H-pad.b+3));
+  ctx.fillText('Z',tx(zObs),H-pad.b+3);
+
+  // p-value label
+  ctx.fillStyle=RED;ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.fillText('p = '+pval.toFixed(4),tx(Math.max(zMin+0.5,Math.min(zObs,zMax-0.5))),pad.t+2);
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  inited[0]=true;
+  drawCoinChart();
+  // Keyboard nav
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
+    const pos=MOD_ORDER.indexOf(cur);
+    if(e.key==='ArrowRight'&&pos<MOD_ORDER.length-1)go(MOD_ORDER[pos+1]);
+    else if(e.key==='ArrowLeft'&&pos>0)go(MOD_ORDER[pos-1]);
+  });
+  window.addEventListener('resize',()=>{
+    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
+    initMod(cur);
+  });
+});
+</script>
+</body>
+</html>
