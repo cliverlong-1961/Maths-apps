@@ -173,32 +173,32 @@ canvas{display:block;width:100%;}
 <div class="progress-row">
   <span class="prog-label">Progress:</span>
   <div class="pdot visited" id="pd0" data-label="1 Introduction" onclick="go(0)"></div>
-  <div class="pdot" id="pd1" data-label="2 The Language" onclick="go(1)"></div>
-  <div class="pdot" id="pd2" data-label="3 Significance Levels" onclick="go(2)"></div>
-  <div class="pdot" id="pd3" data-label="4 One-tailed Tests" onclick="go(3)"></div>
-  <div class="pdot" id="pd4" data-label="5 Two-tailed Tests" onclick="go(4)"></div>
-  <div class="pdot" id="pd5" data-label="6 Critical Regions" onclick="go(5)"></div>
-  <div class="pdot" id="pd6" data-label="7 Interactive Test" onclick="go(6)"></div>
-  <div class="pdot" id="pd7" data-label="8 p-values" onclick="go(7)"></div>
-  <div class="pdot" id="pd8" data-label="9 Type I &amp; II Errors" onclick="go(8)"></div>
-  <div class="pdot" id="pd9" data-label="10 Worked Examples" onclick="go(9)"></div>
-  <div class="pdot" id="pd11" data-label="11 Why Hypothesis Tests?" onclick="go(11)"></div>
+  <div class="pdot" id="pd11" data-label="2 Motivation" onclick="go(11)"></div>
+  <div class="pdot" id="pd1" data-label="3 The Language" onclick="go(1)"></div>
+  <div class="pdot" id="pd2" data-label="4 Significance Levels" onclick="go(2)"></div>
+  <div class="pdot" id="pd3" data-label="5 One-tailed Tests" onclick="go(3)"></div>
+  <div class="pdot" id="pd4" data-label="6 Two-tailed Tests" onclick="go(4)"></div>
+  <div class="pdot" id="pd5" data-label="7 Critical Regions" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="8 Interactive Test" onclick="go(6)"></div>
+  <div class="pdot" id="pd7" data-label="9 p-values" onclick="go(7)"></div>
+  <div class="pdot" id="pd8" data-label="10 Type I &amp; II Errors" onclick="go(8)"></div>
+  <div class="pdot" id="pd9" data-label="11 Worked Examples" onclick="go(9)"></div>
   <div class="pdot" id="pd12" data-label="12 Correlation Test (PMCC)" onclick="go(12)"></div>
   <div class="pdot" id="pd13" data-label="13 Normal Distribution Test" onclick="go(13)"></div>
   <div class="pdot" id="pd10" data-label="Summary" onclick="go(10)"></div>
 </div>
 <nav id="nav">
   <button class="nb on" data-m="0" onclick="go(0)">1&hairsp;Intro</button>
-  <button class="nb" data-m="1" onclick="go(1)">2&hairsp;Language</button>
-  <button class="nb" data-m="2" onclick="go(2)">3&hairsp;Significance</button>
-  <button class="nb" data-m="3" onclick="go(3)">4&hairsp;One-tailed</button>
-  <button class="nb" data-m="4" onclick="go(4)">5&hairsp;Two-tailed</button>
-  <button class="nb" data-m="5" onclick="go(5)">6&hairsp;Critical&nbsp;Regions</button>
-  <button class="nb" data-m="6" onclick="go(6)">7&hairsp;Interactive</button>
-  <button class="nb" data-m="7" onclick="go(7)">8&hairsp;p-values</button>
-  <button class="nb" data-m="8" onclick="go(8)">9&hairsp;Errors</button>
-  <button class="nb" data-m="9" onclick="go(9)">10&hairsp;Examples</button>
-  <button class="nb" data-m="11" onclick="go(11)">11&hairsp;Motivation</button>
+  <button class="nb" data-m="11" onclick="go(11)">2&hairsp;Motivation</button>
+  <button class="nb" data-m="1" onclick="go(1)">3&hairsp;Language</button>
+  <button class="nb" data-m="2" onclick="go(2)">4&hairsp;Significance</button>
+  <button class="nb" data-m="3" onclick="go(3)">5&hairsp;One-tailed</button>
+  <button class="nb" data-m="4" onclick="go(4)">6&hairsp;Two-tailed</button>
+  <button class="nb" data-m="5" onclick="go(5)">7&hairsp;Critical&nbsp;Regions</button>
+  <button class="nb" data-m="6" onclick="go(6)">8&hairsp;Interactive</button>
+  <button class="nb" data-m="7" onclick="go(7)">9&hairsp;p-values</button>
+  <button class="nb" data-m="8" onclick="go(8)">10&hairsp;Errors</button>
+  <button class="nb" data-m="9" onclick="go(9)">11&hairsp;Examples</button>
   <button class="nb" data-m="12" onclick="go(12)">12&hairsp;PMCC&nbsp;Test</button>
   <button class="nb" data-m="13" onclick="go(13)">13&hairsp;Normal&nbsp;Mean</button>
   <button class="nb" data-m="10" onclick="go(10)">&#9654;&hairsp;Summary</button>
@@ -241,6 +241,219 @@ canvas{display:block;width:100%;}
     <p>A claim is made about a population parameter — for example, that the mean mass of products is 350 g or that for an item selected at random from a population the probability the selected item is faulty is 0.02 — and we wish to test whether the available evidence supports that claim.</p>
   </div>
 </div>
+
+<!-- ── SITUATION EXAMPLES ── -->
+<div class="two-col" style="margin-bottom:1.2rem;">
+
+  <!-- Situation 1 example -->
+  <div>
+    <button class="btn btn-outline" style="width:100%;margin-bottom:.5rem;font-size:.8rem;" onclick="(function(b){var p=b.closest('div').querySelector('.sit-panel');var open=p.style.display==='block';p.style.display=open?'none':'block';b.textContent=open?'Show example':'Hide example';})(this)">Show example</button>
+    <div class="sit-panel" style="display:none;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1rem;">
+      <p style="font-family:Arial;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;">Microprocessor defect rate — before &amp; after process change</p>
+      <div style="display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;">
+        <!-- Before grid -->
+        <div style="text-align:center;">
+          <div style="font-family:Arial;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;letter-spacing:.05em;">BEFORE</div>
+          <svg id="sit1before" viewBox="0 0 176 176" width="176" height="176" xmlns="http://www.w3.org/2000/svg" style="display:block;"></svg>
+          <div style="font-family:Arial;font-size:.75rem;color:var(--muted);margin-top:.3rem;">6 / 64 faulty <span style="color:var(--red);">■</span></div>
+        </div>
+        <!-- After grid -->
+        <div style="text-align:center;">
+          <div style="font-family:Arial;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;letter-spacing:.05em;">AFTER</div>
+          <svg id="sit1after" viewBox="0 0 176 176" width="176" height="176" xmlns="http://www.w3.org/2000/svg" style="display:block;"></svg>
+          <div style="font-family:Arial;font-size:.75rem;color:var(--muted);margin-top:.3rem;">3 / 64 faulty <span style="color:var(--red);">■</span></div>
+        </div>
+      </div>
+      <p style="font-family:Arial;font-size:.82rem;color:var(--muted);margin-top:.7rem;line-height:1.55;">Has the process change genuinely reduced the fault rate, or is the improvement just due to chance variation in the sample?</p>
+    </div>
+  </div>
+
+  <!-- Situation 2 example -->
+  <div>
+    <button class="btn btn-outline" style="width:100%;margin-bottom:.5rem;font-size:.8rem;" onclick="(function(b){var p=b.closest('div').querySelector('.sit-panel');var open=p.style.display==='block';p.style.display=open?'none':'block';b.textContent=open?'Show example':'Hide example';})(this)">Show example</button>
+    <div class="sit-panel" style="display:none;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:1rem;">
+      <p style="font-family:Arial;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">P(Red) = 0.4?</p>
+      <!-- Jar -->
+      <div style="text-align:center;margin-bottom:.7rem;">
+        <svg id="sit2jar" viewBox="0 0 120 155" width="120" height="155" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;"></svg>
+      </div>
+      <!-- Sample rows label -->
+      <p style="font-family:Arial;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.3rem;text-align:center;letter-spacing:.05em;">SAMPLE — 4 draws of 10</p>
+      <!-- 4 rows of 10 circles -->
+      <div style="display:flex;flex-direction:column;gap:5px;align-items:center;" id="sit2rows"></div>
+      <p style="font-family:Arial;font-size:.82rem;color:var(--muted);margin-top:.7rem;line-height:1.55;">Claim: 40% of balls are red. Our samples show fewer reds — is this enough evidence to reject the claim?</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // ── Situation 1: chip grids ──────────────────────────────────────
+  function chipIcon(x,y,col){
+    // Simple IC outline: square body + 4 pins each side
+    var g='';
+    var b=col==='red'?'#a32d2d':'#3a5a8a';
+    var f=col==='red'?'#e87070':'#5b82b8';
+    // body
+    g+='<rect x="'+(x+5)+'" y="'+(y+5)+'" width="12" height="12" rx="1.5" fill="'+f+'" stroke="'+b+'" stroke-width="1"/>';
+    // pins left
+    [7,10,13].forEach(function(py){g+='<rect x="'+x+'" y="'+(y+py-1)+'" width="5" height="2" rx=".5" fill="'+b+'"/>';});
+    // pins right
+    [7,10,13].forEach(function(py){g+='<rect x="'+(x+17)+'" y="'+(y+py-1)+'" width="5" height="2" rx=".5" fill="'+b+'"/>';});
+    // pins top
+    [8,11,14].forEach(function(px){g+='<rect x="'+(x+px-1)+'" y="'+y+'" width="2" height="5" rx=".5" fill="'+b+'"/>';});
+    // centre dot
+    g+='<circle cx="'+(x+11)+'" cy="'+(y+11)+'" r="1.5" fill="'+b+'" opacity=".7"/>';
+    return g;
+  }
+
+  function drawChipGrid(svgId, redPositions){
+    var svg=document.getElementById(svgId);
+    if(!svg)return;
+    var html='';
+    for(var r=0;r<8;r++){
+      for(var c=0;c<8;c++){
+        var idx=r*8+c;
+        var col=redPositions.indexOf(idx)>=0?'red':'grey';
+        html+=chipIcon(c*22, r*22, col);
+      }
+    }
+    svg.innerHTML=html;
+  }
+
+  // Fixed positions for red chips — spread around the grid
+  var beforeRed=[3,11,22,35,44,57];          // 6 red
+  var afterRed=[18,39,52];                    // 3 red
+
+  // Draw on reveal (use MutationObserver so SVGs render when panel opens)
+  var sit1drawn=false;
+  function drawSit1(){if(sit1drawn)return;sit1drawn=true;drawChipGrid('sit1before',beforeRed);drawChipGrid('sit1after',afterRed);}
+
+  // ── Situation 2: jar + sample rows ──────────────────────────────
+  function drawJar(){
+    var svg=document.getElementById('sit2jar');
+    if(!svg)return;
+
+    // Jar geometry (viewBox is "0 0 120 150")
+    // Body: x=10, y=35, width=100, height=105, rx=8  → interior x: 10–110, y: 35–140
+    // Neck: x=28, y=22, width=64, height=16
+    // Lid:  x=22, y=13, width=76, height=12
+    // Ball radius = 7  → balls must have cx in [17..103], cy in [42..133]
+
+    var jx=10, jy=35, jw=100, jh=105, jr=8;
+    // safe interior for ball centres (body only, inset by r=7 + stroke)
+    var r=7;
+    var minX=jx+r+2, maxX=jx+jw-r-2;   // 19 .. 101
+    var minY=jy+r+2, maxY=jy+jh-r-2;   // 44 .. 131
+
+    // 31 balls: 18 grey (~58%), 13 red (~42%)
+    // Arranged in a natural 5-column, 7-row staggered grid within safe bounds
+    var cols=5, rows=7;
+    var xStep=(maxX-minX)/(cols-1);  // ~20.5
+    var yStep=(maxY-minY)/(rows-1);  // ~14.5
+    // colour sequence: G=grey, R=red — 18G 13R
+    var colours='GGGRGGGRGGRGGRGGGRGGRGRGGGRGRGG'.split('').slice(0,31);
+    // 18G 13R = indices with R: 3,7,10,13,16,19,21,24,27,29  → adjust to exactly 13R
+    colours='GGGRGGGRGGRGGRGGGRGGRGRGGGRGRGG'.split('').slice(0,31);
+    // Count: let's be explicit
+    var seq=[];
+    var gLeft=18,rLeft=13;
+    for(var i=0;i<31;i++){
+      // alternate loosely to spread reds
+      if(rLeft>0&&(i%3===0||gLeft===0)){seq.push('r');rLeft--;}
+      else{seq.push('g');gLeft--;}
+    }
+
+    var ballData=[];
+    var idx=0;
+    for(var row=0;row<rows&&idx<31;row++){
+      var stagger=(row%2===0)?0:xStep/2;
+      var colsThisRow=(row%2===0)?cols:cols-1;
+      for(var col=0;col<colsThisRow&&idx<31;col++){
+        var cx=minX+stagger+col*xStep;
+        var cy=minY+row*yStep;
+        // small nudge for natural look
+        cx+=((idx*7)%5)-2;
+        cy+=((idx*5)%5)-2;
+        // clamp strictly inside safe bounds
+        cx=Math.max(minX,Math.min(maxX,cx));
+        cy=Math.max(minY,Math.min(maxY,cy));
+        ballData.push([cx,cy,seq[idx]]);
+        idx++;
+      }
+    }
+
+    var html='';
+    // clipPath for jar interior so balls can never bleed outside
+    html+='<defs>';
+    html+='<clipPath id="jarClip">';
+    html+='<rect x="'+jx+'" y="'+jy+'" width="'+jw+'" height="'+jh+'" rx="'+jr+'" ry="'+jr+'"/>';
+    html+='</clipPath>';
+    html+='</defs>';
+
+    // jar body fill (behind balls)
+    html+='<rect x="'+jx+'" y="'+jy+'" width="'+jw+'" height="'+jh+'" rx="'+jr+'" ry="'+jr+'" fill="rgba(210,228,255,0.22)" stroke="#8aabcc" stroke-width="2"/>';
+
+    // balls inside clip
+    html+='<g clip-path="url(#jarClip)">';
+    ballData.forEach(function(b){
+      var fc=b[2]==='r'?'#e87070':'#8aabcc';
+      var sc=b[2]==='r'?'#a32d2d':'#3a5a8a';
+      html+='<circle cx="'+b[0].toFixed(1)+'" cy="'+b[1].toFixed(1)+'" r="'+r+'" fill="'+fc+'" stroke="'+sc+'" stroke-width="1" opacity=".92"/>';
+    });
+    html+='</g>';
+
+    // jar body stroke on top (so border draws over ball edges)
+    html+='<rect x="'+jx+'" y="'+jy+'" width="'+jw+'" height="'+jh+'" rx="'+jr+'" ry="'+jr+'" fill="none" stroke="#8aabcc" stroke-width="2"/>';
+    // glass sheen highlight
+    html+='<rect x="'+(jx+6)+'" y="'+(jy+8)+'" width="8" height="'+(jh-16)+'" rx="4" fill="rgba(255,255,255,0.28)"/>';
+
+    // neck
+    html+='<rect x="28" y="22" width="64" height="16" rx="4" fill="rgba(210,228,255,0.3)" stroke="#8aabcc" stroke-width="1.5"/>';
+    // lid
+    html+='<rect x="22" y="12" width="76" height="13" rx="4" fill="#3a5a8a" opacity=".75"/>';
+    html+='<rect x="26" y="14" width="68" height="5" rx="2" fill="rgba(255,255,255,0.18)"/>';
+
+    svg.innerHTML=html;
+  }
+
+  function drawSampleRows(){
+    var cont=document.getElementById('sit2rows');
+    if(!cont)return;
+    // Each row: [greyCount, redCount] — total 10
+    var rows=[[7,3],[8,2],[7,3],[8,2]];
+    var html='';
+    rows.forEach(function(row,ri){
+      html+='<div style="display:flex;gap:4px;align-items:center;">';
+      // grey circles
+      for(var g=0;g<row[0];g++){
+        html+='<svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.5" fill="#8aabcc" stroke="#3a5a8a" stroke-width="1.2"/></svg>';
+      }
+      // red circles
+      for(var r=0;r<row[1];r++){
+        html+='<svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.5" fill="#e87070" stroke="#a32d2d" stroke-width="1.2"/></svg>';
+      }
+      html+='<span style="font-family:Arial;font-size:.72rem;color:var(--muted);margin-left:3px;">'+row[1]+'/10 red</span>';
+      html+='</div>';
+    });
+    cont.innerHTML=html;
+  }
+
+  var sit2drawn=false;
+  function drawSit2(){if(sit2drawn)return;sit2drawn=true;drawJar();drawSampleRows();}
+
+  // Watch for panel visibility changes
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('button');
+    if(!btn)return;
+    setTimeout(function(){
+      if(document.getElementById('sit1before')&&document.getElementById('sit1before').closest('.sit-panel').style.display==='block') drawSit1();
+      if(document.getElementById('sit2jar')&&document.getElementById('sit2jar').closest('.sit-panel').style.display==='block') drawSit2();
+    },20);
+  });
+})();
+</script>
 
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">In both situations we take a sample and calculate one or more statistics from the sample data.</p>
 
@@ -309,7 +522,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 1: THE LANGUAGE ═══ -->
 <section class="module" id="mod1">
-<div class="mhdr"><div class="mtag">Module 2</div><h2>The Language of Hypothesis Testing</h2></div>
+<div class="mhdr"><div class="mtag">Module 3</div><h2>The Language of Hypothesis Testing</h2></div>
 
 <div class="concept">
   Hypothesis testing has its own precise vocabulary. Getting the language right is essential — especially in exam answers, where every word in the conclusion carries marks.
@@ -320,8 +533,8 @@ canvas{display:block;width:100%;}
   <tr><td><strong>Null hypothesis \(H_0\)</strong></td><td>The default assumption about the population parameter. Always states an exact value, e.g. \(p = 0.3\).</td></tr>
   <tr><td><strong>Alternative hypothesis \(H_1\)</strong></td><td>What we conclude if \(H_0\) is rejected. States the direction of change (or simply that a change has occurred). Determines whether the test is one- or two-tailed.</td></tr>
   <tr><td><strong>Test statistic</strong></td><td>A numerical value calculated from the sample data that is used to decide between \(H_0\) and \(H_1\). Its probability distribution under \(H_0\) must be known. Examples: the count of successes \(X\) in a binomial test; the sample mean \(\bar{X}\) in a Normal mean test; the sample PMCC \(r\) in a correlation test.</td></tr>
-  <tr><td><strong>Significance level \(\alpha\)</strong></td><td>The threshold probability chosen <em>before</em> the test. If the p-value falls below \(\alpha\), the result is declared significant and \(H_0\) is rejected. Common choices are 5% and 1%.</td></tr>
   <tr><td><strong>p-value</strong></td><td>The probability, calculated assuming \(H_0\) is true, of obtaining a test statistic at least as extreme as the one observed. A small p-value means the observed result would be unlikely if \(H_0\) were true.</td></tr>
+  <tr><td><strong>Significance level \(\alpha\)</strong></td><td>The threshold probability chosen <em>before</em> the test. If the p-value falls below \(\alpha\), the result is declared significant and \(H_0\) is rejected. Common choices are 5% and 1%.</td></tr>
   <tr><td><strong>Critical region</strong></td><td>The set of values of the test statistic for which \(H_0\) is rejected — i.e. the values so extreme that they fall below the significance level.</td></tr>
   <tr><td><strong>Critical value</strong></td><td>The boundary of the critical region. The test statistic must be at least as extreme as the critical value in order to reject \(H_0\).</td></tr>
   <tr><td><strong>Reject \(H_0\)</strong></td><td>The p-value is less than \(\alpha\): the observed result is sufficiently unlikely under \(H_0\) that we conclude \(H_1\) is supported. We say the result is <em>statistically significant</em> at level \(\alpha\).</td></tr>
@@ -376,7 +589,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 2: SIGNIFICANCE LEVELS ═══ -->
 <section class="module" id="mod2">
-<div class="mhdr"><div class="mtag">Module 3</div><h2>Significance Levels</h2></div>
+<div class="mhdr"><div class="mtag">Module 4</div><h2>Significance Levels</h2></div>
 
 <div class="concept">
   The significance level \(\alpha\) is the probability of rejecting \(H_0\) when it is actually true — i.e. the probability of a false alarm. Choosing \(\alpha\) is a judgement about how much risk of a false alarm is acceptable.
@@ -422,9 +635,9 @@ canvas{display:block;width:100%;}
   </select>
   &nbsp;
   <select id="sel2tail" onchange="upd2()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
-    <option value="lower">Lower tail (\(H_1: p < p_0\))</option>
-    <option value="upper">Upper tail (\(H_1: p > p_0\))</option>
-    <option value="two">Two-tailed (\(H_1: p \neq p_0\))</option>
+    <option value="lower">Lower tail (H₁: p &lt; p₀)</option>
+    <option value="upper">Upper tail (H₁: p &gt; p₀)</option>
+    <option value="two">Two-tailed (H₁: p ≠ p₀)</option>
   </select>
 </div>
 <div class="cbox"><canvas id="c2" height="220"></canvas></div>
@@ -441,7 +654,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 3: ONE-TAILED TESTS ═══ -->
 <section class="module" id="mod3">
-<div class="mhdr"><div class="mtag">Module 4</div><h2>One-Tailed Tests</h2></div>
+<div class="mhdr"><div class="mtag">Module 5</div><h2>One-Tailed Tests</h2></div>
 
 <div class="concept">
   A one-tailed test is used when, <em>before seeing the data</em>, we have a specific directional suspicion — either that \(p\) has decreased, or that it has increased.
@@ -497,7 +710,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 4: TWO-TAILED TESTS ═══ -->
 <section class="module" id="mod4">
-<div class="mhdr"><div class="mtag">Module 5</div><h2>Two-Tailed Tests</h2></div>
+<div class="mhdr"><div class="mtag">Module 6</div><h2>Two-Tailed Tests</h2></div>
 
 <div class="concept">
   A two-tailed test is used when we simply want to know whether \(p\) has changed from \(p_0\), without a prior reason to expect a particular direction.
@@ -543,7 +756,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 5: CRITICAL REGIONS ═══ -->
 <section class="module" id="mod5">
-<div class="mhdr"><div class="mtag">Module 6</div><h2>Critical Regions</h2></div>
+<div class="mhdr"><div class="mtag">Module 7</div><h2>Critical Regions</h2></div>
 
 <div class="concept">
   The critical region (or rejection region) is the set of values of the test statistic that lead to rejecting \(H_0\). Identifying the critical region in advance is an alternative — and often more efficient — approach to hypothesis testing.
@@ -603,7 +816,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 6: INTERACTIVE TEST ═══ -->
 <section class="module" id="mod6">
-<div class="mhdr"><div class="mtag">Module 7</div><h2>Interactive Hypothesis Test</h2></div>
+<div class="mhdr"><div class="mtag">Module 8</div><h2>Interactive Hypothesis Test</h2></div>
 
 <div class="concept">
   Use this tool to carry out a complete binomial hypothesis test. Set up your hypotheses, enter the data, and the tool will walk through each step.
@@ -621,9 +834,9 @@ canvas{display:block;width:100%;}
   </div>
   <div class="inp-row"><label>Alternative \(H_1\)</label>
     <select id="i6h" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
-      <option value="lower">\(p &lt; p_0\)</option>
-      <option value="upper">\(p &gt; p_0\)</option>
-      <option value="two">\(p \neq p_0\)</option>
+      <option value="lower">p &lt; p₀  (lower-tailed)</option>
+      <option value="upper">p &gt; p₀  (upper-tailed)</option>
+      <option value="two">p ≠ p₀  (two-tailed)</option>
     </select>
   </div>
   <div style="margin-top:.8rem;">
@@ -641,7 +854,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 7: p-VALUES ═══ -->
 <section class="module" id="mod7">
-<div class="mhdr"><div class="mtag">Module 8</div><h2>p-values</h2></div>
+<div class="mhdr"><div class="mtag">Module 9</div><h2>p-values</h2></div>
 
 <div class="concept">
   The p-value is the probability, computed under \(H_0\), of observing a result at least as extreme as the one obtained. It measures how surprised we should be by the data if \(H_0\) were true.
@@ -693,7 +906,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 8: TYPE I & II ERRORS ═══ -->
 <section class="module" id="mod8">
-<div class="mhdr"><div class="mtag">Module 9</div><h2>Type I and Type II Errors</h2></div>
+<div class="mhdr"><div class="mtag">Module 10</div><h2>Type I and Type II Errors</h2></div>
 
 <div class="concept">
   In any hypothesis test there are two ways to make an error. Understanding these is essential for interpreting results and designing studies.
@@ -750,7 +963,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 9: WORKED EXAMPLES ═══ -->
 <section class="module" id="mod9">
-<div class="mhdr"><div class="mtag">Module 10</div><h2>Worked Examples</h2></div>
+<div class="mhdr"><div class="mtag">Module 11</div><h2>Worked Examples</h2></div>
 
 <div class="stabs">
   <button class="stab on" onclick="stab9(this,'s9a')">Example 1</button>
@@ -852,7 +1065,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 11: MOTIVATION / WHY HYPOTHESIS TESTS ═══ -->
 <section class="module" id="mod11">
-<div class="mhdr"><div class="mtag">Module 11</div><h2>Why do we need Hypothesis Tests?</h2></div>
+<div class="mhdr"><div class="mtag">Module 2</div><h2>Why do we need Hypothesis Tests?</h2></div>
 
 <div class="concept">
   Before diving into formal procedures it helps to understand <em>why</em> hypothesis testing exists — what real problem it solves, and how it connects populations to samples.
@@ -1036,9 +1249,9 @@ canvas{display:block;width:100%;}
   </div>
   <div class="inp-row"><label>Test type</label>
     <select id="i12tail" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
-      <option value="upper">One-tailed (\(H_1: \rho > 0\))</option>
-      <option value="lower">One-tailed (\(H_1: \rho &lt; 0\))</option>
-      <option value="two">Two-tailed (\(H_1: \rho \neq 0\))</option>
+      <option value="upper">One-tailed (H₁: ρ &gt; 0)</option>
+      <option value="lower">One-tailed (H₁: ρ &lt; 0)</option>
+      <option value="two">Two-tailed (H₁: ρ ≠ 0)</option>
     </select>
   </div>
   <div style="margin-top:.8rem;"><button class="btn btn-gold" onclick="runPMCC12()">Check ▶</button></div>
@@ -1156,9 +1369,9 @@ canvas{display:block;width:100%;}
   </div>
   <div class="inp-row"><label>Test type</label>
     <select id="i13tail" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
-      <option value="lower">\(H_1: \mu &lt; \mu_0\)</option>
-      <option value="upper">\(H_1: \mu &gt; \mu_0\)</option>
-      <option value="two">\(H_1: \mu \neq \mu_0\)</option>
+      <option value="lower">H₁: μ &lt; μ₀</option>
+      <option value="upper">H₁: μ &gt; μ₀</option>
+      <option value="two">H₁: μ ≠ μ₀</option>
     </select>
   </div>
   <div style="margin-top:.8rem;"><button class="btn btn-gold" onclick="runNormal13()">Run test ▶</button></div>
@@ -1259,7 +1472,7 @@ const NAVY='#1a3a6b',GOLD='#c9a227',TEAL='#0f6e56',RED='#a32d2d',MUT='#5a6280',B
 // NAV / MODULE SWITCHING
 // ─────────────────────────────────────────────
 // Module order for sequential navigation (non-contiguous IDs due to inserts)
-const MOD_ORDER=[0,1,2,3,4,5,6,7,8,9,11,12,13,10];
+const MOD_ORDER=[0,11,1,2,3,4,5,6,7,8,9,12,13,10];
 const visited=new Set([0]);
 const inited={};
 
@@ -1267,11 +1480,20 @@ function go(m){
   document.querySelectorAll('.module').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('mod'+m).classList.add('on');
-  document.querySelector('.nb[data-m="'+m+'"]').classList.add('on');
+  const activeBtn=document.querySelector('.nb[data-m="'+m+'"]');
+  activeBtn.classList.add('on');
   visited.add(m);
   document.querySelectorAll('.pdot').forEach(d=>d.classList.remove('visited'));
   visited.forEach(v=>{const d=document.getElementById('pd'+v);if(d)d.classList.add('visited');});
   if(!inited[m]){initMod(m);inited[m]=true;}
+  // Scroll active tab to near centre of nav bar
+  const nav=document.getElementById('nav');
+  if(nav&&activeBtn){
+    const navW=nav.offsetWidth;
+    const btnL=activeBtn.offsetLeft;
+    const btnW=activeBtn.offsetWidth;
+    nav.scrollLeft=btnL-(navW/2)+(btnW/2);
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1286,7 +1508,7 @@ function initMod(m){
 // ─────────────────────────────────────────────
 // BOTTOM NAV
 // ─────────────────────────────────────────────
-const MOD_NAMES={0:'Introduction',1:'The Language',2:'Significance Levels',3:'One-Tailed Tests',4:'Two-Tailed Tests',5:'Critical Regions',6:'Interactive Test',7:'p-values',8:'Type I & II Errors',9:'Worked Examples',11:'Motivation',12:'PMCC Test',13:'Normal Mean Test',10:'Summary'};
+const MOD_NAMES={0:'Introduction',11:'Motivation',1:'The Language',2:'Significance Levels',3:'One-Tailed Tests',4:'Two-Tailed Tests',5:'Critical Regions',6:'Interactive Test',7:'p-values',8:'Type I & II Errors',9:'Worked Examples',12:'PMCC Test',13:'Normal Mean Test',10:'Summary'};
 function injectBottomNav(m){
   const el=document.getElementById('bnav'+m);
   if(!el)return;
