@@ -1,21 +1,88 @@
 import { useState, useEffect } from 'react';
 import { RefreshCw } from 'lucide-react';
 
+// Greatest common divisor (for simplifying fractions)
+function gcd(a: number, b: number): number {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b) {
+    [a, b] = [b, a % b];
+  }
+  return a;
+}
+
+// Render a fraction as a stacked HTML element
+// If the fraction is negative, the minus sign appears before the fraction
+function Fraction({
+  numerator,
+  denominator,
+  className = '',
+}: {
+  numerator: number;
+  denominator: number;
+  className?: string;
+}) {
+  const isNeg = numerator < 0;
+  const absNum = Math.abs(numerator);
+  return (
+    <span className={`inline-flex items-start leading-none ${className}`}>
+      {isNeg && <span className="mr-0.5 self-center">−</span>}
+      <span className="inline-flex flex-col items-center leading-none">
+        <span className="border-b-2 border-current px-1 leading-tight">
+          {absNum}
+        </span>
+        <span className="px-1 leading-tight">{Math.abs(denominator)}</span>
+      </span>
+    </span>
+  );
+}
+
 export default function Exp4() {
-  const [base, setBase] = useState<number | null>(null);
+  // Base stored as numerator (negative) / denominator (positive)
+  const [num, setNum] = useState<number | null>(null); // negative, e.g. -2
+  const [den, setDen] = useState<number | null>(null); // positive, e.g. 3
+  // Negative integer exponent (stored as negative number, e.g. -3)
   const [exponent, setExponent] = useState<number | null>(null);
-  const [result, setResult] = useState<number | null>(null);
+  // Result stored as resNum / resDen (simplified, sign on resNum)
+  const [resNum, setResNum] = useState<number | null>(null);
+  const [resDen, setResDen] = useState<number | null>(null);
+
   const [step, setStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const generateNewProblem = () => {
-    const newBase = -(Math.floor(Math.random() * 4) + 2); // -2 to -5
-    const newExponent = Math.floor(Math.random() * 4) + 2; // 2-5
-    const newResult = Math.pow(newBase, newExponent);
+    // Positive proper fraction p/q before negation: numerator 1–4, denominator 2–5, p < q
+    let absNum = Math.floor(Math.random() * 4) + 1; // 1–4
+    let newDen = Math.floor(Math.random() * 4) + 2; // 2–5
+    while (absNum >= newDen) {
+      absNum = Math.floor(Math.random() * 4) + 1;
+      newDen = Math.floor(Math.random() * 4) + 2;
+    }
+    // Simplify
+    const g = gcd(absNum, newDen);
+    absNum = absNum / g;
+    newDen = newDen / g;
+    const newNum = -absNum; // negative numerator
 
-    setBase(newBase);
+    // Negative integer exponent: -2 to -4
+    const absExp = Math.floor(Math.random() * 3) + 2; // 2–4
+    const newExponent = -absExp;
+
+    // (-p/q)^(-n) = (-q/p)^n = (-1)^n * (q/p)^n
+    // Flipped fraction numerator is -q (negative), denominator is p (positive)
+    // Result sign: (-1)^absExp
+    const sign = absExp % 2 === 0 ? 1 : -1;
+    const rawResAbsNum = Math.pow(newDen, absExp); // q^n
+    const rawResDen = Math.pow(absNum, absExp);    // p^n
+    const rg = gcd(rawResAbsNum, rawResDen);
+    const simplifiedAbsNum = rawResAbsNum / rg;
+    const simplifiedDen = rawResDen / rg;
+
+    setNum(newNum);
+    setDen(newDen);
     setExponent(newExponent);
-    setResult(newResult);
+    setResNum(sign * simplifiedAbsNum);
+    setResDen(simplifiedDen);
     setStep(0);
     setIsAnimating(true);
   };
@@ -24,38 +91,38 @@ export default function Exp4() {
     generateNewProblem();
   }, []);
 
+  // 5 animation steps
   useEffect(() => {
-    if (!isAnimating || exponent === null) return;
-
-    if (step > exponent + 1) {
+    if (!isAnimating) return;
+    if (step > 4) {
       setIsAnimating(false);
       return;
     }
-
-    const timer = setTimeout(() => {
-      setStep((s) => s + 1);
-    }, 1200);
-
+    const timer = setTimeout(() => setStep((s) => s + 1), 1400);
     return () => clearTimeout(timer);
-  }, [step, isAnimating, exponent]);
+  }, [step, isAnimating]);
 
-  const renderMultiplication = () => {
-    if (base === null || exponent === null) return null;
+  const absExp = exponent !== null ? Math.abs(exponent) : 0;
+  const absNum_val = num !== null ? Math.abs(num) : 0;
+  const isResultPositive = resNum !== null && resNum >= 0;
 
-    const factors = Array(exponent).fill(base);
-
+  // Render the expansion: (-den/absNum) × (-den/absNum) × ...
+  const renderExpansion = () => {
+    if (num === null || den === null) return null;
+    const factors = Array(absExp).fill(null);
     return (
-      <div className="flex flex-wrap justify-center items-center gap-2 text-2xl sm:text-3xl">
-        {factors.map((factor, idx) => (
+      <div className="flex flex-wrap justify-center items-center gap-2 text-xl sm:text-2xl">
+        {factors.map((_, idx) => (
           <span key={idx} className="flex items-center gap-2">
             <span
               className={`transition-all duration-500 ${
-                step > idx + 1
-                  ? 'text-blue-600 font-bold scale-110'
-                  : 'text-gray-700'
+                step > 3 ? 'text-blue-600 font-bold' : 'text-gray-700'
               }`}
             >
-              ({factor})
+              <span className="text-gray-500">(</span>
+              {/* Flipped fraction: numerator = -den, denominator = absNum */}
+              <Fraction numerator={-den} denominator={absNum_val} />
+              <span className="text-gray-500">)</span>
             </span>
             {idx < factors.length - 1 && (
               <span className="text-gray-400">×</span>
@@ -66,71 +133,119 @@ export default function Exp4() {
     );
   };
 
-  const isResultPositive = result !== null && result >= 0;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full">
+      <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-lg w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">
-            Negative base with positive whole number (integer) exponent
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+            Negative fractional base with negative integer exponent
           </h1>
-          <p className="text-gray-600">Watch negative bases transform!</p>
+          <p className="text-gray-600">
+            Flip the fraction, then watch the sign!
+          </p>
         </div>
 
-        {base !== null && exponent !== null && (
-          <div className="space-y-8">
-            {/* Exponent Form */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 text-center">
-              <div
-                className={`text-5xl sm:text-6xl font-bold text-purple-600 transition-all duration-500 ${
-                  step >= 1
-                    ? 'scale-100 opacity-100'
-                    : 'scale-50 opacity-0'
-                }`}
-              >
-                ({base})
-                <sup className="text-3xl sm:text-4xl">{exponent}</sup>
+        {num !== null && den !== null && exponent !== null && (
+          <div className="space-y-6">
+
+            {/* Step 1 — Show (-p/q)^(-n) */}
+            <div
+              className={`bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 text-center transition-all duration-500 ${
+                step >= 1 ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
+              }`}
+            >
+              <div className="text-gray-500 text-sm mb-3 uppercase tracking-wide">
+                Negative fractional base, negative exponent
+              </div>
+              <div className="flex justify-center items-start text-5xl sm:text-6xl font-bold text-purple-600">
+                <span className="text-gray-500 mr-1">(</span>
+                <Fraction
+                  numerator={num}
+                  denominator={den}
+                  className="text-4xl sm:text-5xl"
+                />
+                <span className="text-gray-500 ml-1">)</span>
+                <sup className="text-2xl sm:text-3xl ml-1">{exponent}</sup>
               </div>
             </div>
 
-            {/* Multiplication Sequence */}
+            {/* Step 2 — Flip the fraction rule */}
             <div
-              className={`bg-gray-50 rounded-2xl p-6 min-h-[80px] flex items-center justify-center transition-all duration-500 ${
+              className={`bg-amber-50 border border-amber-200 rounded-2xl p-5 text-center transition-all duration-500 ${
                 step >= 2 ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              {renderMultiplication()}
+              <div className="text-amber-700 text-sm font-semibold mb-3 uppercase tracking-wide">
+                Negative exponent → flip the fraction
+              </div>
+              <div className="flex justify-center items-start gap-3 text-2xl sm:text-3xl font-bold text-gray-700">
+                <span className="flex items-start">
+                  <span className="text-gray-500">(</span>
+                  <Fraction
+                    numerator={num}
+                    denominator={den}
+                    className="text-xl sm:text-2xl"
+                  />
+                  <span className="text-gray-500">)</span>
+                  <sup className="text-base ml-0.5">{exponent}</sup>
+                </span>
+                <span className="text-gray-400 self-center">=</span>
+                <span className="flex items-start">
+                  <span className="text-gray-500">(</span>
+                  {/* Flipped: numerator = -den, denominator = absNum */}
+                  <Fraction
+                    numerator={-den}
+                    denominator={absNum_val}
+                    className="text-xl sm:text-2xl text-blue-600"
+                  />
+                  <span className="text-gray-500">)</span>
+                  <sup className="text-base ml-0.5 text-blue-600">{absExp}</sup>
+                </span>
+              </div>
             </div>
 
-            {/* Result */}
+            {/* Step 3 — Expansion */}
+            <div
+              className={`bg-gray-50 rounded-2xl p-5 min-h-[80px] flex items-center justify-center transition-all duration-500 ${
+                step >= 3 ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              {renderExpansion()}
+            </div>
+
+            {/* Step 4 — Result */}
             <div
               className={`bg-gradient-to-r ${
                 isResultPositive
                   ? 'from-green-50 to-emerald-50'
                   : 'from-red-50 to-rose-50'
               } rounded-2xl p-6 text-center transition-all duration-700 ${
-                exponent !== null && step > exponent + 1
-                  ? 'scale-100 opacity-100'
-                  : 'scale-90 opacity-0'
+                step >= 4 ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
               }`}
             >
-              <div className="text-gray-600 text-lg mb-2">Answer:</div>
+              <div className="text-gray-600 text-lg mb-3">Answer:</div>
               <div
-                className={`text-5xl sm:text-6xl font-bold ${
-                  isResultPositive
-                    ? 'text-green-600'
-                    : 'text-red-600'
+                className={`flex justify-center items-center text-5xl sm:text-6xl font-bold ${
+                  isResultPositive ? 'text-green-600' : 'text-red-600'
                 }`}
               >
-                {result !== null ? result : ''}
+                {resDen === 1 ? (
+                  <span>{resNum}</span>
+                ) : (
+                  <Fraction
+                    numerator={resNum!}
+                    denominator={resDen!}
+                    className="text-4xl sm:text-5xl"
+                  />
+                )}
               </div>
-              <div className="text-sm text-gray-500 mt-2">
-                {exponent % 2 === 0
-                  ? 'Even power → Positive'
-                  : 'Odd power → Negative'}
+              <div className="text-sm text-gray-500 mt-3">
+                {absExp % 2 === 0
+                  ? 'Even power → Positive result'
+                  : 'Odd power → Negative result'}
               </div>
             </div>
+
           </div>
         )}
 
