@@ -110,9 +110,11 @@ export default function Exp3() {
                   : 'text-gray-700'
               }`}
             >
-              <span className="text-gray-500">(</span>
-              <Fraction numerator={den} denominator={num} />
-              <span className="text-gray-500">)</span>
+              <span className="inline-flex items-stretch">
+                <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>(</span>
+                <Fraction numerator={den} denominator={num} />
+                <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>)</span>
+              </span>
             </span>
             {idx < factors.length - 1 && (
               <span className="text-gray-400">×</span>
@@ -147,10 +149,12 @@ export default function Exp3() {
               <div className="text-gray-500 text-sm mb-3 uppercase tracking-wide">
                 Fractional base, negative exponent
               </div>
-              <div className="flex justify-center items-start text-5xl sm:text-6xl font-bold text-purple-600">
-                <span className="text-gray-500 mr-1">(</span>
-                <Fraction numerator={num} denominator={den} className="text-4xl sm:text-5xl" />
-                <span className="text-gray-500 ml-1">)</span>
+              <div className="flex justify-center items-center text-5xl sm:text-6xl font-bold text-purple-600">
+                <span className="inline-flex items-stretch">
+                  <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>(</span>
+                  <Fraction numerator={num} denominator={den} className="text-4xl sm:text-5xl" />
+                  <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>)</span>
+                </span>
                 <sup className="text-2xl sm:text-3xl ml-1">{exponent}</sup>
               </div>
             </div>
@@ -165,17 +169,21 @@ export default function Exp3() {
                 Negative exponent → flip the fraction
               </div>
               <div className="flex justify-center items-start gap-3 text-2xl sm:text-3xl font-bold text-gray-700">
-                <span className="flex items-start">
-                  <span className="text-gray-500">(</span>
-                  <Fraction numerator={num} denominator={den} className="text-xl sm:text-2xl" />
-                  <span className="text-gray-500">)</span>
+                <span className="inline-flex items-center">
+                  <span className="inline-flex items-stretch">
+                    <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>(</span>
+                    <Fraction numerator={num} denominator={den} className="text-xl sm:text-2xl" />
+                    <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>)</span>
+                  </span>
                   <sup className="text-base ml-0.5">{exponent}</sup>
                 </span>
                 <span className="text-gray-400 self-center">=</span>
-                <span className="flex items-start">
-                  <span className="text-gray-500">(</span>
-                  <Fraction numerator={den} denominator={num} className="text-xl sm:text-2xl text-blue-600" />
-                  <span className="text-gray-500">)</span>
+                <span className="inline-flex items-center">
+                  <span className="inline-flex items-stretch">
+                    <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>(</span>
+                    <Fraction numerator={den} denominator={num} className="text-xl sm:text-2xl text-blue-600" />
+                    <span className="flex items-center text-gray-500" style={{ fontSize: '150%' }}>)</span>
+                  </span>
                   <sup className="text-base ml-0.5 text-blue-600">{absExp}</sup>
                 </span>
               </div>
