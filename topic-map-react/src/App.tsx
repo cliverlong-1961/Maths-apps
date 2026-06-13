@@ -7,6 +7,7 @@ import { sequencesAndSeriesTopics } from "./data/sequencesAndSeries";
 import { coordinateGeometryTopics } from "./data/coordinateGeometry";
 import { proofTopics } from "./data/proof";
 import { algebraAndFunctionsTopics } from "./data/algebraAndFunctions";
+import { vectorsTopics } from "./data/vectors";
 
 const NAVY = "#1a2744";
 const GOLD = "#c8a84b";
@@ -20,6 +21,7 @@ const pages = [
   { id: 5, label: "Coordinate Geometry",   topics: coordinateGeometryTopics,   title: "Coordinate Geometry Map" },
   { id: 6, label: "Proof",                 topics: proofTopics,                title: "Proof Map" },
   { id: 7, label: "Algebra & Functions",   topics: algebraAndFunctionsTopics,  title: "Algebra and Functions Map" },
+  { id: 8, label: "Vectors",               topics: vectorsTopics,              title: "Vectors Map" },
 ];
 
 function NavButton({ label, active, onClick }: {
