@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectors: Plane Geometry</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* KaTeX requires content-box sizing and unmodified line-height to
+           correctly compute delimiter heights (e.g. spanning parentheses). */
+        .katex, .katex * {
+            box-sizing: content-box !important;
+            line-height: normal;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #fafafa;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #34495e;
+            margin-bottom: 40px;
+        }
+
+        h1 { font-size: 2.5em; color: #2c3e50; margin-bottom: 10px; font-weight: normal; }
+        .subtitle { font-size: 1.2em; color: #7f8c8d; font-style: italic; }
+
+        .nav-breadcrumb { text-align: center; margin-bottom: 30px; }
+        .nav-breadcrumb button {
+            background: none; border: none; color: #3498db;
+            cursor: pointer; font-size: 0.95em; padding: 5px 10px;
+            text-decoration: underline; font-family: Georgia, serif;
+        }
+        .nav-breadcrumb button:hover { color: #2980b9; }
+
+        h2 {
+            font-size: 1.8em; color: #2c3e50; margin: 30px 0 20px;
+            font-weight: normal; border-bottom: 1px solid #bdc3c7; padding-bottom: 10px;
+        }
+        h3 { font-size: 1.4em; color: #34495e; margin: 20px 0 15px; font-weight: normal; }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .intro-content {
+            max-width: 760px; margin: 0 auto; background: white;
+            padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .intro-content p { font-size: 1.05em; line-height: 1.8; margin-bottom: 20px; text-align: justify; }
+
+        .definition-box {
+            background: #fafafa; border: 1px solid #ddd;
+            padding: 20px; margin: 25px 0; border-radius: 4px;
+        }
+        .definition-box h3 { margin-top: 0; color: #2c3e50; font-size: 1.15em; }
+
+        .highlight-box {
+            background: #fff9e6; border-left: 4px solid #f39c12;
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+        }
+
+        .key-result {
+            background: #e8f6f3; border-left: 4px solid #16a085;
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+        }
+
+        .worked-example {
+            background: #f0f7ff; border: 1px solid #c5dff8;
+            border-radius: 8px; padding: 25px; margin: 25px 0;
+        }
+        .worked-example h4 {
+            color: #1a5276; font-size: 1.1em; margin-bottom: 15px;
+            border-bottom: 1px solid #c5dff8; padding-bottom: 8px;
+        }
+        .worked-example p { margin-bottom: 12px; line-height: 1.7; }
+
+        .example-step {
+            padding: 12px 15px; margin: 10px 0;
+            background: white; border-left: 3px solid #95a5a6; border-radius: 4px;
+        }
+        .step-label { font-weight: bold; color: #3498db; margin-bottom: 6px; }
+
+        .motivation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px; margin: 30px 0;
+        }
+        .motivation-card {
+            background: white; border: 1px solid #ddd;
+            border-radius: 8px; padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .motivation-card svg { display: block; margin: 0 auto 15px; }
+        .motivation-card .question {
+            font-style: italic; color: #34495e;
+            font-size: 0.97em; line-height: 1.6; text-align: center;
+        }
+        .motivation-card .question strong {
+            display: block; font-style: normal; font-size: 1.05em;
+            color: #2c3e50; margin-bottom: 8px; text-align: center;
+        }
+
+        .diagram-row {
+            display: flex; gap: 20px; flex-wrap: wrap;
+            justify-content: center; margin: 25px 0;
+        }
+        .diagram-box {
+            background: white; border: 1px solid #ddd; border-radius: 8px;
+            padding: 20px; text-align: center; flex: 1; min-width: 240px;
+        }
+        .diagram-box p { font-size: 0.95em; color: #555; margin-top: 12px; line-height: 1.5; }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px; margin-top: 30px;
+        }
+
+        .cta-section {
+            text-align: center; margin-top: 45px; padding-top: 35px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .cta-text { font-size: 1.05em; color: #666; margin-bottom: 22px; }
+
+        .btn-primary {
+            display: inline-block; background-color: #3498db; color: white;
+            padding: 13px 28px; font-size: 1em; border-radius: 6px;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(52,152,219,0.3);
+            cursor: pointer; border: none; margin: 6px;
+            font-family: Georgia, serif;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9; transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52,152,219,0.4);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        .definitions-section {
+            background: white; padding: 30px; margin: 25px 0;
+            border-radius: 8px; border: 1px solid #e0e0e0;
+        }
+        .definitions-section h3 {
+            color: #2c3e50; margin-bottom: 18px; font-size: 1.25em;
+            border-bottom: 2px solid #3498db; padding-bottom: 8px;
+        }
+        .definitions-section p { margin-bottom: 14px; line-height: 1.7; }
+
+        .vector-table {
+            width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.97em;
+        }
+        .vector-table th {
+            background: #34495e; color: white; padding: 10px 15px; text-align: left;
+        }
+        .vector-table td { padding: 10px 15px; border-bottom: 1px solid #eee; }
+        .vector-table tr:nth-child(even) td { background: #f8f9fa; }
+
+        .reveal-link {
+            display: inline-block; margin-top: 8px; color: #3498db;
+            font-size: 0.95em; font-family: Georgia, serif; text-decoration: none;
+            cursor: pointer; background: none; border: none; padding: 0;
+        }
+        .reveal-link:hover { text-decoration: underline; color: #2980b9; }
+
+        .notation-box {
+            background: #fdf2f8; border-left: 4px solid #8e44ad;
+            padding: 14px 18px; margin: 18px 0; border-radius: 0 4px 4px 0;
+        }
+        .notation-box strong { color: #6c3483; }
+
+        footer {
+            margin-top: 60px; padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            text-align: center; color: #7f8c8d; font-size: 0.9em;
+        }
+
+        @media (max-width: 700px) {
+            h1 { font-size: 1.9em; }
+            .intro-content { padding: 22px; }
+            .motivation-grid { grid-template-columns: 1fr; }
+            .topic-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+
+        const sectionTitles = {
+            'intro':        ['Vectors: Plane Geometry', 'Year 1 Pure Mathematics — Chapter 11'],
+            'basics':       ['Vector Basics', 'Magnitude, direction and the triangle law'],
+            'operations':   ['Vector Operations', 'Addition, subtraction and scalar multiplication'],
+            'components':   ['Column Vectors & i, j notation', 'Representing vectors in component form'],
+            'magnitude':    ['Magnitude and Direction', 'Length and angle of a vector'],
+            'position':     ['Position Vectors', 'Locating points relative to an origin'],
+            'geometry':     ['Geometric Problems', 'Using vectors to prove results in geometry'],
+        };
+
+        function toggleEq(id, link) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'none') {
+                el.style.display = 'block';
+                link.textContent = 'Hide solution ▾';
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            } else {
+                el.style.display = 'none';
+                link.textContent = 'Reveal solution ▸';
+            }
+        }
+
+        function toggleDiagram(id, link) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'none') {
+                el.style.display = 'block';
+                link.textContent = 'Hide diagram ▾';
+            } else {
+                el.style.display = 'none';
+                link.textContent = 'Reveal diagram ▸';
+            }
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            const nav = document.getElementById('navigation');
+            if (id === 'intro') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'block';
+            }
+            const [title, sub] = sectionTitles[id] || ['Vectors', ''];
+            document.querySelector('header h1').textContent = title;
+            document.querySelector('.subtitle').textContent = sub;
+            window.scrollTo(0, 0);
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Vectors: Plane Geometry</h1>
+        <p class="subtitle">Year 1 Pure Mathematics — Chapter 11</p>
+    </header>
+
+    <nav class="nav-breadcrumb" id="navigation" style="display:none;">
+        <button onclick="showSection('intro')">← Back to Introduction</button>
+    </nav>
+
+    <main>
+
+<!-- ═══════════════════════════════════════════════ HOME PAGE ═══ -->
+<section id="intro" class="section active">
+<div class="intro-content">
+
+    <h2 style="border:none; margin-top:0;">What is a vector?</h2>
+    <p>
+        Many quantities in mathematics and physics have only a size — temperature, mass, speed.
+        These are called <strong>scalars</strong>. But other quantities have both a size <em>and</em>
+        a direction — displacement, velocity, force. These are called <strong>vectors</strong>.
+    </p>
+    <p>
+        A vector can be represented by a directed line segment: an arrow whose length gives the
+        <strong>magnitude</strong> (size) and whose direction gives the <strong>direction</strong>.
+        In print, vectors are written in bold: \(\mathbf{a}\), \(\mathbf{b}\). In handwriting,
+        they are underlined: \(\underline{a}\), \(\underline{b}\).
+    </p>
+
+    <!-- Motivation cards -->
+    <h2>Where do vectors appear?</h2>
+    <p>The three examples below all need vectors to be described precisely.</p>
+
+    <div class="motivation-grid">
+
+        <!-- Navigation -->
+        <div class="motivation-card">
+            <svg width="190" height="170" viewBox="0 0 190 170" xmlns="http://www.w3.org/2000/svg">
+                <!-- North arrow -->
+                <line x1="40" y1="140" x2="40" y2="20" stroke="#bdc3c7" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <polygon points="40,16 35,28 45,28" fill="#bdc3c7"/>
+                <text x="45" y="27" font-size="10" fill="#aaa" font-family="Georgia">N</text>
+                <!-- Journey: O -> A -> B -->
+                <circle cx="40" cy="140" r="4" fill="#e74c3c"/>
+                <text x="46" y="152" font-size="11" fill="#c0392b" font-family="Georgia" font-weight="bold">O</text>
+                <!-- OA: east 90px -->
+                <line x1="40" y1="140" x2="130" y2="140" stroke="#3498db" stroke-width="2.5"/>
+                <polygon points="133,140 121,134 121,146" fill="#3498db"/>
+                <text x="85" y="134" text-anchor="middle" font-size="10" fill="#2471a3" font-family="Georgia">2 km east</text>
+                <circle cx="130" cy="140" r="4" fill="#3498db"/>
+                <text x="136" y="152" font-size="11" fill="#2471a3" font-family="Georgia" font-weight="bold">A</text>
+                <!-- AB: south 75px -->
+                <line x1="130" y1="140" x2="130" y2="75" stroke="#27ae60" stroke-width="2.5"/>
+                <polygon points="130,72 124,84 136,84" fill="#27ae60"/>
+                <text x="140" y="107" font-size="10" fill="#1e8449" font-family="Georgia">3 km</text>
+                <text x="140" y="119" font-size="10" fill="#1e8449" font-family="Georgia">south</text>
+                <circle cx="130" cy="72" r="4" fill="#27ae60"/>
+                <text x="138" y="69" font-size="11" fill="#1e8449" font-family="Georgia" font-weight="bold">B</text>
+                <!-- OB resultant -->
+                <line x1="40" y1="140" x2="128" y2="74" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="5,3"/>
+            </svg>
+            <p class="question">
+                <strong>Navigation</strong>
+                A girl walks 2 km east then 3 km south. Her total displacement combines both
+                distance <em>and</em> direction — a scalar distance alone cannot describe where she ends up.
+            </p>
+        </div>
+
+        <!-- Parallelogram law -->
+        <div class="motivation-card">
+            <svg width="205" height="185" viewBox="0 0 205 185" xmlns="http://www.w3.org/2000/svg">
+                <!-- parallelogram: O(40,140) B(125,140) D(82,58) C(167,58) -->
+                <polygon points="40,140 125,140 167,58 82,58"
+                         fill="#eaf4ff" stroke="#2c7bb5" stroke-width="1.5"/>
+                <!-- a vector: O -> B bottom -->
+                <line x1="40" y1="140" x2="123" y2="140" stroke="#e74c3c" stroke-width="2.5"/>
+                <polygon points="126,140 114,134 114,146" fill="#e74c3c"/>
+                <text x="82" y="151" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+                <!-- b vector: O -> D top-left -->
+                <line x1="40" y1="140" x2="82" y2="60" stroke="#27ae60" stroke-width="2.5"/>
+                <polygon points="82,57 76,70 88,68" fill="#27ae60"/>
+                <text x="45" y="102" font-size="12" fill="#1e8449" font-family="Georgia" font-style="italic">b</text>
+                <!-- resultant diagonal -->
+                <line x1="40" y1="140" x2="165" y2="60" stroke="#8e44ad" stroke-width="2"/>
+                <polygon points="167,57 156,64 162,73" fill="#8e44ad"/>
+                <text x="113" y="92" font-size="11" fill="#6c3483" font-family="Georgia" font-style="italic">a+b</text>
+                <!-- corner labels: 10-12px from vertex in outward direction -->
+                <text x="24" y="158" font-size="11" fill="#2c3e50" font-family="Georgia" font-weight="bold">O</text>
+                <text x="127" y="158" font-size="11" fill="#c0392b" font-family="Georgia" font-weight="bold">B</text>
+                <text x="67" y="50" font-size="11" fill="#1e8449" font-family="Georgia" font-weight="bold">D</text>
+                <text x="169" y="52" font-size="11" fill="#6c3483" font-family="Georgia" font-weight="bold">C</text>
+            </svg>
+            <p class="question">
+                <strong>The parallelogram law</strong>
+                Two vectors \(\mathbf{a}\) and \(\mathbf{b}\) can be added using the parallelogram rule.
+                The resultant \(\mathbf{a} + \mathbf{b}\) is the diagonal of the parallelogram they form.
+            </p>
+        </div>
+
+        <!-- Position in geometry -->
+        <div class="motivation-card">
+            <svg width="195" height="185" viewBox="0 0 195 185" xmlns="http://www.w3.org/2000/svg">
+                <!-- triangle ABC: A(30,145) B(162,145) C(96,35) -->
+                <polygon points="30,145 162,145 96,35"
+                         fill="#fff9e6" stroke="#8d6e3f" stroke-width="2"/>
+                <!-- vertices -->
+                <circle cx="30" cy="145" r="4" fill="#e74c3c"/>
+                <circle cx="162" cy="145" r="4" fill="#3498db"/>
+                <circle cx="96" cy="35" r="4" fill="#27ae60"/>
+                <!-- A: below-left, 10px from vertex -->
+                <text x="15" y="162" font-size="12" fill="#c0392b" font-family="Georgia" font-weight="bold">A</text>
+                <!-- B: below-right, 10px from vertex -->
+                <text x="163" y="162" font-size="12" fill="#2471a3" font-family="Georgia" font-weight="bold">B</text>
+                <!-- C: directly above apex, 9px above -->
+                <text x="91" y="24" font-size="12" fill="#1e8449" font-family="Georgia" font-weight="bold">C</text>
+                <!-- midpoint M on AB -->
+                <circle cx="96" cy="145" r="3" fill="#e67e22"/>
+                <!-- M: 8px directly below midpoint -->
+                <text x="91" y="163" font-size="10" fill="#d35400" font-family="Georgia">M</text>
+                <!-- median CM -->
+                <line x1="96" y1="35" x2="96" y2="143" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <!-- vector labels: 8px left of each edge midpoint -->
+                <text x="46" y="97" font-size="10" fill="#555" font-family="Georgia" font-style="italic">a</text>
+                <text x="140" y="97" font-size="10" fill="#555" font-family="Georgia" font-style="italic">b</text>
+            </svg>
+            <p class="question">
+                <strong>Geometry proofs</strong>
+                Vectors allow us to prove geometric results algebraically — for example, that medians
+                of a triangle bisect each other, or that the diagonals of a parallelogram bisect each other.
+            </p>
+        </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="cta-section">
+        <p class="cta-text">Choose a topic to explore:</p>
+        <div>
+            <button class="btn-primary" onclick="showSection('basics')">Vector basics →</button>
+            <button class="btn-primary" onclick="showSection('operations')">Operations →</button>
+            <button class="btn-primary" onclick="showSection('components')">Column vectors →</button>
+            <button class="btn-primary" onclick="showSection('magnitude')">Magnitude &amp; direction →</button>
+            <button class="btn-primary" onclick="showSection('position')">Position vectors →</button>
+            <button class="btn-primary" onclick="showSection('geometry')">Geometric problems →</button>
+        </div>
+    </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ VECTOR BASICS ═══ -->
+<section id="basics" class="section">
+
+    <div class="definitions-section">
+        <h3>Directed line segments</h3>
+        <p>
+            A vector is represented by a <strong>directed line segment</strong> — an arrow from a start
+            point to an end point. The vector from \(P\) to \(Q\) is written \(\overrightarrow{PQ}\).
+        </p>
+        <p>
+            Two vectors are <strong>equal</strong> if they have the same magnitude and direction — they
+            do not need to start from the same point.
+        </p>
+
+        <svg width="100%" height="155" viewBox="0 0 500 155" xmlns="http://www.w3.org/2000/svg">
+            <!-- vector PQ -->
+            <circle cx="60" cy="70" r="4" fill="#e74c3c"/>
+            <circle cx="200" cy="40" r="4" fill="#e74c3c"/>
+            <line x1="60" y1="70" x2="197" y2="41" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="200,40 188,47 192,58" fill="#e74c3c"/>
+            <!-- P: 9px below-left of P(60,70) -->
+            <text x="50" y="81" font-size="12" fill="#c0392b" font-family="Georgia" font-weight="bold">P</text>
+            <!-- Q: 8px right of Q(200,40) -->
+            <text x="207" y="39" font-size="12" fill="#c0392b" font-family="Georgia" font-weight="bold">Q</text>
+            <!-- "a": 8px above midpoint of PQ (130,55) -->
+            <text x="122" y="47" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+            <!-- vector RS (equal to PQ) -->
+            <circle cx="290" cy="100" r="4" fill="#3498db"/>
+            <circle cx="430" cy="70" r="4" fill="#3498db"/>
+            <line x1="290" y1="100" x2="427" y2="71" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="430,70 418,77 422,88" fill="#3498db"/>
+            <!-- R: 9px below-left of R(290,100) -->
+            <text x="279" y="111" font-size="12" fill="#2471a3" font-family="Georgia" font-weight="bold">R</text>
+            <!-- S: 8px right of S(430,70) -->
+            <text x="438" y="69" font-size="12" fill="#2471a3" font-family="Georgia" font-weight="bold">S</text>
+            <!-- "a": 8px above midpoint of RS (360,85) -->
+            <text x="352" y="77" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">a</text>
+            <!-- equal sign -->
+            <text x="235" y="78" font-size="16" fill="#555" font-family="Georgia">=</text>
+            <!-- caption -->
+            <text x="250" y="143" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">Equal vectors: same length and direction</text>
+        </svg>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Negative vectors and zero vectors</h3>
+        <p>
+            The vector \(-\mathbf{a}\) has the <strong>same magnitude</strong> as \(\mathbf{a}\) but the
+            <strong>opposite direction</strong>. In terms of a directed line segment:
+            \(\overrightarrow{BA} = -\overrightarrow{AB}\).
+        </p>
+        <p>
+            If you travel from \(P\) to \(Q\) and back again, your total displacement is the
+            <strong>zero vector</strong> \(\mathbf{0}\):
+        </p>
+        \[\overrightarrow{PQ} + \overrightarrow{QP} = \mathbf{0}\]
+    </div>
+
+    <div class="definitions-section">
+        <h3>The triangle law for vector addition</h3>
+        <p>
+            To add vectors \(\mathbf{a}\) and \(\mathbf{b}\), place them nose-to-tail. The resultant
+            goes from the start of \(\mathbf{a}\) to the end of \(\mathbf{b}\):
+        </p>
+        \[\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}\]
+
+        <svg width="100%" height="175" viewBox="0 0 500 175" xmlns="http://www.w3.org/2000/svg">
+            <!-- triangle ABC: A(60,120) B(260,60) C(420,120) -->
+            <circle cx="60" cy="120" r="4" fill="#2c3e50"/>
+            <circle cx="260" cy="60" r="4" fill="#2c3e50"/>
+            <circle cx="420" cy="120" r="4" fill="#2c3e50"/>
+            <!-- A: below-left, 13px from A(60,120) -->
+            <text x="46" y="134" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <!-- B: 10px above B(260,60) -->
+            <text x="254" y="49" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <!-- C: below-right, 13px from C(420,120) -->
+            <text x="425" y="134" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
+            <!-- AB: "a" label 8px above midpoint (160,90), perpendicular offset -->
+            <line x1="60" y1="120" x2="257" y2="62" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="260,60 248,67 252,78" fill="#e74c3c"/>
+            <text x="150" y="82" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+            <!-- BC: "b" label 8px above midpoint (340,90) -->
+            <line x1="260" y1="60" x2="417" y2="118" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="420,120 408,113 412,124" fill="#3498db"/>
+            <text x="348" y="81" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">b</text>
+            <!-- AC: a+b (resultant) — label 10px below line -->
+            <line x1="60" y1="120" x2="415" y2="120" stroke="#27ae60" stroke-width="2" stroke-dasharray="6,3"/>
+            <polygon points="418,120 406,114 406,126" fill="#27ae60"/>
+            <text x="238" y="133" text-anchor="middle" font-size="13" fill="#1e8449" font-family="Georgia" font-style="italic">a + b</text>
+        </svg>
+
+        <div class="notation-box">
+            <strong>Notation:</strong> The result of adding two or more vectors is called the <strong>resultant</strong>.
+            \(\overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CD} = \overrightarrow{AD}\)
+        </div>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Parallel vectors</h3>
+        <p>
+            A vector <strong>parallel</strong> to \(\mathbf{a}\) can be written as \(\lambda\mathbf{a}\),
+            where \(\lambda\) is a non-zero scalar (real number).
+        </p>
+        <table class="vector-table">
+            <tr><th>Expression</th><th>Effect</th></tr>
+            <tr><td>\(3\mathbf{a}\)</td><td>Same direction as \(\mathbf{a}\), three times as long</td></tr>
+            <tr><td>\(-2\mathbf{a}\)</td><td>Opposite direction to \(\mathbf{a}\), twice as long</td></tr>
+            <tr><td>\(\frac{1}{2}\mathbf{a}\)</td><td>Same direction as \(\mathbf{a}\), half as long</td></tr>
+        </table>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Triangle law (bookwork style)</h4>
+        <p>
+            In the diagram, \(\overrightarrow{QP} = \mathbf{a}\), \(\overrightarrow{QR} = \mathbf{b}\),
+            \(\overrightarrow{QS} = \mathbf{c}\) and \(\overrightarrow{RT} = \mathbf{d}\).
+            Express each of the following in terms of \(\mathbf{a}, \mathbf{b}, \mathbf{c}, \mathbf{d}\):
+        </p>
+        <p><strong>(a)</strong> \(\overrightarrow{PS}\) &nbsp;&nbsp;&nbsp;
+           <strong>(b)</strong> \(\overrightarrow{RP}\) &nbsp;&nbsp;&nbsp;
+           <strong>(c)</strong> \(\overrightarrow{PT}\)
+        </p>
+
+        <div class="example-step">
+            <div class="step-label">Part (a) — Find \(\overrightarrow{PS}\)</div>
+            Route from P to S via Q.
+            <button class="reveal-link" onclick="toggleEq('bas-eq1', this)">Reveal solution ▸</button>
+            <div id="bas-eq1" style="display:none;">
+            \[\overrightarrow{PS} = \overrightarrow{PQ} + \overrightarrow{QS} = -\mathbf{a} + \mathbf{c} = \mathbf{c} - \mathbf{a}\]
+            </div>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Part (b) — Find \(\overrightarrow{RP}\)</div>
+            Route from R to P via Q.
+            <button class="reveal-link" onclick="toggleEq('bas-eq2', this)">Reveal solution ▸</button>
+            <div id="bas-eq2" style="display:none;">
+            \[\overrightarrow{RP} = \overrightarrow{RQ} + \overrightarrow{QP} = -\mathbf{b} + \mathbf{a} = \mathbf{a} - \mathbf{b}\]
+            </div>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Part (c) — Find \(\overrightarrow{PT}\)</div>
+            Route from P to T via R.
+            <button class="reveal-link" onclick="toggleEq('bas-eq3', this)">Reveal solution ▸</button>
+            <div id="bas-eq3" style="display:none;">
+            \[\overrightarrow{PT} = \overrightarrow{PR} + \overrightarrow{RT} = (\mathbf{b} - \mathbf{a}) + \mathbf{d} = \mathbf{b} + \mathbf{d} - \mathbf{a}\]
+            (using \(\overrightarrow{PR} = -\overrightarrow{RP} = \mathbf{b} - \mathbf{a}\))
+            </div>
+        </div>
+
+        <div class="key-result">
+            <strong>Key strategy:</strong> Always pick a route through labelled points where you
+            know the vectors. Reversing a vector changes its sign.
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Parallelogram</h4>
+        <p>
+            \(ABCD\) is a parallelogram. \(\overrightarrow{AB} = \mathbf{a}\) and \(\overrightarrow{AD} = \mathbf{b}\).
+            Find \(\overrightarrow{AC}\).
+        </p>
+        <div class="example-step">
+            <div class="step-label">Using the triangle law</div>
+            Route from A to C via B, noting that \(\overrightarrow{BC} = \overrightarrow{AD}\) (opposite sides of a parallelogram are equal and parallel).
+            <button class="reveal-link" onclick="toggleEq('par-eq1', this)">Reveal solution ▸</button>
+            <div id="par-eq1" style="display:none;">
+            \[\overrightarrow{AC} = \overrightarrow{AB} + \overrightarrow{BC} = \mathbf{a} + \mathbf{b}\]
+            This is the <strong>parallelogram law</strong>: the diagonal equals the sum of the two sides.
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('intro')">← Home</button>
+        <button class="btn-primary" onclick="showSection('operations')">Operations →</button>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ VECTOR OPERATIONS ═══ -->
+<section id="operations" class="section">
+
+    <div class="definitions-section">
+        <h3>Subtracting vectors</h3>
+        <p>
+            Subtracting \(\mathbf{b}\) from \(\mathbf{a}\) is the same as adding \(-\mathbf{b}\):
+        </p>
+        \[\mathbf{a} - \mathbf{b} = \mathbf{a} + (-\mathbf{b})\]
+        <p>
+            Geometrically, reverse the direction of \(\mathbf{b}\) then add it nose-to-tail after \(\mathbf{a}\).
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Scalar multiplication</h3>
+        <p>
+            Multiplying a vector by a positive scalar \(k\) stretches it by factor \(k\) without
+            changing direction. A negative scalar reverses the direction as well.
+        </p>
+        <svg width="100%" height="130" viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- a: label 7px above line centre -->
+            <line x1="30" y1="55" x2="100" y2="55" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="103,55 91,49 91,61" fill="#e74c3c"/>
+            <text x="65" y="47" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+            <!-- 3a: label 7px above line centre -->
+            <line x1="130" y1="40" x2="340" y2="40" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="343,40 331,34 331,46" fill="#e74c3c"/>
+            <text x="235" y="32" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">3a</text>
+            <!-- ½a: label 7px above line centre -->
+            <line x1="130" y1="70" x2="165" y2="70" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="168,70 156,64 156,76" fill="#e74c3c"/>
+            <text x="148" y="62" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">½a</text>
+            <!-- −2a: label 7px above line centre -->
+            <line x1="400" y1="55" x2="260" y2="55" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="257,55 269,49 269,61" fill="#3498db"/>
+            <text x="330" y="47" text-anchor="middle" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">−2a</text>
+            <!-- caption: 12px below lowest vector (y=70), at y=90 -->
+            <text x="250" y="120" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">Scaling: parallel vectors, different magnitudes</text>
+        </svg>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Midpoints using vectors</h3>
+        <p>
+            If \(M\) is the midpoint of \(AB\), then \(\overrightarrow{AM} = \frac{1}{2}\overrightarrow{AB}\).
+        </p>
+        <p>
+            More generally, if \(P\) divides \(AB\) in the ratio \(\lambda : \mu\), then:
+        </p>
+        \[\overrightarrow{AP} = \frac{\lambda}{\lambda + \mu}\,\overrightarrow{AB}\]
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Midpoints in a triangle</h4>
+        <p>
+            In triangle \(ABC\), \(\overrightarrow{AB} = \mathbf{a}\) and \(\overrightarrow{AC} = \mathbf{b}\).
+            \(P\) is the midpoint of \(AB\) and \(Q\) divides \(AC\) in the ratio \(3:2\).
+            Find, in terms of \(\mathbf{a}\) and \(\mathbf{b}\):
+            (a) \(\overrightarrow{BC}\) &nbsp; (b) \(\overrightarrow{AP}\) &nbsp;
+            (c) \(\overrightarrow{AQ}\) &nbsp; (d) \(\overrightarrow{PQ}\)
+        </p>
+
+        <button class="reveal-link" onclick="toggleDiagram('ops-diag', this)">Reveal diagram ▸</button>
+        <div id="ops-diag" style="display:none;">
+        <svg width="100%" height="215" viewBox="0 0 460 215" xmlns="http://www.w3.org/2000/svg">
+            <!-- triangle: B(50,160) A(260,30) C(410,160) -->
+            <circle cx="50" cy="160" r="4" fill="#2c3e50"/>
+            <circle cx="260" cy="30" r="4" fill="#2c3e50"/>
+            <circle cx="410" cy="160" r="4" fill="#2c3e50"/>
+            <!-- B: below-left, 13px from B(50,160) -->
+            <text x="34" y="177" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <!-- A: 12px above A(260,30) -->
+            <text x="254" y="18" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <!-- C: below-right, 13px from C(410,160) -->
+            <text x="416" y="177" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
+            <!-- AB: label at 1/4 from A, 10px left of line -->
+            <line x1="260" y1="30" x2="52" y2="158" stroke="#e74c3c" stroke-width="2.5"/>
+            <polygon points="50,160 62,153 58,142" fill="#e74c3c"/>
+            <text x="197" y="55" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+            <!-- AC: label at 1/4 from A, 10px right of line -->
+            <line x1="260" y1="30" x2="408" y2="158" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="410,160 398,153 402,142" fill="#3498db"/>
+            <text x="307" y="55" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">b</text>
+            <!-- BC -->
+            <line x1="50" y1="160" x2="408" y2="160" stroke="#95a5a6" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <!-- P: midpoint of AB at (155,95) — label 10px to the left -->
+            <circle cx="155" cy="95" r="5" fill="#e67e22"/>
+            <text x="140" y="91" font-size="12" fill="#d35400" font-family="Georgia" font-weight="bold">P</text>
+            <!-- Q: 3/5 along AC at (350,108) — label 9px to the right -->
+            <circle cx="350" cy="108" r="5" fill="#8e44ad"/>
+            <text x="359" y="105" font-size="12" fill="#6c3483" font-family="Georgia" font-weight="bold">Q</text>
+            <!-- PQ dashed -->
+            <line x1="155" y1="95" x2="348" y2="108" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,3"/>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Part (a) — \(\overrightarrow{BC}\)</div>
+            Route from B to C via A.
+            <button class="reveal-link" onclick="toggleEq('ops-eq1', this)">Reveal solution ▸</button>
+            <div id="ops-eq1" style="display:none;">
+            \[\overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC} = -\mathbf{a} + \mathbf{b} = \mathbf{b} - \mathbf{a}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (b) — \(\overrightarrow{AP}\)</div>
+            \(P\) is the midpoint of \(AB\), so \(AP = \frac{1}{2}AB\).
+            <button class="reveal-link" onclick="toggleEq('ops-eq2', this)">Reveal solution ▸</button>
+            <div id="ops-eq2" style="display:none;">
+            \[\overrightarrow{AP} = \tfrac{1}{2}\overrightarrow{AB} = \tfrac{1}{2}\mathbf{a}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (c) — \(\overrightarrow{AQ}\)</div>
+            \(Q\) divides \(AC\) in the ratio \(3:2\), so \(AQ = \frac{3}{5}AC\).
+            <button class="reveal-link" onclick="toggleEq('ops-eq3', this)">Reveal solution ▸</button>
+            <div id="ops-eq3" style="display:none;">
+            \[\overrightarrow{AQ} = \tfrac{3}{5}\overrightarrow{AC} = \tfrac{3}{5}\mathbf{b}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (d) — \(\overrightarrow{PQ}\)</div>
+            Route from P to Q via A.
+            <button class="reveal-link" onclick="toggleEq('ops-eq4', this)">Reveal solution ▸</button>
+            <div id="ops-eq4" style="display:none;">
+            \[\overrightarrow{PQ} = \overrightarrow{PA} + \overrightarrow{AQ} = -\tfrac{1}{2}\mathbf{a} + \tfrac{3}{5}\mathbf{b} = \tfrac{3}{5}\mathbf{b} - \tfrac{1}{2}\mathbf{a}\]
+            </div>
+        </div>
+
+        <div class="key-result">
+            Note that \(\overrightarrow{PQ} = \tfrac{3}{5}\mathbf{b} - \tfrac{1}{2}\mathbf{a}\) while
+            \(\overrightarrow{BC} = \mathbf{b} - \mathbf{a}\).
+            Since \(\overrightarrow{PQ} = \tfrac{3}{5}\mathbf{b} - \tfrac{1}{2}\mathbf{a}\) is
+            <em>not</em> a scalar multiple of \(\mathbf{b} - \mathbf{a}\), \(PQ\) is not parallel to \(BC\).
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('basics')">← Vector basics</button>
+        <button class="btn-primary" onclick="showSection('components')">Column vectors →</button>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ COLUMN VECTORS ═══ -->
+<section id="components" class="section">
+
+    <div class="definitions-section">
+        <h3>Column vector notation</h3>
+        <p>
+            A vector can be described by its horizontal and vertical components. We write it as a
+            <strong>column vector</strong>:
+        </p>
+        \[\mathbf{a} = \begin{pmatrix} x \\ y \end{pmatrix}\]
+        <p>
+            where \(x\) is the change in the horizontal direction and \(y\) is the change in the
+            vertical direction.
+        </p>
+
+        <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin: 10px 0;">
+            <svg width="215" height="150" viewBox="0 0 215 150" xmlns="http://www.w3.org/2000/svg">
+                <!-- axes -->
+                <line x1="25" y1="120" x2="200" y2="120" stroke="#bdc3c7" stroke-width="1.5"/>
+                <line x1="25" y1="120" x2="25" y2="15" stroke="#bdc3c7" stroke-width="1.5"/>
+                <text x="203" y="123" font-size="11" fill="#aaa" font-family="Georgia" font-style="italic">x</text>
+                <text x="22" y="11" font-size="11" fill="#aaa" font-family="Georgia" font-style="italic">y</text>
+                <!-- vector a from (45,100) to (165,40) -->
+                <circle cx="45" cy="100" r="3" fill="#2c3e50"/>
+                <line x1="45" y1="100" x2="163" y2="42" stroke="#e74c3c" stroke-width="2.5"/>
+                <polygon points="165,40 153,47 157,58" fill="#e74c3c"/>
+                <text x="96" y="62" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+                <!-- horizontal component (3 units) -->
+                <line x1="45" y1="100" x2="165" y2="100" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="105" y="115" text-anchor="middle" font-size="11" fill="#2471a3" font-family="Georgia">3</text>
+                <!-- vertical component (4 units) -->
+                <line x1="165" y1="100" x2="165" y2="42" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="177" y="74" font-size="11" fill="#1e8449" font-family="Georgia">4</text>
+            </svg>
+            <div>\[\mathbf{a} = \begin{pmatrix}3\\4\end{pmatrix}\]</div>
+        </div>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Operations in column vector form</h3>
+        <p>To add or subtract column vectors, operate on each component separately:</p>
+        \[\begin{pmatrix} p \\ q \end{pmatrix} + \begin{pmatrix} r \\ s \end{pmatrix} = \begin{pmatrix} p+r \\ q+s \end{pmatrix}, \qquad \lambda\begin{pmatrix} p \\ q \end{pmatrix} = \begin{pmatrix} \lambda p \\ \lambda q \end{pmatrix}\]
+    </div>
+
+    <div class="definitions-section">
+        <h3>Unit vectors i and j</h3>
+        <p>
+            The unit vectors \(\mathbf{i}\) and \(\mathbf{j}\) point along the positive \(x\)- and
+            \(y\)-axes respectively:
+        </p>
+        \[\mathbf{i} = \begin{pmatrix}1\\0\end{pmatrix}, \qquad \mathbf{j} = \begin{pmatrix}0\\1\end{pmatrix}\]
+        <p>
+            Any 2D vector can be written as \(p\mathbf{i} + q\mathbf{j}\), which is equivalent
+            to the column vector \(\begin{pmatrix}p\\q\end{pmatrix}\).
+        </p>
+        <div class="notation-box">
+            <strong>Both notations are equivalent:</strong>
+            \(\;5\mathbf{i} + 2\mathbf{j} = \begin{pmatrix}5\\2\end{pmatrix}\)
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Column vector arithmetic</h4>
+        <p>
+            Given \(\mathbf{a} = 3\mathbf{i} - 4\mathbf{j}\) and \(\mathbf{b} = 2\mathbf{i} + 7\mathbf{j}\), find:
+            (a) \(\frac{1}{2}\mathbf{a}\) &nbsp;&nbsp; (b) \(\mathbf{a} + \mathbf{b}\) &nbsp;&nbsp; (c) \(3\mathbf{a} - 2\mathbf{b}\)
+        </p>
+        <div class="example-step">
+            <div class="step-label">Part (a) — \(\frac{1}{2}\mathbf{a}\)</div>
+            <button class="reveal-link" onclick="toggleEq('col-eq1', this)">Reveal solution ▸</button>
+            <div id="col-eq1" style="display:none;">
+            \[\tfrac{1}{2}\mathbf{a} = \tfrac{1}{2}(3\mathbf{i} - 4\mathbf{j}) = 1.5\mathbf{i} - 2\mathbf{j}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (b) — \(\mathbf{a} + \mathbf{b}\)</div>
+            <button class="reveal-link" onclick="toggleEq('col-eq2', this)">Reveal solution ▸</button>
+            <div id="col-eq2" style="display:none;">
+            \[\mathbf{a} + \mathbf{b} = (3+2)\mathbf{i} + (-4+7)\mathbf{j} = 5\mathbf{i} + 3\mathbf{j}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (c) — \(3\mathbf{a} - 2\mathbf{b}\)</div>
+            <button class="reveal-link" onclick="toggleEq('col-eq3', this)">Reveal solution ▸</button>
+            <div id="col-eq3" style="display:none;">
+            \[3\mathbf{a} - 2\mathbf{b} = (9\mathbf{i} - 12\mathbf{j}) - (4\mathbf{i} + 14\mathbf{j}) = 5\mathbf{i} - 26\mathbf{j}\]
+            </div>
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Parallel vectors</h4>
+        <p>
+            Show that the vectors \(6\mathbf{a} + 8\mathbf{b}\) and \(9\mathbf{a} + 12\mathbf{b}\) are parallel.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Factor out a scalar</div>
+            <button class="reveal-link" onclick="toggleEq('par2-eq1', this)">Reveal solution ▸</button>
+            <div id="par2-eq1" style="display:none;">
+            \[9\mathbf{a} + 12\mathbf{b} = \tfrac{3}{2}(6\mathbf{a} + 8\mathbf{b})\]
+            Since \(9\mathbf{a} + 12\mathbf{b} = \frac{3}{2}(6\mathbf{a} + 8\mathbf{b})\),
+            the second vector is a scalar multiple of the first, so they are <strong>parallel</strong>.
+            </div>
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>Parallel test:</strong> Two vectors are parallel if and only if one equals a
+        scalar multiple of the other, i.e. \(\mathbf{u} \parallel \mathbf{v} \iff \mathbf{u} = \lambda\mathbf{v}\)
+        for some non-zero scalar \(\lambda\).
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('operations')">← Operations</button>
+        <button class="btn-primary" onclick="showSection('magnitude')">Magnitude &amp; direction →</button>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ MAGNITUDE & DIRECTION ═══ -->
+<section id="magnitude" class="section">
+
+    <div class="definitions-section">
+        <h3>Magnitude of a vector</h3>
+        <p>
+            The <strong>magnitude</strong> (or <em>modulus</em>) of a vector is its length.
+            For the vector \(\mathbf{a} = x\mathbf{i} + y\mathbf{j} = \begin{pmatrix}x\\y\end{pmatrix}\),
+            Pythagoras' theorem gives:
+        </p>
+        \[|\mathbf{a}| = \sqrt{x^2 + y^2}\]
+        <p>
+            The magnitude is always a non-negative scalar.
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Unit vectors</h3>
+        <p>
+            A <strong>unit vector</strong> has magnitude 1. To find a unit vector in the direction
+            of \(\mathbf{a}\), divide by its magnitude:
+        </p>
+        \[\hat{\mathbf{a}} = \frac{\mathbf{a}}{|\mathbf{a}|}\]
+        <p>
+            The notation \(\hat{\mathbf{a}}\) (read "a hat") denotes a unit vector in the direction of \(\mathbf{a}\).
+        </p>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Direction of a vector</h3>
+        <p>
+            The direction is given by the angle the vector makes with a reference axis (usually the
+            positive \(x\)-axis or, in navigation problems, North).
+            For \(\mathbf{a} = x\mathbf{i} + y\mathbf{j}\):
+        </p>
+        \[\tan\theta = \frac{y}{x}\]
+        <p>
+            Always draw a sketch to identify which angle you need — the formula gives the angle
+            in the right-angled triangle, which may need adjusting by 90°, 180°, etc.
+        </p>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Magnitude, unit vector and angle</h4>
+        <p>
+            Given \(\mathbf{a} = 3\mathbf{i} + 4\mathbf{j}\) and \(\mathbf{b} = -2\mathbf{i} - 4\mathbf{j}\):
+            (a) Find \(|\mathbf{a}|\) &nbsp; (b) Find a unit vector in the direction of \(\mathbf{a}\) &nbsp;
+            (c) Find the exact value of \(|2\mathbf{a} + \mathbf{b}|\)
+        </p>
+        <div class="example-step">
+            <div class="step-label">Part (a) — Magnitude of a</div>
+            <button class="reveal-link" onclick="toggleEq('mag-eq1', this)">Reveal solution ▸</button>
+            <div id="mag-eq1" style="display:none;">
+            \[|\mathbf{a}| = \sqrt{3^2 + 4^2} = \sqrt{9+16} = \sqrt{25} = 5\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (b) — Unit vector in direction of a</div>
+            <button class="reveal-link" onclick="toggleEq('mag-eq2', this)">Reveal solution ▸</button>
+            <div id="mag-eq2" style="display:none;">
+            \[\hat{\mathbf{a}} = \frac{\mathbf{a}}{|\mathbf{a}|} = \frac{3\mathbf{i} + 4\mathbf{j}}{5} = \frac{1}{5}(3\mathbf{i}+4\mathbf{j}) = \begin{pmatrix}0.6\\0.8\end{pmatrix}\]
+            Check: \(\sqrt{0.6^2 + 0.8^2} = \sqrt{0.36+0.64} = \sqrt{1} = 1\checkmark\)
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (c) — \(|2\mathbf{a} + \mathbf{b}|\)</div>
+            First find the vector, then its magnitude.
+            <button class="reveal-link" onclick="toggleEq('mag-eq3', this)">Reveal solution ▸</button>
+            <div id="mag-eq3" style="display:none;">
+            \[2\mathbf{a} + \mathbf{b} = 2\begin{pmatrix}3\\4\end{pmatrix} + \begin{pmatrix}-2\\-4\end{pmatrix} = \begin{pmatrix}6-2\\8-4\end{pmatrix} = \begin{pmatrix}4\\4\end{pmatrix}\]
+            \[|2\mathbf{a}+\mathbf{b}| = \sqrt{4^2+4^2} = \sqrt{32} = 4\sqrt{2}\]
+            </div>
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Angle with the positive x-axis</h4>
+        <p>Find the angle the vector \(-5\mathbf{i} + 2\mathbf{j}\) makes with the positive \(x\)-axis, to 1 d.p.</p>
+        <div class="example-step">
+            <div class="step-label">Sketch then calculate</div>
+            The vector has negative \(x\)-component and positive \(y\)-component — it lies in the second quadrant.
+            <button class="reveal-link" onclick="toggleEq('ang-eq1', this)">Reveal solution ▸</button>
+            <div id="ang-eq1" style="display:none;">
+            In the reference right-angled triangle: \(\tan\alpha = \frac{2}{5}\), so \(\alpha = \tan^{-1}\!\left(\frac{2}{5}\right) = 21.8°\).
+            Since the vector is in the second quadrant:
+            \[\theta = 180° - 21.8° = 158.2°\]
+            </div>
+        </div>
+        <div class="key-result">
+            Always draw a sketch. The formula \(\tan\theta = y/x\) gives the acute reference angle;
+            you must then adjust based on which quadrant the vector lies in.
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Navigation (bearings)</h4>
+        <p>
+            A girl walks 2 km due east from a fixed point \(O\) to \(A\), then 3 km due south from
+            \(A\) to \(B\). Find: (a) total distance walked &nbsp; (b) \(\overrightarrow{OB}\) &nbsp;
+            (c) \(|\overrightarrow{OB}|\) &nbsp; (d) bearing of \(B\) from \(O\).
+        </p>
+        <p style="font-size:0.9em; color:#666;">
+            (In mechanics/navigation, \(\mathbf{i}\) = East, \(\mathbf{j}\) = North.)
+        </p>
+        <div class="example-step">
+            <div class="step-label">Part (a) — Total distance</div>
+            <button class="reveal-link" onclick="toggleEq('nav-eq1', this)">Reveal solution ▸</button>
+            <div id="nav-eq1" style="display:none;">
+            Total distance \(= 2 + 3 = 5\) km. (Note: this is the distance walked, not the displacement.)
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (b) — Position vector of B</div>
+            <button class="reveal-link" onclick="toggleEq('nav-eq2', this)">Reveal solution ▸</button>
+            <div id="nav-eq2" style="display:none;">
+            East is \(+\mathbf{i}\), South is \(-\mathbf{j}\):
+            \[\overrightarrow{OB} = 2\mathbf{i} - 3\mathbf{j} \text{ km}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (c) — Distance OB</div>
+            <button class="reveal-link" onclick="toggleEq('nav-eq3', this)">Reveal solution ▸</button>
+            <div id="nav-eq3" style="display:none;">
+            \[|\overrightarrow{OB}| = \sqrt{2^2+3^2} = \sqrt{13} \approx 3.61 \text{ km}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (d) — Bearing of B from O</div>
+            Bearings are measured clockwise from North (0° = North, 090° = East, 180° = South, 270° = West).
+            <button class="reveal-link" onclick="toggleEq('nav-eq4', this)">Reveal solution ▸</button>
+            <div id="nav-eq4" style="display:none;">
+            The vector \(2\mathbf{i} - 3\mathbf{j}\) points East and South. In the triangle, \(\tan\theta = \frac{3}{2}\),
+            so \(\theta = 56.3°\). Bearing \(= 90° + 56.3° = 146.3°\).
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('components')">← Column vectors</button>
+        <button class="btn-primary" onclick="showSection('position')">Position vectors →</button>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ POSITION VECTORS ═══ -->
+<section id="position" class="section">
+
+    <div class="definitions-section">
+        <h3>What is a position vector?</h3>
+        <p>
+            A <strong>position vector</strong> gives the location of a point relative to a fixed
+            origin \(O\). The position vector of point \(A\) is \(\overrightarrow{OA}\).
+        </p>
+        <p>
+            If \(\overrightarrow{OA} = a\mathbf{i} + b\mathbf{j}\), then \(A\) has coordinates \((a, b)\)
+            and position vector \(\begin{pmatrix}a\\b\end{pmatrix}\).
+        </p>
+        <div class="key-result">
+            <strong>Key formula:</strong>
+            \[\overrightarrow{AB} = \overrightarrow{OB} - \overrightarrow{OA}\]
+            The vector from \(A\) to \(B\) equals the position vector of \(B\) minus the position vector of \(A\).
+        </div>
+    </div>
+
+    <div class="definitions-section">
+        <h3>Dividing a line segment in a ratio</h3>
+        <p>
+            If point \(P\) divides \(AB\) in the ratio \(\lambda : \mu\), then the position vector of \(P\) is:
+        </p>
+        \[\overrightarrow{OP} = \overrightarrow{OA} + \frac{\lambda}{\lambda+\mu}\overrightarrow{AB}
+        = \frac{\mu\,\overrightarrow{OA} + \lambda\,\overrightarrow{OB}}{\lambda + \mu}\]
+        <p>
+            Special case — midpoint (\(\lambda = \mu = 1\)):
+        </p>
+        \[\overrightarrow{OM} = \frac{\overrightarrow{OA} + \overrightarrow{OB}}{2}\]
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Position vectors and distance</h4>
+        <p>
+            \(\overrightarrow{OA} = 5\mathbf{i} - 2\mathbf{j}\) and \(\overrightarrow{AB} = 3\mathbf{i} + 4\mathbf{j}\).
+            Find: (a) the position vector of \(B\) &nbsp; (b) \(|\overrightarrow{OB}|\) in simplified surd form.
+        </p>
+        <div class="example-step">
+            <div class="step-label">Part (a) — Position vector of B</div>
+            <button class="reveal-link" onclick="toggleEq('pos-eq1', this)">Reveal solution ▸</button>
+            <div id="pos-eq1" style="display:none;">
+            \[\overrightarrow{OB} = \overrightarrow{OA} + \overrightarrow{AB} = \begin{pmatrix}5\\-2\end{pmatrix} + \begin{pmatrix}3\\4\end{pmatrix} = \begin{pmatrix}8\\2\end{pmatrix} = 8\mathbf{i} + 2\mathbf{j}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (b) — \(|\overrightarrow{OB}|\)</div>
+            <button class="reveal-link" onclick="toggleEq('pos-eq2', this)">Reveal solution ▸</button>
+            <div id="pos-eq2" style="display:none;">
+            \[|\overrightarrow{OB}| = \sqrt{8^2 + 2^2} = \sqrt{64+4} = \sqrt{68} = \sqrt{4 \times 17} = 2\sqrt{17}\]
+            </div>
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Point dividing a segment</h4>
+        <p>
+            \(OABC\) is a parallelogram. \(\overrightarrow{OA} = 2\mathbf{i} + 4\mathbf{j}\),
+            \(\overrightarrow{OC} = 7\mathbf{i}\).
+            \(P\) divides \(AC\) in the ratio \(3:2\).
+            Find, in \(\mathbf{i},\mathbf{j}\) format and column vector format:
+            (a) \(\overrightarrow{AC}\) &nbsp; (b) \(\overrightarrow{OP}\)
+        </p>
+        <div class="example-step">
+            <div class="step-label">Part (a) — \(\overrightarrow{AC}\)</div>
+            <button class="reveal-link" onclick="toggleEq('div-eq1', this)">Reveal solution ▸</button>
+            <div id="div-eq1" style="display:none;">
+            In a parallelogram, \(\overrightarrow{OB} = \overrightarrow{OA} + \overrightarrow{AB} = \overrightarrow{OA} + \overrightarrow{OC}\)
+            (since \(\overrightarrow{AB} = \overrightarrow{OC}\)):
+            \[\overrightarrow{AC} = -\overrightarrow{OA} + \overrightarrow{OC} = -\begin{pmatrix}2\\4\end{pmatrix} + \begin{pmatrix}7\\0\end{pmatrix} = \begin{pmatrix}5\\-4\end{pmatrix} = 5\mathbf{i} - 4\mathbf{j}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Part (b) — \(\overrightarrow{OP}\), where \(P\) divides \(AC\) in ratio \(3:2\)</div>
+            <button class="reveal-link" onclick="toggleEq('div-eq2', this)">Reveal solution ▸</button>
+            <div id="div-eq2" style="display:none;">
+            \[\overrightarrow{OP} = \overrightarrow{OA} + \frac{3}{5}\overrightarrow{AC}
+            = \begin{pmatrix}2\\4\end{pmatrix} + \frac{3}{5}\begin{pmatrix}5\\-4\end{pmatrix}
+            = \begin{pmatrix}2\\4\end{pmatrix} + \begin{pmatrix}3\\-\frac{12}{5}\end{pmatrix}
+            = \begin{pmatrix}5\\8/5\end{pmatrix} = 5\mathbf{i} + \tfrac{8}{5}\mathbf{j}\]
+
+            Or equivalently:
+            \[\overrightarrow{OP} = \frac{2\,\overrightarrow{OA} + 3\,\overrightarrow{OC}}{5} = \frac{2\begin{pmatrix}2\\4\end{pmatrix} + 3\begin{pmatrix}7\\0\end{pmatrix}}{5} = \frac{\begin{pmatrix}4+21\\8+0\end{pmatrix}}{5} = \begin{pmatrix}5\\8/5\end{pmatrix}\]
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('magnitude')">← Magnitude &amp; direction</button>
+        <button class="btn-primary" onclick="showSection('geometry')">Geometric problems →</button>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ GEOMETRIC PROBLEMS ═══ -->
+<section id="geometry" class="section">
+
+    <div class="definitions-section">
+        <h3>Proving geometric results with vectors</h3>
+        <p>
+            Vectors are a powerful tool for proving geometric results. The key technique is to
+            express unknown vectors in terms of known ones, using the triangle law and the
+            property of parallel vectors.
+        </p>
+        <table class="vector-table">
+            <tr><th>Geometric fact</th><th>Vector statement</th></tr>
+            <tr><td>\(AB \parallel CD\)</td><td>\(\overrightarrow{CD} = \lambda\,\overrightarrow{AB}\) for some scalar \(\lambda\)</td></tr>
+            <tr><td>\(A\), \(B\), \(C\) are collinear</td><td>\(\overrightarrow{AB} = \lambda\,\overrightarrow{AC}\) for some scalar \(\lambda\)</td></tr>
+            <tr><td>\(M\) is midpoint of \(AB\)</td><td>\(\overrightarrow{OM} = \frac{1}{2}(\overrightarrow{OA}+\overrightarrow{OB})\)</td></tr>
+            <tr><td>\(AB = CD\) (equal length &amp; direction)</td><td>\(\overrightarrow{AB} = \overrightarrow{CD}\)</td></tr>
+        </table>
+        <div class="notation-box">
+            <strong>Comparing coefficients:</strong> If \(\mathbf{a}\) and \(\mathbf{b}\) are two
+            non-parallel, non-zero vectors and \(p\mathbf{a} + q\mathbf{b} = r\mathbf{a} + s\mathbf{b}\),
+            then \(p = r\) and \(q = s\).
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Diagonals of a parallelogram bisect each other</h4>
+        <p>
+            \(OABC\) is a parallelogram. The vectors \(\mathbf{a}\) and \(\mathbf{c}\) are equal to
+            \(\overrightarrow{OA}\) and \(\overrightarrow{OC}\) respectively.
+            \(P\) is the point where diagonals \(OB\) and \(AC\) intersect.
+            Prove that the diagonals bisect each other.
+        </p>
+
+        <button class="reveal-link" onclick="toggleDiagram('geo-diag1', this)">Reveal diagram ▸</button>
+        <div id="geo-diag1" style="display:none;">
+        <svg width="100%" height="220" viewBox="0 0 440 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- parallelogram OABC: O(40,170) A(200,60) B(380,60) C(220,170) -->
+            <polygon points="40,170 200,60 380,60 220,170" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+            <!-- actual edges -->
+            <line x1="40" y1="170" x2="200" y2="60" stroke="#8d6e3f" stroke-width="2.5"/>
+            <line x1="40" y1="170" x2="220" y2="170" stroke="#8d6e3f" stroke-width="2.5"/>
+            <line x1="200" y1="60" x2="380" y2="60" stroke="#8d6e3f" stroke-width="2.5"/>
+            <line x1="220" y1="170" x2="380" y2="60" stroke="#8d6e3f" stroke-width="2.5"/>
+            <!-- diagonals -->
+            <line x1="40" y1="170" x2="380" y2="60" stroke="#3498db" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="200" y1="60" x2="220" y2="170" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <!-- intersection P: midpoint of OB = (210,115) — label 9px right -->
+            <circle cx="210" cy="115" r="5" fill="#8e44ad"/>
+            <text x="219" y="113" font-size="12" fill="#6c3483" font-family="Georgia" font-weight="bold">P</text>
+            <!-- vertices -->
+            <circle cx="40" cy="170" r="4" fill="#2c3e50"/>
+            <circle cx="200" cy="60" r="4" fill="#2c3e50"/>
+            <circle cx="380" cy="60" r="4" fill="#2c3e50"/>
+            <circle cx="220" cy="170" r="4" fill="#2c3e50"/>
+            <!-- O: below-left, 13px from O(40,170) -->
+            <text x="24" y="188" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">O</text>
+            <!-- A: above-left, 11px above A(200,60) -->
+            <text x="194" y="48" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">A</text>
+            <!-- B: above-right, 11px above B(380,60) -->
+            <text x="385" y="48" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">B</text>
+            <!-- C: below-right, 13px from C(220,170) -->
+            <text x="225" y="190" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
+            <!-- "a": 8px left of OA midpoint (120,115) -->
+            <text x="110" y="112" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
+            <!-- "c": 8px below OC midpoint (130,170) -->
+            <text x="126" y="182" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">c</text>
+        </svg>
+        </div>
+
+        <div class="example-step">
+            <div class="step-label">Step 1 — Express \(\overrightarrow{OB}\) and \(\overrightarrow{AC}\)</div>
+            <button class="reveal-link" onclick="toggleEq('geo-eq1', this)">Reveal solution ▸</button>
+            <div id="geo-eq1" style="display:none;">
+            \[\overrightarrow{OB} = \overrightarrow{OC} + \overrightarrow{CB} = \mathbf{c} + \mathbf{a}\]
+            (since \(\overrightarrow{CB} = \overrightarrow{OA} = \mathbf{a}\) — opposite sides of a parallelogram)
+            \[\overrightarrow{AC} = \overrightarrow{AO} + \overrightarrow{OC} = -\mathbf{a} + \mathbf{c} = \mathbf{c} - \mathbf{a}\]
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 2 — Let P lie on both diagonals with parameters \(\lambda\) and \(\mu\)</div>
+            <button class="reveal-link" onclick="toggleEq('geo-eq2', this)">Reveal solution ▸</button>
+            <div id="geo-eq2" style="display:none;">
+            \(P\) on \(OB\): \(\overrightarrow{OP} = \lambda(\mathbf{c}+\mathbf{a})\)<br>
+            \(P\) on \(AC\): \(\overrightarrow{OP} = \overrightarrow{OA} + \mu\,\overrightarrow{AC} = \mathbf{a} + \mu(\mathbf{c}-\mathbf{a}) = (1-\mu)\mathbf{a} + \mu\mathbf{c}\)
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 3 — Compare coefficients and solve</div>
+            <button class="reveal-link" onclick="toggleEq('geo-eq3', this)">Reveal solution ▸</button>
+            <div id="geo-eq3" style="display:none;">
+            Equating: \(\lambda(\mathbf{c}+\mathbf{a}) = (1-\mu)\mathbf{a} + \mu\mathbf{c}\)
+            <br>Coefficients of \(\mathbf{a}\): \(\lambda = 1 - \mu\)
+            <br>Coefficients of \(\mathbf{c}\): \(\lambda = \mu\)
+            <br>Solving: \(\lambda = \mu = \tfrac{1}{2}\).
+            <br><br>Since \(\lambda = \mu = \tfrac{1}{2}\), \(P\) is the midpoint of \(OB\) and also the midpoint of \(AC\).
+            Therefore the diagonals bisect each other. \(\square\)
+            </div>
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Worked Example — Collinearity</h4>
+        <p>
+            \(OAB\) is a triangle. \(\overrightarrow{OA} = \mathbf{a}\) and \(\overrightarrow{OB} = \mathbf{b}\).
+            The point \(M\) divides \(OA\) in the ratio \(3:2\) and \(MN\) is parallel to \(OB\).
+            Show that \(A\), \(N\) and \(B\) are collinear and find \(AN:NB\).
+        </p>
+        <div class="example-step">
+            <div class="step-label">Step 1 — Find \(\overrightarrow{ON}\)</div>
+            <button class="reveal-link" onclick="toggleEq('col2-eq1', this)">Reveal solution ▸</button>
+            <div id="col2-eq1" style="display:none;">
+            \(M\) divides \(OA\) in ratio \(3:2\), so \(\overrightarrow{OM} = \tfrac{3}{5}\mathbf{a}\).
+            <br>\(MN \parallel OB\), so \(\overrightarrow{MN} = k\mathbf{b}\) for some scalar \(k\).
+            <br>Since \(N\) lies on \(AB\): \(\overrightarrow{ON} = \overrightarrow{OA} + t\,\overrightarrow{AB} = \mathbf{a} + t(\mathbf{b}-\mathbf{a}) = (1-t)\mathbf{a} + t\mathbf{b}\).
+            <br>Also \(\overrightarrow{ON} = \overrightarrow{OM} + \overrightarrow{MN} = \tfrac{3}{5}\mathbf{a} + k\mathbf{b}\).
+            <br>Comparing: \(1-t = \tfrac{3}{5} \Rightarrow t = \tfrac{2}{5}\) and \(k = t = \tfrac{2}{5}\).
+            </div>
+        </div>
+        <div class="example-step">
+            <div class="step-label">Step 2 — Conclude collinearity and find ratio</div>
+            <button class="reveal-link" onclick="toggleEq('col2-eq2', this)">Reveal solution ▸</button>
+            <div id="col2-eq2" style="display:none;">
+            Since \(t = \tfrac{2}{5}\), point \(N\) lies on segment \(AB\) (between \(A\) and \(B\)),
+            confirming that \(A\), \(N\), \(B\) are collinear.
+            <br>\(AN : NB = t : (1-t) = \tfrac{2}{5} : \tfrac{3}{5} = 2:3\).
+            </div>
+        </div>
+    </div>
+
+    <div class="worked-example">
+        <h4>Exam-style Problem — Parallelogram with a trapezium</h4>
+        <p>
+            \(ABCD\) is a trapezium with \(AB \parallel DC\) and \(DC = 4AB\).
+            \(M\) divides \(DC\) such that \(DM:MC = 3:2\).
+            \(\overrightarrow{AB} = \mathbf{a}\) and \(\overrightarrow{BC} = \mathbf{b}\).
+            Find \(\overrightarrow{AM}\) in terms of \(\mathbf{a}\) and \(\mathbf{b}\).
+        </p>
+        <div class="example-step">
+            <div class="step-label">Set up the geometry</div>
+            Since \(DC = 4AB\) and they are parallel: \(\overrightarrow{DC} = 4\mathbf{a}\).
+            Route from A to M via B, C, D.
+            <button class="reveal-link" onclick="toggleEq('trap-eq1', this)">Reveal solution ▸</button>
+            <div id="trap-eq1" style="display:none;">
+            \[\overrightarrow{AD} = \overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CD} = \mathbf{a} + \mathbf{b} + (-4\mathbf{a}) = \mathbf{b} - 3\mathbf{a}\]
+            \[\overrightarrow{DM} = \frac{3}{5}\overrightarrow{DC} = \frac{3}{5}(4\mathbf{a}) = \frac{12}{5}\mathbf{a}\]
+            \[\overrightarrow{AM} = \overrightarrow{AD} + \overrightarrow{DM} = (\mathbf{b} - 3\mathbf{a}) + \frac{12}{5}\mathbf{a} = \mathbf{b} - \frac{3}{5}\mathbf{a}\]
+            </div>
+        </div>
+        <div class="key-result">
+            \(\overrightarrow{AM} = \mathbf{b} - \dfrac{3}{5}\mathbf{a}\)
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <strong>General strategy for geometric proofs:</strong>
+        (1) Choose a fixed origin and label known vectors.
+        (2) Express all required vectors using routes through known points.
+        (3) To prove parallelism, show one vector is a scalar multiple of another.
+        (4) To prove collinearity, show \(\overrightarrow{AB}\) and \(\overrightarrow{AC}\) are parallel (and share point \(A\)).
+        (5) Use comparing coefficients when a point lies on two different lines.
+    </div>
+
+    <div class="cta-section" style="border:none; padding-top:10px; margin-top:30px;">
+        <button class="btn-primary" onclick="showSection('position')">← Position vectors</button>
+        <button class="btn-primary" onclick="showSection('intro')">← Back to Introduction</button>
+    </div>
+</section>
+
+    </main>
+
+    <footer>
+        <p>Vectors: Plane Geometry — Year 1 Pure Mathematics</p>
+    </footer>
+</div>
+</body>
+</html>
