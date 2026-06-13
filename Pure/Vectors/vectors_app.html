@@ -243,7 +243,10 @@
             }
         }
 
-        function showSection(id) {
+        function showSection(id, pushState) {
+            // Fall back to intro if id is unknown
+            if (!sectionTitles[id]) id = 'intro';
+
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             const nav = document.getElementById('navigation');
@@ -263,7 +266,24 @@
                 ],
                 throwOnError: false
             });
+
+            // Update the URL hash without triggering a scroll
+            if (pushState !== false) {
+                const newHash = id === 'intro' ? '' : '#' + id;
+                if (window.location.hash !== newHash) {
+                    history.pushState(null, '', newHash || window.location.pathname);
+                }
+            }
         }
+
+        // Navigate to the section named in the URL hash on load and on back/forward
+        function loadFromHash() {
+            const id = window.location.hash.replace('#', '') || 'intro';
+            showSection(id, false);
+        }
+
+        window.addEventListener('hashchange', loadFromHash);
+        document.addEventListener('DOMContentLoaded', loadFromHash);
     </script>
 </head>
 <body>
