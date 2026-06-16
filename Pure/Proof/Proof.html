@@ -445,6 +445,7 @@
             'if-then':                 { header: 'If \u2026 then \u2026',                       subtitle: 'Direct proofs and the conditional statement' },
             'algebraic':               { header: 'Algebraic proofs',                           subtitle: 'Fundamental algebraic identities and their proofs' },
             'algebraic-basic':         { header: 'Basic algebra',                              subtitle: 'Fundamental algebraic identities' },
+            'algebraic-vectors':       { header: 'Basic vectors',                              subtitle: 'Dot product, cross product, and perpendicularity proofs' },
             'algebraic-inequalities':  { header: 'Algebraic inequalities',                     subtitle: 'Fundamental inequality proofs' },
             'moduli-cases':            { header: 'Moduli and cases',                           subtitle: 'Basic real number proofs involving moduli and cases' },
             'number-theory':           { header: 'Basic number theory',                        subtitle: 'Fundamental definitions and proofs in number theory' },
@@ -982,7 +983,7 @@
                     <button onclick="showSection('intro');">← Back to home</button>
                 </nav>
 
-                <h2>Direct Proofs</h2>
+                <h2>Direct proofs</h2>
 
                 <div class="definitions-section">
                     <h3>The <em>If &hellip; then &hellip;</em> statement</h3>
@@ -1107,6 +1108,7 @@
                     <p class="cta-text">Choose a category to explore:</p>
                     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                         <button class="btn-primary" onclick="showSection('algebraic-basic');">Basic algebra →</button>
+                        <button class="btn-primary" onclick="showSection('algebraic-vectors');">Basic Vectors →</button>
 
                     </div>
                 </div>
@@ -1639,6 +1641,220 @@
                 <div style="margin-top: 30px; text-align: center;">
                     <p style="color: #7f8c8d;">More inequality proofs will be added to this collection over time.</p>
                 </div>
+            </section>
+
+            <!-- Basic Vectors Sub-section -->
+            <section id="algebraic-vectors" class="section">
+				
+				<nav class="nav-breadcrumb" style="text-align: center; margin-bottom: 30px;">
+                    <button onclick="showSection('algebraic');">← Back to Algebraic proofs</button>
+                </nav>
+				
+                <div class="intro">
+                    <p>This section develops the dot product and cross product from first principles, establishing key properties including the geometric interpretation of the dot product and the perpendicularity of the cross product to the plane it spans.</p>
+                    <p>Prerequisite vector knowledge: <a href="https://maths-apps.crlong.uk/Pure/Vectors/vectors_app.html">Basic vectors app</a></p>
+                </div>
+
+
+
+                <!-- Algebraic Rules (moved to top) -->
+                <div class="definition-box" style="margin-bottom: 30px;">
+                    <h3>Algebraic rules used</h3>
+                    <div class="proof-step">
+                        <div class="step-number">1. Distributivity</div>
+                        <div class="step-content">
+                            \[\mathbf{u}\cdot(\mathbf{v}+\mathbf{w}) = \mathbf{u}\cdot\mathbf{v}+\mathbf{u}\cdot\mathbf{w}.\]
+                        </div>
+                    </div>
+                    <div class="proof-step">
+                        <div class="step-number">2. Scalar multiplication</div>
+                        <div class="step-content">
+                            \[\mathbf{u}\cdot(\lambda\mathbf{v}) = \lambda(\mathbf{u}\cdot\mathbf{v}).\]
+                        </div>
+                    </div>
+                    <div class="proof-step">
+                        <div class="step-number">3. Commutativity of scalar multiplication</div>
+                        <div class="step-content">
+                            \[ab=ba.\]
+                        </div>
+                    </div>
+                    <div class="proof-step">
+                        <div class="step-number">4. Cancellation</div>
+                        <div class="step-content">
+                            \[x - x = 0.\]
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Basic vectors</h2>
+
+                <div class="topic-grid">
+
+                    <!-- Section 1: Dot Product Definition -->
+                    <article class="topic-card">
+                        <h3>Definition: Dot product in \(\mathbb{R}^2\)</h3>
+                        <div class="formula">
+                            \[\mathbf{a}\cdot\mathbf{b} = |\mathbf{a}|\,|\mathbf{b}|\cos\theta\]
+                        </div>
+                        <p class="description">
+                            Let \(\mathbf{a}=(a_x,a_y)\) and \(\mathbf{b}=(b_x,b_y)\). The dot product is defined by
+                            \[\mathbf{a}\cdot\mathbf{b} = a_xb_x+a_yb_y.\]
+                            The magnitudes are \(|\mathbf{a}|=\sqrt{a_x^2+a_y^2}\) and \(|\mathbf{b}|=\sqrt{b_x^2+b_y^2}\).
+                            <br><br>
+                            If \(\theta\) is the angle between the vectors, then <strong>prove</strong>
+                            \[\mathbf{a}\cdot\mathbf{b} = |\mathbf{a}|\,|\mathbf{b}|\cos\theta.\]
+                        </p>
+                        <button class="topic-link" id="proof-dot-product-link" onclick="toggleProof('proof-dot-product')">Show proof →</button>
+
+                        <div id="proof-dot-product" class="proof-container">
+                            <div class="proof-header">Proof: Dot Product Formula</div>
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Cosine Rule</div>
+                                <div class="step-content">
+                                    Apply the cosine rule to the triangle formed by \(\mathbf{a}\), \(\mathbf{b}\), and \(\mathbf{a}-\mathbf{b}\):
+                                    \[|\mathbf{a}-\mathbf{b}|^2 = |\mathbf{a}|^2+|\mathbf{b}|^2 - 2|\mathbf{a}||\mathbf{b}|\cos\theta.\]
+                                </div>
+                                <div class="step-justification">Cosine rule applied to the triangle formed by the two vectors</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Expand in coordinates</div>
+                                <div class="step-content">
+                                    \begin{align*}
+                                    |\mathbf{a}-\mathbf{b}|^2 &= (a_x-b_x)^2+(a_y-b_y)^2\\
+                                    &= a_x^2+a_y^2+b_x^2+b_y^2 - 2(a_xb_x+a_yb_y).
+                                    \end{align*}
+                                </div>
+                                <div class="step-justification">Expanding using the component definition of magnitude</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Substitute magnitudes</div>
+                                <div class="step-content">
+                                    Since \(a_x^2+a_y^2=|\mathbf{a}|^2\) and \(b_x^2+b_y^2=|\mathbf{b}|^2\), we obtain
+                                    \[|\mathbf{a}-\mathbf{b}|^2 = |\mathbf{a}|^2+|\mathbf{b}|^2 - 2(\mathbf{a}\cdot\mathbf{b}).\]
+                                </div>
+                                <div class="step-justification">Recognising the component sums as squared magnitudes</div>
+                            </div>
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> Comparing the two expressions gives
+                                \[\mathbf{a}\cdot\mathbf{b} = |\mathbf{a}||\mathbf{b}|\cos\theta. \quad\square\]
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 3 (incorporating Section 2): Definition of the Cross Product -->
+                    <article class="topic-card">
+                        <h3>Definition: Cross product in \(\mathbb{R}^3\)</h3>
+                        <div class="formula">
+                            \[\mathbf{r} = \mathbf{c}\times\mathbf{d}\]
+                        </div>
+                        <p class="description">
+                            Let \(\mathbf{c}=(c_x,c_y,c_z)^T\) and \(\mathbf{d}=(d_x,d_y,d_z)^T\) be two non-parallel vectors in \(\mathbb{R}^3\).
+                        </p>
+                        <p class="description">
+                            Let \(\mathbf{e}_x,\mathbf{e}_y,\mathbf{e}_z\) be the standard basis vectors. Define \(\mathbf{r}=\mathbf{c}\times\mathbf{d}\) using the determinant
+                            \[\mathbf{r} = \begin{vmatrix}\mathbf{e}_x & \mathbf{e}_y & \mathbf{e}_z\\ c_x & c_y & c_z\\ d_x & d_y & d_z\end{vmatrix}.\]
+                            Expanding along the first row,
+                            \[\mathbf{r} = \begin{pmatrix}c_yd_z-c_zd_y\\ c_zd_x-c_xd_z\\ c_xd_y-c_yd_x\end{pmatrix}.\]
+                        </p>
+
+                        <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+
+                        <h3><strong>Prove:</strong> Perpendicular vectors have zero dot product</h3>
+                        <div class="formula">
+                            \[\mathbf{a}\perp\mathbf{b} \implies \mathbf{a}\cdot\mathbf{b}=0\]
+                        </div>
+                        <p class="description">
+                            Suppose \(\mathbf{a}\perp\mathbf{b}\), so \(\theta=\tfrac{\pi}{2}\). Using the dot product formula,
+                            \[\mathbf{a}\cdot\mathbf{b} = |\mathbf{a}||\mathbf{b}|\cos\tfrac{\pi}{2} = 0.\]
+                        </p>
+                        <button class="topic-link" id="proof-perp-zero-link" onclick="toggleProof('proof-perp-zero')">Show proof →</button>
+
+                        <div id="proof-perp-zero" class="proof-container">
+                            <div class="proof-header">Proof with Example in \(\mathbb{R}^2\)</div>
+                            <div class="proof-step">
+                                <div class="step-number">Proof</div>
+                                <div class="step-content">
+                                    Since \(\mathbf{a}\perp\mathbf{b}\), we have \(\theta=\frac{\pi}{2}\). Using the result of the dot product formula,
+                                    \[\mathbf{a}\cdot\mathbf{b} = |\mathbf{a}||\mathbf{b}|\cos\frac{\pi}{2} = 0.\]
+                                </div>
+                                <div class="step-justification">Direct application of the dot product formula with \(\cos(\pi/2)=0\)</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="step-number">Example in \(\mathbb{R}^2\)</div>
+                                <div class="step-content">
+                                    Let \(\mathbf{u}=(e_x,e_y)\) and \(\mathbf{v}=(-e_y,e_x)\). Then
+                                    \[\mathbf{u}\cdot\mathbf{v} = e_x(-e_y)+e_y(e_x) = -e_xe_y+e_xe_y = 0.\]
+                                    Hence \((e_x,e_y)\perp(-e_y,e_x)\).
+                                </div>
+                                <div class="step-justification">Concrete verification using components</div>
+                            </div>
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> \(\mathbf{a}\perp\mathbf{b} \implies \mathbf{a}\cdot\mathbf{b}=0. \quad\square\)
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 6 + 7: The cross product is perpendicular to the spanned plane -->
+                    <article class="topic-card">
+                        <h3>Definition: The cross product is normal to the spanned plane</h3>
+                        <div class="formula">
+                            \[\mathbf{r} = \mathbf{c}\times\mathbf{d} \perp \{\lambda\mathbf{c}+\mu\mathbf{d} : \lambda,\mu\in\mathbb{R}\}\]
+                        </div>
+                        <p class="description">
+                            Every vector in the plane generated by \(\mathbf{c}\) and \(\mathbf{d}\) has the form
+                            \[\mathbf{p} = \lambda\mathbf{c}+\mu\mathbf{d}, \qquad \lambda,\mu\in\mathbb{R}.\]
+                            The cross product \(\mathbf{r}=\mathbf{c}\times\mathbf{d}\) is perpendicular to this plane; that is, \(\mathbf{r}\) is a normal vector to the plane spanned by \(\mathbf{c}\) and \(\mathbf{d}\).
+                        </p>
+                        <button class="topic-link" id="proof-cross-perp-link" onclick="toggleProof('proof-cross-perp')">Show proof →</button>
+
+                        <div id="proof-cross-perp" class="proof-container">
+                            <div class="proof-header">Proof: \(\mathbf{r}\) is Perpendicular to the Plane</div>
+                            <div class="proof-step">
+                                <div class="step-number">Step 1: Reduce to two conditions</div>
+                                <div class="step-content">
+                                    Consider \(\mathbf{r}\cdot(\lambda\mathbf{c}+\mu\mathbf{d})\). By distributivity,
+                                    \[\mathbf{r}\cdot(\lambda\mathbf{c}+\mu\mathbf{d}) = \lambda(\mathbf{r}\cdot\mathbf{c})+\mu(\mathbf{r}\cdot\mathbf{d}).\]
+                                    It suffices to prove \(\mathbf{r}\cdot\mathbf{c}=0\) and \(\mathbf{r}\cdot\mathbf{d}=0\).
+                                </div>
+                                <div class="step-justification">Algebraic rule 1 (distributivity) and 2 (scalar multiplication)</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="step-number">Step 2: Prove \((\mathbf{c}\times\mathbf{d})\cdot\mathbf{c}=0\)</div>
+                                <div class="step-content">
+                                    Expanding using the component formula:
+                                    \begin{align*}
+                                    (\mathbf{c}\times\mathbf{d})\cdot\mathbf{c}
+                                    &= (c_yd_z-c_zd_y)c_x\\
+                                    &\quad +(c_zd_x-c_xd_z)c_y\\
+                                    &\quad +(c_xd_y-c_yd_x)c_z.
+                                    \end{align*}
+                                    Expanding the brackets:
+                                    \begin{align*}
+                                    &c_xc_yd_z - c_xc_zd_y\\
+                                    &+c_yc_zd_x - c_xc_yd_z\\
+                                    &+c_xc_zd_y - c_yc_zd_x.
+                                    \end{align*}
+                                    By commutativity of scalar multiplication (\(ab=ba\)), each term cancels with an equal and opposite term, giving \(0\).
+                                </div>
+                                <div class="step-justification">Algebraic rules 3 and 4 (commutativity and cancellation)</div>
+                            </div>
+                            <div class="proof-step">
+                                <div class="step-number">Step 3: Conclude</div>
+                                <div class="step-content">
+                                    By an identical argument, \((\mathbf{c}\times\mathbf{d})\cdot\mathbf{d}=0\). Therefore
+                                    \[\mathbf{r}\cdot(\lambda\mathbf{c}+\mu\mathbf{d}) = \lambda(0)+\mu(0) = 0.\]
+                                    Hence \(\mathbf{r}\) is perpendicular to every vector in the plane \(\{\lambda\mathbf{c}+\mu\mathbf{d}:\lambda,\mu\in\mathbb{R}\}\).
+                                </div>
+                                <div class="step-justification">The two zero dot products established above suffice for all linear combinations</div>
+                            </div>
+                            <div class="proof-conclusion">
+                                <strong>Conclusion:</strong> \(\mathbf{r}=\mathbf{c}\times\mathbf{d}\) is a normal vector to the plane spanned by \(\mathbf{c}\) and \(\mathbf{d}\). \(\square\)
+                            </div>
+                        </div>
+                    </article>
+
+                </div><!-- end topic-grid -->
+
             </section>
 
 		<!-- Moduli and cases Sub-section -->
@@ -3565,7 +3781,7 @@
             <!-- Good Proof Resources Section -->
             <section id="resources" class="section">
                 <div class="definitions-section">
-                    <h3>Learning Resources</h3>
+                    <h3>Learning resources</h3>
                     
                     <p>
                         This page provides a curated collection of resources to help you develop your mathematical proof skills. 
@@ -3582,7 +3798,7 @@
                 </div>
 
                 <div class="definitions-section" style="margin-top: 30px;">
-                    <h3>Online Learning Materials</h3>
+                    <h3>Online learning materials</h3>
                     
                     <div style="margin-bottom: 25px;">
                         <p style="margin-bottom: 8px;"><strong>Long Form Math - Free Online Proofs Book</strong></p>
@@ -3598,7 +3814,7 @@
                 </div>
 
                 <div class="definitions-section" style="margin-top: 30px;">
-                    <h3>Recommended Textbooks</h3>
+                    <h3>Recommended textbooks</h3>
                     
                     <div style="margin-bottom: 25px;">
                         <p style="margin-bottom: 8px;"><strong>How to Read and Do Proofs by Daniel Solow</strong></p>
