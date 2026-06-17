@@ -940,9 +940,6 @@
             <!-- Setting / Context Section -->
             <section id="setting-context" class="section">
 
-                <nav class="nav-breadcrumb">
-                    <button onclick="showSection('intro');">← Back to home</button>
-                </nav>
 
                 <div class="definitions-section">
                     <h3>Setting the context</h3>
@@ -979,9 +976,6 @@
             <!-- If ... then ... Section -->
             <section id="if-then" class="section">
 
-                <nav class="nav-breadcrumb">
-                    <button onclick="showSection('intro');">← Back to home</button>
-                </nav>
 
                 <h2>Direct proofs</h2>
 
@@ -1688,7 +1682,7 @@
 
                 <h2>Vector definitions and proofs</h2>
 
-                <div class="topic-grid">
+                <div class="topic-grid" style="grid-template-columns: 1fr;">
 
                     <!-- Section 1: Dot Product Definition -->
                     <article class="topic-card">
@@ -1727,10 +1721,19 @@
                             <div class="proof-step">
                                 <div class="step-number">Step 2: Expand in coordinates</div>
                                 <div class="step-content">
-                                    \begin{align*}
-                                    |\mathbf{a}-\mathbf{b}|^2 &= (a_x-b_x)^2+(a_y-b_y)^2\\
-                                    &= a_x^2+a_y^2+b_x^2+b_y^2 - 2(a_xb_x+a_yb_y).
-                                    \end{align*}
+                                    <div style="margin:12px 0; text-align:center;">
+                                        <div style="margin-bottom:6px;">\(|\mathbf{a}-\mathbf{b}|^2\)</div>
+                                        <table style="border-collapse:collapse; font-size:1.05em; line-height:2; margin:0 auto;">
+                                            <tr>
+                                                <td style="text-align:center; padding-right:6px;">\(=\)</td>
+                                                <td style="text-align:left;">\((a_x-b_x)^2+(a_y-b_y)^2\)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center; padding-right:6px;">\(=\)</td>
+                                                <td style="text-align:left;">\(a_x^2+a_y^2+b_x^2+b_y^2 - 2(a_xb_x+a_yb_y).\)</td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div class="step-justification">Expanding using the component definition of magnitude</div>
                             </div>
@@ -2339,9 +2342,6 @@
             <!-- Counter-examples Section -->
             <section id="counter-examples" class="section">
 
-                <nav class="nav-breadcrumb">
-                    <button onclick="showSection('intro');">← Back to home</button>
-                </nav>
 
                 <div class="definitions-section">
                     <h3>What is a counter-example?</h3>
