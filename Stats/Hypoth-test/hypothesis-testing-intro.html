@@ -899,7 +899,7 @@ const MOD_ORDER=[0,11,1,2,3,4,5];
 const visited=new Set([0]);
 const inited={};
 
-function go(m){
+function go(m, skipPush){
   document.querySelectorAll('.module').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('mod'+m).classList.add('on');
@@ -917,8 +917,19 @@ function go(m){
     const btnW=activeBtn.offsetWidth;
     nav.scrollLeft=btnL-(navW/2)+(btnW/2);
   }
+  // Update URL hash; module 0 uses bare # to keep the URL clean
+  if(!skipPush){
+    const hash = m===0 ? '#' : '#mod'+m;
+    history.pushState({module:m}, '', hash);
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// Navigate on browser back / forward
+window.addEventListener('popstate', function(e){
+  const m = (e.state && e.state.module !== undefined) ? e.state.module : 0;
+  go(m, true);
+});
 
 function initMod(m){
   if(m===2)upd2();
@@ -1132,7 +1143,16 @@ function drawCoinChart(){
 // INIT
 // ─────────────────────────────────────────────
 window.addEventListener('load',()=>{
-  inited[0]=true;
+  // Navigate to section from URL hash (e.g. #mod3) or default to module 0
+  const hashMatch = window.location.hash.match(/^#mod(\d+)$/);
+  const startM = hashMatch ? +hashMatch[1] : 0;
+  if(startM !== 0 && MOD_ORDER.includes(startM)){
+    go(startM, true);
+  }
+  // Seed history state so popstate works correctly from the first page load
+  history.replaceState({module: startM}, '', window.location.hash || '#');
+  inited[startM===0?0:startM]=true;
+  if(startM===0) inited[0]=true;
   drawCoinChart();
   // Keyboard nav
   document.addEventListener('keydown',e=>{

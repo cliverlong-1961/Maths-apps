@@ -1123,13 +1123,34 @@
 </main>
 
 <script>
+// Map section ids to nav button indices
+const sectionIndex = { home: 0, n2b: 1, u2b: 2, g2b: 3, b2g: 4, u2g: 5, ext1: 6 };
+
 function showSection(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (btn) btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    // Activate the matching nav button by index when called without a button ref
+    const idx = sectionIndex[id];
+    if (idx !== undefined) {
+      const btns = document.querySelectorAll('nav button');
+      if (btns[idx]) btns[idx].classList.add('active');
+    }
+  }
+  // Update URL hash (home → bare hash for cleanliness)
+  const hash = id === 'home' ? '#' : '#' + id;
+  history.pushState({ section: id }, '', hash);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Navigate to section when the browser back/forward buttons are used
+window.addEventListener('popstate', function (e) {
+  const id = (e.state && e.state.section) ? e.state.section : 'home';
+  showSection(id);
+});
 
 function toggleSol(btn) {
   const sol = btn.nextElementSibling;
@@ -1442,6 +1463,16 @@ function computeValues() {
 
 document.addEventListener('DOMContentLoaded', function() {
   computeValues();   // inject computed LaTeX strings before KaTeX renders them
+
+  // Navigate to the section specified in the URL hash (if any)
+  const validIds = Object.keys(sectionIndex);
+  const hash = window.location.hash.replace('#', '');
+  if (hash && validIds.includes(hash)) {
+    showSection(hash);
+  } else {
+    // Ensure the initial history state is recorded so popstate works on back/forward
+    history.replaceState({ section: 'home' }, '', '#');
+  }
 
   renderMathInElement(document.body, {
     delimiters: [

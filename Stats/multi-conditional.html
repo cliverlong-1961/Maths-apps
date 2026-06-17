@@ -330,12 +330,24 @@ function mix(n,k,wA,pA,pB){ return wA*bp(n,k,pA)+(1-wA)*bp(n,k,pB); }
 function dp(x,d){ return x.toFixed(d); }
 
 // ── Navigation ────────────────────────────────────────────────────────────
-function show(n){
+function show(n, skipPush){
   for(let i=1;i<=5;i++) document.getElementById('s'+i).style.display = i===n?'':'none';
   document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('active',i===n-1));
   if(n===4) build4();
   if(n===5) upd();
+  // Update URL hash; section 1 uses bare # to keep the URL clean
+  if(!skipPush){
+    const hash = n === 1 ? '#' : '#s' + n;
+    history.pushState({ section: n }, '', hash);
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Navigate on browser back / forward
+window.addEventListener('popstate', function(e){
+  const n = (e.state && e.state.section) ? e.state.section : 1;
+  show(n, true);
+});
 
 // ── Inject all computed static content ────────────────────────────────────
 function computeStatics(){
@@ -568,6 +580,15 @@ function doInit(){
       {left:'\\(',right:'\\)',display:false}
     ]
   });
+
+  // Navigate to section from URL hash (e.g. #s3) or default to 1
+  const hashMatch = window.location.hash.match(/^#s([1-5])$/);
+  const startSection = hashMatch ? parseInt(hashMatch[1]) : 1;
+  if(startSection !== 1){
+    show(startSection, true);
+  }
+  // Seed history state for the initial page so popstate works correctly
+  history.replaceState({ section: startSection }, '', window.location.hash || '#');
 }
 </script>
 </body>
