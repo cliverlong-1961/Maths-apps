@@ -858,14 +858,37 @@ const EX3 = { S:20, p:1/6, C:1,  alpha:0.05 };
 const EX4 = { S:15, p:0.5, C:11, alpha:0.05 };
 
 // ── Navigation ────────────────────────────────────────────────────────────
-function show(id, btn) {
+const VALID_SECTIONS = ['intro','logic','lower','upper','why','calc'];
+
+function show(id, btn, skipPush) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    // Activate the matching nav button when called without a reference
+    document.querySelectorAll('nav button').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) {
+        b.classList.add('active');
+      }
+    });
+  }
   if (id === 'lower') drawLowerChart();
   if (id === 'upper') drawUpperChart();
+  // Update URL hash; 'intro' (default) uses bare # to keep the URL clean
+  if (!skipPush) {
+    const hash = id === 'intro' ? '#' : '#' + id;
+    history.pushState({ section: id }, '', hash);
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Navigate on browser back / forward
+window.addEventListener('popstate', function(e) {
+  const id = (e.state && e.state.section) ? e.state.section : 'intro';
+  show(id, null, true);
+});
 
 // ── Binomial helpers ──────────────────────────────────────────────────────
 function logFactorial(n) {
@@ -1068,6 +1091,15 @@ function doInit() {
 
   // Render all inline math spans directly with katex.render()
   renderInlineMath();
+
+  // Navigate to section from URL hash (e.g. #lower) or default to 'intro'
+  const hash = window.location.hash.replace('#', '');
+  const startId = (hash && VALID_SECTIONS.includes(hash)) ? hash : 'intro';
+  if (startId !== 'intro') {
+    show(startId, null, true);
+  }
+  // Seed history state so popstate works correctly from the first page load
+  history.replaceState({ section: startId }, '', startId === 'intro' ? '#' : '#' + startId);
 }
 </script>
 
