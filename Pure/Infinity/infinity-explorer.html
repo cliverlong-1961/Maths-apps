@@ -203,10 +203,10 @@ canvas{display:block;width:100%;}
   <div class="pdot" id="pd19" data-label="2 Basic Numbers" onclick="go(19)"></div>
   <div class="pdot" id="pd18" data-label="3 Early Encounters" onclick="go(18)"></div>
   <div class="pdot" id="pd2" data-label="4 Approaching Zero" onclick="go(2)"></div>
-  <div class="pdot" id="pd3" data-label="5 The 0/0 Problem" onclick="go(3)"></div>
-  <div class="pdot" id="pd5" data-label="6 Sequences" onclick="go(5)"></div>
-  <div class="pdot" id="pd6" data-label="7 Infinite Series" onclick="go(6)"></div>
-  <div class="pdot" id="pd4" data-label="8 What is a Limit?" onclick="go(4)"></div>
+  <div class="pdot" id="pd3" data-label="8 0/0 Problem" onclick="go(3)"></div>
+  <div class="pdot" id="pd5" data-label="5 More Sequences" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="6 Infinite Series" onclick="go(6)"></div>
+  <div class="pdot" id="pd4" data-label="7 What is a Limit?" onclick="go(4)"></div>
   <div class="pdot" id="pd7" data-label="9 Why Convergence?" onclick="go(7)"></div>
   <div class="pdot" id="pd20" data-label="10 Sequence Convergence Tests" onclick="go(20)"></div>
   <div class="pdot" id="pd8" data-label="11 Series Convergence Tests" onclick="go(8)"></div>
@@ -237,10 +237,10 @@ canvas{display:block;width:100%;}
   <button class="nb" data-m="19" data-sec="foundations" onclick="go(19)">2&hairsp;Basic&nbsp;Numbers</button>
   <button class="nb" data-m="18" data-sec="foundations" onclick="go(18)">3&hairsp;Early&nbsp;Encounters</button>
   <button class="nb" data-m="2" data-sec="concepts" onclick="go(2)">4&hairsp;Approaching&nbsp;Zero</button>
-  <button class="nb" data-m="3" data-sec="concepts" onclick="go(3)">5&hairsp;0/0&nbsp;Problem</button>
-  <button class="nb" data-m="5" data-sec="concepts" onclick="go(5)">6&hairsp;Sequences</button>
-  <button class="nb" data-m="6" data-sec="concepts" onclick="go(6)">7&hairsp;Infinite&nbsp;Series</button>
-  <button class="nb" data-m="4" data-sec="concepts" onclick="go(4)">8&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
+  <button class="nb" data-m="5" data-sec="concepts" onclick="go(5)">5&hairsp;More&nbsp;Sequences</button>
+  <button class="nb" data-m="6" data-sec="concepts" onclick="go(6)">6&hairsp;Infinite&nbsp;Series</button>
+  <button class="nb" data-m="4" data-sec="concepts" onclick="go(4)">7&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
+  <button class="nb" data-m="3" data-sec="concepts" onclick="go(3)">8&hairsp;0/0&nbsp;Problem</button>
   <button class="nb" data-m="7" data-sec="machinery" onclick="go(7)">9&hairsp;Why&nbsp;Convergence?</button>
   <button class="nb" data-m="20" data-sec="machinery" onclick="go(20)">10&hairsp;Seq.&nbsp;Tests</button>
   <button class="nb" data-m="8" data-sec="machinery" onclick="go(8)">11&hairsp;Series&nbsp;Tests</button>
@@ -378,7 +378,7 @@ canvas{display:block;width:100%;}
     The condition \(|r| < 1\) is essential — if \(|r| \ge 1\) the terms do not shrink and the sum diverges.
   </div>
   <p style="font-size:.9rem;line-height:1.7;margin-top:.8rem;color:var(--muted);">
-    → Module 7 (Infinite Series) lets you explore the geometric series interactively with adjustable \(a\) and \(r\), step through partial sums, and see what happens at the boundary \(|r|=1\).
+    → Module 6 (Infinite Series) lets you explore the geometric series interactively with adjustable \(a\) and \(r\), step through partial sums, and see what happens at the boundary \(|r|=1\).
   </p>
   <div class="challenges"><h3>Think about it</h3>
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the sum not grow without bound?</div>
@@ -584,9 +584,9 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 3: 0/0 PROBLEM ═══ -->
 <section class="module" id="mod3">
-<div class="mhdr"><div class="mtag">Module 5</div><h2>The 0/0 Problem</h2></div>
+<div class="mhdr"><div class="mtag">Module 8</div><h2>The 0/0 Problem</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> \(\frac{0}{0}\) is <em>indeterminate</em>. The limit of a ratio \(\frac{g(x)}{h(x)}\) as both \(g,h\to0\) can be anything — it depends entirely on <em>how fast</em> each approaches zero.
+  <strong>Core idea:</strong> \(\frac{0}{0}\) is <em>indeterminate</em>. The limit of a ratio of two functions: \(\frac{g(x)}{h(x)}\) as both \(g,h\to0\) can be anything — it depends entirely on <em>how fast</em> each approaches zero.
 </div>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:1.2rem;">This is an important topic because in differential calculus you create expressions of the form \(\frac{g(x)}{h(x)}\) when trying to determine the derivative of a function \(f(x)\). Knowing that \(\frac{g(x)}{h(x)}\) approaches a finite value — and knowing what that value is — is often essential in determining the derivative.</p>
 <div class="stabs">
@@ -641,7 +641,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 5: SEQUENCES ═══ -->
 <section class="module" id="mod5">
-<div class="mhdr"><div class="mtag">Module 6</div><h2>Sequences</h2></div>
+<div class="mhdr"><div class="mtag">Module 5</div><h2>More Sequences</h2></div>
 <div class="note" style="margin-bottom:1.2rem;">
   <strong>Notation / definitions:</strong> A sequence is a list of numbers whose members usually follow some pattern or can be generated by a "rule".
   <ul style="padding-left:1.2rem;margin-top:.6rem;line-height:2.1;">
@@ -698,7 +698,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 6: INFINITE SERIES ═══ -->
 <section class="module" id="mod6">
-<div class="mhdr"><div class="mtag">Module 7</div><h2>Infinite Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 6</div><h2>Infinite Series</h2></div>
 <div class="note" style="margin-bottom:1.2rem;">
   This module assumes you understand sigma notation to define a sum of terms in a sequence, usually called a series.
 </div>
@@ -774,7 +774,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 4: WHAT IS A LIMIT? ═══ -->
 <section class="module" id="mod4">
-<div class="mhdr"><div class="mtag">Module 8</div><h2>What is a Limit?</h2></div>
+<div class="mhdr"><div class="mtag">Module 7</div><h2>What is a Limit?</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> We say \(\lim_{n\to\infty}a_n = L\) if we can make \(a_n\) as close to \(L\) as we like by taking \(n\) large enough. The green band below shows the tolerance \(\varepsilon\) around \(L=0\).
 </div>
@@ -1854,7 +1854,7 @@ function tog(el){el.classList.toggle('open');}
 const SEC_MODULES={
   intro:[0],
   foundations:[1,19,18],
-  concepts:[2,3,5,6,4],
+  concepts:[2,5,6,4,3],
   machinery:[7,20,8,17,21],
   applications:[9,10,11,12],
   bigideas:[22,13,15,16],
@@ -2557,9 +2557,9 @@ const TOTAL_MODULES=23;
 function injectBottomNav(m){
   const mod=document.getElementById('mod'+m);
   if(!mod||mod.querySelector('.mod-nav'))return;
-  const labels={0:'Inspirations',1:'Number Line',19:'Basic Numbers',18:'Early Encounters',2:'Approaching Zero',3:'0/0 Problem',5:'Sequences',6:'Infinite Series',4:'What is a Limit?',7:'Why Convergence?',20:'Seq. Tests',8:'Series Tests',17:'Telescoping',21:'Limits of Functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator',22:"Cantor's Infinities",13:'Paradoxes',15:'Fibonacci',16:'π Series',14:'Summary'};
-  const modNums={0:'Module 0',1:'Module 1',19:'Module 2',18:'Module 3',2:'Module 4',3:'Module 5',5:'Module 6',6:'Module 7',4:'Module 8',7:'Module 9',20:'Module 10',8:'Module 11',17:'Module 12',21:'Module 13',9:'Module 14',10:'Module 15',11:'Module 16',12:'Module 17',22:'Module 18',13:'Module 19',15:'Module 20',16:'Module 21',14:'Summary'};
-  const navOrder=[0,1,19,18,2,3,5,6,4,7,20,8,17,21,9,10,11,12,22,13,15,16,14];
+  const labels={0:'Inspirations',1:'Number Line',19:'Basic Numbers',18:'Early Encounters',2:'Approaching Zero',5:'More Sequences',6:'Infinite Series',4:'What is a Limit?',3:'0/0 Problem',7:'Why Convergence?',20:'Seq. Tests',8:'Series Tests',17:'Telescoping',21:'Limits of Functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator',22:"Cantor's Infinities",13:'Paradoxes',15:'Fibonacci',16:'π Series',14:'Summary'};
+  const modNums={0:'Module 0',1:'Module 1',19:'Module 2',18:'Module 3',2:'Module 4',5:'Module 5',6:'Module 6',4:'Module 7',3:'Module 8',7:'Module 9',20:'Module 10',8:'Module 11',17:'Module 12',21:'Module 13',9:'Module 14',10:'Module 15',11:'Module 16',12:'Module 17',22:'Module 18',13:'Module 19',15:'Module 20',16:'Module 21',14:'Summary'};
+  const navOrder=[0,1,19,18,2,5,6,4,3,7,20,8,17,21,9,10,11,12,22,13,15,16,14];
   const pos=navOrder.indexOf(m);
   const prev=pos>0?navOrder[pos-1]:null;
   const next=pos<navOrder.length-1?navOrder[pos+1]:null;
@@ -3485,7 +3485,7 @@ window.addEventListener('load',()=>{
     initMod(m);
   });
   // Keyboard navigation
-  const navOrder=[0,1,19,18,2,3,5,6,4,7,20,8,17,21,9,10,11,12,22,13,15,16,14];
+  const navOrder=[0,1,19,18,2,5,6,4,3,7,20,8,17,21,9,10,11,12,22,13,15,16,14];
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT')return;
     const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
