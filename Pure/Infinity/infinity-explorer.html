@@ -33,10 +33,19 @@ header{background:linear-gradient(135deg,#0d1e3d 0%,#1a3a6b 100%);color:#fff;pad
 .prog-label{font-family:Arial;font-size:.72rem;color:#9fb2cc;margin-right:.3rem;}
 
 /* ── NAV ── */
-nav{display:flex;gap:0;overflow-x:auto;padding-bottom:0;}
-nav::-webkit-scrollbar{height:4px;}
-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);}
-.nb{background:transparent;color:#9fb2cc;border:none;padding:.5rem .8rem;font-family:Arial,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.04em;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;text-transform:uppercase;}
+.nav-sections{display:flex;gap:0;overflow-x:auto;padding:0;border-bottom:1px solid rgba(255,255,255,.12);}
+.nav-sections::-webkit-scrollbar{height:3px;}
+.nav-sections::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);}
+.ns{background:transparent;color:rgba(255,255,255,.55);border:none;padding:.38rem .9rem;font-family:Arial,sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;cursor:pointer;white-space:nowrap;text-transform:uppercase;border-bottom:2px solid transparent;transition:color .15s,border-color .15s,background .15s;}
+.ns:hover{color:rgba(255,255,255,.85);}
+.ns.open{color:#fff;border-bottom-color:rgba(255,255,255,.55);background:rgba(255,255,255,.06);}
+.ns.has-active{color:var(--gold);border-bottom-color:var(--gold);}
+.ns.has-active.open{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,162,39,.08);}
+.nav-modules{display:flex;gap:0;overflow-x:auto;padding-bottom:0;align-items:stretch;min-height:36px;transition:min-height .2s;}
+.nav-modules::-webkit-scrollbar{height:4px;}
+.nav-modules::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);}
+.nb{background:transparent;color:#9fb2cc;border:none;padding:.45rem .8rem;font-family:Arial,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.04em;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;text-transform:uppercase;display:none;}
+.nb.sec-open{display:inline-flex;align-items:center;}
 .nb:hover{color:#fff;}
 .nb.on{color:var(--gold);border-bottom-color:var(--gold);}
 
@@ -191,8 +200,8 @@ canvas{display:block;width:100%;}
   <span class="prog-label">Progress:</span>
   <div class="pdot" id="pd0" data-label="0 Inspirations" onclick="go(0)"></div>
   <div class="pdot" id="pd1" data-label="1 Number Line" onclick="go(1)"></div>
-  <div class="pdot" id="pd18" data-label="2 Early Encounters" onclick="go(18)"></div>
-  <div class="pdot" id="pd19" data-label="3 Basic Numbers" onclick="go(19)"></div>
+  <div class="pdot" id="pd19" data-label="2 Basic Numbers" onclick="go(19)"></div>
+  <div class="pdot" id="pd18" data-label="3 Early Encounters" onclick="go(18)"></div>
   <div class="pdot" id="pd2" data-label="4 Approaching Zero" onclick="go(2)"></div>
   <div class="pdot" id="pd3" data-label="5 The 0/0 Problem" onclick="go(3)"></div>
   <div class="pdot" id="pd5" data-label="6 Sequences" onclick="go(5)"></div>
@@ -201,40 +210,51 @@ canvas{display:block;width:100%;}
   <div class="pdot" id="pd7" data-label="9 Why Convergence?" onclick="go(7)"></div>
   <div class="pdot" id="pd20" data-label="10 Sequence Convergence Tests" onclick="go(20)"></div>
   <div class="pdot" id="pd8" data-label="11 Series Convergence Tests" onclick="go(8)"></div>
-  <div class="pdot" id="pd21" data-label="12 Limits applied to functions" onclick="go(21)"></div>
-  <div class="pdot" id="pd9" data-label="13 Bouncing Ball" onclick="go(9)"></div>
-  <div class="pdot" id="pd10" data-label="14 Koch Snowflake" onclick="go(10)"></div>
-  <div class="pdot" id="pd11" data-label="15 Density of Fractions" onclick="go(11)"></div>
-  <div class="pdot" id="pd12" data-label="16 Calculator Approximation" onclick="go(12)"></div>
-  <div class="pdot" id="pd13" data-label="17 Paradoxes" onclick="go(13)"></div>
-  <div class="pdot" id="pd15" data-label="18 Fibonacci" onclick="go(15)"></div>
-  <div class="pdot" id="pd16" data-label="19 π from Series" onclick="go(16)"></div>
-  <div class="pdot" id="pd17" data-label="20 Telescoping" onclick="go(17)"></div>
+  <div class="pdot" id="pd17" data-label="12 Telescoping" onclick="go(17)"></div>
+  <div class="pdot" id="pd21" data-label="13 Limits applied to functions" onclick="go(21)"></div>
+  <div class="pdot" id="pd9" data-label="14 Bouncing Ball" onclick="go(9)"></div>
+  <div class="pdot" id="pd10" data-label="15 Koch Snowflake" onclick="go(10)"></div>
+  <div class="pdot" id="pd11" data-label="16 Density of Fractions" onclick="go(11)"></div>
+  <div class="pdot" id="pd12" data-label="17 Calculator Approximation" onclick="go(12)"></div>
+  <div class="pdot" id="pd22" data-label="18 Cantor's Infinities" onclick="go(22)"></div>
+  <div class="pdot" id="pd13" data-label="19 Paradoxes" onclick="go(13)"></div>
+  <div class="pdot" id="pd15" data-label="20 Fibonacci" onclick="go(15)"></div>
+  <div class="pdot" id="pd16" data-label="21 π from Series" onclick="go(16)"></div>
   <div class="pdot" id="pd14" data-label="Summary" onclick="go(14)"></div>
 </div>
+<div class="nav-sections" id="nav-sections">
+  <button class="ns open" data-sec="intro" onclick="toggleSec('intro')">Intro</button>
+  <button class="ns" data-sec="foundations" onclick="toggleSec('foundations')">Foundations</button>
+  <button class="ns" data-sec="concepts" onclick="toggleSec('concepts')">Core Concepts</button>
+  <button class="ns" data-sec="machinery" onclick="toggleSec('machinery')">Formal Machinery</button>
+  <button class="ns" data-sec="applications" onclick="toggleSec('applications')">Applications</button>
+  <button class="ns" data-sec="bigideas" onclick="toggleSec('bigideas')">Big Ideas</button>
+  <button class="ns" data-sec="summary" onclick="toggleSec('summary')">Summary</button>
+</div>
 <nav id="nav">
-  <button class="nb on" data-m="0" onclick="go(0)">0&hairsp;Inspirations</button>
-  <button class="nb" data-m="1" onclick="go(1)">1&hairsp;Number&nbsp;Line</button>
-  <button class="nb" data-m="18" onclick="go(18)">2&hairsp;Early&nbsp;Encounters</button>
-  <button class="nb" data-m="19" onclick="go(19)">3&hairsp;Basic&nbsp;Numbers</button>
-  <button class="nb" data-m="2" onclick="go(2)">4&hairsp;Approaching&nbsp;Zero</button>
-  <button class="nb" data-m="3" onclick="go(3)">5&hairsp;The&nbsp;0/0&nbsp;Problem</button>
-  <button class="nb" data-m="5" onclick="go(5)">6&hairsp;Sequences</button>
-  <button class="nb" data-m="6" onclick="go(6)">7&hairsp;Infinite&nbsp;Series</button>
-  <button class="nb" data-m="4" onclick="go(4)">8&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
-  <button class="nb" data-m="7" onclick="go(7)">9&hairsp;Why&nbsp;Convergence?</button>
-  <button class="nb" data-m="20" onclick="go(20)">10&hairsp;Seq.&nbsp;Tests</button>
-  <button class="nb" data-m="8" onclick="go(8)">11&hairsp;Series&nbsp;Tests</button>
-  <button class="nb" data-m="21" onclick="go(21)">12&hairsp;Limits&nbsp;Fns</button>
-  <button class="nb" data-m="9" onclick="go(9)">13&hairsp;Bouncing&nbsp;Ball</button>
-  <button class="nb" data-m="10" onclick="go(10)">14&hairsp;Snowflake</button>
-  <button class="nb" data-m="11" onclick="go(11)">15&hairsp;Fractions</button>
-  <button class="nb" data-m="12" onclick="go(12)">16&hairsp;Calculator&nbsp;Approximation</button>
-  <button class="nb" data-m="13" onclick="go(13)">17&hairsp;Paradoxes</button>
-  <button class="nb" data-m="15" onclick="go(15)">18&hairsp;Fibonacci</button>
-  <button class="nb" data-m="16" onclick="go(16)">19&hairsp;&pi;&nbsp;Series</button>
-  <button class="nb" data-m="17" onclick="go(17)">20&hairsp;Telescoping</button>
-  <button class="nb" data-m="14" onclick="go(14)">&#9654;&hairsp;Summary</button>
+  <button class="nb sec-open" data-m="0" data-sec="intro" onclick="go(0)">0&hairsp;Inspirations</button>
+  <button class="nb" data-m="1" data-sec="foundations" onclick="go(1)">1&hairsp;Number&nbsp;Line</button>
+  <button class="nb" data-m="19" data-sec="foundations" onclick="go(19)">2&hairsp;Basic&nbsp;Numbers</button>
+  <button class="nb" data-m="18" data-sec="foundations" onclick="go(18)">3&hairsp;Early&nbsp;Encounters</button>
+  <button class="nb" data-m="2" data-sec="concepts" onclick="go(2)">4&hairsp;Approaching&nbsp;Zero</button>
+  <button class="nb" data-m="3" data-sec="concepts" onclick="go(3)">5&hairsp;0/0&nbsp;Problem</button>
+  <button class="nb" data-m="5" data-sec="concepts" onclick="go(5)">6&hairsp;Sequences</button>
+  <button class="nb" data-m="6" data-sec="concepts" onclick="go(6)">7&hairsp;Infinite&nbsp;Series</button>
+  <button class="nb" data-m="4" data-sec="concepts" onclick="go(4)">8&hairsp;What&nbsp;is&nbsp;a&nbsp;Limit?</button>
+  <button class="nb" data-m="7" data-sec="machinery" onclick="go(7)">9&hairsp;Why&nbsp;Convergence?</button>
+  <button class="nb" data-m="20" data-sec="machinery" onclick="go(20)">10&hairsp;Seq.&nbsp;Tests</button>
+  <button class="nb" data-m="8" data-sec="machinery" onclick="go(8)">11&hairsp;Series&nbsp;Tests</button>
+  <button class="nb" data-m="17" data-sec="machinery" onclick="go(17)">12&hairsp;Telescoping</button>
+  <button class="nb" data-m="21" data-sec="machinery" onclick="go(21)">13&hairsp;Limits&nbsp;Fns</button>
+  <button class="nb" data-m="9" data-sec="applications" onclick="go(9)">14&hairsp;Bouncing&nbsp;Ball</button>
+  <button class="nb" data-m="10" data-sec="applications" onclick="go(10)">15&hairsp;Snowflake</button>
+  <button class="nb" data-m="11" data-sec="applications" onclick="go(11)">16&hairsp;Fractions</button>
+  <button class="nb" data-m="12" data-sec="applications" onclick="go(12)">17&hairsp;Calculator</button>
+  <button class="nb" data-m="22" data-sec="bigideas" onclick="go(22)">18&hairsp;Cantor</button>
+  <button class="nb" data-m="13" data-sec="bigideas" onclick="go(13)">19&hairsp;Paradoxes</button>
+  <button class="nb" data-m="15" data-sec="bigideas" onclick="go(15)">20&hairsp;Fibonacci</button>
+  <button class="nb" data-m="16" data-sec="bigideas" onclick="go(16)">21&hairsp;&pi;&nbsp;Series</button>
+  <button class="nb" data-m="14" data-sec="summary" onclick="go(14)">&#9654;&hairsp;Summary</button>
 </nav>
 </header>
 
@@ -295,13 +315,13 @@ canvas{display:block;width:100%;}
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is infinity a number?</div>
   <div class="ccard-a">No. \(\infty\) is not a real number. Expressions like \(\infty - \infty\) or \(\frac{\infty}{\infty}\) are <em>indeterminate</em> — they have no single value. Infinity describes a process or a limit, not a quantity you can substitute into arithmetic.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are there different sizes of infinity?</div>
-  <div class="ccard-a">Yes — Cantor showed this in the 19th century. The integers and rationals are "countably infinite" (\(\aleph_0\)), but the real numbers are a strictly larger "uncountably infinite" set. See Module 15 for more on this idea.</div></div>
+  <div class="ccard-a">Yes — Cantor showed this in the 19th century. The integers and rationals are "countably infinite" (\(\aleph_0\)), but the real numbers are a strictly larger "uncountably infinite" set. See Module 18 for the full argument.</div></div>
 </div>
 </section>
 
 <!-- ═══ MODULE 18: EARLY ENCOUNTERS WITH INFINITY ═══ -->
 <section class="module" id="mod18">
-<div class="mhdr"><div class="mtag">Module 2</div><h2>Early Encounters with Infinity</h2></div>
+<div class="mhdr"><div class="mtag">Module 3</div><h2>Early Encounters with Infinity</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Long before formal analysis, mathematicians bumped into infinity in concrete sums.
   Some sums grow without bound; others, surprisingly, settle to a finite value.
@@ -351,15 +371,15 @@ canvas{display:block;width:100%;}
     Unlike the triangular sums, this process <em>does not</em> grow without bound:
     the total settles towards the finite value <strong>2</strong>.
   </p>
-  <div class="ctrls">
-    <button class="btn btn-teal" onclick="geo18Step()">&#43; Add next term</button>
-    <button class="btn btn-solid" onclick="geo18Fill()">Fill to 20</button>
-    <button class="btn btn-outline" onclick="geo18Reset()">↺ Reset</button>
+  <div class="note teal">
+    <strong>Key formula:</strong> For any ratio \(|r| < 1\),
+    \[\sum_{n=0}^{\infty} r^n = \frac{1}{1-r}\]
+    Here \(r = \tfrac{1}{2}\), giving \(\dfrac{1}{1-\frac{1}{2}} = 2\).
+    The condition \(|r| < 1\) is essential — if \(|r| \ge 1\) the terms do not shrink and the sum diverges.
   </div>
-  <div class="big-num">S<sub><span id="geo18-n">0</span></sub> = <span id="geo18-sum">0</span></div>
-  <div class="status converge">Converges to exactly 2.</div>
-  <div class="cbox"><canvas id="c18geo" height="180"></canvas></div>
-  <div class="note teal"><strong>Key formula:</strong> For any ratio \(|r| < 1\), \(\displaystyle\sum_{n=0}^{\infty} r^n = \frac{1}{1-r}\). Here \(r = \tfrac{1}{2}\), giving \(\frac{1}{1-\frac{1}{2}} = 2\).</div>
+  <p style="font-size:.9rem;line-height:1.7;margin-top:.8rem;color:var(--muted);">
+    → Module 7 (Infinite Series) lets you explore the geometric series interactively with adjustable \(a\) and \(r\), step through partial sums, and see what happens at the boundary \(|r|=1\).
+  </p>
   <div class="challenges"><h3>Think about it</h3>
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the sum not grow without bound?</div>
     <div class="ccard-a">Each successive term is halved. The gap between the partial sum and 2 is \(2 - S_n = \left(\tfrac{1}{2}\right)^n\), which shrinks geometrically to zero. No matter how many terms you add, the sum is always less than 2 — and the remainder after \(n\) terms is exactly \(2-S_n=2\cdot(1/2)^n\).</div></div>
@@ -442,7 +462,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 19: BASIC NUMBERS – CALCULATING WITH INFINITY ═══ -->
 <section class="module" id="mod19">
-<div class="mhdr"><div class="mtag">Module 3</div><h2>Basic Numbers — Calculating with Infinity</h2></div>
+<div class="mhdr"><div class="mtag">Module 2</div><h2>Basic Numbers — Calculating with Infinity</h2></div>
 
 <h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Shift from discrete to continuous real values</h3>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:1.2rem;">Up to this point examples have used whole numbers also known as integers. To go further we need to understand the meaning of fractions (rational numbers) and then real numbers. The "Number systems" section of the Proof app, <a href="https://maths-apps.crlong.uk/Pure/Proof/Proof.html" target="_blank" style="color:var(--navy);">https://maths-apps.crlong.uk/Pure/Proof/Proof.html</a>, goes into a bit more detail about these types of number — but not to the level a professional mathematician would think precise. In this whole area there is a trade off between precision and (lack of) understandability by even a determined reader.</p>
@@ -716,11 +736,20 @@ canvas{display:block;width:100%;}
 
 <div class="spanel" id="s6b">
   <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\frac{1}{n}=1+\frac{1}{2}+\frac{1}{3}+\cdots\)</div>
-  <div class="slider-row"><label>Terms N =</label><input type="range" id="s6b-n" min="1" max="500" value="20" oninput="s6draw('b')"><span class="slider-val" id="s6b-nv">20</span></div>
-  <div class="big-num">S<sub>N</sub> = <span id="s6b-sum">—</span></div>
-  <div class="status diverge">The harmonic series DIVERGES — slowly but inevitably.</div>
-  <div class="note red">It takes over 10,000 terms for the harmonic series to exceed 10. It diverges, but extraordinarily slowly — a trap for intuition!</div>
-  <div class="cbox"><canvas id="c6b" height="170"></canvas></div>
+  <div class="note red">
+    <strong>The harmonic series diverges</strong> — even though each term \(1/n \to 0\).
+    It grows without bound, but extraordinarily slowly: it takes over 10,000 terms to exceed 10.
+    This is the single most important counterexample in series analysis.
+  </div>
+  <p style="font-size:.9rem;line-height:1.7;margin:.8rem 0;color:var(--muted);">
+    → Module 3 (Early Encounters) has full interactive graphs of both the harmonic series \(\sum 1/n\)
+    and the odd harmonic series \(\sum 1/(2n-1)\), with sliders and comparison. Module 11 (Series Tests)
+    shows why the divergence test alone is inconclusive for \(\sum 1/n\).
+  </p>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">If terms → 0, why does the harmonic series diverge?</div>
+    <div class="ccard-a">Terms going to zero is <em>necessary</em> for convergence but not <em>sufficient</em>. Oresme's 14th-century proof groups the terms: \(\tfrac{1}{3}+\tfrac{1}{4} > \tfrac{1}{2}\); \(\tfrac{1}{5}+\tfrac{1}{6}+\tfrac{1}{7}+\tfrac{1}{8} > \tfrac{1}{2}\); each block of doubling length contributes at least \(\tfrac{1}{2}\), so the sum grows without bound.</div></div>
+  </div>
 </div>
 
 <div class="spanel" id="s6c">
@@ -1045,7 +1074,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 21: LIMITS APPLIED TO FUNCTIONS ═══ -->
 <section class="module" id="mod21">
-<div class="mhdr"><div class="mtag">Module 12</div><h2>Limits Applied to Functions</h2></div>
+<div class="mhdr"><div class="mtag">Module 13</div><h2>Limits Applied to Functions</h2></div>
 <div class="concept">
   Applying the limit definition to simple examples of functions we are starting to scratch at real analysis.
   The three examples below compare a function that is <em>continuous</em> at \(x = 1\) with two
@@ -1186,7 +1215,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 9: BOUNCING BALL ═══ -->
 <section class="module" id="mod9">
-<div class="mhdr"><div class="mtag">Module 13</div><h2>Bouncing Ball</h2></div>
+<div class="mhdr"><div class="mtag">Module 14</div><h2>Bouncing Ball</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A ball dropped from height \(h\) bouncing to fraction \(r\) of its height each time travels
   a total distance that is a geometric series. Even though it bounces infinitely many times, the total distance is finite!
@@ -1218,7 +1247,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 10: KOCH SNOWFLAKE ═══ -->
 <section class="module" id="mod10">
-<div class="mhdr"><div class="mtag">Module 14</div><h2>The Koch Snowflake</h2></div>
+<div class="mhdr"><div class="mtag">Module 15</div><h2>The Koch Snowflake</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A fractal where the perimeter grows without bound at each step — yet the area it encloses converges to a finite value.
   Two series, one divergent and one convergent, living in the same picture.
@@ -1248,7 +1277,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 11: DENSITY OF FRACTIONS ═══ -->
 <section class="module" id="mod11">
-<div class="mhdr"><div class="mtag">Module 15</div><h2>Density of Fractions</h2></div>
+<div class="mhdr"><div class="mtag">Module 16</div><h2>Density of Fractions</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Between any two different fractions (rational numbers) there is always another fraction. This property is called <em>density</em>. Yet the rationals, despite being everywhere, are in some sense "smaller" than the real numbers.
   <div class="q-intro">→ Click "Find Middle" to zoom in between two fractions. You can keep going forever.</div>
@@ -1265,7 +1294,7 @@ canvas{display:block;width:100%;}
 <div class="fdisp">\(\frac{p}{q} < \frac{p+r}{q+s} < \frac{r}{s}\quad\text{when}\quad\frac{p}{q}<\frac{r}{s}\)</div>
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">If the rationals are dense, how can there be "gaps"?</div>
-  <div class="ccard-a">The rationals are dense on the real line — between any two rationals there is another. Yet \(\sqrt{2}\), \(\pi\), and \(e\) are irrational; they are not rational numbers. The irrationals fill the "gaps" between rationals and, surprisingly, there are far more irrationals than rationals (both are infinite, but different sizes of infinity — see Module 1).</div></div>
+  <div class="ccard-a">The rationals are dense on the real line — between any two rationals there is another. Yet \(\sqrt{2}\), \(\pi\), and \(e\) are irrational; they are not rational numbers. The irrationals fill the "gaps" between rationals and, surprisingly, there are far more irrationals than rationals (both are infinite, but different sizes of infinity — see Module 18).</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Can we list all rational numbers?</div>
   <div class="ccard-a">Yes — Cantor showed the rationals are "countably infinite": you can pair them one-to-one with the natural numbers. The trick is to list them diagonally across a grid of \(\frac{p}{q}\) values. The real numbers cannot be listed this way — they are uncountably infinite.</div></div>
 </div>
@@ -1273,7 +1302,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
 <section class="module" id="mod12">
-<div class="mhdr"><div class="mtag">Module 16</div><h2>Calculator Approximation</h2></div>
+<div class="mhdr"><div class="mtag">Module 17</div><h2>Calculator Approximation</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). It approximates it using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
 </div>
@@ -1316,7 +1345,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 13: PARADOXES ═══ -->
 <section class="module" id="mod13">
-<div class="mhdr"><div class="mtag">Module 17</div><h2>Infinity Paradoxes</h2></div>
+<div class="mhdr"><div class="mtag">Module 19</div><h2>Infinity Paradoxes</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> Infinity leads to results that feel paradoxical but are mathematically precise. Understanding these paradoxes deepens intuition for limits, series, and the real number system.
 </div>
@@ -1447,7 +1476,7 @@ canvas{display:block;width:100%;}
 </section>
 <!-- ═══ MODULE 15: FIBONACCI & GOLDEN RATIO ═══ -->
 <section class="module" id="mod15">
-<div class="mhdr"><div class="mtag">Module 18</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
+<div class="mhdr"><div class="mtag">Module 20</div><h2>Fibonacci &amp; the Golden Ratio</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> The Fibonacci sequence \(1, 1, 2, 3, 5, 8, 13, 21, \ldots\) is defined by \(F_1=F_2=1\) and \(F_{n+1}=F_n+F_{n-1}\). Remarkably, the ratio of consecutive terms \(F_{n+1}/F_n\) converges to the <em>golden ratio</em> \(\varphi = \frac{1+\sqrt{5}}{2} \approx 1.618\ldots\)
   <div class="q-intro">→ Step through the sequence and watch the ratio converge.</div>
@@ -1507,7 +1536,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 16: π FROM INFINITE SERIES ═══ -->
 <section class="module" id="mod16">
-<div class="mhdr"><div class="mtag">Module 19</div><h2>&pi; from Infinite Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 21</div><h2>&pi; from Infinite Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> The number \(\pi\) can be computed using infinite series. Some converge remarkably slowly; others blazingly fast. The <em>rate of convergence</em> is the difference between a curiosity and a practical tool.
   <div class="q-intro">→ Step through each series and compare how quickly they reach π.</div>
@@ -1591,7 +1620,7 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 17: TELESCOPING SERIES ═══ -->
 <section class="module" id="mod17">
-<div class="mhdr"><div class="mtag">Module 20</div><h2>Telescoping Series</h2></div>
+<div class="mhdr"><div class="mtag">Module 12</div><h2>Telescoping Series</h2></div>
 <div class="concept">
   <strong>Core idea:</strong> A <em>telescoping series</em> is one where consecutive terms cancel in pairs, like the sections of a collapsible telescope closing up. What looks like an infinite sum collapses to a simple expression — often leaving just two terms.
   <div class="q-intro">→ Press "Add term" to see each cancellation happen step by step.</div>
@@ -1660,6 +1689,150 @@ canvas{display:block;width:100%;}
 </div>
 </section>
 
+
+<!-- ═══ MODULE 22: CANTOR'S INFINITIES ═══ -->
+<section class="module" id="mod22">
+<div class="mhdr"><div class="mtag">Module 18</div><h2>Cantor's Infinities — Counting the Uncountable</h2></div>
+<div class="concept">
+  <strong>Core idea:</strong> Not all infinite sets are the same size. Georg Cantor (1874) proved that the integers and the rational numbers are the same "size" of infinity (\(leph_0\), countably infinite), but the real numbers are strictly larger — an uncountably infinite set that cannot be put into a one-to-one correspondence with the integers, no matter how cleverly you try.
+</div>
+
+<div class="stabs">
+  <button class="stab on" onclick="s22tab(this,'s22a')">Counting infinity</button>
+  <button class="stab" onclick="s22tab(this,'s22b')">Diagonal argument</button>
+  <button class="stab" onclick="s22tab(this,'s22c')">Sizes of infinity</button>
+  <button class="stab" onclick="s22tab(this,'s22d')">Why it matters</button>
+</div>
+
+<!-- ── Tab A: Counting infinity ── -->
+<div class="spanel on" id="s22a">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">What does "same size" mean for infinite sets?</h3>
+  <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
+    Two finite sets have the same size if you can pair their elements one-to-one with nothing left over — like matching socks to feet.
+    Cantor extended this idea to infinite sets: two sets are the same size (have the same <em>cardinality</em>) if there exists a perfect one-to-one correspondence between them.
+  </p>
+  <div class="fdisp">\(f : A 	o B 	ext{ is a bijection} \implies |A| = |B|\)</div>
+  <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
+    This gives a surprising result. The even integers seem to be "half" the integers — yet they can be paired perfectly:
+  </p>
+  <div class="fdisp">\(1\leftrightarrow 2,\quad 2\leftrightarrow 4,\quad 3\leftrightarrow 6,\quad n\leftrightarrow 2n\)</div>
+  <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
+    Every integer \(n\) maps to \(2n\), every even integer \(2n\) maps back to \(n\) — a perfect bijection.
+    So \(|\mathbb{N}| = |	ext{even integers}|\). A proper subset of an infinite set can have the same cardinality as the whole set — this is one hallmark of infinity.
+  </p>
+  <div class="note teal">
+    <strong>Countably infinite (\(leph_0\)):</strong> A set is <em>countably infinite</em> if its elements can be listed in a sequence \(a_1, a_2, a_3, \ldots\) — that is, paired one-to-one with the natural numbers.
+    The integers \(\mathbb{Z}\), the rationals \(\mathbb{Q}\), and even the algebraic numbers are all countably infinite.
+  </div>
+  <div class="cbox"><canvas id="c22a" height="180"></canvas></div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="c22aStep()">&#43; Show next pair</button>
+    <button class="btn btn-outline" onclick="c22aReset()">↺ Reset</button>
+  </div>
+  <div class="big-num" id="c22a-display">Pairs shown: <span id="c22a-n">0</span></div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are the rational numbers countable?</div>
+    <div class="ccard-a">Yes. Cantor's diagonal enumeration of fractions lists them as a 2D grid (row \(p\), column \(q\) = fraction \(p/q\)) and traverses it diagonally. Every fraction \(p/q\) appears somewhere in the list, so the rationals can be paired one-to-one with the natural numbers. This is deeply counterintuitive — the rationals are <em>dense</em> on the number line (between any two there is another), yet they are no more numerous than the integers.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">What does Hilbert's Hotel have to do with this?</div>
+    <div class="ccard-a">Hilbert's Hotel (see Module 19) is a physical metaphor for countable infinity: a hotel with \(leph_0\) rooms can always accommodate more guests by shifting room assignments — because \(leph_0 + 1 = leph_0\) and \(leph_0 + leph_0 = leph_0\). But it <em>cannot</em> accommodate uncountably many guests — there is no way to assign a room to every real number.</div></div>
+  </div>
+</div>
+
+<!-- ── Tab B: Diagonal argument ── -->
+<div class="spanel" id="s22b">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Cantor's Diagonal Argument (1891)</h3>
+  <div class="concept" style="margin-bottom:1rem;">
+    Suppose, for contradiction, that the real numbers between 0 and 1 could be listed: \(r_1, r_2, r_3, \ldots\)
+    Cantor showed that however long this list is, you can always construct a real number <em>not</em> on it — so no such complete list can exist.
+  </div>
+  <div class="cbox"><canvas id="c22b" height="260"></canvas></div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="c22bAnimate()">&#9654; Animate argument</button>
+    <button class="btn btn-outline" onclick="c22bReset()">↺ Reset</button>
+  </div>
+  <div id="c22b-status" class="status" style="min-height:1.5rem;"></div>
+  <div style="font-size:.93rem;line-height:1.8;margin:1rem 0;">
+    <strong>The construction:</strong>
+    <ol style="padding-left:1.3rem;margin-top:.5rem;">
+      <li>Assume we have a list \(r_1, r_2, r_3, \ldots\) of all reals in \([0,1]\), each written as an infinite decimal.</li>
+      <li>Build a new number \(d\) by going down the diagonal: take the \(n\)-th decimal digit of \(r_n\) and change it — say, replace any digit \(d\) by \((d+5) mod 10\).</li>
+      <li>The new number \(d\) differs from \(r_1\) in the 1st decimal place, from \(r_2\) in the 2nd, and so on.</li>
+      <li>So \(d\) is not equal to any \(r_n\) — it is not on the list. Contradiction.</li>
+    </ol>
+  </div>
+  <div class="note red">
+    <strong>The conclusion:</strong> The real numbers \(\mathbb{R}\) are <em>uncountably infinite</em>. They cannot be listed in a sequence. Their cardinality \(|\mathbb{R}| = 2^{leph_0}\) is strictly greater than \(leph_0\).
+  </div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Couldn't you just add the new number d to the list?</div>
+    <div class="ccard-a">You could — but then Cantor's construction immediately produces <em>another</em> number not on the new list. The argument works against any purported complete list, no matter how it is extended. There is no way to "plug the gap" — every list of reals is incomplete.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the argument fail for the rationals?</div>
+    <div class="ccard-a">Cantor's diagonal construction produces a new real number \(d\) — but \(d\) is not guaranteed to be rational. The argument only shows that \(d 
+otin \{r_1, r_2, \ldots\}\); since the rationals are a proper subset of the reals, \(d\) might simply be irrational and not even a candidate for the rational list. The diagonal argument applies to the reals specifically because every decimal expansion (rational or not) is a valid real number.</div></div>
+  </div>
+</div>
+
+<!-- ── Tab C: Sizes of infinity ── -->
+<div class="spanel" id="s22c">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">A hierarchy of infinities</h3>
+  <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
+    Cantor didn't stop at two sizes. He proved that for any set \(A\), its <em>power set</em> \(\mathcal{P}(A)\) — the set of all subsets of \(A\) — is always strictly larger. This gives an endless tower of infinities.
+  </p>
+  <div class="fdisp">\(leph_0 \;<\; 2^{leph_0} \;<\; 2^{2^{leph_0}} \;<\; \cdots\)</div>
+  <table class="tbl" style="margin:1rem 0;">
+    <tr><th>Set</th><th>Cardinality</th><th>Type</th></tr>
+    <tr><td>\(\mathbb{N} = \{1,2,3,\ldots\}\)</td><td>\(leph_0\)</td><td>Countably infinite</td></tr>
+    <tr><td>\(\mathbb{Z}\) (integers)</td><td>\(leph_0\)</td><td>Countably infinite</td></tr>
+    <tr><td>\(\mathbb{Q}\) (rationals)</td><td>\(leph_0\)</td><td>Countably infinite</td></tr>
+    <tr><td>\(\mathbb{R}\) (reals)</td><td>\(2^{leph_0} = \mathfrak{c}\)</td><td class="diverge">Uncountably infinite</td></tr>
+    <tr><td>All functions \(\mathbb{R}	o\mathbb{R}\)</td><td>\(2^{\mathfrak{c}}\)</td><td class="diverge">Even larger</td></tr>
+  </table>
+  <div class="note">
+    <strong>The Continuum Hypothesis</strong> asks: is there a set whose cardinality is strictly between \(leph_0\) and \(2^{leph_0}\)?
+    Gödel (1940) and Cohen (1963) together proved this question is <em>independent</em> of the standard axioms of set theory — it can be neither proved nor disproved from the axioms we normally use. This was one of the most striking results in 20th-century mathematics.
+  </div>
+  <div class="challenges"><h3>Think about it</h3>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are there more reals than rationals, even though both are infinite?</div>
+    <div class="ccard-a">Yes, in Cantor's precise sense: there is no bijection between \(\mathbb{Q}\) and \(\mathbb{R}\). The rationals are countably infinite (\(leph_0\)) while the reals are uncountably infinite (\(2^{leph_0}\)). In some intuitive sense, the irrationals "fill in" the number line while the rationals leave gaps — and there are far more irrationals than rationals.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is \(2^{leph_0}\) equal to \(leph_1\)?</div>
+    <div class="ccard-a">This is precisely the Continuum Hypothesis. \(leph_1\) is defined as the next cardinal after \(leph_0\) in the cardinal hierarchy. Whether \(2^{leph_0} = leph_1\) or \(2^{leph_0} > leph_1\) cannot be settled from the standard axioms of mathematics (ZFC). Both answers are consistent with those axioms.</div></div>
+  </div>
+</div>
+
+<!-- ── Tab D: Why it matters ── -->
+<div class="spanel" id="s22d">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Why Cantor's work matters</h3>
+  <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
+    Cantor's theory provoked fierce opposition in his lifetime — Kronecker called it "a disease", Poincaré called it "a grave illness from which mathematics would recover." Today it is the foundation of modern set theory and underpins almost all of higher mathematics.
+  </p>
+  <div class="sum-grid">
+    <div class="sum-card">
+      <h3>For analysis</h3>
+      <ul>
+        <li>The completeness of \(\mathbb{R}\) — the property that guarantees limits exist — is tied to its uncountability.</li>
+        <li>A countable set of points can have measure zero even if it is dense — the rationals in \([0,1]\) occupy "no length".</li>
+        <li>Most real numbers are transcendental (like \(\pi\) and \(e\)) — the algebraic numbers are only countably many.</li>
+      </ul>
+    </div>
+    <div class="sum-card">
+      <h3>For computation</h3>
+      <ul>
+        <li>There are only countably many computer programs, but uncountably many real-valued functions — so most functions are uncomputable.</li>
+        <li>Turing (1936) used a diagonal argument almost identical to Cantor's to prove the Halting Problem is undecidable.</li>
+        <li>Information theory: a countably infinite alphabet can represent any computable object.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note teal" style="margin-top:1rem;">
+    <strong>Connection to this app:</strong> The density of the rationals (Module 16) makes more sense in light of Cantor's result — the rationals are <em>everywhere</em> on the number line yet constitute a set of measure zero. Hilbert's Hotel (Module 19) is a vivid illustration of \(leph_0\)-arithmetic. And the real number completeness that makes sequences and series converge to real limits ultimately rests on the uncountability shown here.
+  </div>
+  <div class="mistakes"><h3>Common mistake</h3>
+    <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "Infinity is just infinity — you can't have different sizes."</div>
+    <div class="ccard-a">This intuition fails. Cantor proved rigorously that no bijection can exist between \(\mathbb{N}\) and \(\mathbb{R}\). The proof is constructive: given any purported list of reals, you can exhibit a real number not on it. The existence of different sizes of infinity is not a philosophical position but a mathematical theorem.</div></div>
+  </div>
+</div>
+
+</section>
 </div><!-- /container -->
 <script>
 /* ══════════════════════════════════════════════════
@@ -1677,11 +1850,56 @@ function rz(id){
 }
 function tog(el){el.classList.toggle('open');}
 
+/* ── Section nav helpers ────────────────────────── */
+const SEC_MODULES={
+  intro:[0],
+  foundations:[1,19,18],
+  concepts:[2,3,5,6,4],
+  machinery:[7,20,8,17,21],
+  applications:[9,10,11,12],
+  bigideas:[22,13,15,16],
+  summary:[14]
+};
+function secOfModule(m){
+  for(const[sec,mods] of Object.entries(SEC_MODULES)){if(mods.includes(m))return sec;}
+  return null;
+}
+function openSec(sec){
+  document.querySelectorAll('.nb').forEach(b=>{
+    if(b.dataset.sec===sec)b.classList.add('sec-open');
+    else b.classList.remove('sec-open');
+  });
+  document.querySelectorAll('.ns').forEach(s=>{
+    if(s.dataset.sec===sec)s.classList.add('open');
+    else s.classList.remove('open');
+  });
+}
+function toggleSec(sec){
+  const btn=document.querySelector('.ns[data-sec="'+sec+'"]');
+  if(btn.classList.contains('open')){
+    const activeM=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
+    if(secOfModule(activeM)===sec)return;
+    btn.classList.remove('open');
+    document.querySelectorAll('.nb[data-sec="'+sec+'"]').forEach(b=>b.classList.remove('sec-open'));
+  }else{
+    openSec(sec);
+  }
+}
+function markActiveSec(m){
+  const sec=secOfModule(m);
+  document.querySelectorAll('.ns').forEach(s=>s.classList.remove('has-active'));
+  if(sec){const s=document.querySelector('.ns[data-sec="'+sec+'"]');if(s)s.classList.add('has-active');}
+}
+
 function go(m, skipHistory){
   document.querySelectorAll('.module').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('mod'+m).classList.add('on');
-  document.querySelector('[data-m="'+m+'"]').classList.add('on');
+  const sec=secOfModule(m);
+  if(sec)openSec(sec);
+  markActiveSec(m);
+  const activeTab=document.querySelector('[data-m="'+m+'"]');
+  if(activeTab){activeTab.classList.add('on');activeTab.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});}
   visited.add(m);
   document.getElementById('pd'+m).classList.add('visited');
   if(!inited[m]){initMod(m);inited[m]=true;}
@@ -1725,7 +1943,7 @@ function mkTabFn(){
 }
 const s2tab=mkTabFn(),s3tab=mkTabFn(),s4tab=mkTabFn(),s5tab=mkTabFn(),
       s6tab=mkTabFn(),s8tab=mkTabFn(),s12tab=mkTabFn(),s13tab=mkTabFn(),
-      s18tab=mkTabFn(),s20tab=mkTabFn();
+      s18tab=mkTabFn(),s20tab=mkTabFn(),s22tab=mkTabFn();
 
 /* ── Scientific notation formatter ─────────────────
    Returns HTML: mantissa × 10<sup>exp</sup>
@@ -2318,7 +2536,7 @@ function initMod(m,panel){
   else if(m===3){s3upd('a');s3upd('b');s3upd('c');s3upd('d');}
   else if(m===4){m4draw('a');m4draw('b');m4draw('c');}
   else if(m===5){s5draw('a');s5draw('b');s5draw('c');s5draw('d');}
-  else if(m===6){s6aReset();s6draw('b');s6draw('c');}
+  else if(m===6){s6aReset();s6draw('c');}
   else if(m===8){drawPseries();}
   else if(m===9){bbUpdate();}
   else if(m===10){drawKoch();}
@@ -2328,9 +2546,10 @@ function initMod(m,panel){
   else if(m===15){fibReset();drawSpiral();drawCF();}
   else if(m===16){piReset('a');piReset('b');piReset('c');drawPiRace();}
   else if(m===21){mod21DrawF();mod21DrawG();mod21DrawH();m21approach();}
+  else if(m===22){c22aReset();c22bReset();}
 }
 
-const TOTAL_MODULES=22;
+const TOTAL_MODULES=23;
 
 /* ══════════════════════════════════════════════════
    BOTTOM NAV — inject into every module on first visit
@@ -2338,15 +2557,15 @@ const TOTAL_MODULES=22;
 function injectBottomNav(m){
   const mod=document.getElementById('mod'+m);
   if(!mod||mod.querySelector('.mod-nav'))return;
-  const labels={0:'Inspirations',1:'Number Line',18:'Early Encounters',19:'Basic Numbers',2:'Approaching Zero',3:'0/0 Problem',4:'What is a Limit?',5:'Sequences',6:'Infinite Series',7:'Why Convergence?',20:'Seq. Convergence Tests',8:'Series Convergence Tests',21:'Limits applied to functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator Approximation',13:'Paradoxes',15:'Fibonacci',16:'π Series',17:'Telescoping',14:'Summary'};
-  const modNums={0:'Module 0',1:'Module 1',18:'Module 2',19:'Module 3',2:'Module 4',3:'Module 5',5:'Module 6',6:'Module 7',4:'Module 8',7:'Module 9',20:'Module 10',8:'Module 11',21:'Module 12',9:'Module 13',10:'Module 14',11:'Module 15',12:'Module 16',13:'Module 17',15:'Module 18',16:'Module 19',17:'Module 20',14:'Summary'};
-  const navOrder=[0,1,18,19,2,3,5,6,4,7,20,8,21,9,10,11,12,13,15,16,17,14];
+  const labels={0:'Inspirations',1:'Number Line',19:'Basic Numbers',18:'Early Encounters',2:'Approaching Zero',3:'0/0 Problem',5:'Sequences',6:'Infinite Series',4:'What is a Limit?',7:'Why Convergence?',20:'Seq. Tests',8:'Series Tests',17:'Telescoping',21:'Limits of Functions',9:'Bouncing Ball',10:'Snowflake',11:'Fractions',12:'Calculator',22:"Cantor's Infinities",13:'Paradoxes',15:'Fibonacci',16:'π Series',14:'Summary'};
+  const modNums={0:'Module 0',1:'Module 1',19:'Module 2',18:'Module 3',2:'Module 4',3:'Module 5',5:'Module 6',6:'Module 7',4:'Module 8',7:'Module 9',20:'Module 10',8:'Module 11',17:'Module 12',21:'Module 13',9:'Module 14',10:'Module 15',11:'Module 16',12:'Module 17',22:'Module 18',13:'Module 19',15:'Module 20',16:'Module 21',14:'Summary'};
+  const navOrder=[0,1,19,18,2,3,5,6,4,7,20,8,17,21,9,10,11,12,22,13,15,16,14];
   const pos=navOrder.indexOf(m);
   const prev=pos>0?navOrder[pos-1]:null;
   const next=pos<navOrder.length-1?navOrder[pos+1]:null;
   const div=document.createElement('div');div.className='mod-nav';
   div.innerHTML=(prev?`<button class="btn btn-outline" onclick="go(${prev})">← ${labels[prev]}</button>`:'<span></span>')+
-    `<span class="mod-nav-info">${modNums[m]} of 21<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
+    `<span class="mod-nav-info">${modNums[m]} of 22<br><span style="font-size:.7rem;color:#aaa">← → arrow keys to navigate</span></span>`+
     (next?`<button class="btn btn-solid" onclick="go(${next})">${labels[next]} →</button>`:'<span></span>');
   mod.appendChild(div);
 }
@@ -3125,16 +3344,148 @@ function m21approach(){
   }
 }
 
+/* ══════════════════════════════════════════════════
+   MODULE 22: CANTOR'S INFINITIES
+══════════════════════════════════════════════════ */
+
+/* ── Tab A: Bijection animation N ↔ Even integers ── */
+let c22aPairs=0;
+function c22aReset(){c22aPairs=0;drawC22a();}
+function c22aStep(){if(c22aPairs<10)c22aPairs++;document.getElementById('c22a-n').textContent=c22aPairs;drawC22a();}
+function drawC22a(){
+  const c=rz('c22a');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const n=Math.min(c22aPairs,8);
+  const cols=Math.max(n,1);
+  const colW=(W-40)/cols;
+  const rowY1=50,rowY2=H-50;
+  // Labels
+  ctx.font='bold 13px Arial';ctx.fillStyle=NAVY;ctx.textAlign='left';
+  ctx.fillText('ℕ (integers):',8,rowY1);
+  ctx.fillText('Even integers:',8,rowY2);
+  // Draw pairs
+  for(let i=0;i<n;i++){
+    const x=40+i*colW+colW/2;
+    const nat=i+1;
+    const even=2*nat;
+    // Integer bubble
+    ctx.fillStyle=NAVY;ctx.beginPath();ctx.arc(x,rowY1,18,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(nat,x,rowY1);
+    // Even bubble
+    ctx.fillStyle=TEAL;ctx.beginPath();ctx.arc(x,rowY2,18,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 12px Arial';
+    ctx.fillText(even,x,rowY2);
+    // Arrow
+    ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x,rowY1+18);ctx.lineTo(x,rowY2-18);ctx.stroke();
+    // Arrowhead
+    ctx.fillStyle=GOLD;ctx.beginPath();ctx.moveTo(x,rowY2-18);ctx.lineTo(x-5,rowY2-28);ctx.lineTo(x+5,rowY2-28);ctx.closePath();ctx.fill();
+    // Label n → 2n
+    if(i===n-1&&n>0){
+      ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textBaseline='middle';
+      ctx.fillText('f('+nat+')='+(even),x+24,(rowY1+rowY2)/2);
+    }
+  }
+  if(n===0){
+    ctx.fillStyle=MUT;ctx.font='13px Arial';ctx.textBaseline='middle';ctx.textAlign='center';
+    ctx.fillText('Press "+ Show next pair" to build the bijection',W/2,H/2);
+  }
+  ctx.textBaseline='alphabetic';
+}
+
+/* ── Tab B: Diagonal argument ── */
+let c22bStep=0,c22bTimer=null;
+const DIGITS=[[3,1,4,1,5,9,2,6],[7,1,8,2,8,1,8,2],[5,7,7,2,1,5,6,6],[2,7,1,8,2,8,4,5],[9,9,3,7,5,1,0,5],[1,4,1,4,2,1,3,5],[6,3,8,0,2,1,3,1],[8,4,4,0,7,2,7,0]];
+function c22bReset(){
+  c22bStep=0;if(c22bTimer){clearInterval(c22bTimer);c22bTimer=null;}
+  document.getElementById('c22b-status').textContent='Press Animate to step through the diagonal argument.';
+  document.getElementById('c22b-status').className='status';
+  drawC22b(-1);
+}
+function c22bAnimate(){
+  if(c22bTimer){clearInterval(c22bTimer);c22bTimer=null;}
+  c22bStep=0;
+  c22bTimer=setInterval(()=>{
+    drawC22b(c22bStep);
+    const st=document.getElementById('c22b-status');
+    if(c22bStep<8){
+      st.textContent='Step '+(c22bStep+1)+': diagonal digit of r'+(c22bStep+1)+' is '+DIGITS[c22bStep][c22bStep]+' → d'+(c22bStep+1)+'='+(DIGITS[c22bStep][c22bStep]+5)%10;
+      st.className='status';st.style.color='var(--navy)';
+    }else{
+      st.textContent='d = 0.'+DIGITS.map((row,i)=>(row[i]+5)%10).join('')+'… — this number differs from every r_n on its diagonal digit. It is NOT on the list. Contradiction!';
+      st.className='status diverge';st.style.color='var(--red)';st.style.fontWeight='700';
+      clearInterval(c22bTimer);c22bTimer=null;
+    }
+    c22bStep++;
+  },900);
+}
+function drawC22b(highlight){
+  const c=rz('c22b');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const rows=8,cols=8;
+  const cellW=36,cellH=26,startX=110,startY=20;
+  // Row labels
+  ctx.font='12px Georgia';ctx.fillStyle=NAVY;ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let r=0;r<rows;r++){
+    ctx.fillText('r'+(r+1)+' = 0.',startX-4,startY+r*cellH+cellH/2);
+  }
+  // Digit cells
+  for(let r=0;r<rows;r++){
+    for(let cc2=0;cc2<cols;cc2++){
+      const x=startX+cc2*cellW,y=startY+r*cellH;
+      const isDiag=(r===cc2);
+      const isHighlighted=(isDiag&&cc2<highlight);
+      // Cell background
+      ctx.fillStyle=isHighlighted?'#fff3cd':isDiag&&cc2===highlight?'#ffeeba':'#fff';
+      if(isDiag){ctx.fillStyle=isHighlighted?'#ffe69c':cc2<=highlight?'#fff3cd':'#eef2ff';}
+      ctx.fillRect(x,y,cellW-2,cellH-2);
+      ctx.strokeStyle=isDiag?GOLD:MUT;ctx.lineWidth=isDiag?1.5:0.5;
+      ctx.strokeRect(x,y,cellW-2,cellH-2);
+      // Digit
+      ctx.font=(isDiag?'bold ':'')+'13px Georgia';
+      ctx.fillStyle=isDiag?(isHighlighted?'#000':NAVY):MUT;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(DIGITS[r][cc2],x+cellW/2-1,y+cellH/2);
+    }
+  }
+  // d row at bottom
+  const dY=startY+rows*cellH+12;
+  ctx.font='bold 12px Georgia';ctx.fillStyle=RED;ctx.textAlign='right';ctx.textBaseline='middle';
+  ctx.fillText('d = 0.',startX-4,dY+cellH/2);
+  for(let cc2=0;cc2<cols;cc2++){
+    const x=startX+cc2*cellW,y=dY;
+    const shown=(cc2<highlight);
+    ctx.fillStyle=shown?'#fdf0f0':'#fff';
+    ctx.fillRect(x,y,cellW-2,cellH-2);
+    ctx.strokeStyle=RED;ctx.lineWidth=1.5;ctx.strokeRect(x,y,cellW-2,cellH-2);
+    if(shown){
+      ctx.font='bold 13px Georgia';ctx.fillStyle=RED;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText((DIGITS[cc2][cc2]+5)%10,x+cellW/2-1,y+cellH/2);
+    }else{
+      ctx.fillStyle='#ccc';ctx.font='12px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('?',x+cellW/2-1,y+cellH/2);
+    }
+  }
+  ctx.font='11px Arial';ctx.fillStyle=MUT;ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('← constructed digit: d_n = (diagonal digit + 5) mod 10',startX,dY+cellH+6);
+  ctx.textBaseline='alphabetic';
+}
+
 window.addEventListener('load',()=>{
   visited.add(0);document.getElementById('pd0').classList.add('visited');
   inited[0]=true;
+  openSec('intro');
+  markActiveSec(0);
   injectBottomNav(0);
   window.addEventListener('resize',()=>{
     const m=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
     initMod(m);
   });
   // Keyboard navigation
-  const navOrder=[0,1,18,19,2,3,5,6,4,7,20,8,21,9,10,11,12,13,15,16,17,14];
+  const navOrder=[0,1,19,18,2,3,5,6,4,7,20,8,17,21,9,10,11,12,22,13,15,16,14];
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT')return;
     const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
