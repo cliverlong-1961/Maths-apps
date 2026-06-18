@@ -9,6 +9,7 @@ import { proofTopics } from "./data/proof";
 import { algebraAndFunctionsTopics } from "./data/algebraAndFunctions";
 import { vectorsTopics } from "./data/vectors";
 import { hypothesisTestingTopics } from "./data/hypothesis-testing";
+import { infinityTopics } from "./data/infinity";
 
 const NAVY = "#1a2744";
 const GOLD = "#c8a84b";
@@ -24,6 +25,7 @@ const pages = [
   { id: 7, label: "Algebra & Functions",   topics: algebraAndFunctionsTopics,  title: "Algebra and Functions Map" },
   { id: 8, label: "Vectors",               topics: vectorsTopics,              title: "Vectors Map" },
   { id: 9, label: "Hypothesis Testing",    topics: hypothesisTestingTopics,    title: "Hypothesis Testing Map" },
+  { id: 10, label: "Infinity",             topics: infinityTopics,             title: "Infinity Map" },
 ];
 
 function NavButton({ label, active, onClick }: {
