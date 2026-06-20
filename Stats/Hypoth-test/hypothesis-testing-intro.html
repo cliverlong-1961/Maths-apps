@@ -166,30 +166,30 @@ canvas{display:block;width:100%;}
 
 <header>
 <div class="hdr-top">
-  <h1>&#967;² Hypothesis Testing</h1>
+  <h1>Hypothesis Testing</h1>
   <span class="badge">A-Level Statistics</span>
   <p>From the null hypothesis to the conclusion — step by step</p>
 </div>
 <div class="progress-row">
   <span class="prog-label">Progress:</span>
-  <div class="pdot visited" id="pd0" data-label="1 Introduction" onclick="go(0)"></div>
-  <div class="pdot" id="pd11" data-label="2 Motivation" onclick="go(11)"></div>
-  <div class="pdot" id="pd1" data-label="3 The Language" onclick="go(1)"></div>
-  <div class="pdot" id="pd2" data-label="4 Significance Levels" onclick="go(2)"></div>
-  <div class="pdot" id="pd3" data-label="5 One-tailed Tests" onclick="go(3)"></div>
-  <div class="pdot" id="pd4" data-label="6 Two-tailed Tests" onclick="go(4)"></div>
-  <div class="pdot" id="pd5" data-label="7 Critical Regions" onclick="go(5)"></div>
+  <div class="pdot visited" id="pd1" data-label="1 Introduction" onclick="go(1)"></div>
+  <div class="pdot" id="pd2" data-label="2 First Attempts" onclick="go(2)"></div>
+  <div class="pdot" id="pd3" data-label="3 The Language" onclick="go(3)"></div>
+  <div class="pdot" id="pd4" data-label="4 Significance Levels" onclick="go(4)"></div>
+  <div class="pdot" id="pd5" data-label="5 One-tailed Tests" onclick="go(5)"></div>
+  <div class="pdot" id="pd6" data-label="6 Two-tailed Tests" onclick="go(6)"></div>
+  <div class="pdot" id="pd7" data-label="7 Critical Regions" onclick="go(7)"></div>
 
 
 </div>
 <nav id="nav">
-  <button class="nb on" data-m="0" onclick="go(0)">1&hairsp;Intro</button>
-  <button class="nb" data-m="11" onclick="go(11)">2&hairsp;Motivation</button>
-  <button class="nb" data-m="1" onclick="go(1)">3&hairsp;Language</button>
-  <button class="nb" data-m="2" onclick="go(2)">4&hairsp;Significance</button>
-  <button class="nb" data-m="3" onclick="go(3)">5&hairsp;One-tailed</button>
-  <button class="nb" data-m="4" onclick="go(4)">6&hairsp;Two-tailed</button>
-  <button class="nb" data-m="5" onclick="go(5)">7&hairsp;Critical&nbsp;Regions</button>
+  <button class="nb on" data-m="1" onclick="go(1)">1&hairsp;Intro</button>
+  <button class="nb" data-m="2" onclick="go(2)">2&hairsp;First Attempts</button>
+  <button class="nb" data-m="3" onclick="go(3)">3&hairsp;Language</button>
+  <button class="nb" data-m="4" onclick="go(4)">4&hairsp;Significance</button>
+  <button class="nb" data-m="5" onclick="go(5)">5&hairsp;One-tailed</button>
+  <button class="nb" data-m="6" onclick="go(6)">6&hairsp;Two-tailed</button>
+  <button class="nb" data-m="7" onclick="go(7)">7&hairsp;Critical&nbsp;Regions</button>
 
 
 </nav>
@@ -197,12 +197,12 @@ canvas{display:block;width:100%;}
 
 <div class="container">
 
-<!-- ═══ MODULE 0: INTRODUCTION ═══ -->
-<section class="module on" id="mod0">
+<!-- ═══ MODULE 1: INTRODUCTION ═══ -->
+<section class="module on" id="mod1">
 <div class="mhdr"><div class="mtag">Module 1</div><h2>What is Hypothesis Testing?</h2></div>
 
 <div class="concept">
-  <strong>Core idea:</strong> Hypothesis testing is a formal method for using sample data to decide whether there is enough evidence to reject a particular claim about a population. We never "prove" anything — we are finding how unlikely (low probability) the actual outcome of our test has been if we assume the null hypothesis was true.
+  <strong>Core idea:</strong> Hypothesis testing is a formal method for using sample data to decide whether there is enough evidence to reject a particular claim about a population. We never "prove" anything — we are finding how unlikely (low probability) the actual outcome of our test has been if we assume the null hypothesis was true. We are forced to take a sample and make a test because it is usually too expensive, too time-consuming, or not feasible (in destructive testing) to test every item in the population. We are taking a sample and trying to make some judgement about the whole population from the sample measurement.
 </div>
 
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
@@ -219,7 +219,7 @@ canvas{display:block;width:100%;}
 
 <div class="sdiv"></div>
 <h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Two starting situations</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">A starting point for hypothesis testing is usually one of two situations.</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">A starting point for hypothesis testing is usually one of two situations: we want to see i) whether some change we have made to a process or situation has produced the effect we intended or ii) whether some claim about a population — e.g. the mean value of some property such as mass or length — is actually true.</p>
 
 <div class="two-col" style="margin-bottom:1rem;">
   <div class="sum-card">
@@ -448,6 +448,137 @@ canvas{display:block;width:100%;}
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">In both situations we take a sample and calculate one or more statistics from the sample data.</p>
 
 <div class="sdiv"></div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;"><em>Before moving to formal procedures, it helps to understand <strong>why</strong> hypothesis testing exists — what real problem it solves, and how it connects populations to samples.</em></p>
+
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Populations and samples</h3>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Suppose we want to know something about a whole population — for example, the mean weight of all adults in a city, or the proportion of defective items from a production line. Measuring every member of the population is usually too slow, too expensive, or genuinely impossible.
+  So instead we take a <em>sample</em> and use it to draw conclusions about the population.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  The sample statistic will almost certainly differ from the true population parameter — even when nothing has changed — simply due to the randomness of sampling. The key question is therefore:
+</p>
+<div class="fdisp" style="font-size:1rem;">\[\text{Is the difference between the sample statistic and the population parameter due to chance, or is it real?}\]</div>
+
+<div class="sdiv"></div>
+<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Three motivating scenarios</h3>
+
+<div class="stabs">
+  <button class="stab on" onclick="stabToggle(this,'s2a')">The Coin</button>
+  <button class="stab" onclick="stabToggle(this,'s2b')">The Bag</button>
+  <button class="stab" onclick="stabToggle(this,'s2c')">Real World</button>
+</div>
+
+<div class="spanel on" id="s2a">
+<div class="note gold">
+  <strong>Scenario 1 — A suspicious coin</strong><br><br>
+  A fair coin should satisfy \(P(\text{Head}) = P(\text{Tail}) = \tfrac{1}{2}\). If we flip it five times and get five heads, the probability of that happening with a fair coin is:
+  \[\left(\tfrac{1}{2}\right)^5 = \tfrac{1}{32} \approx 3.1\%\]
+  That's unusual but possible. If we got 10 heads in a row the probability drops to about 0.1%. At some point the result becomes so unlikely under the fair-coin assumption that we lose confidence in that assumption and prefer an alternative explanation: the coin is biased towards heads.
+</div>
+<p style="font-size:.95rem;line-height:1.75;margin:.8rem 0;">
+  This is the logic of hypothesis testing. We start with the null hypothesis \(H_0: p = 0.5\) (fair coin). The significance level — say 5% — is the threshold below which we judge the evidence "too unlikely to be chance". If the observed result has probability \(\leq 5\%\) under \(H_0\), we reject \(H_0\) and accept \(H_1: p > 0.5\) (biased towards heads).
+</p>
+<div class="cbox"><canvas id="c2coin" height="180"></canvas></div>
+<div class="ctrls">
+  <button class="btn btn-solid" onclick="drawCoinChart()">&#9654; Show probability vs number of heads</button>
+</div>
+</div>
+
+<div class="spanel" id="s2b">
+<div class="note teal">
+  <strong>Scenario 2 — Disks in a bag</strong><br><br>
+  Suppose we are told there are equal numbers of red, blue and green disks in a bag, so \(P(\text{Red}) = \tfrac{1}{3}\). We cannot count every disk (the total is the population) but we can draw a sample.
+</div>
+<p style="font-size:.95rem;line-height:1.75;margin:.8rem 0;">
+  If we draw 30 disks and find 18 are red, is that consistent with \(P(\text{Red}) = \tfrac{1}{3}\)? We'd expect about 10 red disks if the claim were true. Having 18 might simply be bad luck — or it might indicate there are actually more red disks than claimed. The hypothesis test tells us whether the sample provides <em>sufficient evidence</em> to doubt the original claim.
+</p>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
+  Notice the key logical move: <strong>we calculate the probability of the observed result (or worse) assuming \(H_0\) is true</strong>. We can't test \(H_1\) directly because it doesn't specify an exact value of \(p\).
+</p>
+</div>
+
+<div class="spanel" id="s2c">
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">Hypothesis testing arises naturally whenever it is impossible or impractical to measure the whole population:</p>
+<table class="tbl">
+  <tr><th>Situation</th><th>Population</th><th>Why we can't measure it all</th></tr>
+  <tr><td><strong>Destructive testing</strong> — steel beams tested to breaking point</td><td>All beams</td><td>Testing destroys them; nothing left to use</td></tr>
+  <tr><td><strong>Quality control</strong> — proportion of defective items from a machine</td><td>All items ever produced</td><td>Production is ongoing; too slow and costly</td></tr>
+  <tr><td><strong>Medical trials</strong> — does a new drug improve cure rates?</td><td>All future patients</td><td>Cannot wait to treat everyone before deciding</td></tr>
+  <tr><td><strong>Environmental testing</strong> — do new engines reduce emissions?</td><td>All engines ever made</td><td>Too many; sampling is the only feasible approach</td></tr>
+</table>
+<p style="font-size:.95rem;line-height:1.75;margin-top:.8rem;">
+  In every case the same question arises: is the difference we see in the sample real, or just random variation? Hypothesis testing provides a rigorous, agreed framework for answering it.
+</p>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why is the difference between sample and population statistics unavoidable?</div>
+  <div class="ccard-a">Different random samples from the same population will give different statistics — this is called sampling variability. Even a completely honest sample will rarely match the population parameter exactly, purely by chance. This means any observed difference could in principle be nothing more than this natural variability. The hypothesis test exists to judge how much "weight" that explanation carries.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What if we took the entire population as our sample?</div>
+  <div class="ccard-a">If you could measure every member of the population there would be no uncertainty: the sample statistic would equal the population parameter exactly and you would not need a hypothesis test at all. It is precisely because we can't do this (for the reasons in the table above) that statistical inference — and hypothesis testing — become necessary.</div></div>
+</div>
+
+<div id="bnav1"></div>
+</section>
+
+<!-- ═══ MODULE 2: FIRST ATTEMPTS ═══ -->
+<section class="module" id="mod2">
+<div class="mhdr"><div class="mtag">Module 2</div><h2>First Attempts</h2></div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  Before learning the formal vocabulary, let's see the core reasoning of a hypothesis test in action.
+</p>
+
+<div class="flow-box">
+  <h3>The Basic Framework</h3>
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>State the hypotheses.</strong> Set up a null hypothesis \(H_0\) (the claim to test) and an alternative hypothesis \(H_1\) (what we believe if \(H_0\) is wrong).</div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Choose a significance level.</strong> Decide, before collecting data, how small a probability counts as "surprising" — typically \(\alpha = 0.05\) or \(\alpha = 0.01\).</div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Identify the test statistic and its distribution</strong> under \(H_0\). For A-level, this is usually a count \(X \sim B(n,p)\).</div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Calculate the probability</strong> of observing a result as extreme as (or more extreme than) the observed value, assuming \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Compare with \(\alpha\).</strong> If this probability \(\leq \alpha\), reject \(H_0\). Otherwise, do not reject \(H_0\).</div></div>
+  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>State a conclusion in context.</strong> Always refer back to the original situation.</div></div>
+</div>
+
+<div class="note gold" style="margin-bottom:1rem;">
+  <strong>Example outcomes:</strong><br>
+  In Situation 1 we may conclude that a change made to a manufacturing process has significantly reduced the proportion of faulty products.<br>
+  In Situation 2 we may conclude that there is sufficient evidence to reject a claim such as the mean mass of products being 350 g.
+</div>
+
+<div class="note red" style="margin-bottom:1rem;">
+  <strong>Important:</strong> Rejecting the null hypothesis does not <em>prove</em> that it is false. The observed sample and statistic could still have arisen purely by chance even when the null hypothesis is true. However, if such an outcome would be sufficiently unlikely — less likely than the chosen significance level — we regard the evidence as strong enough to reject \(H_0\).<br><br>
+  In other words, there is always some possibility that we reject a null hypothesis that is actually true. The significance level controls how willing we are to accept that risk.
+</div>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  Suppose a manufacturer claims that exactly 30% of the sweets in a bag are red. You open a bag of 20 sweets and find only 2 are red. Is this just bad luck, or is the 30% claim actually wrong? Hypothesis testing gives us a rigorous way to answer this question — we'll return to this exact example once we reach the <strong>One-Tailed Tests</strong> module.
+</p>
+
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  The key idea is: <em>assume the claim is true</em>, then ask — how probable is it to observe something as extreme as (or more extreme than) what we actually saw? If that probability is very small, we have grounds to doubt the claim.
+</p>
+
+<div class="note teal">
+  <strong>Why "do not reject" rather than "accept"?</strong> We never "prove" the null hypothesis — we only judge whether the evidence is strong enough to doubt it. <em>(More on this in the Language module.)</em>
+</div>
+
+<div class="challenges"><h3>Think about it</h3>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why do we assume \(H_0\) is true to begin with?</div>
+  <div class="ccard-a">The logic mirrors a legal presumption of innocence. We assume the null (the "status quo") and ask: if it really were true, how likely is the observed data? Only if the data is highly unlikely under \(H_0\) do we have grounds to reject it. This structure means the burden of proof lies with the data, not with the hypothesis.</div></div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What does "statistically significant" mean?</div>
+  <div class="ccard-a">"Statistically significant" simply means the observed result is unlikely enough (under \(H_0\)) to fall below the chosen significance level \(\alpha\). It does <em>not</em> automatically mean the result is practically important or large — a tiny real-world difference can be statistically significant with a large enough sample.</div></div>
+</div>
+
+<div id="bnav2"></div>
+</section>
+
+<!-- ═══ MODULE 3: THE LANGUAGE ═══ -->
+<section class="module" id="mod3">
+<div class="mhdr"><div class="mtag">Module 3</div><h2>The Language of Hypothesis Testing</h2></div>
+
+<p style="font-size:.9rem;line-height:1.6;color:var(--muted);margin-bottom:1rem;"><em>This module explains each term in context first; a summary table of all the vocabulary appears at the end of the page for quick reference.</em></p>
+
 <h3 style="font-family:Georgia,'Times New Roman',serif;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">The null hypothesis and the p-value</h3>
 
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
@@ -466,70 +597,6 @@ canvas{display:block;width:100%;}
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
   If the p-value is less than the chosen <strong>significance level</strong>, the observed result is considered sufficiently inconsistent with the null hypothesis that we reject it.
 </p>
-
-<div class="note gold" style="margin-bottom:1rem;">
-  <strong>Example outcomes:</strong><br>
-  In Situation 1 we may conclude that a change made to a manufacturing process has significantly reduced the proportion of faulty products.<br>
-  In Situation 2 we may conclude that there is sufficient evidence to reject a claim such as the mean mass of products being 350 g.
-</div>
-
-<div class="note red" style="margin-bottom:1rem;">
-  <strong>Important:</strong> Rejecting the null hypothesis does not <em>prove</em> that it is false. The observed sample and statistic could still have arisen purely by chance even when the null hypothesis is true. However, if such an outcome would be sufficiently unlikely — less likely than the chosen significance level — we regard the evidence as strong enough to reject \(H_0\).<br><br>
-  In other words, there is always some possibility that we reject a null hypothesis that is actually true. The significance level controls how willing we are to accept that risk.
-</div>
-
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
-  Suppose a manufacturer claims that exactly 30% of the sweets in a bag are red. You open a bag of 20 sweets and find only 2 are red. Is this just bad luck, or is the 30% claim actually wrong? Hypothesis testing gives us a rigorous way to answer this question.
-</p>
-
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
-  The key idea is: <em>assume the claim is true</em>, then ask — how probable is it to observe something as extreme as (or more extreme than) what we actually saw? If that probability is very small, we have grounds to doubt the claim.
-</p>
-
-<div class="flow-box">
-  <h3>The Basic Framework</h3>
-  <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>State the hypotheses.</strong> Set up a null hypothesis \(H_0\) (the claim to test) and an alternative hypothesis \(H_1\) (what we believe if \(H_0\) is wrong).</div></div>
-  <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Choose a significance level.</strong> Decide, before collecting data, how small a probability counts as "surprising" — typically \(\alpha = 0.05\) or \(\alpha = 0.01\).</div></div>
-  <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Identify the test statistic and its distribution</strong> under \(H_0\). For A-level, this is usually a count \(X \sim B(n,p)\).</div></div>
-  <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>Calculate the probability</strong> of observing a result as extreme as (or more extreme than) the observed value, assuming \(H_0\).</div></div>
-  <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>Compare with \(\alpha\).</strong> If this probability \(\leq \alpha\), reject \(H_0\). Otherwise, do not reject \(H_0\).</div></div>
-  <div class="flow-step"><div class="flow-num">6</div><div class="flow-text"><strong>State a conclusion in context.</strong> Always refer back to the original situation.</div></div>
-</div>
-
-<div class="note teal">
-  <strong>Why "do not reject" rather than "accept"?</strong><br>
-  Failing to find evidence against \(H_0\) is not the same as proving \(H_0\) is true. The data may simply be consistent with \(H_0\) — but consistent with other hypotheses too. We never "prove" the null; we only judge whether the evidence is strong enough to doubt it.
-</div>
-
-<div class="challenges"><h3>Think about it</h3>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why do we assume \(H_0\) is true to begin with?</div>
-  <div class="ccard-a">The logic mirrors a legal presumption of innocence. We assume the null (the "status quo") and ask: if it really were true, how likely is the observed data? Only if the data is highly unlikely under \(H_0\) do we have grounds to reject it. This structure means the burden of proof lies with the data, not with the hypothesis.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What does "statistically significant" mean?</div>
-  <div class="ccard-a">"Statistically significant" simply means the observed result is unlikely enough (under \(H_0\)) to fall below the chosen significance level \(\alpha\). It does <em>not</em> automatically mean the result is practically important or large — a tiny real-world difference can be statistically significant with a large enough sample.</div></div>
-</div>
-<div id="bnav0"></div>
-</section>
-
-<!-- ═══ MODULE 1: THE LANGUAGE ═══ -->
-<section class="module" id="mod1">
-<div class="mhdr"><div class="mtag">Module 3</div><h2>The Language of Hypothesis Testing</h2></div>
-
-<div class="concept">
-  Hypothesis testing has its own precise vocabulary. Getting the language right is essential — especially in exam answers, where every word in the conclusion carries marks.
-</div>
-
-<table class="tbl">
-  <tr><th>Term</th><th>Meaning</th></tr>
-  <tr><td><strong>Null hypothesis \(H_0\)</strong></td><td>The default assumption about the population parameter. Always states an exact value, e.g. \(p = 0.3\).</td></tr>
-  <tr><td><strong>Alternative hypothesis \(H_1\)</strong></td><td>What we conclude if \(H_0\) is rejected. States the direction of change (or simply that a change has occurred). Determines whether the test is one- or two-tailed.</td></tr>
-  <tr><td><strong>Test statistic</strong></td><td>A numerical value calculated from the sample data that is used to decide between \(H_0\) and \(H_1\). Its probability distribution under \(H_0\) must be known. Examples: the count of successes \(X\) in a binomial test; the sample mean \(\bar{X}\) in a Normal mean test; the sample PMCC \(r\) in a correlation test.</td></tr>
-  <tr><td><strong>p-value</strong></td><td>The probability, calculated assuming \(H_0\) is true, of obtaining a test statistic at least as extreme as the one observed. A small p-value means the observed result would be unlikely if \(H_0\) were true.</td></tr>
-  <tr><td><strong>Significance level \(\alpha\)</strong></td><td>The threshold probability chosen <em>before</em> the test. If the p-value falls below \(\alpha\), the result is declared significant and \(H_0\) is rejected. Common choices are 5% and 1%.</td></tr>
-  <tr><td><strong>Critical region</strong></td><td>The set of values of the test statistic for which \(H_0\) is rejected — i.e. the values so extreme that they fall below the significance level.</td></tr>
-  <tr><td><strong>Critical value</strong></td><td>The boundary of the critical region. The test statistic must be at least as extreme as the critical value in order to reject \(H_0\).</td></tr>
-  <tr><td><strong>Reject \(H_0\)</strong></td><td>The p-value is less than \(\alpha\): the observed result is sufficiently unlikely under \(H_0\) that we conclude \(H_1\) is supported. We say the result is <em>statistically significant</em> at level \(\alpha\).</td></tr>
-  <tr><td><strong>Do not reject \(H_0\)</strong></td><td>The p-value is greater than or equal to \(\alpha\): insufficient evidence to favour \(H_1\). This does <em>not</em> mean \(H_0\) is proved true — only that the data are consistent with it.</td></tr>
-</table>
 
 <div class="sdiv"></div>
 <h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Setting up the hypotheses</h3>
@@ -566,6 +633,27 @@ canvas{display:block;width:100%;}
   We observe a value \(x\) and compute the p-value — the probability of getting a result at least as extreme as \(x\) in the direction of \(H_1\). This p-value is then compared with \(\alpha\) to reach a decision. The full procedure is covered in the next modules.
 </p>
 
+<div class="sdiv"></div>
+
+<div class="concept">
+  Now that you've seen these ideas in context, here's the full vocabulary in one place. Getting the language right is essential — especially in exam answers, where every word in the conclusion carries marks.
+</div>
+
+<table class="tbl">
+  <tr><th>Term</th><th>Meaning</th></tr>
+  <tr><td><strong>Null hypothesis \(H_0\)</strong></td><td>The default assumption about the population parameter. Always states an exact value, e.g. \(p = 0.3\).</td></tr>
+  <tr><td><strong>Alternative hypothesis \(H_1\)</strong></td><td>What we conclude if \(H_0\) is rejected. States the direction of change (or simply that a change has occurred). Determines whether the test is one- or two-tailed.</td></tr>
+  <tr><td><strong>Test statistic</strong></td><td>A numerical value calculated from the sample data that is used to decide between \(H_0\) and \(H_1\). Its probability distribution under \(H_0\) must be known. Examples: the count of successes \(X\) in a binomial test; the sample mean \(\bar{X}\) in a Normal mean test; the sample PMCC \(r\) in a correlation test.</td></tr>
+  <tr><td><strong>p-value</strong></td><td>The probability, calculated assuming \(H_0\) is true, of obtaining a test statistic at least as extreme as the one observed. A small p-value means the observed result would be unlikely if \(H_0\) were true.</td></tr>
+  <tr><td><strong>Significance level \(\alpha\)</strong></td><td>The threshold probability chosen <em>before</em> the test. If the p-value falls below \(\alpha\), the result is declared significant and \(H_0\) is rejected. Common choices are 5% and 1%.</td></tr>
+  <tr><td><strong>Critical region</strong></td><td>The set of values of the test statistic for which \(H_0\) is rejected — i.e. the values so extreme that they fall below the significance level.</td></tr>
+  <tr><td><strong>Critical value</strong></td><td>The boundary of the critical region. The test statistic must be at least as extreme as the critical value in order to reject \(H_0\).</td></tr>
+  <tr><td><strong>Reject \(H_0\)</strong></td><td>The p-value is less than \(\alpha\): the observed result is sufficiently unlikely under \(H_0\) that we conclude \(H_1\) is supported. We say the result is <em>statistically significant</em> at level \(\alpha\).</td></tr>
+  <tr><td><strong>Do not reject \(H_0\)</strong></td><td>The p-value is greater than or equal to \(\alpha\): insufficient evidence to favour \(H_1\). This does <em>not</em> mean \(H_0\) is proved true — only that the data are consistent with it.</td></tr>
+  <tr><td><strong>Type I error</strong></td><td>Rejecting \(H_0\) when it is actually true — a "false alarm". The probability of a Type I error is exactly \(\alpha\), the significance level.</td></tr>
+  <tr><td><strong>Type II error</strong></td><td>Failing to reject \(H_0\) when it is actually false — a "missed detection". Its probability depends on the true value of the parameter and is not fixed by \(\alpha\) alone.</td></tr>
+</table>
+
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why must \(H_0\) contain an equals sign?</div>
   <div class="ccard-a">To calculate the p-value we need to know the probability distribution of the test statistic exactly. An exact value — e.g. \(p = 0.3\) — fully determines the distribution \(B(n, 0.3)\), so every probability can be computed. An inequality like \(p \leq 0.3\) is consistent with infinitely many distributions (one for each value of \(p\) up to 0.3), so no single calculation is possible. We therefore always test at the specific boundary value stated in \(H_0\).</div></div>
@@ -574,11 +662,11 @@ canvas{display:block;width:100%;}
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why do we say "do not reject \(H_0\)" rather than "accept \(H_0\)"?</div>
   <div class="ccard-a">A high p-value tells us the observed data are consistent with \(H_0\) — but the same data may also be consistent with many other hypotheses. Failing to find evidence against \(H_0\) is not the same as proving it is true. The phrase "do not reject" keeps the logic honest: we have simply failed to accumulate sufficient evidence against the null, not demonstrated that it is correct.</div></div>
 </div>
-<div id="bnav1"></div>
+<div id="bnav3"></div>
 </section>
 
-<!-- ═══ MODULE 2: SIGNIFICANCE LEVELS ═══ -->
-<section class="module" id="mod2">
+<!-- ═══ MODULE 4: SIGNIFICANCE LEVELS ═══ -->
+<section class="module" id="mod4">
 <div class="mhdr"><div class="mtag">Module 4</div><h2>Significance Levels</h2></div>
 
 <div class="concept">
@@ -614,24 +702,24 @@ canvas{display:block;width:100%;}
 <h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Visualising the significance level</h3>
 <p style="font-size:.93rem;color:var(--muted);margin-bottom:.6rem;">Adjust \(n\), \(p_0\) and \(\alpha\) to see the binomial distribution and where the critical region falls.</p>
 
-<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(n\) =</label><input type="range" id="sl2n" min="5" max="30" value="20" oninput="upd2()"><span class="slider-val" id="sv2n">20</span></div>
-<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(p_0\) =</label><input type="range" id="sl2p" min="5" max="95" value="30" oninput="upd2()"><span class="slider-val" id="sv2p">0.30</span></div>
+<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(n\) =</label><input type="range" id="sl4n" min="5" max="30" value="20" oninput="upd4()"><span class="slider-val" id="sv4n">20</span></div>
+<div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(p_0\) =</label><input type="range" id="sl4p" min="5" max="95" value="30" oninput="upd4()"><span class="slider-val" id="sv4p">0.30</span></div>
 <div class="slider-row"><label style="min-width:60px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(\alpha\) =</label>
-  <select id="sel2a" onchange="upd2()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+  <select id="sel4a" onchange="upd4()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
     <option value="0.10">10%</option>
     <option value="0.05" selected>5%</option>
     <option value="0.025">2.5%</option>
     <option value="0.01">1%</option>
   </select>
   &nbsp;
-  <select id="sel2tail" onchange="upd2()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
+  <select id="sel4tail" onchange="upd4()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;">
     <option value="lower">Lower tail (H₁: p &lt; p₀)</option>
     <option value="upper">Upper tail (H₁: p &gt; p₀)</option>
     <option value="two">Two-tailed (H₁: p ≠ p₀)</option>
   </select>
 </div>
-<div class="cbox"><canvas id="c2" height="220"></canvas></div>
-<div id="stat2" class="status" style="font-size:.9rem;"></div>
+<div class="cbox"><canvas id="c4" height="220"></canvas></div>
+<div id="stat4" class="status" style="font-size:.9rem;"></div>
 
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why can't we always achieve exactly 5%?</div>
@@ -639,11 +727,11 @@ canvas{display:block;width:100%;}
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does a smaller \(\alpha\) make the test "better"?</div>
   <div class="ccard-a">Not necessarily — it depends what you mean by "better". A smaller \(\alpha\) reduces the probability of a false alarm (Type I error), but it also makes it harder to detect a real effect (increases the Type II error probability). The two types of error trade off against each other for a fixed sample size. Increasing \(n\) is the way to reduce both simultaneously.</div></div>
 </div>
-<div id="bnav2"></div>
+<div id="bnav4"></div>
 </section>
 
-<!-- ═══ MODULE 3: ONE-TAILED TESTS ═══ -->
-<section class="module" id="mod3">
+<!-- ═══ MODULE 5: ONE-TAILED TESTS ═══ -->
+<section class="module" id="mod5">
 <div class="mhdr"><div class="mtag">Module 5</div><h2>One-Tailed Tests</h2></div>
 
 <div class="concept">
@@ -651,12 +739,12 @@ canvas{display:block;width:100%;}
 </div>
 
 <div class="stabs">
-  <button class="stab on" onclick="stab3(this,'s3a')">Lower tail</button>
-  <button class="stab" onclick="stab3(this,'s3b')">Upper tail</button>
+  <button class="stab on" onclick="stabToggle(this,'s5a')">Lower tail</button>
+  <button class="stab" onclick="stabToggle(this,'s5b')">Upper tail</button>
 </div>
 
 <!-- Lower tail -->
-<div class="spanel on" id="s3a">
+<div class="spanel on" id="s5a">
 <h3 style="font-family:Georgia;font-size:1.1rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Lower-tail test: \(H_1: p < p_0\)</h3>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
   We are looking for evidence that \(p\) is <em>smaller</em> than claimed. Extreme results are small values of \(X\). The p-value is the probability of getting \(X \leq x_{obs}\):
@@ -672,10 +760,16 @@ canvas{display:block;width:100%;}
   \(= 0.00003 + 0.00046 + 0.00320 + 0.01389 = 0.01758\)<br><br>
   Since \(0.01758 < 0.05\), we <strong>reject \(H_0\)</strong>. There is significant evidence at the 5% level that the coin is biased towards tails.
 </div>
+<div class="note teal">
+  <strong>Resolving our opening example:</strong> Back in Module 1 we asked about a manufacturer's claim that 30% of sweets are red, when a bag of 20 sweets contained only 2 red. We can now answer it.<br><br>
+  \(H_0: p = 0.3\) &emsp; \(H_1: p < 0.3\) &emsp; \(X \sim B(20, 0.3)\) under \(H_0\).<br><br>
+  \(P(X \leq 2) = 0.0355\)<br><br>
+  Since \(0.0355 < 0.05\), we <strong>reject \(H_0\)</strong>. There is significant evidence at the 5% level that the true proportion of red sweets is less than 30% — this is unlikely to be just bad luck.
+</div>
 </div>
 
 <!-- Upper tail -->
-<div class="spanel" id="s3b">
+<div class="spanel" id="s5b">
 <h3 style="font-family:Georgia;font-size:1.1rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Upper-tail test: \(H_1: p > p_0\)</h3>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
   We are looking for evidence that \(p\) is <em>larger</em> than claimed. Extreme results are large values of \(X\). The p-value is the probability of getting \(X \geq x_{obs}\):
@@ -695,11 +789,11 @@ canvas{display:block;width:100%;}
   <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Choosing the tail direction after seeing the data</div>
   <div class="ccard-a">The alternative hypothesis must be chosen based on the research question <em>before</em> looking at the data. If you pick the direction that makes your result look more significant after seeing it, you have effectively doubled your significance level. This is a serious statistical error sometimes called "p-hacking".</div></div>
 </div>
-<div id="bnav3"></div>
+<div id="bnav5"></div>
 </section>
 
-<!-- ═══ MODULE 4: TWO-TAILED TESTS ═══ -->
-<section class="module" id="mod4">
+<!-- ═══ MODULE 6: TWO-TAILED TESTS ═══ -->
+<section class="module" id="mod6">
 <div class="mhdr"><div class="mtag">Module 6</div><h2>Two-Tailed Tests</h2></div>
 
 <div class="concept">
@@ -741,11 +835,11 @@ canvas{display:block;width:100%;}
   <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">Using both tails simultaneously (computing \(P(X \leq x)\) AND \(P(X \geq x)\))</div>
   <div class="ccard-a">You only need to work with the tail in which the observed value lies. If \(x_{obs}\) is above the mean, compute the upper tail probability and compare with \(\alpha/2\). If it is below the mean, compute the lower tail and compare with \(\alpha/2\). Adding both probabilities together is not the correct approach.</div></div>
 </div>
-<div id="bnav4"></div>
+<div id="bnav6"></div>
 </section>
 
-<!-- ═══ MODULE 5: CRITICAL REGIONS ═══ -->
-<section class="module" id="mod5">
+<!-- ═══ MODULE 7: CRITICAL REGIONS ═══ -->
+<section class="module" id="mod7">
 <div class="mhdr"><div class="mtag">Module 7</div><h2>Critical Regions</h2></div>
 
 <div class="concept">
@@ -787,100 +881,21 @@ canvas{display:block;width:100%;}
 <h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.6rem;">Critical Region Explorer</h3>
 <p style="font-size:.93rem;color:var(--muted);margin-bottom:.8rem;">Set the parameters and test type to find the critical region automatically.</p>
 <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.6rem;">
-  <div class="slider-row" style="flex:1;min-width:200px;"><label style="min-width:50px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(n\) =</label><input type="range" id="sl5n" min="5" max="40" value="25" oninput="upd5()"><span class="slider-val" id="sv5n">25</span></div>
-  <div class="slider-row" style="flex:1;min-width:200px;"><label style="min-width:50px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(p_0\) =</label><input type="range" id="sl5p" min="5" max="95" value="40" oninput="upd5()"><span class="slider-val" id="sv5p">0.40</span></div>
+  <div class="slider-row" style="flex:1;min-width:200px;"><label style="min-width:50px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(n\) =</label><input type="range" id="sl7n" min="5" max="40" value="25" oninput="upd7()"><span class="slider-val" id="sv7n">25</span></div>
+  <div class="slider-row" style="flex:1;min-width:200px;"><label style="min-width:50px;font-family:Arial;font-size:.88rem;font-weight:700;color:var(--navy);">\(p_0\) =</label><input type="range" id="sl7p" min="5" max="95" value="40" oninput="upd7()"><span class="slider-val" id="sv7p">0.40</span></div>
 </div>
 <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;">
-  <select id="sel5a" onchange="upd5()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="0.05" selected>α = 5%</option><option value="0.025">α = 2.5%</option><option value="0.01">α = 1%</option></select>
-  <select id="sel5tail" onchange="upd5()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="lower">Lower tail</option><option value="upper">Upper tail</option><option value="two" selected>Two-tailed</option></select>
+  <select id="sel7a" onchange="upd7()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="0.05" selected>α = 5%</option><option value="0.025">α = 2.5%</option><option value="0.01">α = 1%</option></select>
+  <select id="sel7tail" onchange="upd7()" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:4px;font-size:.9rem;font-family:Arial;"><option value="lower">Lower tail</option><option value="upper">Upper tail</option><option value="two" selected>Two-tailed</option></select>
 </div>
-<div class="cbox"><canvas id="c5" height="220"></canvas></div>
-<div id="stat5" style="font-family:Arial;font-size:.88rem;color:var(--navy);text-align:center;margin-top:.3rem;"></div>
+<div class="cbox"><canvas id="c7" height="220"></canvas></div>
+<div id="stat7" style="font-family:Arial;font-size:.88rem;color:var(--navy);text-align:center;margin-top:.3rem;"></div>
 
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">What is the "acceptance region"?</div>
   <div class="ccard-a">The acceptance region is simply the complement of the critical region — the set of values for which we do not reject \(H_0\). If the test statistic falls in the acceptance region we have insufficient evidence to reject \(H_0\). The name is slightly misleading: we are not "accepting" that \(H_0\) is true, only failing to reject it.</div></div>
 </div>
-<div id="bnav5"></div>
-</section>
-
-<!-- ═══ MODULE 11: MOTIVATION / WHY HYPOTHESIS TESTS ═══ -->
-<section class="module" id="mod11">
-<div class="mhdr"><div class="mtag">Module 2</div><h2>Why do we need Hypothesis Tests?</h2></div>
-
-<div class="concept">
-  Before diving into formal procedures it helps to understand <em>why</em> hypothesis testing exists — what real problem it solves, and how it connects populations to samples.
-</div>
-
-<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Populations and samples</h3>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
-  Suppose we want to know something about a whole population — for example, the mean weight of all adults in a city, or the proportion of defective items from a production line. Measuring every member of the population is usually too slow, too expensive, or genuinely impossible.
-  So instead we take a <em>sample</em> and use it to draw conclusions about the population.
-</p>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
-  The sample statistic will almost certainly differ from the true population parameter — even when nothing has changed — simply due to the randomness of sampling. The key question is therefore:
-</p>
-<div class="fdisp" style="font-size:1rem;">\[\text{Is the difference between the sample statistic and the population parameter due to chance, or is it real?}\]</div>
-
-<div class="sdiv"></div>
-<h3 style="font-family:Georgia;font-size:1.15rem;font-weight:normal;color:var(--navy);margin-bottom:.8rem;">Three motivating scenarios</h3>
-
-<div class="stabs">
-  <button class="stab on" onclick="stab11(this,'s11a')">The Coin</button>
-  <button class="stab" onclick="stab11(this,'s11b')">The Bag</button>
-  <button class="stab" onclick="stab11(this,'s11c')">Real World</button>
-</div>
-
-<div class="spanel on" id="s11a">
-<div class="note gold">
-  <strong>Scenario 1 — A suspicious coin</strong><br><br>
-  A fair coin should satisfy \(P(\text{Head}) = P(\text{Tail}) = \tfrac{1}{2}\). If we flip it five times and get five heads, the probability of that happening with a fair coin is:
-  \[\left(\tfrac{1}{2}\right)^5 = \tfrac{1}{32} \approx 3.1\%\]
-  That's unusual but possible. If we got 10 heads in a row the probability drops to about 0.1%. At some point the result becomes so unlikely under the fair-coin assumption that we lose confidence in that assumption and prefer an alternative explanation: the coin is biased towards heads.
-</div>
-<p style="font-size:.95rem;line-height:1.75;margin:.8rem 0;">
-  This is the logic of hypothesis testing. We start with the null hypothesis \(H_0: p = 0.5\) (fair coin). The significance level — say 5% — is the threshold below which we judge the evidence "too unlikely to be chance". If the observed result has probability \(\leq 5\%\) under \(H_0\), we reject \(H_0\) and accept \(H_1: p > 0.5\) (biased towards heads).
-</p>
-<div class="cbox"><canvas id="c11coin" height="180"></canvas></div>
-<div class="ctrls">
-  <button class="btn btn-solid" onclick="drawCoinChart()">&#9654; Show probability vs number of heads</button>
-</div>
-</div>
-
-<div class="spanel" id="s11b">
-<div class="note teal">
-  <strong>Scenario 2 — Disks in a bag</strong><br><br>
-  Suppose we are told there are equal numbers of red, blue and green disks in a bag, so \(P(\text{Red}) = \tfrac{1}{3}\). We cannot count every disk (the total is the population) but we can draw a sample.
-</div>
-<p style="font-size:.95rem;line-height:1.75;margin:.8rem 0;">
-  If we draw 30 disks and find 18 are red, is that consistent with \(P(\text{Red}) = \tfrac{1}{3}\)? We'd expect about 10 red disks if the claim were true. Having 18 might simply be bad luck — or it might indicate there are actually more red disks than claimed. The hypothesis test tells us whether the sample provides <em>sufficient evidence</em> to doubt the original claim.
-</p>
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">
-  Notice the key logical move: <strong>we calculate the probability of the observed result (or worse) assuming \(H_0\) is true</strong>. We can't test \(H_1\) directly because it doesn't specify an exact value of \(p\).
-</p>
-</div>
-
-<div class="spanel" id="s11c">
-<p style="font-size:.95rem;line-height:1.75;margin-bottom:.8rem;">Hypothesis testing arises naturally whenever it is impossible or impractical to measure the whole population:</p>
-<table class="tbl">
-  <tr><th>Situation</th><th>Population</th><th>Why we can't measure it all</th></tr>
-  <tr><td><strong>Destructive testing</strong> — steel beams tested to breaking point</td><td>All beams</td><td>Testing destroys them; nothing left to use</td></tr>
-  <tr><td><strong>Quality control</strong> — proportion of defective items from a machine</td><td>All items ever produced</td><td>Production is ongoing; too slow and costly</td></tr>
-  <tr><td><strong>Medical trials</strong> — does a new drug improve cure rates?</td><td>All future patients</td><td>Cannot wait to treat everyone before deciding</td></tr>
-  <tr><td><strong>Environmental testing</strong> — do new engines reduce emissions?</td><td>All engines ever made</td><td>Too many; sampling is the only feasible approach</td></tr>
-</table>
-<p style="font-size:.95rem;line-height:1.75;margin-top:.8rem;">
-  In every case the same question arises: is the difference we see in the sample real, or just random variation? Hypothesis testing provides a rigorous, agreed framework for answering it.
-</p>
-</div>
-
-<div class="challenges"><h3>Think about it</h3>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why is the difference between sample and population statistics unavoidable?</div>
-  <div class="ccard-a">Different random samples from the same population will give different statistics — this is called sampling variability. Even a completely honest sample will rarely match the population parameter exactly, purely by chance. This means any observed difference could in principle be nothing more than this natural variability. The hypothesis test exists to judge how much "weight" that explanation carries.</div></div>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">What if we took the entire population as our sample?</div>
-  <div class="ccard-a">If you could measure every member of the population there would be no uncertainty: the sample statistic would equal the population parameter exactly and you would not need a hypothesis test at all. It is precisely because we can't do this (for the reasons in the table above) that statistical inference — and hypothesis testing — become necessary.</div></div>
-</div>
-<div id="bnav11"></div>
+<div id="bnav7"></div>
 </section>
 
 </div><!-- /container -->
@@ -894,9 +909,9 @@ const NAVY='#1a3a6b',GOLD='#c9a227',TEAL='#0f6e56',RED='#a32d2d',MUT='#5a6280',B
 // ─────────────────────────────────────────────
 // NAV / MODULE SWITCHING
 // ─────────────────────────────────────────────
-// Module order for sequential navigation (non-contiguous IDs due to inserts)
-const MOD_ORDER=[0,11,1,2,3,4,5];
-const visited=new Set([0]);
+// Module order for sequential navigation (ids now match displayed module numbers)
+const MOD_ORDER=[1,2,3,4,5,6,7];
+const visited=new Set([1]);
 const inited={};
 
 function go(m, skipPush){
@@ -917,9 +932,9 @@ function go(m, skipPush){
     const btnW=activeBtn.offsetWidth;
     nav.scrollLeft=btnL-(navW/2)+(btnW/2);
   }
-  // Update URL hash; module 0 uses bare # to keep the URL clean
+  // Update URL hash; module 1 uses bare # to keep the URL clean
   if(!skipPush){
-    const hash = m===0 ? '#' : '#mod'+m;
+    const hash = m===1 ? '#' : '#mod'+m;
     history.pushState({module:m}, '', hash);
   }
   window.scrollTo({top:0,behavior:'smooth'});
@@ -927,20 +942,20 @@ function go(m, skipPush){
 
 // Navigate on browser back / forward
 window.addEventListener('popstate', function(e){
-  const m = (e.state && e.state.module !== undefined) ? e.state.module : 0;
+  const m = (e.state && e.state.module !== undefined) ? e.state.module : 1;
   go(m, true);
 });
 
 function initMod(m){
-  if(m===2)upd2();
-  if(m===5)upd5();
-  if(m===11)drawCoinChart();
+  if(m===4)upd4();
+  if(m===7)upd7();
+  if(m===1)drawCoinChart();
 }
 
 // ─────────────────────────────────────────────
 // BOTTOM NAV
 // ─────────────────────────────────────────────
-const MOD_NAMES={0:'Introduction',11:'Motivation',1:'The Language',2:'Significance Levels',3:'One-Tailed Tests',4:'Two-Tailed Tests',5:'Critical Regions'};
+const MOD_NAMES={1:'Introduction',2:'First Attempts',3:'The Language',4:'Significance Levels',5:'One-Tailed Tests',6:'Two-Tailed Tests',7:'Critical Regions'};
 function injectBottomNav(m){
   const el=document.getElementById('bnav'+m);
   if(!el)return;
@@ -961,7 +976,7 @@ function tog(btn){btn.classList.toggle('open');}
 // ─────────────────────────────────────────────
 // SUB-TABS
 // ─────────────────────────────────────────────
-function stab3(btn,id){
+function stabToggle(btn,id){
   const mod=btn.closest('section');
   mod.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
   mod.querySelectorAll('.spanel').forEach(p=>p.classList.remove('on'));
@@ -983,16 +998,16 @@ function binomCDF(n,p,k){
 function binomUpperCDF(n,p,k){return 1-binomCDF(n,p,k-1);}
 
 // ─────────────────────────────────────────────
-// MODULE 2: DISTRIBUTION VISUALISER
+// MODULE 4: DISTRIBUTION VISUALISER
 // ─────────────────────────────────────────────
-function upd2(){
-  const n=+document.getElementById('sl2n').value;
-  const p=+document.getElementById('sl2p').value/100;
-  const alpha=+document.getElementById('sel2a').value;
-  const tail=document.getElementById('sel2tail').value;
-  document.getElementById('sv2n').textContent=n;
-  document.getElementById('sv2p').textContent=p.toFixed(2);
-  drawBinomDist('c2',n,p,alpha,tail,'stat2');
+function upd4(){
+  const n=+document.getElementById('sl4n').value;
+  const p=+document.getElementById('sl4p').value/100;
+  const alpha=+document.getElementById('sel4a').value;
+  const tail=document.getElementById('sel4tail').value;
+  document.getElementById('sv4n').textContent=n;
+  document.getElementById('sv4p').textContent=p.toFixed(2);
+  drawBinomDist('c4',n,p,alpha,tail,'stat4');
 }
 
 function drawBinomDist(canvasId,n,p,alpha,tail,statId){
@@ -1069,25 +1084,24 @@ function drawBinomDist(canvasId,n,p,alpha,tail,statId){
 }
 
 // ─────────────────────────────────────────────
-// MODULE 5: CRITICAL REGION EXPLORER
+// MODULE 7: CRITICAL REGION EXPLORER
 // ─────────────────────────────────────────────
-function upd5(){
-  const n=+document.getElementById('sl5n').value;
-  const p=+document.getElementById('sl5p').value/100;
-  const alpha=+document.getElementById('sel5a').value;
-  const tail=document.getElementById('sel5tail').value;
-  document.getElementById('sv5n').textContent=n;
-  document.getElementById('sv5p').textContent=p.toFixed(2);
-  drawBinomDist('c5',n,p,alpha,tail,'stat5');
+function upd7(){
+  const n=+document.getElementById('sl7n').value;
+  const p=+document.getElementById('sl7p').value/100;
+  const alpha=+document.getElementById('sel7a').value;
+  const tail=document.getElementById('sel7tail').value;
+  document.getElementById('sv7n').textContent=n;
+  document.getElementById('sv7p').textContent=p.toFixed(2);
+  drawBinomDist('c7',n,p,alpha,tail,'stat7');
 }
 
 // ─────────────────────────────────────────────
-// MODULE 11: SUB-TABS & COIN CHART
+// MODULE 1: COIN CHART (suspicious-coin scenario)
 // ─────────────────────────────────────────────
-function stab11(btn,id){stab3(btn,id);}
 
 function drawCoinChart(){
-  const c=document.getElementById('c11coin');if(!c)return;
+  const c=document.getElementById('c2coin');if(!c)return;
   const ctx=c.getContext('2d');
   const W=c.offsetWidth||700;c.width=W;const H=180;c.height=H;
   const pad={l:50,r:20,t:18,b:40};
@@ -1143,27 +1157,26 @@ function drawCoinChart(){
 // INIT
 // ─────────────────────────────────────────────
 window.addEventListener('load',()=>{
-  // Navigate to section from URL hash (e.g. #mod3) or default to module 0
+  // Navigate to section from URL hash (e.g. #mod3) or default to module 1
   const hashMatch = window.location.hash.match(/^#mod(\d+)$/);
-  const startM = hashMatch ? +hashMatch[1] : 0;
-  if(startM !== 0 && MOD_ORDER.includes(startM)){
+  const startM = hashMatch ? +hashMatch[1] : 1;
+  if(startM !== 1 && MOD_ORDER.includes(startM)){
     go(startM, true);
   }
   // Seed history state so popstate works correctly from the first page load
   history.replaceState({module: startM}, '', window.location.hash || '#');
-  inited[startM===0?0:startM]=true;
-  if(startM===0) inited[0]=true;
+  inited[startM]=true;
   drawCoinChart();
   // Keyboard nav
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
-    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
+    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
     const pos=MOD_ORDER.indexOf(cur);
     if(e.key==='ArrowRight'&&pos<MOD_ORDER.length-1)go(MOD_ORDER[pos+1]);
     else if(e.key==='ArrowLeft'&&pos>0)go(MOD_ORDER[pos-1]);
   });
   window.addEventListener('resize',()=>{
-    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||0);
+    const cur=+([...document.querySelectorAll('.module')].find(s=>s.classList.contains('on'))?.id.replace('mod','')||1);
     initMod(cur);
   });
 });
