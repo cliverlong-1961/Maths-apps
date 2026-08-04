@@ -379,6 +379,14 @@ canvas{display:block;width:100%;}
   <div class="reveal-content">
     <div class="fdisp">\(1 + \tfrac{1}{2} + \tfrac{1}{4} + \tfrac{1}{8} + \cdots = \displaystyle\sum_{n=0}^{\infty}\!\left(\tfrac{1}{2}\right)^n = 2\)</div>
   </div>
+  <div class="ctrls">
+    <button class="btn btn-teal" onclick="geo18Step()">&#43; Add next term</button>
+    <button class="btn btn-solid" onclick="geo18Fill()">Fill to 20</button>
+    <button class="btn btn-outline" onclick="geo18Reset()">↺ Reset</button>
+  </div>
+  <div class="big-num">S<sub><span id="geo18-n">0</span></sub> = <span id="geo18-sum">0</span></div>
+  <div class="status converge" id="geo18-st">Creeping ever closer to 2 — this sum converges.</div>
+  <div class="cbox"><canvas id="c18geo" height="180"></canvas></div>
   <div class="note teal">
     <strong>Key formula:</strong> For any ratio \(|r| < 1\),
     \[\sum_{n=0}^{\infty} r^n = \frac{1}{1-r}\]
@@ -1857,6 +1865,14 @@ function rz(id){
   if(c.width!==W)c.width=W;return c;
 }
 function tog(el){el.classList.toggle('open');}
+/* Draws a vertical y-axis at the left edge of a graph's plot area, with a value label above it. */
+function drawYAxis(ctx,pad,H,label,color){
+  color=color||NAVY;
+  ctx.strokeStyle=color;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,H-pad);ctx.stroke();
+  ctx.fillStyle=color;ctx.font='bold 11px Arial';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  ctx.fillText(label,4,pad-6);
+}
 
 /* ── Section nav helpers ────────────────────────── */
 const SEC_MODULES={
@@ -2046,6 +2062,7 @@ function drawSeq2(t){
   const mx0=Math.max(...pts.map(Math.abs))||1;
   const mx2=i=>pad+(i/N)*(W-2*pad);
   const my2=v=>H-pad-((v+mx0)/(2*mx0))*(H-2*pad);
+  drawYAxis(ctx,pad,H,'a_n',NAVY);
   ctx.strokeStyle='#ddd';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,my2(0));ctx.lineTo(W-pad,my2(0));ctx.stroke();
   ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.beginPath();
   pts.forEach((v,i)=>i?ctx.lineTo(mx2(i+1),my2(v)):ctx.moveTo(mx2(1),my2(v)));ctx.stroke();
@@ -2063,6 +2080,7 @@ function drawRace(){
   const maxV=Math.max(a[0],b[0],d[0],0.01);
   const mx=i=>pad+(i/N)*(W-2*pad);
   const my=v=>H-pad-(v/maxV)*(H-2*pad);
+  drawYAxis(ctx,pad,H,'a_n',NAVY);
   ctx.strokeStyle='#eee';ctx.lineWidth=1;
   [0.25,0.5,0.75,1].forEach(f=>{ctx.beginPath();ctx.moveTo(pad,my(maxV*f));ctx.lineTo(W-pad,my(maxV*f));ctx.stroke();});
   [[a,NAVY],[b,TEAL],[d,RED]].forEach(([pts,col])=>{
@@ -2100,6 +2118,7 @@ function drawRatio3(t){
   const mn=Math.min(...valid),mx2=Math.max(...valid),rng=mx2-mn||1;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'f(x)',NAVY);
   ctx.strokeStyle='#eee';ctx.lineWidth=1;
   for(let g=0;g<=4;g++){const y=pad+g*(H-2*pad)/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();}
   ctx.strokeStyle=NAVY;ctx.lineWidth=2;ctx.beginPath();let started=false;
@@ -2121,6 +2140,7 @@ function m4draw(t){
   const maxV=seqFn(1)*scale;
   const cy=H/2;
   const bandH=(eps/maxV)*(H/2-pad);
+  drawYAxis(ctx,pad,H,'a_n',NAVY);
   ctx.fillStyle='rgba(15,110,86,0.1)';ctx.fillRect(pad,cy-bandH,W-2*pad,2*bandH);
   ctx.strokeStyle=TEAL;ctx.lineWidth=1;ctx.setLineDash([4,3]);
   [[cy-bandH],[cy+bandH]].forEach(([y])=>{ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();});
@@ -2171,6 +2191,7 @@ function s5draw(t){
   const mn=Math.min(...pts),mx2=Math.max(...pts),rng=mx2-mn||1;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'a_n',NAVY);
   if(mn<0&&mx2>0){ctx.strokeStyle='#ddd';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,my(0));ctx.lineTo(W-pad,my(0));ctx.stroke();}
   ctx.strokeStyle='#c8d8f0';ctx.lineWidth=1;ctx.beginPath();pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
   pts.forEach((v,i)=>{ctx.fillStyle=NAVY;ctx.beginPath();ctx.arc(mx(i+1),my(v),3.5,0,2*Math.PI);ctx.fill();});
@@ -2230,6 +2251,7 @@ function drawS6a(){
   const mx2=Math.max(exact*1.1,s6a_pts[s6a_pts.length-1]*1.1)||1;
   const my=v=>H-pad-(v/mx2)*(H-2*pad);
   const mx=i=>pad+(i/(Math.max(s6a_pts.length,10)))*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
   ctx.beginPath();ctx.moveTo(pad,my(exact));ctx.lineTo(W-pad,my(exact));ctx.stroke();
   ctx.setLineDash([]);ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('Exact = '+exact.toFixed(3),4,my(exact)-4);
@@ -2259,6 +2281,7 @@ function s6draw(t){
   const mn=Math.min(...cumsums)*.95,mx2=Math.max(...cumsums)*1.05,rng=mx2-mn||1;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+(i/cumsums.length)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   if(t==='c'){ctx.strokeStyle=GOLD;ctx.lineWidth=1;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(Math.LN2));ctx.lineTo(W-pad,my(Math.LN2));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('ln 2',4,my(Math.LN2)-4);}
   ctx.strokeStyle=t==='b'?RED:TEAL;ctx.lineWidth=2;ctx.beginPath();
   cumsums.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
@@ -2284,6 +2307,7 @@ function drawPseries(){
   const mx2=cumsums[cumsums.length-1]*1.05||1;
   const my=v=>H-pad-(v/mx2)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   ctx.strokeStyle=p>1?TEAL:RED;ctx.lineWidth=2;ctx.beginPath();
   cumsums.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
   ctx.strokeStyle=GOLD;ctx.setLineDash([3,3]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(W/2,pad);ctx.lineTo(W/2,H-pad);ctx.stroke();ctx.setLineDash([]);
@@ -2527,6 +2551,7 @@ function drawGrandi(){
   for(let i=1;i<=N;i++){s+=Math.pow(-1,i+1);pts.push(s);}
   const my=v=>H-pad-((v+0.5)/2)*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(0.5));ctx.lineTo(W-pad,my(0.5));ctx.stroke();ctx.setLineDash([]);
   ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('½',2,my(0.5)+4);
   ctx.strokeStyle='#ddd';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,my(0));ctx.lineTo(W-pad,my(0));ctx.stroke();
@@ -2618,6 +2643,7 @@ function drawFibSeq(){
   const mn=Math.min(...ratios)*0.98,mx2=Math.max(...ratios)*1.02;
   const my=v=>H-pad-((v-mn)/(mx2-mn))*(H-2*pad);
   const mx=i=>pad+(i/(ratios.length))*(W-2*pad);
+  drawYAxis(ctx,pad,H,'Fₙ/Fₙ₋₁',NAVY);
   // phi line
   ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
   ctx.beginPath();ctx.moveTo(pad,my(PHI));ctx.lineTo(W-pad,my(PHI));ctx.stroke();ctx.setLineDash([]);
@@ -2681,6 +2707,7 @@ function drawCF(){
   const mn=1.5,mx2=1.7;
   const my=v=>H-pad-((v-mn)/(mx2-mn))*(H-2*pad);
   const mx=i=>pad+(i/N)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'value',NAVY);
   ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(PHI));ctx.lineTo(W-pad,my(PHI));ctx.stroke();ctx.setLineDash([]);
   ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('φ',4,my(PHI)-3);
   ctx.strokeStyle=NAVY;ctx.lineWidth=1.5;ctx.beginPath();
@@ -2741,6 +2768,7 @@ function drawPiCanvas(t){
   const rng=mx2-mn||0.01;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+((i+1)/Math.max(N,10))*(W-2*pad);
+  drawYAxis(ctx,pad,H,'estimate',NAVY);
   ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
   ctx.beginPath();ctx.moveTo(pad,my(Math.PI));ctx.lineTo(W-pad,my(Math.PI));ctx.stroke();ctx.setLineDash([]);
   ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('π',4,my(Math.PI)-3);
@@ -2766,6 +2794,7 @@ function drawPiRace(){
   const rng=mx2-mn||0.01;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+((i+1)/N)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'estimate',NAVY);
   ctx.strokeStyle=GOLD;ctx.lineWidth=1;ctx.setLineDash([4,3]);
   ctx.beginPath();ctx.moveTo(pad,my(Math.PI));ctx.lineTo(W-pad,my(Math.PI));ctx.stroke();ctx.setLineDash([]);
   [[leibniz,NAVY],[wallis,TEAL],[nila,'#b85c00']].forEach(([pts,col])=>{
@@ -2832,6 +2861,7 @@ function drawTeleCanvas(t){
   const rng=mx2-mn||0.01;
   const my=v=>H-pad-((v-mn)/rng)*(H-2*pad);
   const mx=i=>pad+((i+1)/Math.max(N,5))*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   if(limit){
     ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(1));ctx.lineTo(W-pad,my(1));ctx.stroke();ctx.setLineDash([]);
     ctx.fillStyle=GOLD;ctx.font='11px Arial';ctx.textAlign='left';ctx.fillText('Limit = 1',4,my(1)-3);
@@ -2877,6 +2907,7 @@ function draw18tri(){
   // gridlines
   ctx.strokeStyle='#eee';ctx.lineWidth=1;
   for(let g=1;g<=4;g++){const y=H-pad-g*(H-2*pad)/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke();}
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   // label formula
   ctx.fillStyle=MUT;ctx.font='11px Arial';ctx.textAlign='right';
   ctx.fillText('S_n = n(n+1)/2',W-pad,pad-5);
@@ -2915,6 +2946,7 @@ function draw18geo(){
   const limit=2;
   const my=v=>H-pad-((v/limit))*(H-2*pad);
   const mx=i=>pad+(i/(Math.max(geo18pts.length,10)))*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',NAVY);
   // limit line
   ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
   ctx.beginPath();ctx.moveTo(pad,my(limit));ctx.lineTo(W-pad,my(limit));ctx.stroke();
@@ -2969,6 +3001,7 @@ function harm18draw(){
       const mx2=Math.max(...ph,1)*1.05;
       const my=v=>H-pad-(v/mx2)*(H-2*pad);
       const mx=i=>pad+(i/N)*(W-2*pad);
+      drawYAxis(ctx,pad,H,'S_n',NAVY);
       [[ph,NAVY],[po,RED]].forEach(([pts,col])=>{
         ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
         pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
@@ -2984,6 +3017,7 @@ function drawHarmCanvas(id,pts,limit,col){
   const mx2=Math.max(...pts)*1.1||1;
   const my=v=>H-pad-(v/mx2)*(H-2*pad);
   const mx=i=>pad+(i/pts.length)*(W-2*pad);
+  drawYAxis(ctx,pad,H,'S_n',col);
   if(limit){ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad,my(limit));ctx.lineTo(W-pad,my(limit));ctx.stroke();ctx.setLineDash([]);}
   ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
   pts.forEach((v,i)=>i?ctx.lineTo(mx(i+1),my(v)):ctx.moveTo(mx(1),my(v)));ctx.stroke();
