@@ -123,6 +123,9 @@ canvas{display:block;width:100%;}
 .ccard-q::after{content:'▶';font-size:.7rem;flex-shrink:0;transition:transform .2s;}
 .ccard-q.open::after{transform:rotate(90deg);}
 .ccard-a{display:none;padding:.7rem 1rem;font-size:.9rem;line-height:1.6;background:#fff;border-top:1px solid var(--border);}
+.reveal-link{display:inline-block;cursor:pointer;color:var(--teal);font-family:Arial,sans-serif;font-size:.85rem;font-weight:700;text-decoration:underline;margin-bottom:.6rem;}
+.reveal-content{display:none;}
+.reveal-link.open + .reveal-content{display:block;}
 .ccard.mistake .ccard-a{background:#fff8f8;}
 .ccard-q.open + .ccard-a{display:block;}
 
@@ -338,7 +341,7 @@ canvas{display:block;width:100%;}
 
 <!-- ── Tab A: Triangular numbers ── -->
 <div class="spanel on" id="s18a">
-  <div class="fdisp">\(S_n = 1 + 2 + 3 + \cdots + n = \dfrac{n(n+1)}{2}\)</div>
+  <div class="fdisp">\(S_n = 1 + 2 + 3 + \cdots + n = ?\)</div>
   <p style="font-size:.93rem;line-height:1.7;margin-bottom:.8rem;">
     Add the positive integers one by one: the running total is
     \(1, 3, 6, 10, 15, \ldots\) — the <em>triangular numbers</em>.
@@ -363,7 +366,8 @@ canvas{display:block;width:100%;}
 
 <!-- ── Tab B: Geometric sum ── -->
 <div class="spanel" id="s18b">
-  <div class="fdisp">\(1 + \tfrac{1}{2} + \tfrac{1}{4} + \tfrac{1}{8} + \cdots = \displaystyle\sum_{n=0}^{\infty}\!\left(\tfrac{1}{2}\right)^n = 2\)</div>
+  <div class="fdisp">\(1 + \tfrac{1}{2} + \tfrac{1}{4} + \tfrac{1}{8} + \cdots = ?
+\)</div>
   <p style="font-size:.93rem;line-height:1.7;margin-bottom:.8rem;">
     Now add powers of \(\tfrac{1}{2}\): each new term is <em>half</em> the previous one.
     The running total is \(1, 1.5, 1.75, 1.875, \ldots\) — always less than 2,
@@ -371,6 +375,10 @@ canvas{display:block;width:100%;}
     Unlike the triangular sums, this process <em>does not</em> grow without bound:
     the total settles towards the finite value <strong>2</strong>.
   </p>
+  <span class="reveal-link" onclick="tog(this)">Reveal formula</span>
+  <div class="reveal-content">
+    <div class="fdisp">\(1 + \tfrac{1}{2} + \tfrac{1}{4} + \tfrac{1}{8} + \cdots = \displaystyle\sum_{n=0}^{\infty}\!\left(\tfrac{1}{2}\right)^n = 2\)</div>
+  </div>
   <div class="note teal">
     <strong>Key formula:</strong> For any ratio \(|r| < 1\),
     \[\sum_{n=0}^{\infty} r^n = \frac{1}{1-r}\]
@@ -529,9 +537,9 @@ canvas{display:block;width:100%;}
   <div class="q-intro">→ Use the tabs below to explore different sequences, or compare them all in the Race tab.</div>
 </div>
 <div class="stabs">
-  <button class="stab on" onclick="s2tab(this,'s2a')">1/n</button>
-  <button class="stab" onclick="s2tab(this,'s2b')">1/n²</button>
-  <button class="stab" onclick="s2tab(this,'s2c')">rⁿ (|r|&lt;1)</button>
+  <button class="stab on" style="text-transform:none" onclick="s2tab(this,'s2a')">1/n</button>
+  <button class="stab" style="text-transform:none" onclick="s2tab(this,'s2b')">1/n²</button>
+  <button class="stab" style="text-transform:none" onclick="s2tab(this,'s2c')">rⁿ (|r|&lt;1)</button>
   <button class="stab" onclick="s2tab(this,'s2r')">&#127939; Race</button>
 </div>
 
@@ -551,7 +559,7 @@ canvas{display:block;width:100%;}
 </div>
 <div class="spanel" id="s2c">
   <div class="fdisp">\(a_n = r^n\), &ensp;\(|r|&lt;1\)</div>
-  <div class="slider-row"><label>r =</label><input type="range" id="s2c-r" min="-99" max="99" value="50" oninput="s2upd('c')"><span class="slider-val" id="s2c-rv">0.50</span></div>
+  <div class="slider-row"><label>r =</label><input type="range" id="s2c-rsl" min="-99" max="99" value="50" oninput="s2upd('c')"><span class="slider-val" id="s2c-rv">0.50</span></div>
   <div class="slider-row"><label>n =</label><input type="range" id="s2c-sl" min="1" max="60" value="1" oninput="s2upd('c')"><span class="slider-val" id="s2c-v">1</span></div>
   <div class="big-num">\(a_n\) = <span id="s2c-r">0.500000</span></div>
   <div class="status" id="s2c-st">Geometric decay toward zero.</div>
@@ -2018,7 +2026,7 @@ function s2upd(t){
   if(t==='a'){v=1/n;st=n>=100?'Very close to zero, but still positive.':'Getting smaller…';}
   else if(t==='b'){v=1/(n*n);st=n>=50?'Approaching zero rapidly.':'Decreasing fast…';}
   else{
-    const r=+document.getElementById('s2c-r').value/100;
+    const r=+document.getElementById('s2c-rsl').value/100;
     document.getElementById('s2c-rv').textContent=r.toFixed(2);
     v=Math.pow(r,n);st=Math.abs(r)<1?'|r|<1: sequence → 0.':'|r|≥1: does not converge to 0.';}
   document.getElementById('s2'+t+'-r').innerHTML=fmtSci(v,4);
@@ -2033,7 +2041,7 @@ function drawSeq2(t){
   for(let i=1;i<=N;i++){
     if(t==='a')pts.push(1/i);
     else if(t==='b')pts.push(1/(i*i));
-    else{const r=+document.getElementById('s2c-r').value/100;pts.push(Math.pow(r,i));}
+    else{const r=+document.getElementById('s2c-rsl').value/100;pts.push(Math.pow(r,i));}
   }
   const mx0=Math.max(...pts.map(Math.abs))||1;
   const mx2=i=>pad+(i/N)*(W-2*pad);
