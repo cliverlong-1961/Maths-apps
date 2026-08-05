@@ -397,9 +397,9 @@ canvas{display:block;width:100%;}
     → Module 6 (Infinite Series) lets you explore the geometric series interactively with adjustable \(a\) and \(r\), step through partial sums, and see what happens at the boundary \(|r|=1\).
   </p>
   <div class="challenges"><h3>Think about it</h3>
-    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the sum not grow without bound?</div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the geometric sum not grow without bound?</div>
     <div class="ccard-a">Each successive term is halved. The gap between the partial sum and 2 is \(2 - S_n = \left(\tfrac{1}{2}\right)^n\), which shrinks geometrically to zero. No matter how many terms you add, the sum is always less than 2 — and the remainder after \(n\) terms is exactly \(2-S_n=2\cdot(1/2)^n\).</div></div>
-    <div class="ccard"><div class="ccard-q" onclick="tog(this)">What if the ratio were greater than 1?</div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">What if the ratio in geometric sum were greater than 1?</div>
     <div class="ccard-a">Then the terms themselves would grow, and the sum would diverge to infinity. For example \(1 + 2 + 4 + 8 + \cdots\) has no finite sum. The condition \(|r| < 1\) is essential for the geometric series to converge.</div></div>
   </div>
 </div>
@@ -587,7 +587,7 @@ canvas{display:block;width:100%;}
 </div>
 
 <div class="challenges"><h3>Think about it</h3>
-  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does 1/n ever equal zero?</div>
+  <div class="ccard"><div class="ccard-q" onclick="tog(this)">Does 1/n, as n increases, ever equal zero?</div>
   <div class="ccard-a">No. For any finite positive integer \(n\), \(\frac{1}{n}>0\). The sequence <em>approaches</em> zero as \(n\to\infty\) but no term equals zero.</div></div>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does the speed of decay matter?</div>
   <div class="ccard-a">Because "terms → 0" is not enough to guarantee a series converges. \(\sum 1/n\) diverges even though \(1/n\to0\), while \(\sum 1/n^2\) converges. The <em>rate</em> at which terms shrink determines whether the sum stays finite. See Module 6.</div></div>
@@ -606,10 +606,10 @@ canvas{display:block;width:100%;}
 </div>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:1.2rem;">This is an important topic because in differential calculus you create expressions of the form \(\frac{g(x)}{h(x)}\) when trying to determine the derivative of a function \(f(x)\). Knowing that \(\frac{g(x)}{h(x)}\) approaches a finite value — and knowing what that value is — is often essential in determining the derivative.</p>
 <div class="stabs">
-  <button class="stab on" onclick="s3tab(this,'s3a')">sin x / x</button>
-  <button class="stab" onclick="s3tab(this,'s3b')">(x²−1)/(x−1)</button>
-  <button class="stab" onclick="s3tab(this,'s3c')">x / x²</button>
-  <button class="stab" onclick="s3tab(this,'s3d')">(1−cos h) / h</button>
+  <button class="stab on" style="text-transform:none" onclick="s3tab(this,'s3a')">sin x / x</button>
+  <button class="stab" style="text-transform:none" onclick="s3tab(this,'s3b')">(x²−1)/(x−1)</button>
+  <button class="stab" style="text-transform:none" onclick="s3tab(this,'s3c')">x / x²</button>
+  <button class="stab" style="text-transform:none" onclick="s3tab(this,'s3d')">(1−cos h) / h</button>
 </div>
 <div class="spanel on" id="s3a">
   <div class="fdisp">\(\displaystyle\lim_{x\to0}\frac{\sin x}{x} = 1\)</div>
@@ -810,9 +810,9 @@ canvas{display:block;width:100%;}
   <strong>Core idea:</strong> We say \(\lim_{n\to\infty}a_n = L\) if we can make \(a_n\) as close to \(L\) as we like by taking \(n\) large enough. The green band below shows the tolerance \(\varepsilon\) around \(L=0\).
 </div>
 <div class="stabs">
-  <button class="stab on" onclick="s4tab(this,'s4a')">1/n → 0</button>
-  <button class="stab" onclick="s4tab(this,'s4b')">1/n² → 0</button>
-  <button class="stab" onclick="s4tab(this,'s4c')">(−1)ⁿ/n → 0</button>
+  <button class="stab on" style="text-transform:none" onclick="s4tab(this,'s4a')">1/n → 0</button>
+  <button class="stab" style="text-transform:none" onclick="s4tab(this,'s4b')">1/n² → 0</button>
+  <button class="stab" style="text-transform:none" onclick="s4tab(this,'s4c')">(−1)ⁿ/n → 0</button>
 </div>
 <div class="q-intro" style="margin-bottom:.7rem;">→ Drag the \(\varepsilon\) slider. Watch how many red points fall outside the band — and find the threshold \(N\).</div>
 <div class="spanel on" id="s4a">
