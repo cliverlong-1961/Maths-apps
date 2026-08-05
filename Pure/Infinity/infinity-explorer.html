@@ -252,7 +252,7 @@ canvas{display:block;width:100%;}
   <button class="nb" data-m="9" data-sec="applications" onclick="go(9)">14&hairsp;Bouncing&nbsp;Ball</button>
   <button class="nb" data-m="10" data-sec="applications" onclick="go(10)">15&hairsp;Snowflake</button>
   <button class="nb" data-m="11" data-sec="applications" onclick="go(11)">16&hairsp;Fractions</button>
-  <button class="nb" data-m="12" data-sec="applications" onclick="go(12)">17&hairsp;Calculator</button>
+  <button class="nb" data-m="12" data-sec="applications" onclick="go(12)">17&hairsp;Approx&nbsp;function&nbsp;value</button>
   <button class="nb" data-m="22" data-sec="bigideas" onclick="go(22)">18&hairsp;Cantor</button>
   <button class="nb" data-m="13" data-sec="bigideas" onclick="go(13)">19&hairsp;Paradoxes</button>
   <button class="nb" data-m="15" data-sec="bigideas" onclick="go(15)">20&hairsp;Fibonacci</button>
@@ -1340,9 +1340,9 @@ canvas{display:block;width:100%;}
 
 <!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
 <section class="module" id="mod12">
-<div class="mhdr"><div class="mtag">Module 17</div><h2>Calculator Approximation</h2></div>
+<div class="mhdr"><div class="mtag">Module 17</div><h2>Function approximation</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). It approximates it using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
+  <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). Your calculator uses the CORDIC algorithm (<a href="https://en.wikipedia.org/wiki/CORDIC#Rotation_mode" target="_blank" style="color:var(--navy);">see here</a>). However for our purposes we'll look at the Taylor expansion of the sine, cosine and exponential functions and understand how they can give approximate values to the value of these particular functions. Function values are calculated using a finite partial sum of the Taylor series. Add more terms and watch the approximation improve — this is why convergence matters in practice.
 </div>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
   Select a function button then the first few terms of the infinite series that is equivalent to the function will be displayed. The pattern of successive terms should be clear from the 4 displayed terms. As more terms of the series are taken the calculated value is closer to the actual value of the function at that point.
