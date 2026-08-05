@@ -196,7 +196,7 @@ canvas{display:block;width:100%;}
 <header>
 <div class="hdr-top">
   <h1>&#8734; Infinity Explorer</h1>
-  <span class="badge">AS / A-Level Prep</span>
+  <span class="badge">AS / A-Level Extension</span>
   <p>From counting to convergence — step by step</p>
 </div>
 <div class="progress-row">
@@ -1727,7 +1727,7 @@ canvas{display:block;width:100%;}
 <section class="module" id="mod22">
 <div class="mhdr"><div class="mtag">Module 18</div><h2>Cantor's Infinities — Counting the Uncountable</h2></div>
 <div class="concept">
-  <strong>Core idea:</strong> Not all infinite sets are the same size. Georg Cantor (1874) proved that the integers and the rational numbers are the same "size" of infinity (\(leph_0\), countably infinite), but the real numbers are strictly larger — an uncountably infinite set that cannot be put into a one-to-one correspondence with the integers, no matter how cleverly you try.
+  <strong>Core idea:</strong> Not all infinite sets are the same size. Georg Cantor (1874) proved that the integers and the rational numbers are the same "size" of infinity (\(\aleph_0\), countably infinite), but the real numbers are strictly larger — an uncountably infinite set that cannot be put into a one-to-one correspondence with the integers, no matter how cleverly you try.
 </div>
 
 <div class="stabs">
@@ -1744,17 +1744,17 @@ canvas{display:block;width:100%;}
     Two finite sets have the same size if you can pair their elements one-to-one with nothing left over — like matching socks to feet.
     Cantor extended this idea to infinite sets: two sets are the same size (have the same <em>cardinality</em>) if there exists a perfect one-to-one correspondence between them.
   </p>
-  <div class="fdisp">\(f : A 	o B 	ext{ is a bijection} \implies |A| = |B|\)</div>
+  <div class="fdisp">\(f : A \to B \text{ is a bijection} \implies |A| = |B|\)</div>
   <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
     This gives a surprising result. The even integers seem to be "half" the integers — yet they can be paired perfectly:
   </p>
   <div class="fdisp">\(1\leftrightarrow 2,\quad 2\leftrightarrow 4,\quad 3\leftrightarrow 6,\quad n\leftrightarrow 2n\)</div>
   <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
     Every integer \(n\) maps to \(2n\), every even integer \(2n\) maps back to \(n\) — a perfect bijection.
-    So \(|\mathbb{N}| = |	ext{even integers}|\). A proper subset of an infinite set can have the same cardinality as the whole set — this is one hallmark of infinity.
+    So \(|\mathbb{N}| = |\text{even integers}|\). A proper subset of an infinite set can have the same cardinality as the whole set — this is one hallmark of infinity.
   </p>
   <div class="note teal">
-    <strong>Countably infinite (\(leph_0\)):</strong> A set is <em>countably infinite</em> if its elements can be listed in a sequence \(a_1, a_2, a_3, \ldots\) — that is, paired one-to-one with the natural numbers.
+    <strong>Countably infinite (\(\aleph_0\)):</strong> A set is <em>countably infinite</em> if its elements can be listed in a sequence \(a_1, a_2, a_3, \ldots\) — that is, paired one-to-one with the natural numbers.
     The integers \(\mathbb{Z}\), the rationals \(\mathbb{Q}\), and even the algebraic numbers are all countably infinite.
   </div>
   <div class="cbox"><canvas id="c22a" height="180"></canvas></div>
@@ -1767,7 +1767,7 @@ canvas{display:block;width:100%;}
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are the rational numbers countable?</div>
     <div class="ccard-a">Yes. Cantor's diagonal enumeration of fractions lists them as a 2D grid (row \(p\), column \(q\) = fraction \(p/q\)) and traverses it diagonally. Every fraction \(p/q\) appears somewhere in the list, so the rationals can be paired one-to-one with the natural numbers. This is deeply counterintuitive — the rationals are <em>dense</em> on the number line (between any two there is another), yet they are no more numerous than the integers.</div></div>
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">What does Hilbert's Hotel have to do with this?</div>
-    <div class="ccard-a">Hilbert's Hotel (see Module 19) is a physical metaphor for countable infinity: a hotel with \(leph_0\) rooms can always accommodate more guests by shifting room assignments — because \(leph_0 + 1 = leph_0\) and \(leph_0 + leph_0 = leph_0\). But it <em>cannot</em> accommodate uncountably many guests — there is no way to assign a room to every real number.</div></div>
+    <div class="ccard-a">Hilbert's Hotel (see Module 19) is a physical metaphor for countable infinity: a hotel with \(\aleph_0\) rooms can always accommodate more guests by shifting room assignments — because \(\aleph_0 + 1 = \aleph_0\) and \(\aleph_0 + \aleph_0 = \aleph_0\). But it <em>cannot</em> accommodate uncountably many guests — there is no way to assign a room to every real number.</div></div>
   </div>
 </div>
 
@@ -1794,7 +1794,7 @@ canvas{display:block;width:100%;}
     </ol>
   </div>
   <div class="note red">
-    <strong>The conclusion:</strong> The real numbers \(\mathbb{R}\) are <em>uncountably infinite</em>. They cannot be listed in a sequence. Their cardinality \(|\mathbb{R}| = 2^{leph_0}\) is strictly greater than \(leph_0\).
+    <strong>The conclusion:</strong> The real numbers \(\mathbb{R}\) are <em>uncountably infinite</em>. They cannot be listed in a sequence. Their cardinality \(|\mathbb{R}| = 2^{\aleph_0}\) is strictly greater than \(\aleph_0\).
   </div>
   <div class="challenges"><h3>Think about it</h3>
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">Couldn't you just add the new number d to the list?</div>
@@ -1811,24 +1811,24 @@ otin \{r_1, r_2, \ldots\}\); since the rationals are a proper subset of the real
   <p style="font-size:.93rem;line-height:1.75;margin-bottom:.8rem;">
     Cantor didn't stop at two sizes. He proved that for any set \(A\), its <em>power set</em> \(\mathcal{P}(A)\) — the set of all subsets of \(A\) — is always strictly larger. This gives an endless tower of infinities.
   </p>
-  <div class="fdisp">\(leph_0 \;<\; 2^{leph_0} \;<\; 2^{2^{leph_0}} \;<\; \cdots\)</div>
+  <div class="fdisp">\(\aleph_0 \;<\; 2^{\aleph_0} \;<\; 2^{2^{\aleph_0}} \;<\; \cdots\)</div>
   <table class="tbl" style="margin:1rem 0;">
     <tr><th>Set</th><th>Cardinality</th><th>Type</th></tr>
-    <tr><td>\(\mathbb{N} = \{1,2,3,\ldots\}\)</td><td>\(leph_0\)</td><td>Countably infinite</td></tr>
-    <tr><td>\(\mathbb{Z}\) (integers)</td><td>\(leph_0\)</td><td>Countably infinite</td></tr>
-    <tr><td>\(\mathbb{Q}\) (rationals)</td><td>\(leph_0\)</td><td>Countably infinite</td></tr>
-    <tr><td>\(\mathbb{R}\) (reals)</td><td>\(2^{leph_0} = \mathfrak{c}\)</td><td class="diverge">Uncountably infinite</td></tr>
+    <tr><td>\(\mathbb{N} = \{1,2,3,\ldots\}\)</td><td>\(\aleph_0\)</td><td>Countably infinite</td></tr>
+    <tr><td>\(\mathbb{Z}\) (integers)</td><td>\(\aleph_0\)</td><td>Countably infinite</td></tr>
+    <tr><td>\(\mathbb{Q}\) (rationals)</td><td>\(\aleph_0\)</td><td>Countably infinite</td></tr>
+    <tr><td>\(\mathbb{R}\) (reals)</td><td>\(2^{\aleph_0} = \mathfrak{c}\)</td><td class="diverge">Uncountably infinite</td></tr>
     <tr><td>All functions \(\mathbb{R}	o\mathbb{R}\)</td><td>\(2^{\mathfrak{c}}\)</td><td class="diverge">Even larger</td></tr>
   </table>
   <div class="note">
-    <strong>The Continuum Hypothesis</strong> asks: is there a set whose cardinality is strictly between \(leph_0\) and \(2^{leph_0}\)?
+    <strong>The Continuum Hypothesis</strong> asks: is there a set whose cardinality is strictly between \(\aleph_0\) and \(2^{\aleph_0}\)?
     Gödel (1940) and Cohen (1963) together proved this question is <em>independent</em> of the standard axioms of set theory — it can be neither proved nor disproved from the axioms we normally use. This was one of the most striking results in 20th-century mathematics.
   </div>
   <div class="challenges"><h3>Think about it</h3>
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">Are there more reals than rationals, even though both are infinite?</div>
-    <div class="ccard-a">Yes, in Cantor's precise sense: there is no bijection between \(\mathbb{Q}\) and \(\mathbb{R}\). The rationals are countably infinite (\(leph_0\)) while the reals are uncountably infinite (\(2^{leph_0}\)). In some intuitive sense, the irrationals "fill in" the number line while the rationals leave gaps — and there are far more irrationals than rationals.</div></div>
-    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is \(2^{leph_0}\) equal to \(leph_1\)?</div>
-    <div class="ccard-a">This is precisely the Continuum Hypothesis. \(leph_1\) is defined as the next cardinal after \(leph_0\) in the cardinal hierarchy. Whether \(2^{leph_0} = leph_1\) or \(2^{leph_0} > leph_1\) cannot be settled from the standard axioms of mathematics (ZFC). Both answers are consistent with those axioms.</div></div>
+    <div class="ccard-a">Yes, in Cantor's precise sense: there is no bijection between \(\mathbb{Q}\) and \(\mathbb{R}\). The rationals are countably infinite (\(\aleph_0\)) while the reals are uncountably infinite (\(2^{\aleph_0}\)). In some intuitive sense, the irrationals "fill in" the number line while the rationals leave gaps — and there are far more irrationals than rationals.</div></div>
+    <div class="ccard"><div class="ccard-q" onclick="tog(this)">Is \(2^{\aleph_0}\) equal to \(\aleph_1\)?</div>
+    <div class="ccard-a">This is precisely the Continuum Hypothesis. \(\aleph_1\) is defined as the next cardinal after \(\aleph_0\) in the cardinal hierarchy. Whether \(2^{\aleph_0} = \aleph_1\) or \(2^{\aleph_0} > \aleph_1\) cannot be settled from the standard axioms of mathematics (ZFC). Both answers are consistent with those axioms.</div></div>
   </div>
 </div>
 
@@ -1857,7 +1857,7 @@ otin \{r_1, r_2, \ldots\}\); since the rationals are a proper subset of the real
     </div>
   </div>
   <div class="note teal" style="margin-top:1rem;">
-    <strong>Connection to this app:</strong> The density of the rationals (Module 16) makes more sense in light of Cantor's result — the rationals are <em>everywhere</em> on the number line yet constitute a set of measure zero. Hilbert's Hotel (Module 19) is a vivid illustration of \(leph_0\)-arithmetic. And the real number completeness that makes sequences and series converge to real limits ultimately rests on the uncountability shown here.
+    <strong>Connection to this app:</strong> The density of the rationals (Module 16) makes more sense in light of Cantor's result — the rationals are <em>everywhere</em> on the number line yet constitute a set of measure zero. Hilbert's Hotel (Module 19) is a vivid illustration of \(\aleph_0\)-arithmetic. And the real number completeness that makes sequences and series converge to real limits ultimately rests on the uncountability shown here.
   </div>
   <div class="mistakes"><h3>Common mistake</h3>
     <div class="ccard mistake"><div class="ccard-q" onclick="tog(this)">&#9888; "Infinity is just infinity — you can't have different sizes."</div>
