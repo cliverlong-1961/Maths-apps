@@ -1288,6 +1288,7 @@ canvas{display:block;width:100%;}
   Two series, one divergent and one convergent, living in the same picture.
   <div class="q-intro">→ Drag the divisions slider to build the snowflake step by step.</div>
 </div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1.2rem;">To construct a Koch snowflake, start with an equilateral triangle. Divide each side into three equal segments. Build a new, smaller outward-pointing equilateral triangle on each middle segment, and remove the base of that new triangle. Repeat this repeating replacement process infinitely on every new straight edge.</p>
 <div class="slider-row"><label>Divisions</label><input type="range" id="kk-iter" min="0" max="15" value="0" oninput="drawKoch()"><span class="slider-val" id="kk-iv">0</span></div>
 <div class="cbox"><canvas id="c10" height="300"></canvas></div>
 <div class="note" style="margin-top:.6rem;font-size:.85rem;"><em>Note:</em> past a certain number of divisions the new triangles become smaller than a pixel on screen, so the drawing stops adding visible detail — but the perimeter and area figures below still reflect the true mathematical values at every division count.</div>
@@ -2424,7 +2425,7 @@ function kochSubdivide(p,q,depth,minLen,out){
   if(depth<=0||len<minLen){out.push(q);return;}
   const p1=[p[0]+dx/3,p[1]+dy/3];
   const p2=[p[0]+2*dx/3,p[1]+2*dy/3];
-  const peak=[p[0]+dx/2-dy*Math.sqrt(3)/6,p[1]+dy/2+dx*Math.sqrt(3)/6];
+  const peak=[p[0]+dx/2+dy*Math.sqrt(3)/6,p[1]-dx*Math.sqrt(3)/6+dy/2];
   kochSubdivide(p,p1,depth-1,minLen,out);
   kochSubdivide(p1,peak,depth-1,minLen,out);
   kochSubdivide(peak,p2,depth-1,minLen,out);
@@ -2732,22 +2733,43 @@ function drawSpiral(){
     ctx.strokeRect(tx(sq.x),ty(sq.y),sq.s*scale,sq.s*scale);
   });
 
-  // Draw the continuous golden-spiral arc: a quarter-circle inscribed in
-  // each square, corner-to-corner, chosen so each arc's end point is
-  // exactly the next arc's start point.
+  // Draw the golden spiral as a single smooth logarithmic curve wound
+  // around one fixed centre (its "pole"), rather than a chain of
+  // quarter-circles centred on different square corners. The pole is the
+  // point every winding of a true golden spiral curls around; for this
+  // square construction (starting from a unit square, seeded 1,1) it sits
+  // at (0.6, 0.2) in units of the first square's side length -- the exact
+  // fixed point of the spiral similarity that maps each Fibonacci square
+  // system onto the next one.
   if(squares.length>1){
+    const Pole={x:0.6*fibs[0], y:0.2*fibs[0]};
+    const last=squares[squares.length-1];
+    // the far corner each square's arc sweeps out to, by attach-direction
+    const farCorner=sq=>{
+      if(sq.dir===0)return[sq.x+sq.s,sq.y];
+      if(sq.dir===1)return[sq.x,sq.y];
+      if(sq.dir===2)return[sq.x,sq.y+sq.s];
+      return[sq.x+sq.s,sq.y+sq.s];
+    };
+    const endPt=farCorner(last);
+    const t1=fibs.length-1; // number of quarter-turns to the visible end
+    const dx=endPt[0]-Pole.x, dy=endPt[1]-Pole.y;
+    const rEnd=Math.hypot(dx,dy), aEnd=Math.atan2(dy,dx);
+    // r(t) = rEnd·φ^(t−t1), θ(t) = aEnd + (t1−t)·90° -- an equiangular
+    // (golden) spiral: it grows by exactly φ every quarter turn, anchored
+    // so it passes exactly through the current outermost corner.
+    const steps=60*t1;
     ctx.strokeStyle=GOLD;ctx.lineWidth=2.5;ctx.beginPath();
-    squares.forEach((sq,i)=>{
-      if(i===0)return;
-      const {x,y,s,dir}=sq;
-      let cx,cy,a0,a1,acw;
-      if(dir===0){cx=x;cy=y;a0=Math.PI/2;a1=0;acw=true;}
-      else if(dir===1){cx=x+s;cy=y;a0=Math.PI/2;a1=Math.PI;acw=false;}
-      else if(dir===2){cx=x;cy=y;a0=0;a1=Math.PI/2;acw=false;}
-      else{cx=x+s;cy=y;a0=Math.PI;a1=Math.PI/2;acw=true;}
-      ctx.arc(tx(cx),ty(cy),s*scale,a0,a1,acw);
-    });
+    for(let i=0;i<=steps;i++){
+      const t=t1*i/steps;
+      const r=rEnd*Math.pow(PHI,t-t1);
+      const a=aEnd+(t1-t)*Math.PI/2;
+      const px=tx(Pole.x+r*Math.cos(a)), py=ty(Pole.y+r*Math.sin(a));
+      i?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
     ctx.stroke();
+    // mark the pole -- the single centre every turn of the spiral winds around
+    ctx.fillStyle=GOLD;ctx.beginPath();ctx.arc(tx(Pole.x),ty(Pole.y),3.5,0,2*Math.PI);ctx.fill();
   }
 
   // labels
