@@ -776,6 +776,14 @@ canvas{display:block;width:100%;}
     and the odd harmonic series \(\sum 1/(2n-1)\), with sliders and comparison. Module 11 (Series Tests)
     shows why the divergence test alone is inconclusive for \(\sum 1/n\).
   </p>
+  <button class="btn btn-outline" id="s6b-why-btn" onclick="const e=document.getElementById('s6b-why');const open=e.style.display==='block';e.style.display=open?'none':'block';this.textContent=open?'Why harmonic diverges':'Hide explanation';" style="margin-bottom:.8rem;">Why harmonic diverges</button>
+  <div id="s6b-why" class="note" style="display:none;margin-bottom:1rem;">
+    Group the terms into blocks whose length doubles each time:
+    \(\tfrac{1}{3}+\tfrac{1}{4} > \tfrac{1}{2}\); &nbsp;
+    \(\tfrac{1}{5}+\tfrac{1}{6}+\tfrac{1}{7}+\tfrac{1}{8} > \tfrac{1}{2}\); &nbsp; and so on.
+    Every such block contributes more than \(\tfrac{1}{2}\), and there are infinitely many blocks,
+    so the partial sums can be pushed past any target value — the series has no finite limit.
+  </div>
   <div class="challenges"><h3>Think about it</h3>
     <div class="ccard"><div class="ccard-q" onclick="tog(this)">If the terms → 0, does the series converge?</div>
     <div class="ccard-a">Not necessarily. The harmonic series \(\sum 1/n\) is the classic counterexample. Terms → 0 is only a <em>necessary</em> condition; the harmonic series fails the comparison test against \(\sum 1/2, \sum 1/4, \ldots\)</div></div>
