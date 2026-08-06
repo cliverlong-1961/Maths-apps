@@ -554,14 +554,14 @@ canvas{display:block;width:100%;}
 <div class="spanel on" id="s2a">
   <div class="fdisp">\(a_n = \dfrac{1}{n}\)</div>
   <div class="slider-row"><label>n =</label><input type="range" id="s2a-sl" min="1" max="200" value="1" oninput="s2upd('a')"><span class="slider-val" id="s2a-v">1</span></div>
-  <div class="big-num">\(a_n\) = <span id="s2a-r">1.000000</span></div>
+  <div class="big-num"><span id="s2a-lab">a<sub>1</sub></span> = <span id="s2a-r">1.000000</span></div>
   <div class="status" id="s2a-st">Getting smaller, but never reaching zero.</div>
   <div class="cbox"><canvas id="c2a" height="150"></canvas></div>
 </div>
 <div class="spanel" id="s2b">
   <div class="fdisp">\(a_n = \dfrac{1}{n^2}\)</div>
   <div class="slider-row"><label>n =</label><input type="range" id="s2b-sl" min="1" max="200" value="1" oninput="s2upd('b')"><span class="slider-val" id="s2b-v">1</span></div>
-  <div class="big-num">\(a_n\) = <span id="s2b-r">1.000000</span></div>
+  <div class="big-num"><span id="s2b-lab">a<sub>1</sub></span> = <span id="s2b-r">1.000000</span></div>
   <div class="status" id="s2b-st">Decreasing faster than 1/n.</div>
   <div class="cbox"><canvas id="c2b" height="150"></canvas></div>
 </div>
@@ -569,7 +569,7 @@ canvas{display:block;width:100%;}
   <div class="fdisp">\(a_n = r^n\), &ensp;\(|r|&lt;1\)</div>
   <div class="slider-row"><label>r =</label><input type="range" id="s2c-rsl" min="-99" max="99" value="50" oninput="s2upd('c')"><span class="slider-val" id="s2c-rv">0.50</span></div>
   <div class="slider-row"><label>n =</label><input type="range" id="s2c-sl" min="1" max="60" value="1" oninput="s2upd('c')"><span class="slider-val" id="s2c-v">1</span></div>
-  <div class="big-num">\(a_n\) = <span id="s2c-r">0.500000</span></div>
+  <div class="big-num"><span id="s2c-lab">a<sub>1</sub></span> = <span id="s2c-r">0.500000</span></div>
   <div class="status" id="s2c-st">Geometric decay toward zero.</div>
   <div class="cbox"><canvas id="c2c" height="150"></canvas></div>
 </div>
@@ -755,7 +755,7 @@ canvas{display:block;width:100%;}
     <div class="sbar-track"><div class="sbar-fill" id="s6a-bar" style="width:0%"></div></div>
     <div class="sbar-label" id="s6a-blab">S = 0 &nbsp;|&nbsp; Exact = —</div>
   </div>
-  <div class="big-num">S<sub>N</sub> = <span id="s6a-sum">0</span></div>
+  <div class="big-num"><span id="s6a-lab">S<sub>0</sub></span> = <span id="s6a-sum">0</span></div>
   <div class="status converge" id="s6a-st">Converges.</div>
   <div class="cbox"><canvas id="c6a" height="170"></canvas></div>
 </div>
@@ -768,7 +768,7 @@ canvas{display:block;width:100%;}
     This is the single most important counterexample in series analysis.
   </div>
   <div class="slider-row"><label>Terms N =</label><input type="range" id="s6b-n" min="1" max="300" value="20" oninput="s6draw('b')"><span class="slider-val" id="s6b-nv">20</span></div>
-  <div class="big-num">S<sub>N</sub> = <span id="s6b-sum">—</span></div>
+  <div class="big-num"><span id="s6b-lab">S<sub>20</sub></span> = <span id="s6b-sum">—</span></div>
   <div class="status diverge">Harmonic series DIVERGES — the partial sums grow without bound (just extraordinarily slowly).</div>
   <div class="cbox"><canvas id="c6b" height="170"></canvas></div>
   <p style="font-size:.9rem;line-height:1.7;margin:.8rem 0;color:var(--muted);">
@@ -787,7 +787,7 @@ canvas{display:block;width:100%;}
 <div class="spanel" id="s6c">
   <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\frac{(-1)^{n+1}}{n}=1-\frac{1}{2}+\frac{1}{3}-\cdots=\ln2\)</div>
   <div class="slider-row"><label>Terms N =</label><input type="range" id="s6c-n" min="1" max="300" value="20" oninput="s6draw('c')"><span class="slider-val" id="s6c-nv">20</span></div>
-  <div class="big-num">S<sub>N</sub> = <span id="s6c-sum">—</span> <span style="font-size:1rem;color:var(--muted)">(ln 2 ≈ 0.6931)</span></div>
+  <div class="big-num"><span id="s6c-lab">S<sub>20</sub></span> = <span id="s6c-sum">—</span> <span style="font-size:1rem;color:var(--muted)">(ln 2 ≈ 0.6931)</span></div>
   <div class="status converge">Alternating harmonic series CONVERGES (by the Alternating Series Test).</div>
   <div class="cbox"><canvas id="c6c" height="170"></canvas></div>
 </div>
@@ -2061,6 +2061,7 @@ function s2upd(t){
   const sl=document.getElementById('s2'+t+'-sl');
   const n=+sl.value;
   document.getElementById('s2'+t+'-v').textContent=n;
+  document.getElementById('s2'+t+'-lab').innerHTML='a<sub>'+n+'</sub>';
   let v,st;
   if(t==='a'){v=1/n;st=n>=100?'Very close to zero, but still positive.':'Getting smaller…';}
   else if(t==='b'){v=1/(n*n);st=n>=50?'Approaching zero rapidly.':'Decreasing fast…';}
@@ -2238,6 +2239,7 @@ function s6aReset(){
   document.getElementById('s6a-chips').innerHTML='';
   document.getElementById('s6a-bar').style.width='0%';
   document.getElementById('s6a-sum').textContent='0';
+  document.getElementById('s6a-lab').innerHTML='S<sub>0</sub>';
   const exact=a/(1-r);
   document.getElementById('s6a-blab').innerHTML='S = 0 &nbsp;|&nbsp; Exact = '+exact.toFixed(4);
   drawS6a();
@@ -2260,6 +2262,7 @@ function s6aStep(){
   const pct=Math.min(cumsum/exact*100,100);
   document.getElementById('s6a-bar').style.width=pct+'%';
   document.getElementById('s6a-sum').textContent=cumsum.toFixed(6);
+  document.getElementById('s6a-lab').innerHTML='S<sub>'+s6a_n+'</sub>';
   document.getElementById('s6a-blab').innerHTML='S<sub>'+s6a_n+'</sub> = '+cumsum.toFixed(4)+' &nbsp;|&nbsp; Exact = '+exact.toFixed(4);
   drawS6a();
 }
@@ -2294,11 +2297,13 @@ function s6draw(t){
     document.getElementById('s6b-nv').textContent=N;
     let s=0;for(let i=1;i<=N;i++){s+=1/i;cumsums.push(s);}
     document.getElementById('s6b-sum').textContent=s.toFixed(4);
+    document.getElementById('s6b-lab').innerHTML='S<sub>'+N+'</sub>';
   }else if(t==='c'){
     const N=+document.getElementById('s6c-n').value;
     document.getElementById('s6c-nv').textContent=N;
     let s=0;for(let i=1;i<=N;i++){s+=Math.pow(-1,i+1)/i;cumsums.push(s);}
     document.getElementById('s6c-sum').textContent=s.toFixed(6);
+    document.getElementById('s6c-lab').innerHTML='S<sub>'+N+'</sub>';
   }
   if(!cumsums.length)return;
   const mn=Math.min(...cumsums)*.95,mx2=Math.max(...cumsums)*1.05,rng=mx2-mn||1;
