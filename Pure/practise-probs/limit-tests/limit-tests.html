@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limit Tests for Series — Divergence, Ratio, Root, Comparison &amp; More</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+
+<style>
+  :root{
+    --navy: #14213a;
+    --navy-2: #1c2d4d;
+    --navy-3: #263a60;
+    --paper: #faf7f0;
+    --paper-2: #f2ede1;
+    --ink: #1c2433;
+    --ink-soft: #545f74;
+    --rule: #d9d2bf;
+    --gold: #b8863b;
+    --gold-light: #dcb56e;
+    --gold-pale: #f3e3c4;
+    --green: #2f6b4f;
+    --green-bg: #e7f0e9;
+    --red: #9c3b34;
+    --red-bg: #f4e5e0;
+    --amber: #a5761f;
+    --amber-bg: #f6ecd6;
+    --plum: #6d4574;
+    --plum-bg: #eee5ef;
+  }
+
+  * { box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3,h4 { font-family: 'Crimson Pro', serif; font-weight: 600; margin: 0; color: var(--navy); }
+
+  /* ---- header ---- */
+  header.masthead{
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: var(--paper);
+    padding: 2.6rem 1.5rem 0;
+    position: relative;
+  }
+  .masthead-inner{ max-width: 1000px; margin: 0 auto; }
+  .eyebrow{
+    font-family: 'Source Sans 3', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+    color: var(--gold-light);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  header.masthead h1{
+    color: var(--paper);
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  header.masthead p.sub{
+    margin-top: 0.6rem;
+    color: #c3cbdc;
+    max-width: 680px;
+    font-size: 1.02rem;
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+  }
+
+  /* group tabs, styled as paper index tabs */
+  nav.group-tabs{
+    max-width: 1000px;
+    margin: 1.8rem auto 0;
+    display: flex;
+    gap: 0.35rem;
+    padding: 0 0.25rem;
+  }
+  nav.group-tabs button{
+    flex: 1;
+    appearance: none;
+    border: none;
+    background: rgba(255,255,255,0.06);
+    color: #d7dceb;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.95rem 0.6rem 0.85rem;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-bottom: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  nav.group-tabs button .tab-num{
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 0.82rem;
+  }
+  nav.group-tabs button:hover{ background: rgba(255,255,255,0.11); color: #fff; }
+  nav.group-tabs button.active{
+    background: var(--paper);
+    color: var(--navy);
+    border-bottom: 3px solid var(--gold);
+  }
+  nav.group-tabs button.active .tab-num{ color: var(--gold); }
+  nav.group-tabs button:focus-visible{ outline: 2px solid var(--gold-light); outline-offset: 2px; }
+
+  /* sub-tabs: pill row for the tests within the active group */
+  .sub-tabs-wrap{ background: var(--paper); border-bottom: 1px solid var(--rule); }
+  nav.sub-tabs{
+    max-width: 1000px;
+    margin: 0 auto;
+    display: none;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    flex-wrap: wrap;
+  }
+  nav.sub-tabs.active{ display: flex; }
+  nav.sub-tabs button{
+    appearance: none;
+    border: 1px solid var(--rule);
+    background: #fff;
+    color: var(--ink-soft);
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  nav.sub-tabs button:hover{ border-color: var(--navy-3); color: var(--navy-3); }
+  nav.sub-tabs button.active{ background: var(--navy-3); border-color: var(--navy-3); color: #fff; }
+  nav.sub-tabs button:focus-visible{ outline: 2px solid var(--navy-3); outline-offset: 2px; }
+
+  main{ max-width: 1000px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
+
+  .page{ display: none; }
+  .page.active{ display: block; animation: fadein 0.25s ease; }
+  @keyframes fadein{ from{ opacity:0; transform: translateY(4px);} to{opacity:1; transform:none;} }
+
+  .intro{
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--navy-3);
+    border-radius: 4px;
+    padding: 1.5rem 1.7rem;
+    margin-bottom: 1.7rem;
+  }
+  .intro h2{ font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .intro p{ color: var(--ink-soft); margin: 0.5rem 0; }
+  .intro .statement-box{
+    margin-top: 0.9rem;
+    background: var(--paper-2);
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    padding: 0.9rem 1.1rem;
+    overflow-x: auto;
+  }
+  .intro .statement-box .katex-display{ margin: 0; }
+
+  /* ---- problem card, styled like an exam question ---- */
+  .problem-card{
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(20,33,58,0.04), 0 8px 20px -14px rgba(20,33,58,0.25);
+    overflow: hidden;
+  }
+  .problem-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 1rem 1.4rem;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .problem-head h3{
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--navy-3);
+  }
+  button.btn-new{
+    appearance:none; border:1px solid var(--navy-3); background: #fff; color: var(--navy-3);
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:0.85rem;
+    padding: 0.45rem 0.9rem; border-radius: 5px; cursor:pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  button.btn-new:hover{ background: var(--navy-3); color:#fff; }
+
+  .problem-body{ padding: 1.5rem 1.6rem; }
+  .series-display{
+    font-size: 1.25rem;
+    padding: 1rem 0.5rem;
+    text-align:center;
+    overflow-x: auto;
+  }
+  .instruction{ color: var(--ink-soft); font-size: 0.95rem; margin: 0.9rem 0 0; }
+
+  .reveal-row{
+    padding: 0 1.6rem 1.6rem;
+    display:flex; align-items:center; gap: 0.9rem; flex-wrap: wrap;
+  }
+  button.btn-reveal{
+    appearance:none; border:none; background: var(--gold); color:#2a1c05;
+    font-family:'Source Sans 3',sans-serif; font-weight:700; font-size:0.95rem;
+    padding: 0.7rem 1.3rem; border-radius: 6px; cursor:pointer;
+    box-shadow: 0 2px 0 #8f6321;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  button.btn-reveal:hover{ transform: translateY(1px); box-shadow: 0 1px 0 #8f6321; }
+  button.btn-reveal:active{ transform: translateY(2px); box-shadow: none; }
+  .hint{ font-size: 0.85rem; color: var(--ink-soft); font-style: italic; }
+
+  .answer-panel{
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 1.6rem;
+    animation: fadein 0.3s ease;
+  }
+  .verdict{
+    display:inline-flex; align-items:center; gap:0.5rem;
+    font-family:'Crimson Pro',serif; font-weight:700; font-size:1.15rem;
+    padding: 0.4rem 0.9rem; border-radius: 5px; margin-bottom: 1rem;
+  }
+  .verdict.converge{ background: var(--green-bg); color: var(--green); }
+  .verdict.diverge{ background: var(--red-bg); color: var(--red); }
+  .verdict.inconclusive{ background: var(--amber-bg); color: var(--amber); }
+  .verdict .dot{ width:9px; height:9px; border-radius:50%; background: currentColor; display:inline-block; }
+
+  .working{
+    background:#fff; border:1px solid var(--rule); border-radius:5px;
+    padding: 1.2rem 1.4rem; margin-bottom: 1.3rem;
+  }
+  .working .step{ margin: 0.55rem 0; }
+  .working .step-label{
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-soft); font-weight: 600; margin-bottom: 0.15rem;
+  }
+  .working .katex-display{ margin: 0.2rem 0; }
+  .working p{ margin: 0.3rem 0; color: var(--ink); }
+
+  .graph-card{
+    background:#fff; border:1px solid var(--rule); border-radius:5px; padding: 1.1rem 1.2rem 0.6rem;
+  }
+  .graph-card h4{
+    font-size: 0.95rem; color: var(--navy-3); margin-bottom: 0.4rem;
+    font-family:'Source Sans 3',sans-serif; font-weight:700;
+  }
+  .graph-card svg{ width:100%; height:auto; display:block; }
+  .graph-caption{ font-size: 0.82rem; color: var(--ink-soft); margin: 0.5rem 0 0.8rem; }
+
+  footer{
+    text-align:center; color: var(--ink-soft); font-size:0.82rem; padding: 1.5rem;
+  }
+
+  @media (max-width: 640px){
+    nav.group-tabs{ flex-direction: column; }
+    nav.group-tabs button{ border-radius: 6px; flex-direction: row; align-items:baseline; gap:0.5rem; }
+    .series-display{ font-size: 1.05rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow">A-Level &amp; Beyond · Series &amp; Sequences</div>
+    <h1>Limit Tests for Series</h1>
+    <p class="sub">Eight ways to ask a series whether it converges — worked from first principles, with a new random example every time.</p>
+  </div>
+  <nav class="group-tabs">
+    <button class="group-btn active" data-group="basic"><span class="tab-num">I.</span>Basic Tests</button>
+    <button class="group-btn" data-group="comparison"><span class="tab-num">II.</span>Comparison-Based Tests</button>
+    <button class="group-btn" data-group="special"><span class="tab-num">III.</span>Alternating &amp; Special Series</button>
+  </nav>
+</header>
+
+<div class="sub-tabs-wrap">
+  <nav class="sub-tabs active" data-group="basic">
+    <button class="sub-btn active" data-page="divergence">1. Divergence Test</button>
+    <button class="sub-btn" data-page="ratio">2. Ratio Test</button>
+    <button class="sub-btn" data-page="root">3. Root Test</button>
+  </nav>
+  <nav class="sub-tabs" data-group="comparison">
+    <button class="sub-btn active" data-page="comparison">1. Comparison Test</button>
+    <button class="sub-btn" data-page="limitcomparison">2. Limit Comparison Test</button>
+    <button class="sub-btn" data-page="integral">3. Integral Test</button>
+  </nav>
+  <nav class="sub-tabs" data-group="special">
+    <button class="sub-btn active" data-page="alternating">1. Alternating Series Test</button>
+    <button class="sub-btn" data-page="absolute">2. Absolute Convergence Test</button>
+  </nav>
+</div>
+
+<main>
+
+  <!-- ================= GROUP I: BASIC TESTS ================= -->
+
+  <!-- PAGE: DIVERGENCE TEST -->
+  <section id="page-divergence" class="page active" data-group="basic">
+    <div class="intro">
+      <h2>The Divergence Test</h2>
+      <p>Also called the <em>nth term test</em>. It never proves convergence — it only ever catches divergence, by checking the one thing every convergent series must do: its terms have to shrink to zero.</p>
+      <div class="statement-box">
+        <div data-tex="\text{If } \lim_{n\to\infty} a_n \neq 0 \text{, or the limit does not exist, then } \sum_{n=1}^{\infty} a_n \text{ diverges.}"></div>
+      </div>
+      <p style="margin-top:0.7rem;">If the limit <em>does</em> equal zero, the test is silent — the series could still converge or diverge, and you'd need another test to find out.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-divergence">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="divergence-series"></div>
+        <p class="instruction">Does this series converge or diverge? Apply the Divergence Test to justify your answer.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-divergence">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-divergence" hidden></div>
+    </div>
+  </section>
+
+  <!-- PAGE: RATIO TEST -->
+  <section id="page-ratio" class="page" data-group="basic">
+    <div class="intro">
+      <h2>The Ratio Test</h2>
+      <p>Compares each term to the one before it. If consecutive terms keep shrinking by roughly the same factor, that factor tells you everything.</p>
+      <div class="statement-box">
+        <div data-tex="\text{Let } L = \lim_{n\to\infty} \left| \dfrac{a_{n+1}}{a_n} \right|. \quad L<1 \Rightarrow \text{converges (absolutely)}, \quad L>1 \Rightarrow \text{diverges}, \quad L=1 \Rightarrow \text{inconclusive}."></div>
+      </div>
+      <p style="margin-top:0.7rem;">It's most useful when a term involves an <em>n</em>-th power or a factorial, since the ratio cancels most of the expression away.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-ratio">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="ratio-series"></div>
+        <p class="instruction">Does this series converge or diverge? Apply the Ratio Test to justify your answer.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-ratio">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-ratio" hidden></div>
+    </div>
+  </section>
+
+  <!-- PAGE: ROOT TEST -->
+  <section id="page-root" class="page" data-group="basic">
+    <div class="intro">
+      <h2>The Root Test</h2>
+      <p>Compares the size of a term to itself, <em>n</em> times over, by taking the <em>n</em>-th root. It's the natural choice when the whole term is already raised to the power <em>n</em>.</p>
+      <div class="statement-box">
+        <div data-tex="\text{Let } L = \lim_{n\to\infty} \sqrt[n]{|a_n|}. \quad L<1 \Rightarrow \text{converges (absolutely)}, \quad L>1 \Rightarrow \text{diverges}, \quad L=1 \Rightarrow \text{inconclusive}."></div>
+      </div>
+      <p style="margin-top:0.7rem;">This is Cauchy's test — a close cousin of the Ratio Test that is often stronger, though usually harder to apply by hand.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-root">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="root-series"></div>
+        <p class="instruction">Does this series converge or diverge? Apply the Root Test to justify your answer.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-root">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-root" hidden></div>
+    </div>
+  </section>
+
+  <!-- ================= GROUP II: COMPARISON-BASED TESTS ================= -->
+
+  <!-- PAGE: COMPARISON TEST -->
+  <section id="page-comparison" class="page" data-group="comparison">
+    <div class="intro">
+      <h2>The Comparison Test</h2>
+      <p>Sits a series next to one you already understand. If your series is always the smaller of the two and the bigger one converges, yours has no choice but to converge too — and vice versa for divergence.</p>
+      <div class="statement-box">
+        <div data-tex="\text{Suppose } 0 \le a_n \le b_n \text{ for all } n. \quad \text{If } \sum b_n \text{ converges, so does } \sum a_n. \quad \text{If } \sum a_n \text{ diverges, so does } \sum b_n."></div>
+      </div>
+      <p style="margin-top:0.7rem;">The skill is choosing a sensible <em>b<sub>n</sub></em> — usually a p-series or geometric series whose behaviour you already know.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-comparison">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="comparison-series"></div>
+        <p class="instruction">Does this series converge or diverge? Find a suitable series to compare it with.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-comparison">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-comparison" hidden></div>
+    </div>
+  </section>
+
+  <!-- PAGE: LIMIT COMPARISON TEST -->
+  <section id="page-limitcomparison" class="page" data-group="comparison">
+    <div class="intro">
+      <h2>The Limit Comparison Test</h2>
+      <p>A more forgiving cousin of the Comparison Test. Instead of proving a term-by-term inequality, you only need the two series to behave similarly <em>in the long run</em>.</p>
+      <div class="statement-box">
+        <div data-tex="\text{Suppose } a_n, b_n > 0 \text{ and } L = \lim_{n\to\infty} \dfrac{a_n}{b_n}. \quad \text{If } 0 < L < \infty, \text{ then } \sum a_n \text{ and } \sum b_n \text{ either both converge or both diverge}."></div>
+      </div>
+      <p style="margin-top:0.7rem;">Ideal for rational functions of <em>n</em>: pick <em>b<sub>n</sub></em> to be the dominant term as <em>n</em> &rarr; &infin;, and the messy lower-order parts fall away in the limit.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-limitcomparison">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="limitcomparison-series"></div>
+        <p class="instruction">Does this series converge or diverge? Find a series to compare it with in the limit.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-limitcomparison">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-limitcomparison" hidden></div>
+    </div>
+  </section>
+
+  <!-- PAGE: INTEGRAL TEST -->
+  <section id="page-integral" class="page" data-group="comparison">
+    <div class="intro">
+      <h2>The Integral Test</h2>
+      <p>Treats the series as a staircase sitting alongside the smooth curve of a related function, and asks whether the area under that curve is finite.</p>
+      <div class="statement-box">
+        <div data-tex="\text{If } f \text{ is positive, continuous and decreasing on } [1,\infty) \text{ with } f(n)=a_n, \text{ then } \sum_{n=1}^{\infty} a_n \text{ and } \int_{1}^{\infty} f(x)\,dx \text{ either both converge or both diverge}."></div>
+      </div>
+      <p style="margin-top:0.7rem;">Note this only tells you <em>whether</em> the series converges, not <em>what it converges to</em> — the sum and the integral are rarely equal.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-integral">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="integral-series"></div>
+        <p class="instruction">Does this series converge or diverge? Apply the Integral Test to justify your answer.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-integral">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-integral" hidden></div>
+    </div>
+  </section>
+
+  <!-- ================= GROUP III: ALTERNATING & SPECIAL SERIES ================= -->
+
+  <!-- PAGE: ALTERNATING SERIES TEST -->
+  <section id="page-alternating" class="page" data-group="special">
+    <div class="intro">
+      <h2>The Alternating Series Test</h2>
+      <p>Also known as the Leibniz Test. When the signs of the terms flip back and forth, each new term nudges the partial sum past the previous one — so as long as the steps keep shrinking to zero, the sum has to settle somewhere.</p>
+      <div class="statement-box">
+        <div data-tex="\text{If } b_n > 0, \; b_n \text{ is decreasing, and } \lim_{n\to\infty} b_n = 0, \text{ then } \sum_{n=1}^{\infty} (-1)^{n+1} b_n \text{ converges}."></div>
+      </div>
+      <p style="margin-top:0.7rem;">Like the Divergence Test, this one only ever points one way — it can prove convergence, but it can never prove divergence.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-alternating">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="alternating-series"></div>
+        <p class="instruction">Does this series converge? Check the conditions of the Alternating Series Test.</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-alternating">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-alternating" hidden></div>
+    </div>
+  </section>
+
+  <!-- PAGE: ABSOLUTE CONVERGENCE TEST -->
+  <section id="page-absolute" class="page" data-group="special">
+    <div class="intro">
+      <h2>The Absolute Convergence Test</h2>
+      <p>Strips the signs away and asks a stronger question: does the series still converge if every term is made positive? If so, the original series was never in any danger.</p>
+      <div class="statement-box">
+        <div data-tex="\text{If } \sum_{n=1}^{\infty} |a_n| \text{ converges, then } \sum_{n=1}^{\infty} a_n \text{ converges (it converges \textit{absolutely}).}"></div>
+      </div>
+      <p style="margin-top:0.7rem;">Absolute convergence is the stronger property: it implies convergence, but not the other way round — a series can converge only <em>conditionally</em>, the way the alternating harmonic series does.</p>
+    </div>
+
+    <div class="problem-card">
+      <div class="problem-head">
+        <h3>Worked Example</h3>
+        <button class="btn-new" id="new-absolute">New example</button>
+      </div>
+      <div class="problem-body">
+        <div class="series-display" id="absolute-series"></div>
+        <p class="instruction">Is this series absolutely convergent, conditionally convergent, or divergent?</p>
+      </div>
+      <div class="reveal-row">
+        <button class="btn-reveal" id="reveal-absolute">Reveal answer</button>
+        <span class="hint">Work it out first, then check.</span>
+      </div>
+      <div class="answer-panel" id="answer-absolute" hidden></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Limit Tests for Series &middot; generated examples use integer parameters between &minus;6 and 6</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+
+<script>
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function randInt(lo, hi) { return Math.floor(Math.random() * (hi - lo + 1)) + lo; }
+function randNonZero(lo, hi) { let v; do { v = randInt(lo, hi); } while (v === 0); return v; }
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a || 1; }
+
+// "an + b" as a tex-safe fragment, e.g. "3n - 2", "-n + 4", "5"
+function linExpr(a, b, v) {
+  v = v || 'n';
+  let parts = [];
+  if (a !== 0) {
+    let coefStr = Math.abs(a) === 1 ? '' : String(Math.abs(a));
+    parts.push((a < 0 ? '-' : '') + coefStr + v);
+  }
+  if (b !== 0 || parts.length === 0) {
+    if (parts.length > 0) parts.push(b < 0 ? '- ' + Math.abs(b) : '+ ' + b);
+    else parts.push(String(b));
+  }
+  return parts.join(' ');
+}
+
+// tex fraction of two linear expressions
+function linFracTex(a, b, c, d, v) {
+  return '\\dfrac{' + linExpr(a, b, v) + '}{' + linExpr(c, d, v) + '}';
+}
+
+// simplified "p/q" (or integer) plain string, sign carried on top
+function fracStr(a, b) {
+  let sign = (a < 0) !== (b < 0) ? -1 : 1;
+  a = Math.abs(a); b = Math.abs(b);
+  let g = gcd(a, b);
+  a /= g; b /= g;
+  if (b === 1) return (sign < 0 ? '-' : '') + a;
+  return (sign < 0 ? '-' : '') + a + '/' + b;
+}
+function fracTex(a, b) {
+  let sign = (a < 0) !== (b < 0) ? '-' : '';
+  a = Math.abs(a); b = Math.abs(b);
+  let g = gcd(a, b);
+  a /= g; b /= g;
+  if (b === 1) return sign + a;
+  return sign + '\\dfrac{' + a + '}{' + b + '}';
+}
+function round3(x) { return Math.round(x * 1000) / 1000; }
+
+function renderAllMath(root) {
+  root.querySelectorAll('[data-tex]').forEach(el => {
+    const tex = el.getAttribute('data-tex');
+    const display = el.getAttribute('data-inline') !== 'true';
+    try {
+      katex.render(tex, el, { throwOnError: false, displayMode: display });
+    } catch (e) { el.textContent = tex; }
+  });
+}
+function escTex(s) { return s.replace(/"/g, '&quot;'); }
+
+/* ============================================================
+   SINGLE-LINE SVG CHART  (sequence approaching / diverging from a limit)
+   points: [{n, y}], limit: number or null (null = no reference line, autoscale on points only)
+   ============================================================ */
+function buildChart(points, limit, yLabel, seriesLabel) {
+  const W = 640, H = 300;
+  const M = { top: 18, right: 24, bottom: 40, left: 58 };
+  const iw = W - M.left - M.right, ih = H - M.top - M.bottom;
+
+  const ys = points.map(p => p.y);
+  const hasLimit = (limit !== null && limit !== undefined && isFinite(limit));
+  let yMin = hasLimit ? Math.min(Math.min(...ys), limit) : Math.min(...ys);
+  let yMax = hasLimit ? Math.max(Math.max(...ys), limit) : Math.max(...ys);
+  if (yMin === yMax) { yMin -= 1; yMax += 1; }
+  const pad = (yMax - yMin) * 0.15;
+  yMin -= pad; yMax += pad;
+
+  const nMin = points[0].n, nMax = points[points.length - 1].n;
+  const xScale = n => M.left + ((n - nMin) / (nMax - nMin)) * iw;
+  const yScale = y => M.top + ih - ((y - yMin) / (yMax - yMin)) * ih;
+
+  const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + xScale(p.n).toFixed(2) + ',' + yScale(p.y).toFixed(2)).join(' ');
+  const dots = points.map(p =>
+    `<circle cx="${xScale(p.n).toFixed(2)}" cy="${yScale(p.y).toFixed(2)}" r="2.4" fill="var(--navy-3)" />`
+  ).join('');
+
+  const xTickVals = [1, 10, 20, 30, 40, 50].filter(v => v >= nMin && v <= nMax);
+  const xTicks = xTickVals.map(v =>
+    `<text x="${xScale(v).toFixed(2)}" y="${(M.top + ih + 20).toFixed(2)}" font-size="11" fill="var(--ink-soft)" text-anchor="middle">${v}</text>`
+  ).join('');
+
+  const yTickVals = Array.from(new Set([yMin + pad, (yMin + pad + yMax - pad) / 2, yMax - pad].map(v => round3(v))));
+  const yTicks = yTickVals.map(v =>
+    `<text x="${(M.left - 10).toFixed(2)}" y="${(yScale(v) + 4).toFixed(2)}" font-size="11" fill="var(--ink-soft)" text-anchor="end">${v}</text>`
+  ).join('');
+
+  let limitLine = '';
+  if (hasLimit) {
+    const limitY = yScale(limit);
+    limitLine = `
+    <line x1="${M.left}" y1="${limitY.toFixed(2)}" x2="${M.left + iw}" y2="${limitY.toFixed(2)}"
+          stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="5,4" />
+    <text x="${M.left + iw - 4}" y="${(limitY - 6).toFixed(2)}" font-size="12" fill="var(--gold)" text-anchor="end" font-weight="700">
+      L = ${round3(limit)}
+    </text>`;
+  }
+
+  return `
+  <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Graph of ${seriesLabel}">
+    <line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top + ih}" stroke="var(--rule)" stroke-width="1" />
+    <line x1="${M.left}" y1="${M.top + ih}" x2="${M.left + iw}" y2="${M.top + ih}" stroke="var(--rule)" stroke-width="1" />
+    ${xTicks}
+    ${yTicks}
+    ${limitLine}
+    <path d="${pathD}" fill="none" stroke="var(--navy-3)" stroke-width="1.6" opacity="0.8" />
+    ${dots}
+    <text x="${(M.left + iw / 2).toFixed(2)}" y="${H - 4}" font-size="12" fill="var(--ink-soft)" text-anchor="middle">n</text>
+    <text x="14" y="${(M.top + ih / 2).toFixed(2)}" font-size="12" fill="var(--ink-soft)" text-anchor="middle" transform="rotate(-90 14 ${(M.top + ih / 2).toFixed(2)})">${yLabel}</text>
+  </svg>`;
+}
+
+/* ============================================================
+   TWO-LINE SVG CHART  (compare two sequences, e.g. a_n vs b_n, or S_n vs |S|_n)
+   seriesA/B: { points:[{n,y}], color, label }
+   ============================================================ */
+function buildTwoLineChart(seriesA, seriesB, yLabel) {
+  const W = 640, H = 320;
+  const M = { top: 34, right: 24, bottom: 40, left: 58 };
+  const iw = W - M.left - M.right, ih = H - M.top - M.bottom;
+
+  const allY = seriesA.points.map(p => p.y).concat(seriesB.points.map(p => p.y));
+  let yMin = Math.min(...allY), yMax = Math.max(...allY);
+  if (yMin === yMax) { yMin -= 1; yMax += 1; }
+  const pad = (yMax - yMin) * 0.15;
+  yMin -= pad; yMax += pad;
+
+  const nMin = seriesA.points[0].n, nMax = seriesA.points[seriesA.points.length - 1].n;
+  const xScale = n => M.left + ((n - nMin) / (nMax - nMin)) * iw;
+  const yScale = y => M.top + ih - ((y - yMin) / (yMax - yMin)) * ih;
+
+  function lineFor(series) {
+    const pathD = series.points.map((p, i) => (i === 0 ? 'M' : 'L') + xScale(p.n).toFixed(2) + ',' + yScale(p.y).toFixed(2)).join(' ');
+    const dots = series.points.map(p =>
+      `<circle cx="${xScale(p.n).toFixed(2)}" cy="${yScale(p.y).toFixed(2)}" r="2.2" fill="${series.color}" />`
+    ).join('');
+    return `<path d="${pathD}" fill="none" stroke="${series.color}" stroke-width="1.6" opacity="0.85" />${dots}`;
+  }
+
+  const xTickVals = [1, 10, 20, 30, 40, 50].filter(v => v >= nMin && v <= nMax);
+  const xTicks = xTickVals.map(v =>
+    `<text x="${xScale(v).toFixed(2)}" y="${(M.top + ih + 20).toFixed(2)}" font-size="11" fill="var(--ink-soft)" text-anchor="middle">${v}</text>`
+  ).join('');
+  const yTickVals = Array.from(new Set([yMin + pad, (yMin + pad + yMax - pad) / 2, yMax - pad].map(v => round3(v))));
+  const yTicks = yTickVals.map(v =>
+    `<text x="${(M.left - 10).toFixed(2)}" y="${(yScale(v) + 4).toFixed(2)}" font-size="11" fill="var(--ink-soft)" text-anchor="end">${v}</text>`
+  ).join('');
+
+  const legend = `
+    <circle cx="${M.left}" cy="12" r="4" fill="${seriesA.color}" />
+    <text x="${M.left + 9}" y="16" font-size="12" fill="var(--ink)">${seriesA.label}</text>
+    <circle cx="${M.left + 8 + seriesA.label.length * 6.4 + 20}" cy="12" r="4" fill="${seriesB.color}" />
+    <text x="${M.left + 8 + seriesA.label.length * 6.4 + 29}" y="16" font-size="12" fill="var(--ink)">${seriesB.label}</text>`;
+
+  return `
+  <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison graph of ${seriesA.label} and ${seriesB.label}">
+    ${legend}
+    <line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top + ih}" stroke="var(--rule)" stroke-width="1" />
+    <line x1="${M.left}" y1="${M.top + ih}" x2="${M.left + iw}" y2="${M.top + ih}" stroke="var(--rule)" stroke-width="1" />
+    ${xTicks}
+    ${yTicks}
+    ${lineFor(seriesA)}
+    ${lineFor(seriesB)}
+    <text x="${(M.left + iw / 2).toFixed(2)}" y="${H - 4}" font-size="12" fill="var(--ink-soft)" text-anchor="middle">n</text>
+    <text x="14" y="${(M.top + ih / 2).toFixed(2)}" font-size="12" fill="var(--ink-soft)" text-anchor="middle" transform="rotate(-90 14 ${(M.top + ih / 2).toFixed(2)})">${yLabel}</text>
+  </svg>`;
+}
+
+function verdictHtml(kind, label) {
+  return `<div class="verdict ${kind}"><span class="dot"></span>${label}</div>`;
+}
+
+/* ============================================================
+   PAGE — DIVERGENCE TEST
+   ============================================================ */
+const DivergenceTest = (() => {
+  let current;
+
+  function generate() {
+    let a, b, c, d, mode;
+    while (true) {
+      mode = Math.random() < 0.5 ? 'diverges' : 'inconclusive';
+      if (mode === 'diverges') {
+        a = randNonZero(-6, 6); c = randNonZero(-6, 6);
+        b = randInt(-6, 6); d = randInt(-6, 6);
+      } else {
+        a = 0; c = randNonZero(-6, 6); b = randNonZero(-6, 6); d = randInt(-6, 6);
+      }
+      let bad = false;
+      for (let n = 1; n <= 50; n++) { if (c * n + d === 0) { bad = true; break; } }
+      if (!bad) break;
+    }
+    const limit = a / c;
+    current = { a, b, c, d, mode, limit };
+    render();
+  }
+
+  function term(n) { return (current.a * n + current.b) / (current.c * n + current.d); }
+
+  function render() {
+    const el = document.getElementById('divergence-series');
+    const tex = '\\sum_{n=1}^{\\infty} \\frac{' + linExpr(current.a, current.b) + '}{' + linExpr(current.c, current.d) + '}';
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-divergence').hidden = true;
+  }
+
+  function reveal() {
+    const p = current;
+    const panel = document.getElementById('answer-divergence');
+    const points = [];
+    for (let n = 1; n <= 50; n++) points.push({ n, y: term(n) });
+
+    let verdict, working;
+    if (p.mode === 'diverges') {
+      verdict = verdictHtml('diverge', 'Diverges');
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — find the limit of the general term</div>
+          <div data-tex="${escTex('\\lim_{n\\to\\infty} a_n = \\lim_{n\\to\\infty} ' + linFracTex(p.a, p.b, p.c, p.d) + ' = \\frac{' + p.a + '}{' + p.c + '} = ' + fracTex(p.a, p.c))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the test</div>
+          <p>Dividing numerator and denominator by <em>n</em>, the lower-order constant terms vanish as <em>n</em>&nbsp;&rarr;&nbsp;&infin;, leaving the ratio of leading coefficients, <span data-tex="${escTex('a/c = ' + fracTex(p.a, p.c) + ' \\approx ' + round3(p.limit))}" data-inline="true"></span>. Because this limit is <strong>not zero</strong>, the terms never settle down to zero.</p>
+          <p>By the Divergence Test, the series <strong>diverges</strong>.</p>
+        </div>`;
+    } else {
+      verdict = verdictHtml('inconclusive', 'Test is inconclusive');
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — find the limit of the general term</div>
+          <div data-tex="${escTex('\\lim_{n\\to\\infty} a_n = \\lim_{n\\to\\infty} ' + linFracTex(p.a, p.b, p.c, p.d) + ' = 0')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the test</div>
+          <p>The numerator is fixed while the denominator grows without bound, so the terms shrink to zero. That satisfies the <em>necessary</em> condition for convergence &mdash; but the Divergence Test can only ever rule divergence <strong>in</strong>; it can never rule convergence <strong>in</strong>.</p>
+          <p>The test gives <strong>no conclusion</strong> here. (This particular series, in fact, behaves like a constant multiple of the harmonic series and diverges &mdash; but you'd need the Comparison or Integral Test to show that.)</p>
+        </div>`;
+    }
+
+    panel.innerHTML = `
+      ${verdict}
+      <div class="working">${working}</div>
+      <div class="graph-card">
+        <h4>How a<sub>n</sub> behaves for n = 1 to 50</h4>
+        ${buildChart(points, p.limit, 'aₙ', 'aₙ')}
+        <p class="graph-caption">Each dot is one term a<sub>n</sub>. The dashed gold line marks the limit L the terms are heading toward — the Divergence Test only cares whether that line sits at zero.</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — RATIO TEST
+   ============================================================ */
+const RatioTest = (() => {
+  let current;
+
+  function generate() {
+    const r = randNonZero(-6, 6), s = randInt(1, 6), p = randInt(0, 3), c = randNonZero(-6, 6);
+    current = { r, s, p, c, L: Math.abs(r / s) };
+    render();
+  }
+
+  function term(n) { return current.c * Math.pow(current.r / current.s, n) * Math.pow(n, current.p); }
+  function ratio(n) { return Math.abs(term(n + 1) / term(n)); }
+
+  function render() {
+    const el = document.getElementById('ratio-series');
+    const p = current;
+    const coefTex = (p.c === 1 ? '' : p.c === -1 ? '-' : String(p.c));
+    const baseTex = '\\left(' + fracTex(p.r, p.s) + '\\right)^{n}';
+    const nPowTex = p.p === 0 ? '' : (p.p === 1 ? ' \\, n' : ' \\, n^{' + p.p + '}');
+    const tex = '\\sum_{n=1}^{\\infty} ' + coefTex + baseTex + nPowTex;
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-ratio').hidden = true;
+  }
+
+  function reveal() {
+    const p = current;
+    const panel = document.getElementById('answer-ratio');
+    const points = [];
+    for (let n = 1; n <= 50; n++) points.push({ n, y: ratio(n) });
+
+    const kind = p.L < 1 ? 'converge' : (p.L > 1 ? 'diverge' : 'inconclusive');
+    const label = p.L < 1 ? 'Converges (absolutely)' : (p.L > 1 ? 'Diverges' : 'Test is inconclusive');
+
+    const polyNote = p.p > 0
+      ? `<p>The polynomial factor contributes <span data-tex="${escTex('\\left(\\dfrac{n+1}{n}\\right)^{' + p.p + '} \\to 1')}" data-inline="true"></span> as <em>n</em>&nbsp;&rarr;&nbsp;&infin;, so it doesn't affect the limit &mdash; only the geometric part <span data-tex="${escTex('r/s')}" data-inline="true"></span> survives.</p>`
+      : '';
+
+    const ratioTexSteps = `
+      <div data-tex="${escTex('\\left| \\frac{a_{n+1}}{a_n} \\right| = \\left| \\frac{' + fracTex(p.r, p.s) + '} {1} \\right| \\cdot \\left(\\frac{n+1}{n}\\right)^{' + p.p + '}')}"></div>
+      <div data-tex="${escTex('L = \\lim_{n\\to\\infty}\\left| \\frac{a_{n+1}}{a_n} \\right| = \\left| \\frac{' + p.r + '}{' + p.s + '} \\right| = ' + round3(p.L))}"></div>`;
+
+    const concludeText = p.L < 1
+      ? `Since L = ${round3(p.L)} &lt; 1, by the Ratio Test the series <strong>converges absolutely</strong>.`
+      : (p.L > 1
+        ? `Since L = ${round3(p.L)} &gt; 1, by the Ratio Test the series <strong>diverges</strong>.`
+        : `Since L = 1, the Ratio Test is <strong>inconclusive</strong> &mdash; the series could converge or diverge, and another test would be needed.`);
+
+    panel.innerHTML = `
+      ${verdictHtml(kind, label)}
+      <div class="working">
+        <div class="step">
+          <div class="step-label">Step 1 — form the ratio of consecutive terms</div>
+          ${ratioTexSteps}
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the test</div>
+          ${polyNote}
+          <p>${concludeText}</p>
+        </div>
+      </div>
+      <div class="graph-card">
+        <h4>How |a<sub>n+1</sub>/a<sub>n</sub>| behaves for n = 1 to 50</h4>
+        ${buildChart(points, p.L, '|aₙ₊₁/aₙ|', 'the ratio sequence')}
+        <p class="graph-caption">Each dot is the ratio of consecutive terms. It settles toward L — the dashed gold line — regardless of how the raw terms themselves behave.</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — ROOT TEST
+   ============================================================ */
+const RootTest = (() => {
+  let current;
+
+  function generate() {
+    const subtype = Math.random() < 0.6 ? 'A' : 'B';
+    if (subtype === 'A') {
+      let a, b, c, d;
+      while (true) {
+        a = randNonZero(-6, 6); c = randNonZero(-6, 6);
+        b = randInt(-6, 6); d = randInt(-6, 6);
+        let bad = false;
+        for (let n = 1; n <= 50; n++) { if (c * n + d === 0) { bad = true; break; } }
+        if (!bad) break;
+      }
+      current = { subtype, a, b, c, d, L: Math.abs(a / c) };
+    } else {
+      const r = randNonZero(-6, 6), s = randInt(1, 6), p = randInt(0, 3), c = randNonZero(-6, 6);
+      current = { subtype, r, s, p, c, L: Math.abs(r / s) };
+    }
+    render();
+  }
+
+  function term(n) {
+    const p = current;
+    if (p.subtype === 'A') return Math.pow((p.a * n + p.b) / (p.c * n + p.d), n);
+    return p.c * Math.pow(p.r / p.s, n) * Math.pow(n, p.p);
+  }
+  function nthRoot(n) {
+    const p = current;
+    if (p.subtype === 'A') return Math.abs((p.a * n + p.b) / (p.c * n + p.d));
+    return Math.pow(Math.abs(term(n)), 1 / n);
+  }
+
+  function render() {
+    const el = document.getElementById('root-series');
+    const p = current;
+    let tex;
+    if (p.subtype === 'A') {
+      tex = '\\sum_{n=1}^{\\infty} \\left(' + linFracTex(p.a, p.b, p.c, p.d) + '\\right)^{n}';
+    } else {
+      const coefTex = (p.c === 1 ? '' : p.c === -1 ? '-' : String(p.c));
+      const baseTex = '\\left(' + fracTex(p.r, p.s) + '\\right)^{n}';
+      const nPowTex = p.p === 0 ? '' : (p.p === 1 ? ' \\, n' : ' \\, n^{' + p.p + '}');
+      tex = '\\sum_{n=1}^{\\infty} ' + coefTex + baseTex + nPowTex;
+    }
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-root').hidden = true;
+  }
+
+  function reveal() {
+    const p = current;
+    const panel = document.getElementById('answer-root');
+    const points = [];
+    for (let n = 1; n <= 50; n++) points.push({ n, y: nthRoot(n) });
+
+    const kind = p.L < 1 ? 'converge' : (p.L > 1 ? 'diverge' : 'inconclusive');
+    const label = p.L < 1 ? 'Converges (absolutely)' : (p.L > 1 ? 'Diverges' : 'Test is inconclusive');
+
+    let steps, note;
+    if (p.subtype === 'A') {
+      steps = `
+        <div data-tex="${escTex('\\sqrt[n]{|a_n|} = \\left|' + linFracTex(p.a, p.b, p.c, p.d) + '\\right|')}"></div>
+        <div data-tex="${escTex('L = \\lim_{n\\to\\infty} \\sqrt[n]{|a_n|} = \\lim_{n\\to\\infty} \\left|' + linFracTex(p.a, p.b, p.c, p.d) + '\\right| = \\left|\\frac{' + p.a + '}{' + p.c + '}\\right| = ' + round3(p.L))}"></div>`;
+      note = `<p>Because the whole term is already raised to the power <em>n</em>, taking the <em>n</em>-th root cancels the outer power exactly, leaving the rational function itself &mdash; which tends to the ratio of leading coefficients.</p>`;
+    } else {
+      steps = `
+        <div data-tex="${escTex('\\sqrt[n]{|a_n|} = |c|^{1/n} \\cdot \\left|\\frac{' + p.r + '}{' + p.s + '}\\right| \\cdot n^{' + p.p + '/n}')}"></div>
+        <div data-tex="${escTex('L = \\lim_{n\\to\\infty} \\sqrt[n]{|a_n|} = \\left|\\frac{' + p.r + '}{' + p.s + '}\\right| = ' + round3(p.L))}"></div>`;
+      note = `<p>As <em>n</em>&nbsp;&rarr;&nbsp;&infin;, both <span data-tex="${escTex('|c|^{1/n}')}" data-inline="true"></span> and <span data-tex="${escTex('n^{' + p.p + '/n}')}" data-inline="true"></span> tend to 1, so only the geometric part <span data-tex="${escTex('|r/s|')}" data-inline="true"></span> survives.</p>`;
+    }
+
+    const concludeText = p.L < 1
+      ? `Since L = ${round3(p.L)} &lt; 1, by the Root Test the series <strong>converges absolutely</strong>.`
+      : (p.L > 1
+        ? `Since L = ${round3(p.L)} &gt; 1, by the Root Test the series <strong>diverges</strong>.`
+        : `Since L = 1, the Root Test is <strong>inconclusive</strong> &mdash; the series could converge or diverge, and another test would be needed.`);
+
+    panel.innerHTML = `
+      ${verdictHtml(kind, label)}
+      <div class="working">
+        <div class="step">
+          <div class="step-label">Step 1 — take the n-th root of |a<sub>n</sub>|</div>
+          ${steps}
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the test</div>
+          ${note}
+          <p>${concludeText}</p>
+        </div>
+      </div>
+      <div class="graph-card">
+        <h4>How |a<sub>n</sub>|<sup>1/n</sup> behaves for n = 1 to 50</h4>
+        ${buildChart(points, p.L, '|aₙ|^(1/n)', 'the nth-root sequence')}
+        <p class="graph-caption">Each dot is the n-th root of |a<sub>n</sub>|. It settles toward L — the dashed gold line — which is what the Root Test actually tests.</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — COMPARISON TEST
+   ============================================================ */
+const ComparisonTest = (() => {
+  let current;
+
+  function generate() {
+    const mode = Math.random() < 0.5 ? 'converge' : 'diverge';
+    if (mode === 'converge') {
+      current = { mode, m: randInt(2, 4), k: randInt(0, 6) };
+    } else {
+      current = { mode, k: randInt(0, 6) };
+    }
+    render();
+  }
+
+  function aTerm(n) { const p = current; return p.mode === 'converge' ? 1 / (Math.pow(n, p.m) + p.k) : (n + p.k) / (n * n); }
+  function bTerm(n) { const p = current; return p.mode === 'converge' ? 1 / Math.pow(n, p.m) : 1 / n; }
+
+  function render() {
+    const el = document.getElementById('comparison-series');
+    const p = current;
+    const tex = p.mode === 'converge'
+      ? '\\sum_{n=1}^{\\infty} \\dfrac{1}{n^{' + p.m + '}' + (p.k > 0 ? ' + ' + p.k : '') + '}'
+      : '\\sum_{n=1}^{\\infty} \\dfrac{n' + (p.k > 0 ? ' + ' + p.k : '') + '}{n^{2}}';
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-comparison').hidden = true;
+  }
+
+  function reveal() {
+    const p = current;
+    const panel = document.getElementById('answer-comparison');
+    const pointsA = [], pointsB = [];
+    for (let n = 1; n <= 50; n++) { pointsA.push({ n, y: aTerm(n) }); pointsB.push({ n, y: bTerm(n) }); }
+
+    let bTex, working, kind, label;
+    if (p.mode === 'converge') {
+      kind = 'converge'; label = 'Converges';
+      bTex = '\\dfrac{1}{n^{' + p.m + '}}';
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — choose a comparison series</div>
+          <p>Compare with the p-series <span data-tex="${escTex('b_n = ' + bTex)}" data-inline="true"></span>, which converges since <span data-tex="${escTex('p = ' + p.m + ' > 1')}" data-inline="true"></span>.</p>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — establish the inequality</div>
+          <div data-tex="${escTex('n^{' + p.m + '}' + (p.k > 0 ? ' + ' + p.k : '') + ' \\ge n^{' + p.m + '} \\quad\\Rightarrow\\quad 0 < a_n = \\dfrac{1}{n^{' + p.m + '}' + (p.k > 0 ? ' + ' + p.k : '') + '} \\le \\dfrac{1}{n^{' + p.m + '}} = b_n')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since <span data-tex="${escTex('0 \\le a_n \\le b_n')}" data-inline="true"></span> and <span data-tex="${escTex('\\sum b_n')}" data-inline="true"></span> converges, by the Comparison Test <span data-tex="${escTex('\\sum a_n')}" data-inline="true"></span> <strong>converges</strong> too.</p>
+        </div>`;
+    } else {
+      kind = 'diverge'; label = 'Diverges';
+      bTex = '\\dfrac{1}{n}';
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — choose a comparison series</div>
+          <p>Compare with the harmonic series <span data-tex="${escTex('b_n = ' + bTex)}" data-inline="true"></span>, which is known to diverge.</p>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — establish the inequality</div>
+          <div data-tex="${escTex('a_n = \\dfrac{n' + (p.k > 0 ? ' + ' + p.k : '') + '}{n^{2}} = \\dfrac{1}{n} + \\dfrac{' + p.k + '}{n^{2}} \\ge \\dfrac{1}{n} = b_n')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since <span data-tex="${escTex('a_n \\ge b_n \\ge 0')}" data-inline="true"></span> and <span data-tex="${escTex('\\sum b_n')}" data-inline="true"></span> diverges, by the Comparison Test <span data-tex="${escTex('\\sum a_n')}" data-inline="true"></span> <strong>diverges</strong> too.</p>
+        </div>`;
+    }
+
+    panel.innerHTML = `
+      ${verdictHtml(kind, label)}
+      <div class="working">${working}</div>
+      <div class="graph-card">
+        <h4>aₙ against the comparison series bₙ, for n = 1 to 50</h4>
+        ${buildTwoLineChart(
+          { points: pointsA, color: 'var(--navy-3)', label: 'aₙ (given series)' },
+          { points: pointsB, color: 'var(--gold)', label: 'bₙ (comparison series)' },
+          'value'
+        )}
+        <p class="graph-caption">${p.mode === 'converge' ? 'aₙ sits at or below bₙ throughout — if the gold curve bounds a finite area, so does the navy one.' : 'aₙ sits at or above bₙ throughout — if the gold curve alone is enough to diverge, the navy one has no way to stay finite either.'}</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — LIMIT COMPARISON TEST
+   ============================================================ */
+const LimitComparisonTest = (() => {
+  let current;
+
+  function generate() {
+    let a, b, c, d, k;
+    while (true) {
+      a = randInt(1, 6); c = randInt(1, 6); k = randInt(2, 4);
+      b = randInt(-6, 6); d = randInt(-6, 6);
+      let bad = false;
+      for (let n = 1; n <= 50; n++) { if (a * n + b <= 0 || c * Math.pow(n, k) + d <= 0) { bad = true; break; } }
+      if (!bad) break;
+    }
+    current = { a, b, c, d, k, L: a / c };
+    render();
+  }
+
+  function aTerm(n) { const p = current; return (p.a * n + p.b) / (p.c * Math.pow(n, p.k) + p.d); }
+  function bTerm(n) { return 1 / Math.pow(n, current.k - 1); }
+  function ratio(n) { return aTerm(n) / bTerm(n); }
+
+  function render() {
+    const el = document.getElementById('limitcomparison-series');
+    const p = current;
+    const denomTex = p.k === 2 ? 'n^{2}' : ('n^{' + p.k + '}');
+    const tex = '\\sum_{n=1}^{\\infty} \\dfrac{' + linExpr(p.a, p.b) + '}{' + p.c + denomTex + (p.d !== 0 ? (p.d > 0 ? ' + ' + p.d : ' - ' + Math.abs(p.d)) : '') + '}';
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-limitcomparison').hidden = true;
+  }
+
+  function reveal() {
+    const p = current;
+    const panel = document.getElementById('answer-limitcomparison');
+    const points = [];
+    for (let n = 1; n <= 50; n++) points.push({ n, y: ratio(n) });
+
+    const gap = p.k - 1;
+    const bTex = gap === 1 ? '\\dfrac{1}{n}' : '\\dfrac{1}{n^{' + gap + '}}';
+    const bBehaviour = gap === 1 ? 'diverges (it is the harmonic series)' : ('converges (a p-series with p = ' + gap + ' > 1)');
+    const verdictKind = gap === 1 ? 'diverge' : 'converge';
+    const verdictLabel = gap === 1 ? 'Diverges' : 'Converges';
+
+    panel.innerHTML = `
+      ${verdictHtml(verdictKind, verdictLabel)}
+      <div class="working">
+        <div class="step">
+          <div class="step-label">Step 1 — choose a comparison series</div>
+          <p>As <em>n</em>&nbsp;&rarr;&nbsp;&infin;, the dominant terms are <span data-tex="${escTex(p.a + 'n')}" data-inline="true"></span> on top and <span data-tex="${escTex(p.c + 'n^{' + p.k + '}')}" data-inline="true"></span> below, so compare with <span data-tex="${escTex('b_n = ' + bTex)}" data-inline="true"></span>, which ${bBehaviour}.</p>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — take the limit of the ratio</div>
+          <div data-tex="${escTex('L = \\lim_{n\\to\\infty} \\dfrac{a_n}{b_n} = \\lim_{n\\to\\infty} \\dfrac{' + linExpr(p.a, p.b) + '}{' + p.c + 'n^{' + p.k + '}' + (p.d !== 0 ? (p.d > 0 ? '+' + p.d : '-' + Math.abs(p.d)) : '') + '} \\cdot n^{' + gap + '} = \\dfrac{' + p.a + '}{' + p.c + '} = ' + round3(p.L))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since <span data-tex="${escTex('0 < L < \\infty')}" data-inline="true"></span>, the two series share the same fate. As <span data-tex="${escTex('\\sum b_n')}" data-inline="true"></span> ${bBehaviour}, by the Limit Comparison Test <span data-tex="${escTex('\\sum a_n')}" data-inline="true"></span> <strong>${verdictLabel.toLowerCase()}</strong> too.</p>
+        </div>
+      </div>
+      <div class="graph-card">
+        <h4>How aₙ/bₙ behaves for n = 1 to 50</h4>
+        ${buildChart(points, p.L, 'aₙ/bₙ', 'the ratio aₙ/bₙ')}
+        <p class="graph-caption">Each dot is the ratio of the two sequences. It settles toward L — the dashed gold line — confirming the two series behave alike in the long run.</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — INTEGRAL TEST
+   ============================================================ */
+const IntegralTest = (() => {
+  let current;
+
+  function generate() {
+    current = { k: randInt(0, 6), p: randInt(1, 4) };
+    render();
+  }
+
+  function term(n) { const c = current; return 1 / Math.pow(n + c.k, c.p); }
+  function partialSum(N) { let s = 0; for (let n = 1; n <= N; n++) s += term(n); return s; }
+
+  function render() {
+    const el = document.getElementById('integral-series');
+    const c = current;
+    const denom = c.k === 0 ? 'n' : ('(n' + (c.k > 0 ? ' + ' + c.k : '') + ')');
+    const tex = '\\sum_{n=1}^{\\infty} \\dfrac{1}{' + denom + (c.p > 1 ? '^{' + c.p + '}' : '') + '}';
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-integral').hidden = true;
+  }
+
+  function reveal() {
+    const c = current;
+    const panel = document.getElementById('answer-integral');
+    const points = [];
+    let running = 0;
+    for (let n = 1; n <= 50; n++) { running += term(n); points.push({ n, y: running }); }
+
+    const fx = c.k === 0 ? 'x^{' + c.p + '}' : '(x + ' + c.k + ')^{' + c.p + '}';
+    let working, kind, label, dashedLimit = null, tailNote = '';
+
+    if (c.p === 1) {
+      kind = 'diverge'; label = 'Diverges';
+      const denom = c.k === 0 ? 'x' : ('(x + ' + c.k + ')');
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — set up the integral</div>
+          <div data-tex="${escTex('f(x) = \\dfrac{1}{' + denom + '}')}"></div>
+          <p>This is positive, continuous, and decreasing on <span data-tex="${escTex('[1,\\infty)')}" data-inline="true"></span>, so the Integral Test applies.</p>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — evaluate the integral</div>
+          <div data-tex="${escTex('\\int_{1}^{\\infty} \\dfrac{1}{' + denom + '}\\,dx = \\Big[\\ln' + denom + '\\Big]_{1}^{\\infty} \\to \\infty')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since the integral diverges, by the Integral Test the series <strong>diverges</strong> too.</p>
+        </div>`;
+    } else {
+      kind = 'converge'; label = 'Converges';
+      const denomBase = c.k === 0 ? '1' : (1 + c.k);
+      const exactVal = 1 / ((c.p - 1) * Math.pow(1 + c.k, c.p - 1));
+      dashedLimit = partialSum(200000);
+      tailNote = `<p class="graph-caption">The dashed line is the actual sum, found numerically by adding many terms — the Integral Test itself never tells you this value, only that it exists.</p>`;
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — set up the integral</div>
+          <div data-tex="${escTex('f(x) = \\dfrac{1}{' + fx + '}')}"></div>
+          <p>This is positive, continuous, and decreasing on <span data-tex="${escTex('[1,\\infty)')}" data-inline="true"></span>, so the Integral Test applies.</p>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — evaluate the integral</div>
+          <div data-tex="${escTex('\\int_{1}^{\\infty} \\dfrac{1}{' + fx + '}\\,dx = \\dfrac{1}{(' + c.p + '-1)(' + denomBase + ')^{' + c.p + '-1}} = ' + round3(exactVal))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since the integral is finite, by the Integral Test the series <strong>converges</strong> too.</p>
+        </div>`;
+    }
+
+    panel.innerHTML = `
+      ${verdictHtml(kind, label)}
+      <div class="working">${working}</div>
+      <div class="graph-card">
+        <h4>Partial sums Sₙ = a₁ + a₂ + &hellip; + aₙ, for n = 1 to 50</h4>
+        ${buildChart(points, dashedLimit, 'Sₙ', 'the partial sums')}
+        ${tailNote || '<p class="graph-caption">The partial sums keep climbing without ever levelling off — a visual signature of divergence.</p>'}
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — ALTERNATING SERIES TEST
+   ============================================================ */
+const AlternatingTest = (() => {
+  let current;
+
+  function generate() {
+    let A, B, p;
+    while (true) {
+      A = randInt(1, 6); B = randInt(-6, 6); p = randInt(1, 3);
+      let bad = false;
+      for (let n = 1; n <= 50; n++) { if (A * n + B <= 0) { bad = true; break; } }
+      if (!bad) break;
+    }
+    current = { A, B, p };
+    render();
+  }
+
+  function bTerm(n) { const c = current; return 1 / Math.pow(c.A * n + c.B, c.p); }
+  function aTerm(n) { return Math.pow(-1, n + 1) * bTerm(n); }
+  function partialSum(N) { let s = 0; for (let n = 1; n <= N; n++) s += aTerm(n); return s; }
+
+  function render() {
+    const el = document.getElementById('alternating-series');
+    const c = current;
+    const denom = '(' + linExpr(c.A, c.B) + ')' + (c.p > 1 ? '^{' + c.p + '}' : '');
+    const tex = '\\sum_{n=1}^{\\infty} (-1)^{n+1} \\dfrac{1}{' + denom + '}';
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-alternating').hidden = true;
+  }
+
+  function reveal() {
+    const c = current;
+    const panel = document.getElementById('answer-alternating');
+    const points = [];
+    let running = 0;
+    for (let n = 1; n <= 50; n++) { running += aTerm(n); points.push({ n, y: running }); }
+    const approxLimit = partialSum(200000);
+
+    const bTex = '\\dfrac{1}{(' + linExpr(c.A, c.B) + ')' + (c.p > 1 ? '^{' + c.p + '}' : '') + '}';
+    const absoluteNote = c.p >= 2
+      ? `Since <span data-tex="${escTex('\\sum b_n')}" data-inline="true"></span> is itself a convergent p-series-type sum (exponent ${c.p} &gt; 1), this series is in fact <strong>absolutely convergent</strong>.`
+      : `Since <span data-tex="${escTex('\\sum b_n')}" data-inline="true"></span> behaves like the divergent harmonic series, this series is only <strong>conditionally convergent</strong> &mdash; it relies entirely on the alternating signs.`;
+
+    panel.innerHTML = `
+      ${verdictHtml('converge', 'Converges')}
+      <div class="working">
+        <div class="step">
+          <div class="step-label">Step 1 — identify bₙ and check it is positive</div>
+          <div data-tex="${escTex('b_n = ' + bTex + ' > 0 \\text{ for all } n \\ge 1')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — check bₙ is decreasing</div>
+          <p>The base <span data-tex="${escTex(linExpr(c.A, c.B))}" data-inline="true"></span> increases with <em>n</em> (since the coefficient of <em>n</em> is positive), so <span data-tex="${escTex('b_n')}" data-inline="true"></span> decreases.</p>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — check bₙ → 0</div>
+          <div data-tex="${escTex('\\lim_{n\\to\\infty} b_n = 0')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 4 — apply the test</div>
+          <p>All three conditions hold, so by the Alternating Series Test the series <strong>converges</strong>.</p>
+          <p>${absoluteNote}</p>
+        </div>
+      </div>
+      <div class="graph-card">
+        <h4>Partial sums Sₙ = a₁ + a₂ + &hellip; + aₙ, for n = 1 to 50</h4>
+        ${buildChart(points, approxLimit, 'Sₙ', 'the partial sums')}
+        <p class="graph-caption">The partial sums zigzag — overshooting, then undershooting — squeezing in on the limit (dashed line, found numerically) with each pair of terms.</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   PAGE — ABSOLUTE CONVERGENCE TEST
+   ============================================================ */
+const AbsoluteTest = (() => {
+  let current;
+
+  function generate() {
+    const rpos = randInt(1, 6), s = randInt(1, 6), p = randInt(0, 3), c = randNonZero(-6, 6);
+    current = { rpos, s, p, c, L: rpos / s };
+    render();
+  }
+
+  function term(n) { const q = current; return q.c * Math.pow(-1, n) * Math.pow(q.rpos / q.s, n) * Math.pow(n, q.p); }
+  function partialSum(N, useAbs) { let s = 0; for (let n = 1; n <= N; n++) { const t = term(n); s += useAbs ? Math.abs(t) : t; } return s; }
+
+  function render() {
+    const el = document.getElementById('absolute-series');
+    const p = current;
+    const coefTex = (p.c === 1 ? '' : p.c === -1 ? '-' : String(p.c));
+    const baseTex = '(-1)^{n} \\left(' + fracTex(p.rpos, p.s) + '\\right)^{n}';
+    const nPowTex = p.p === 0 ? '' : (p.p === 1 ? ' \\, n' : ' \\, n^{' + p.p + '}');
+    const tex = '\\sum_{n=1}^{\\infty} ' + coefTex + baseTex + nPowTex;
+    el.innerHTML = `<div data-tex="${escTex(tex)}"></div>`;
+    renderAllMath(el);
+    document.getElementById('answer-absolute').hidden = true;
+  }
+
+  function reveal() {
+    const p = current;
+    const panel = document.getElementById('answer-absolute');
+    const pointsSigned = [], pointsAbs = [];
+    let rs = 0, ra = 0;
+    for (let n = 1; n <= 50; n++) {
+      const t = term(n);
+      rs += t; ra += Math.abs(t);
+      pointsSigned.push({ n, y: rs });
+      pointsAbs.push({ n, y: ra });
+    }
+
+    let kind, label, working;
+    const nPowTex = p.p === 0 ? '' : (p.p === 1 ? 'n' : 'n^{' + p.p + '}');
+
+    if (p.L < 1) {
+      kind = 'converge'; label = 'Absolutely convergent';
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — take absolute values</div>
+          <div data-tex="${escTex('|a_n| = |' + p.c + '| \\left(' + fracTex(p.rpos, p.s) + '\\right)^{n}' + (nPowTex ? ' \\, ' + nPowTex : ''))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the Ratio Test to |aₙ|</div>
+          <div data-tex="${escTex('L = \\lim_{n\\to\\infty} \\left|\\dfrac{a_{n+1}}{a_n}\\right| = \\dfrac{' + p.rpos + '}{' + p.s + '} = ' + round3(p.L))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since L = ${round3(p.L)} &lt; 1, <span data-tex="${escTex('\\sum |a_n|')}" data-inline="true"></span> converges, so the series is <strong>absolutely convergent</strong> — and therefore convergent.</p>
+        </div>`;
+    } else if (p.L > 1) {
+      kind = 'diverge'; label = 'Diverges';
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — take absolute values</div>
+          <div data-tex="${escTex('|a_n| = |' + p.c + '| \\left(' + fracTex(p.rpos, p.s) + '\\right)^{n}' + (nPowTex ? ' \\, ' + nPowTex : ''))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the Ratio Test to |aₙ|</div>
+          <div data-tex="${escTex('L = \\lim_{n\\to\\infty} \\left|\\dfrac{a_{n+1}}{a_n}\\right| = \\dfrac{' + p.rpos + '}{' + p.s + '} = ' + round3(p.L))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since L = ${round3(p.L)} &gt; 1, <span data-tex="${escTex('|a_n| \\to \\infty')}" data-inline="true"></span>, so <span data-tex="${escTex('a_n')}" data-inline="true"></span> cannot tend to zero either. By the Divergence Test, the series <strong>diverges</strong>.</p>
+        </div>`;
+    } else {
+      kind = 'inconclusive'; label = 'Test is inconclusive';
+      working = `
+        <div class="step">
+          <div class="step-label">Step 1 — take absolute values</div>
+          <div data-tex="${escTex('|a_n| = |' + p.c + '| \\left(' + fracTex(p.rpos, p.s) + '\\right)^{n}' + (nPowTex ? ' \\, ' + nPowTex : ''))}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 2 — apply the Ratio Test to |aₙ|</div>
+          <div data-tex="${escTex('L = \\lim_{n\\to\\infty} \\left|\\dfrac{a_{n+1}}{a_n}\\right| = \\dfrac{' + p.rpos + '}{' + p.s + '} = 1')}"></div>
+        </div>
+        <div class="step">
+          <div class="step-label">Step 3 — apply the test</div>
+          <p>Since L = 1, this test cannot decide absolute convergence either way. A different test — such as the Alternating Series Test, if it applies — would be needed to settle convergence directly.</p>
+        </div>`;
+    }
+
+    panel.innerHTML = `
+      ${verdictHtml(kind, label)}
+      <div class="working">${working}</div>
+      <div class="graph-card">
+        <h4>Partial sums of aₙ versus partial sums of |aₙ|, for n = 1 to 50</h4>
+        ${buildTwoLineChart(
+          { points: pointsSigned, color: 'var(--navy-3)', label: 'Σaₙ (signed)' },
+          { points: pointsAbs, color: 'var(--plum)', label: 'Σ|aₙ| (absolute)' },
+          'partial sum'
+        )}
+        <p class="graph-caption">${p.L < 1 ? 'Both curves settle down — the absolute series (plum) converging is what guarantees the signed series (navy) converges too.' : (p.L > 1 ? 'Both curves grow without bound — neither the signed nor the absolute series can settle.' : 'Whether these curves settle cannot be decided from this test alone.')}</p>
+      </div>`;
+    renderAllMath(panel);
+    panel.hidden = false;
+  }
+
+  return { generate, reveal };
+})();
+
+/* ============================================================
+   WIRING
+   ============================================================ */
+document.querySelectorAll('.group-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const group = btn.dataset.group;
+    document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('nav.sub-tabs').forEach(nav => nav.classList.toggle('active', nav.dataset.group === group));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+    const activeSubNav = document.querySelector('nav.sub-tabs[data-group="' + group + '"]');
+    const firstSubBtn = activeSubNav.querySelector('.sub-btn');
+    activeSubNav.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+    firstSubBtn.classList.add('active');
+    document.getElementById('page-' + firstSubBtn.dataset.page).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.sub-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const nav = btn.closest('nav.sub-tabs');
+    nav.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + btn.dataset.page).classList.add('active');
+  });
+});
+
+document.getElementById('new-divergence').addEventListener('click', () => DivergenceTest.generate());
+document.getElementById('reveal-divergence').addEventListener('click', () => DivergenceTest.reveal());
+document.getElementById('new-ratio').addEventListener('click', () => RatioTest.generate());
+document.getElementById('reveal-ratio').addEventListener('click', () => RatioTest.reveal());
+document.getElementById('new-root').addEventListener('click', () => RootTest.generate());
+document.getElementById('reveal-root').addEventListener('click', () => RootTest.reveal());
+
+document.getElementById('new-comparison').addEventListener('click', () => ComparisonTest.generate());
+document.getElementById('reveal-comparison').addEventListener('click', () => ComparisonTest.reveal());
+document.getElementById('new-limitcomparison').addEventListener('click', () => LimitComparisonTest.generate());
+document.getElementById('reveal-limitcomparison').addEventListener('click', () => LimitComparisonTest.reveal());
+document.getElementById('new-integral').addEventListener('click', () => IntegralTest.generate());
+document.getElementById('reveal-integral').addEventListener('click', () => IntegralTest.reveal());
+
+document.getElementById('new-alternating').addEventListener('click', () => AlternatingTest.generate());
+document.getElementById('reveal-alternating').addEventListener('click', () => AlternatingTest.reveal());
+document.getElementById('new-absolute').addEventListener('click', () => AbsoluteTest.generate());
+document.getElementById('reveal-absolute').addEventListener('click', () => AbsoluteTest.reveal());
+
+DivergenceTest.generate();
+RatioTest.generate();
+RootTest.generate();
+ComparisonTest.generate();
+LimitComparisonTest.generate();
+IntegralTest.generate();
+AlternatingTest.generate();
+AbsoluteTest.generate();
+</script>
+</body>
+</html>
