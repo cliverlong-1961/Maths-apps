@@ -230,9 +230,12 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
     const entry = {
       url:       window.location.href,
-      page:      window.location.pathname.split('/').pop() || 'index',
+      page:      pathParts[pathParts.length - 1] || 'index',
+      subject:   pathParts.length > 1 ? pathParts[0] : 'root',
+      appTitle:  document.title || null,
       type:      selectedType,
       comment:   comment,
       timestamp: new Date().toISOString(),
