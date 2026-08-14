@@ -1037,17 +1037,47 @@ canvas{display:block;width:100%;}
   <strong>Core idea:</strong> A toolkit of tests determines convergence for most series you'll meet. The various tests for the convergence of a series are based on tests performed on one or more terms in the sequence that have been added to make the series.
 </div>
 <div class="stabs">
+  <button class="stab" onclick="s8tab(this,'s8f')">Which Test?</button>
   <button class="stab on" onclick="s8tab(this,'s8a')">Divergence</button>
   <button class="stab" onclick="s8tab(this,'s8b')">Ratio</button>
+  <button class="stab" onclick="s8tab(this,'s8e')">Root</button>
   <button class="stab" onclick="s8tab(this,'s8c')">Comparison</button>
   <button class="stab" onclick="s8tab(this,'s8d')">Alternating</button>
   <button class="stab" onclick="s8tab(this,'s8p')">p-Series</button>
+</div>
+
+<div class="spanel" id="s8f">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Which Test Should I Use?</h3>
+  <div class="concept">
+    <strong>Core idea:</strong> There's no single test that works for every series — part of the skill is recognising which shape of series points to which test. Look at the <em>shape</em> of \(a_n\) first, before diving into algebra.
+  </div>
+  <table class="tbl">
+    <tr><th>If \(a_n\) looks like…</th><th>Try this test first</th></tr>
+    <tr><td>Doesn't tend to 0 as \(n\to\infty\)</td><td>Divergence Test (nth-term)</td></tr>
+    <tr><td>Factorials, or \(n\) in an exponent (e.g. \(n!\), \(a^n\))</td><td>Ratio Test</td></tr>
+    <tr><td>Everything raised to the power \(n\) (e.g. \((\cdots)^n\))</td><td>Root Test</td></tr>
+    <tr><td>Looks like a known series but with extra terms added/subtracted</td><td>Comparison / Limit Comparison Test</td></tr>
+    <tr><td>Alternates in sign, \((-1)^n\) or \((-1)^{n+1}\)</td><td>Alternating Series Test</td></tr>
+    <tr><td>Is exactly \(\frac{1}{n^p}\) for some constant \(p\)</td><td>p-Series Test</td></tr>
+  </table>
+  <div class="note"><strong>Strategy:</strong> Check the Divergence Test first — it's the quickest way to rule a series out. If terms → 0, look at the algebraic shape: powers/factorials suggest Ratio or Root; a resemblance to a known series suggests Comparison; alternating signs suggest the Alternating Series Test.</div>
+  <div class="note red"><strong>Warning:</strong> A test returning "inconclusive" (e.g. \(L=1\) for Ratio/Root) doesn't mean the series diverges or converges — it means <em>that test</em> gave no information. Move on and try a different test.</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  <p><a href="https://youtu.be/0wefqjpQyKM" target="_blank">Choosing a Convergence Test for a Series</a></p>
+	  <p><a href="https://youtu.be/NGjrQfNXiO8" target="_blank">Series Convergence Test Strategy</a></p>
+	</div>
 </div>
 
 <div class="spanel on" id="s8a">
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Divergence Test (nth-term test)</h3>
   <div class="fdisp">If \(\displaystyle\lim_{n\to\infty}a_n\) &ne; 0, then \(\displaystyle\sum a_n\) diverges.</div>
   <div class="note red"><strong>Warning:</strong> If \(a_n\to0\) the test is <em>inconclusive</em> — the series might still diverge (harmonic). This test only proves divergence.</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  <p><a href="https://www.youtube.com/watch?v=ehVnFNGYDwM" target="_blank">nth Term Test, Divergence, Infinite Series, Examples</a></p>
+	  <p><a href="https://youtu.be/5FI3aQz6yjI" target="_blank">Divergence Test for Series</a></p>
+	</div>
   <table class="tbl">
     <tr><th>Series</th><th>\(\lim a_n\)</th><th>Conclusion</th></tr>
     <tr><td>\(\sum n\)</td><td>\(\infty\)</td><td class="diverge">Diverges</td></tr>
@@ -1063,10 +1093,36 @@ canvas{display:block;width:100%;}
   <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
     \(L&lt;1\) → <span style="color:var(--teal);font-weight:700">converges</span> &emsp; \(L>1\) → <span style="color:var(--red);font-weight:700">diverges</span> &emsp; \(L=1\) → <span style="color:var(--muted)">inconclusive</span>
   </div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  <p><a href="https://www.youtube.com/watch?v=9mjg6oFWIlA" target="_blank">Ratio and Root Test: Examples</a></p>
+	  <p><a href="https://www.youtube.com/watch?v=iJCtIAlqCaA" target="_blank">How to Use The Ratio Test for infinite series (1)</a></p> 
+	  <p><a href="https://www.youtube.com/watch?v=DpR3Z4ZH23o" target="_blank">How to Use The Ratio Test for infinite series (2)</a></p>
+	</div>
   <table class="tbl">
     <tr><th>Series</th><th>\(L\)</th><th>Conclusion</th></tr>
     <tr><td>\(\sum\frac{1}{n!}\)</td><td>\(0\)</td><td class="converge">Converges (→ e)</td></tr>
     <tr><td>\(\sum n\cdot2^n\)</td><td>\(2\)</td><td class="diverge">Diverges</td></tr>
+    <tr><td>\(\sum\frac{1}{n}\)</td><td>\(1\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
+  </table>
+</div>
+
+<div class="spanel" id="s8e">
+  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Root Test (Cauchy)</h3>
+  <div class="fdisp">\(L=\lim_{n\to\infty}\sqrt[n]{|a_n|}\)</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+    \(L&lt;1\) → <span style="color:var(--teal);font-weight:700">converges</span> &emsp; \(L>1\) → <span style="color:var(--red);font-weight:700">diverges</span> &emsp; \(L=1\) → <span style="color:var(--muted)">inconclusive</span>
+  </div>
+  <div class="note red"><strong>Warning:</strong> When \(L=1\) the root test is <em>inconclusive</em>, just as with the ratio test — try another test instead. The root test is usually the better choice when \(a_n\) already involves an \(n\)th power, since the root cancels it cleanly.</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  <p><a href="https://www.youtube.com/watch?v=3ZPZRn6eDgM" target="_blank">Root Test for Infinite Series: Examples</a></p>
+	  <p><a href="https://www.youtube.com/watch?v=EJLADLOe12s" target="_blank">The Root Test for Infinite Series (Convergence Test)</a></p>
+	</div>
+  <table class="tbl">
+    <tr><th>Series</th><th>\(L\)</th><th>Conclusion</th></tr>
+    <tr><td>\(\sum\left(\frac{n}{2n+1}\right)^n\)</td><td>\(\frac12\)</td><td class="converge">Converges</td></tr>
+    <tr><td>\(\sum\frac{n^n}{3^{1+2n}}\)</td><td>\(\infty\)</td><td class="diverge">Diverges</td></tr>
     <tr><td>\(\sum\frac{1}{n}\)</td><td>\(1\)</td><td style="color:var(--muted)">Inconclusive</td></tr>
   </table>
 </div>
@@ -1079,6 +1135,13 @@ canvas{display:block;width:100%;}
     \(\sum a_n\) diverges \(\Rightarrow\) \(\sum b_n\) <span style="color:var(--red);font-weight:700">diverges</span>
   </div>
   <div class="note"><strong>Limit Comparison:</strong> If \(\lim_{n\to\infty}\frac{a_n}{b_n}=c>0\) (finite), \(\sum a_n\) and \(\sum b_n\) have the same behaviour.</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  
+	  <p><a href="https://www.youtube.com/watch?v=GBBg3ntsUDI" target="_blank">Comparison test for series</a></p>
+	  <p><a href="https://www.youtube.com/watch?v=7xhd8kdQFic" target="_blank">Limit comparison test for series</a></p>
+      
+       </div>
   <table class="tbl">
     <tr><th>\(a_n\)</th><th>Compared with</th><th>Conclusion</th></tr>
     <tr><td>\(\frac{1}{n^2+1}\)</td><td>\(\frac{1}{n^2}\) (conv.)</td><td class="converge">Converges</td></tr>
@@ -1092,6 +1155,11 @@ canvas{display:block;width:100%;}
   <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
     Converges if: &ensp;1. \(b_{n+1}\le b_n\) &ensp;2. \(b_n\to0\)
   </div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  <p><a href="https://www.youtube.com/watch?v=kv1S3am-M40" target="_blank">Alternating Series Test Explained Step-by-Step</a></p>
+	  <p><a href="https://www.youtube.com/watch?v=DRO1kPT4iS8" target="_blank">Alternating Series Test</a></p>
+	</div>
   <table class="tbl">
     <tr><th>Series</th><th>Conclusion</th></tr>
     <tr><td>\(\sum\frac{(-1)^{n+1}}{n}\)</td><td class="converge">Converges to ln 2</td></tr>
@@ -1104,6 +1172,11 @@ canvas{display:block;width:100%;}
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">The p-Series Test</h3>
   <div class="fdisp">\(\displaystyle\sum_{n=1}^\infty\frac{1}{n^p}\) converges if \(p>1\), diverges if \(p\le1\)</div>
   <div class="note teal"><strong>The boundary at p = 1 is sharp.</strong> The harmonic series (\(p=1\)) diverges; the Basel series (\(p=2\)) converges. Drag the slider to see the partial sum behaviour change dramatically near \(p=1\).</div>
+  <div style="font-family:Arial;font-size:.9rem;line-height:1.9;margin:1rem 0;">
+	  <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Youtube worked examples:</h3>
+	  <p><a href="https://www.youtube.com/watch?v=BilE6e76oFo" target="_blank">P-Series Test for Infinite Series (Convergence Test)</a></p>
+	  <p><a href="https://www.youtube.com/watch?v=gB43EA9659c" target="_blank">The p-Series Test</a></p>
+	</div>
   <div class="slider-row"><label>\(p =\)</label><input type="range" id="s8p-p" min="20" max="300" value="100" oninput="drawPseries()"><span class="slider-val" id="s8p-pv">1.00</span></div>
   <div class="cbox"><canvas id="c8p" height="190"></canvas></div>
   <div class="big-num">S<sub>500</sub> ≈ <span id="s8p-sum">—</span></div>
