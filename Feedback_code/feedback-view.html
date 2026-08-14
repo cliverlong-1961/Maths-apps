@@ -44,12 +44,15 @@
                 <h3>Feedback ID: ${feedbackId}</h3>
                 <p><strong>Comment:</strong> ${feedbackItem.comment}</p>
                 <p><strong>Page:</strong> ${feedbackItem.page}</p>
-                <p><strong>Timestamp:</strong> ${new Date(feedbackItem.timestamp).toLocaleString()}</p>
+                <p><strong>Timestamp:</strong> ${new Date(feedbackItem.timestamp).toLocaleString('en-GB')}</p>
                 <p><strong>Type:</strong> ${feedbackItem.type}</p>
                 <p><strong>URL:</strong> ${feedbackItem.url}</p>
                 <p><strong>User Agent:</strong> ${feedbackItem.userAgent}</p>
             `;
-            feedbackList.appendChild(listItem);
+            // Insert at the top so the most recently added record appears first.
+            // Firebase push keys (and onChildAdded firing order) are chronological,
+            // so prepending is sufficient without needing to re-sort the whole list.
+            feedbackList.insertBefore(listItem, feedbackList.firstChild);
         });
 
         console.log("Firebase initialized and listening for feedback...");
