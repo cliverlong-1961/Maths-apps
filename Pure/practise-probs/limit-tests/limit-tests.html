@@ -1432,32 +1432,67 @@ const AbsoluteTest = (() => {
 /* ============================================================
    WIRING
    ============================================================ */
+
+// Navigate to a given test page (by its data-page id, e.g. "ratio").
+// Activates the right group tab, the right sub tab, and shows the page.
+// Set updateHash=false when called in response to a hashchange event,
+// to avoid re-triggering it.
+function navigateToPage(page, updateHash = true) {
+  const targetPage = document.getElementById('page-' + page);
+  const targetSubBtn = document.querySelector('.sub-btn[data-page="' + page + '"]');
+  if (!targetPage || !targetSubBtn) return false;
+
+  const group = targetPage.dataset.group;
+  const targetGroupBtn = document.querySelector('.group-btn[data-group="' + group + '"]');
+
+  document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+  if (targetGroupBtn) targetGroupBtn.classList.add('active');
+
+  document.querySelectorAll('nav.sub-tabs').forEach(nav => nav.classList.toggle('active', nav.dataset.group === group));
+
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  targetSubBtn.classList.add('active');
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  targetPage.classList.add('active');
+
+  if (updateHash && window.location.hash !== '#' + page) {
+    history.replaceState(null, '', '#' + page);
+  }
+
+  // Scroll to the very top of the page so the masthead, summary text and
+  // the group/sub navigation buttons are visible above the selected test,
+  // rather than just scrolling the test section into view.
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return true;
+}
+
 document.querySelectorAll('.group-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const group = btn.dataset.group;
-    document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    document.querySelectorAll('nav.sub-tabs').forEach(nav => nav.classList.toggle('active', nav.dataset.group === group));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
     const activeSubNav = document.querySelector('nav.sub-tabs[data-group="' + group + '"]');
     const firstSubBtn = activeSubNav.querySelector('.sub-btn');
-    activeSubNav.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-    firstSubBtn.classList.add('active');
-    document.getElementById('page-' + firstSubBtn.dataset.page).classList.add('active');
+    navigateToPage(firstSubBtn.dataset.page);
   });
 });
 
 document.querySelectorAll('.sub-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const nav = btn.closest('nav.sub-tabs');
-    nav.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + btn.dataset.page).classList.add('active');
+    navigateToPage(btn.dataset.page);
   });
 });
+
+// Deep-link support: e.g. limit-tests.html#ratio jumps straight to the Ratio Test.
+window.addEventListener('hashchange', () => {
+  const page = window.location.hash.replace('#', '');
+  if (page) navigateToPage(page, false);
+});
+
+// On initial load, honour any hash already in the URL.
+(function initFromHash() {
+  const page = window.location.hash.replace('#', '');
+  if (page) navigateToPage(page, false);
+})();
 
 document.getElementById('new-divergence').addEventListener('click', () => DivergenceTest.generate());
 document.getElementById('reveal-divergence').addEventListener('click', () => DivergenceTest.reveal());
