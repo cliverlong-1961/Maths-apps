@@ -1037,8 +1037,8 @@ canvas{display:block;width:100%;}
   <strong>Core idea:</strong> A toolkit of tests determines convergence for most series you'll meet. The various tests for the convergence of a series are based on tests performed on one or more terms in the sequence that have been added to make the series.
 </div>
 <div class="stabs">
-  <button class="stab" onclick="s8tab(this,'s8f')">Which Test?</button>
-  <button class="stab on" onclick="s8tab(this,'s8a')">Divergence</button>
+  <button class="stab on" onclick="s8tab(this,'s8f')">Which Test?</button>
+  <button class="stab" onclick="s8tab(this,'s8a')">Divergence</button>
   <button class="stab" onclick="s8tab(this,'s8b')">Ratio</button>
   <button class="stab" onclick="s8tab(this,'s8e')">Root</button>
   <button class="stab" onclick="s8tab(this,'s8c')">Comparison</button>
@@ -1046,7 +1046,7 @@ canvas{display:block;width:100%;}
   <button class="stab" onclick="s8tab(this,'s8p')">p-Series</button>
 </div>
 
-<div class="spanel" id="s8f">
+<div class="spanel on" id="s8f">
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Which Test Should I Use?</h3>
   <div class="concept">
     <strong>Core idea:</strong> There's no single test that works for every series — part of the skill is recognising which shape of series points to which test. Look at the <em>shape</em> of \(a_n\) first, before diving into algebra.
@@ -1069,7 +1069,7 @@ canvas{display:block;width:100%;}
 	</div>
 </div>
 
-<div class="spanel on" id="s8a">
+<div class="spanel" id="s8a">
   <h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Divergence Test (nth-term test)</h3>
   <div class="fdisp">If \(\displaystyle\lim_{n\to\infty}a_n\) &ne; 0, then \(\displaystyle\sum a_n\) diverges.</div>
   <div class="note red"><strong>Warning:</strong> If \(a_n\to0\) the test is <em>inconclusive</em> — the series might still diverge (harmonic). This test only proves divergence.</div>

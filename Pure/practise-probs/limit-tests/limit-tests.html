@@ -173,6 +173,16 @@
     overflow-x: auto;
   }
   .intro .statement-box .katex-display{ margin: 0; }
+  .intro .xref-link{
+    display:inline-block;
+    margin-top: 0.9rem;
+    font-size: 0.9rem;
+    color: var(--navy-3);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--gold);
+    padding-bottom: 1px;
+  }
+  .intro .xref-link:hover{ color: var(--gold); border-bottom-color: var(--gold); }
 
   /* ---- problem card, styled like an exam question ---- */
   .problem-card{
@@ -324,6 +334,7 @@
         <div data-tex="\text{If } \lim_{n\to\infty} a_n \neq 0 \text{, or the limit does not exist, then } \sum_{n=1}^{\infty} a_n \text{ diverges.}"></div>
       </div>
       <p style="margin-top:0.7rem;">If the limit <em>does</em> equal zero, the test is silent — the series could still converge or diverge, and you'd need another test to find out.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -352,6 +363,7 @@
         <div data-tex="\text{Let } L = \lim_{n\to\infty} \left| \dfrac{a_{n+1}}{a_n} \right|. \quad L<1 \Rightarrow \text{converges (absolutely)}, \quad L>1 \Rightarrow \text{diverges}, \quad L=1 \Rightarrow \text{inconclusive}."></div>
       </div>
       <p style="margin-top:0.7rem;">It's most useful when a term involves an <em>n</em>-th power or a factorial, since the ratio cancels most of the expression away.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -380,6 +392,7 @@
         <div data-tex="\text{Let } L = \lim_{n\to\infty} \sqrt[n]{|a_n|}. \quad L<1 \Rightarrow \text{converges (absolutely)}, \quad L>1 \Rightarrow \text{diverges}, \quad L=1 \Rightarrow \text{inconclusive}."></div>
       </div>
       <p style="margin-top:0.7rem;">This is Cauchy's test — a close cousin of the Ratio Test that is often stronger, though usually harder to apply by hand.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -410,6 +423,7 @@
         <div data-tex="\text{Suppose } 0 \le a_n \le b_n \text{ for all } n. \quad \text{If } \sum b_n \text{ converges, so does } \sum a_n. \quad \text{If } \sum a_n \text{ diverges, so does } \sum b_n."></div>
       </div>
       <p style="margin-top:0.7rem;">The skill is choosing a sensible <em>b<sub>n</sub></em> — usually a p-series or geometric series whose behaviour you already know.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -438,6 +452,7 @@
         <div data-tex="\text{Suppose } a_n, b_n > 0 \text{ and } L = \lim_{n\to\infty} \dfrac{a_n}{b_n}. \quad \text{If } 0 < L < \infty, \text{ then } \sum a_n \text{ and } \sum b_n \text{ either both converge or both diverge}."></div>
       </div>
       <p style="margin-top:0.7rem;">Ideal for rational functions of <em>n</em>: pick <em>b<sub>n</sub></em> to be the dominant term as <em>n</em> &rarr; &infin;, and the messy lower-order parts fall away in the limit.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -466,6 +481,7 @@
         <div data-tex="\text{If } f \text{ is positive, continuous and decreasing on } [1,\infty) \text{ with } f(n)=a_n, \text{ then } \sum_{n=1}^{\infty} a_n \text{ and } \int_{1}^{\infty} f(x)\,dx \text{ either both converge or both diverge}."></div>
       </div>
       <p style="margin-top:0.7rem;">Note this only tells you <em>whether</em> the series converges, not <em>what it converges to</em> — the sum and the integral are rarely equal.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -496,6 +512,7 @@
         <div data-tex="\text{If } b_n > 0, \; b_n \text{ is decreasing, and } \lim_{n\to\infty} b_n = 0, \text{ then } \sum_{n=1}^{\infty} (-1)^{n+1} b_n \text{ converges}."></div>
       </div>
       <p style="margin-top:0.7rem;">Like the Divergence Test, this one only ever points one way — it can prove convergence, but it can never prove divergence.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
@@ -524,6 +541,7 @@
         <div data-tex="\text{If } \sum_{n=1}^{\infty} |a_n| \text{ converges, then } \sum_{n=1}^{\infty} a_n \text{ converges (it converges \textit{absolutely}).}"></div>
       </div>
       <p style="margin-top:0.7rem;">Absolute convergence is the stronger property: it implies convergence, but not the other way round — a series can converge only <em>conditionally</em>, the way the alternating harmonic series does.</p>
+      <p class="xref-para"><a class="xref-link" href="https://maths-apps.crlong.uk/Pure/Infinity/infinity-explorer.html#mod8" target="_blank">How to choose which series limit test to use.</a></p>
     </div>
 
     <div class="problem-card">
