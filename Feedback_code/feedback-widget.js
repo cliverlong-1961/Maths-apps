@@ -231,10 +231,13 @@
     submitBtn.textContent = 'Sending…';
 
     const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const filename  = pathParts[pathParts.length - 1] || 'index';
+    const subject    = pathParts.length > 1 ? pathParts[0] : 'root';
+    const hash       = window.location.hash || '';   // e.g. "#s3"
     const entry = {
       url:       window.location.href,
-      page:      pathParts[pathParts.length - 1] || 'index',
-      subject:   pathParts.length > 1 ? pathParts[0] : 'root',
+      page:      (subject !== 'root' ? subject + '/' : '') + filename + hash,
+      subject:   subject,
       appTitle:  document.title || null,
       type:      selectedType,
       comment:   comment,
