@@ -126,6 +126,47 @@
     border-radius: 8px; padding: 12px 18px; margin-bottom: 20px;
     color: #991b1b; font-size: 14px;
   }
+
+  #info-bar {
+    display: none; background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 8px; padding: 12px 18px; margin-bottom: 20px;
+    color: #065f46; font-size: 14px;
+  }
+
+  .danger-zone {
+    background: #fff; border: 1.5px solid #f3c6c6; border-radius: 10px;
+    padding: 18px 22px; margin-bottom: 28px;
+  }
+  .danger-zone .section-title { border-bottom-color: #e57373; }
+  .danger-zone p { font-size: 13px; color: #666; margin-bottom: 14px; line-height: 1.5; }
+  .danger-row { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+  .btn-danger { background: #b91c1c; color: #fff; }
+  .btn-danger:hover { background: #991414; }
+  .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  #clear-all-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.5);
+    align-items: center; justify-content: center;
+  }
+  #clear-all-backdrop.open { display: flex; }
+  #clear-all-modal {
+    background: #fff; border-radius: 12px;
+    width: 420px; max-width: calc(100vw - 40px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  #clear-all-head {
+    background: #b91c1c; color: #fff;
+    padding: 16px 20px; font-size: 16px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  #clear-all-body { padding: 20px; font-size: 14px; line-height: 1.6; color: #333; }
+  #clear-all-footer {
+    padding: 14px 20px 18px; display: flex; justify-content: flex-end; gap: 10px;
+  }
+  .btn-cancel { background: #e8e4d8; color: #1a2b4a; }
+  .btn-cancel:hover { background: #d8d3c5; }
 </style>
 </head>
 <body>
@@ -152,6 +193,7 @@
     <div class="ctrl-group api-key">
       <label>Anthropic API key (for summaries)</label>
       <input type="password" id="api-key-input" placeholder="sk-ant-…" />
+      <span id="api-key-hint" style="font-size:11px; color:#888;"></span>
     </div>
     <div class="ctrl-group">
       <label>Filter by page</label>
@@ -170,10 +212,43 @@
       <button class="btn btn-primary" id="load-btn">Load feedback</button>
       <button class="btn btn-secondary" id="summarise-btn" disabled>&#10024; AI summary</button>
       <button class="btn btn-secondary" id="export-btn" disabled>&#8595; Export CSV</button>
+      <button class="btn btn-secondary" id="show-delete-btn" disabled>&#128465; Delete Feedback</button>
     </div>
   </div>
 
   <div id="error-bar"></div>
+  <div id="info-bar"></div>
+
+  <!-- Danger zone: delete old entries -->
+  <div class="danger-zone" id="danger-zone" style="display:none;">
+    <p class="section-title">Delete old entries</p>
+    <p>Permanently removes feedback entries older than the chosen number of days from the Firebase database.
+       This cannot be undone — entries are deleted, not just hidden. Enter <strong>0</strong> to clear the entire database.</p>
+    <div class="danger-row">
+      <div class="ctrl-group">
+        <label>Delete entries older than (days)</label>
+        <input type="number" id="delete-days-input" min="0" value="365" style="width:100px;">
+      </div>
+      <button class="btn btn-danger" id="delete-old-btn">&#128465; Delete old entries</button>
+    </div>
+  </div>
+
+  <!-- Clear-all confirmation modal -->
+  <div id="clear-all-backdrop" role="dialog" aria-modal="true" aria-labelledby="clear-all-title">
+    <div id="clear-all-modal">
+      <div id="clear-all-head">&#9888;&#65039; <span id="clear-all-title">Clear entire database?</span></div>
+      <div id="clear-all-body">
+        You entered <strong>0</strong> days, which will permanently delete
+        <strong id="clear-all-count">all</strong> feedback entries currently in the database.
+        <br><br>
+        This cannot be undone. Are you sure you want to continue?
+      </div>
+      <div id="clear-all-footer">
+        <button class="btn btn-cancel" id="clear-all-cancel-btn">CANCEL</button>
+        <button class="btn btn-danger" id="clear-all-ok-btn">OK</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Stats -->
   <div class="stats-row" id="stats-row" style="display:none;">
@@ -225,14 +300,30 @@ const exportBtn     = document.getElementById('export-btn');
 const pageFilter    = document.getElementById('page-filter');
 const daysFilter    = document.getElementById('days-filter');
 const errorBar      = document.getElementById('error-bar');
+const infoBar       = document.getElementById('info-bar');
 const summaryBox    = document.getElementById('summary-box');
+const dangerZone     = document.getElementById('danger-zone');
+const showDeleteBtn  = document.getElementById('show-delete-btn');
+const deleteDaysInput = document.getElementById('delete-days-input');
+const deleteOldBtn    = document.getElementById('delete-old-btn');
 
 /* Persist API key in localStorage */
 const SAVED_KEY = localStorage.getItem('fb_admin_claude_key') || '';
 if (SAVED_KEY) apiKeyInput.value = SAVED_KEY;
+updateKeyHint();
 apiKeyInput.addEventListener('input', () => {
   localStorage.setItem('fb_admin_claude_key', apiKeyInput.value.trim());
+  updateKeyHint();
 });
+
+function updateKeyHint() {
+  const hint = document.getElementById('api-key-hint');
+  const val = apiKeyInput.value.trim();
+  if (!val) { hint.textContent = 'No key stored.'; return; }
+  const start = val.slice(0, 12);
+  const end   = val.slice(-4);
+  hint.textContent = 'Stored: ' + start + '…' + end + '  (' + val.length + ' chars)';
+}
 
 /* ─── Load feedback from Firebase ────────────────────── */
 loadBtn.addEventListener('click', loadFeedback);
@@ -246,7 +337,9 @@ async function loadFeedback() {
     const db  = firebase.database();
     const snap = await db.ref('feedback').once('value');
     const raw  = snap.val() || {};
-    allEntries = Object.values(raw).sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+    allEntries = Object.entries(raw)
+      .map(([key, e]) => ({ ...e, _key: key }))
+      .sort((a,b) => b.timestamp.localeCompare(a.timestamp));
 
     /* Populate page filter */
     const pages = [...new Set(allEntries.map(e => e.page))].sort();
@@ -263,6 +356,9 @@ async function loadFeedback() {
     document.getElementById('table-section').style.display   = 'block';
     summariseBtn.disabled = false;
     exportBtn.disabled    = false;
+    showDeleteBtn.disabled = false;
+    dangerZone.style.display = 'none';
+    deleteOldBtn.disabled = false;
     document.getElementById('last-updated').textContent =
       'Updated ' + new Date().toLocaleTimeString();
 
@@ -400,11 +496,11 @@ Keep the whole summary under 400 words.`;
         'Content-Type':         'application/json',
         'x-api-key':            key,
         'anthropic-version':    '2023-06-01',
-        'anthropic-dangerous-direct-browser-calls': 'true'
+        'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model:      'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        model:      'claude-sonnet-5',
+        max_tokens: 4096,
         messages:   [{ role: 'user', content: prompt }]
       })
     });
@@ -444,17 +540,135 @@ exportBtn.addEventListener('click', function () {
   URL.revokeObjectURL(url);
 });
 
+/* ─── Delete old entries ──────────────────────────────── */
+showDeleteBtn.addEventListener('click', () => {
+  dangerZone.style.display = 'block';
+});
+
+deleteOldBtn.addEventListener('click', deleteOldEntries);
+
+const clearAllBackdrop  = document.getElementById('clear-all-backdrop');
+const clearAllCount     = document.getElementById('clear-all-count');
+const clearAllOkBtn     = document.getElementById('clear-all-ok-btn');
+const clearAllCancelBtn = document.getElementById('clear-all-cancel-btn');
+
+function hideDangerZone() {
+  dangerZone.style.display = 'none';
+}
+
+function deleteOldEntries() {
+  clearError();
+  clearInfo();
+
+  const raw = deleteDaysInput.value.trim();
+  const days = parseInt(raw, 10);
+  if (raw === '' || isNaN(days) || days < 0) {
+    showError('Enter a valid number of days (0 or more). Enter 0 to clear the whole database.');
+    return;
+  }
+
+  if (days === 0) {
+    /* Clearing everything — show the custom warning popup */
+    clearAllCount.textContent = allEntries.length
+      ? (allEntries.length + ' ' + (allEntries.length === 1 ? 'entry' : 'entries'))
+      : 'all';
+    clearAllBackdrop.classList.add('open');
+    return;
+  }
+
+  /* Normal partial delete — cutoff-based */
+  const cutoffDate = new Date(Date.now() - days * 86400000);
+  const cutoffIso  = cutoffDate.toISOString();
+  const toDelete   = allEntries.filter(e => e.timestamp < cutoffIso);
+
+  if (!toDelete.length) {
+    showInfo('No entries are older than ' + days + ' days — nothing to delete.');
+    return;
+  }
+
+  const cutoffLabel = cutoffDate.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  const confirmed = confirm(
+    'Delete ' + toDelete.length + ' feedback entr' + (toDelete.length === 1 ? 'y' : 'ies') +
+    ' dated before ' + cutoffLabel + '?\n\nThis permanently removes them from the database and cannot be undone.'
+  );
+  hideDangerZone();
+  if (!confirmed) return;
+
+  performDelete(toDelete, 'older than ' + days + ' days');
+}
+
+/* Custom modal buttons for the "clear everything" (days = 0) case */
+clearAllCancelBtn.addEventListener('click', () => {
+  clearAllBackdrop.classList.remove('open');
+  hideDangerZone();
+});
+clearAllOkBtn.addEventListener('click', () => {
+  clearAllBackdrop.classList.remove('open');
+  hideDangerZone();
+  performDelete(allEntries.slice(), 'from the entire database');
+});
+clearAllBackdrop.addEventListener('click', (e) => {
+  if (e.target === clearAllBackdrop) {
+    clearAllBackdrop.classList.remove('open');
+    hideDangerZone();
+  }
+});
+
+async function performDelete(toDelete, descriptionSuffix) {
+  if (!toDelete.length) {
+    showInfo('There are no entries to delete.');
+    return;
+  }
+
+  deleteOldBtn.disabled = true;
+  deleteOldBtn.textContent = 'Deleting…';
+
+  try {
+    const db      = firebase.database();
+    const updates = {};
+    toDelete.forEach(e => { updates['feedback/' + e._key] = null; });
+    await db.ref().update(updates);
+
+    /* Remove deleted entries from local state without a full reload */
+    const deletedKeys = new Set(toDelete.map(e => e._key));
+    allEntries = allEntries.filter(e => !deletedKeys.has(e._key));
+
+    applyFilters();
+    updateStats();
+    showInfo('Deleted ' + toDelete.length + ' entr' + (toDelete.length === 1 ? 'y' : 'ies') +
+              ' ' + descriptionSuffix + '.');
+    document.getElementById('last-updated').textContent =
+      'Updated ' + new Date().toLocaleTimeString();
+
+  } catch (err) {
+    showError('Delete failed: ' + err.message);
+  } finally {
+    deleteOldBtn.disabled = false;
+    deleteOldBtn.textContent = '\u{1F5D1}\uFE0F Delete old entries';
+  }
+}
+
 /* ─── Helpers ─────────────────────────────────────────── */
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 function showError(msg) {
+  clearInfo();
   errorBar.textContent = msg;
   errorBar.style.display = 'block';
   setTimeout(() => { errorBar.style.display = 'none'; }, 8000);
 }
 function clearError() {
   errorBar.style.display = 'none';
+}
+function showInfo(msg) {
+  clearError();
+  infoBar.textContent = msg;
+  infoBar.style.display = 'block';
+  setTimeout(() => { infoBar.style.display = 'none'; }, 8000);
+}
+function clearInfo() {
+  infoBar.style.display = 'none';
 }
 </script>
 </body>

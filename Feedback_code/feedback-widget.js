@@ -118,18 +118,23 @@
           <button id="fb-close-btn" aria-label="Close feedback form">&times;</button>
         </div>
         <div id="fb-modal-body">
-          <div id="fb-url-display"></div>
-          <span class="fb-label">What kind of feedback?</span>
-          <div id="fb-type-row">
-            <button class="fb-type-btn active" data-type="question">&#10067; Question</button>
-            <button class="fb-type-btn" data-type="error">&#128027; Error found</button>
-            <button class="fb-type-btn" data-type="suggestion">&#128161; Suggestion</button>
+          <div id="fb-form-view">
+            <div id="fb-url-display"></div>
+            <span class="fb-label">What kind of feedback?</span>
+            <div id="fb-type-row">
+              <button class="fb-type-btn active" data-type="question">&#10067; Question</button>
+              <button class="fb-type-btn" data-type="error">&#128027; Error found</button>
+              <button class="fb-type-btn" data-type="suggestion">&#128161; Suggestion</button>
+            </div>
+            <span class="fb-label">Your comment</span>
+            <textarea id="fb-text" maxlength="500"
+              placeholder="E.g. I don&#39;t understand why the normal reaction is zero in step 3&#8230;"></textarea>
+            <div id="fb-char-count">0 / 500</div>
+            <div id="fb-error-msg">Please write a comment before sending.</div>
           </div>
-          <span class="fb-label">Your comment</span>
-          <textarea id="fb-text" maxlength="500"
-            placeholder="E.g. I don&#39;t understand why the normal reaction is zero in step 3&#8230;"></textarea>
-          <div id="fb-char-count">0 / 500</div>
-          <div id="fb-error-msg">Please write a comment before sending.</div>
+          <div id="fb-success-view" style="display:none;">
+            <div id="fb-success"><div class="fb-tick">&#10003;</div><p>Thanks! Your feedback has been sent to Mr. Long.</p></div>
+          </div>
         </div>
         <div id="fb-footer">
           <button id="fb-cancel-btn">Cancel</button>
@@ -176,36 +181,25 @@
   });
 
   function resetForm() {
-    document.getElementById('fb-modal-body').innerHTML = `
-      <div id="fb-url-display"></div>
-      <span class="fb-label">What kind of feedback?</span>
-      <div id="fb-type-row">
-        <button class="fb-type-btn active" data-type="question">&#10067; Question</button>
-        <button class="fb-type-btn" data-type="error">&#128027; Error found</button>
-        <button class="fb-type-btn" data-type="suggestion">&#128161; Suggestion</button>
-      </div>
-      <span class="fb-label">Your comment</span>
-      <textarea id="fb-text" maxlength="500"
-        placeholder="E.g. I don&#39;t understand why the normal reaction is zero in step 3&#8230;"></textarea>
-      <div id="fb-char-count">0 / 500</div>
-      <div id="fb-error-msg" style="color:#c0392b;font-size:12px;margin-top:6px;display:none;">Please write a comment before sending.</div>`;
-    document.getElementById('fb-url-display').textContent = window.location.href;
-    document.getElementById('fb-footer').style.display = 'flex';
+    /* Reset values on the existing elements — never destroy/recreate them,
+       so the references and listeners captured above stay valid forever. */
+    textarea.value = '';
+    charCount.textContent = '0 / 500';
+    errorMsg.style.display = 'none';
+    errorMsg.textContent = 'Please write a comment before sending.';
 
-    /* Re-bind textarea events after DOM reset */
-    const ta  = document.getElementById('fb-text');
-    const cc  = document.getElementById('fb-char-count');
-    const em  = document.getElementById('fb-error-msg');
-    ta.addEventListener('input', function () {
-      cc.textContent = ta.value.length + ' / 500';
-      if (ta.value.trim()) em.style.display = 'none';
-    });
-
+    document.querySelectorAll('.fb-type-btn').forEach(b => b.classList.remove('active'));
+    const defaultBtn = document.querySelector('.fb-type-btn[data-type="question"]');
+    if (defaultBtn) defaultBtn.classList.add('active');
     selectedType = 'question';
 
+    document.getElementById('fb-success-view').style.display = 'none';
+    document.getElementById('fb-form-view').style.display = 'block';
+    document.getElementById('fb-footer').style.display = 'flex';
+
     /* Reset submit button — it may have been disabled/relabelled during send */
-    const sb = document.getElementById('fb-submit-btn');
-    if (sb) { sb.disabled = false; sb.textContent = 'Send ↗'; }
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send ↗';
   }
 
   function closeModal() {
@@ -258,8 +252,8 @@
   });
 
   function showSuccess() {
-    document.getElementById('fb-modal-body').innerHTML =
-      '<div id="fb-success"><div class="fb-tick">&#10003;</div><p>Thanks! Your feedback has been sent to Dr Long.</p></div>';
+    document.getElementById('fb-form-view').style.display = 'none';
+    document.getElementById('fb-success-view').style.display = 'block';
     document.getElementById('fb-footer').style.display = 'none';
     setTimeout(closeModal, 2200);
   }
