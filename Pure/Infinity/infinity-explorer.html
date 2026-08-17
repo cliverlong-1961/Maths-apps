@@ -1423,6 +1423,30 @@ canvas{display:block;width:100%;}
 <!-- ═══ MODULE 12: CALCULATOR LIES ═══ -->
 <section class="module" id="mod12">
 <div class="mhdr"><div class="mtag">Module 17</div><h2>Function approximation</h2></div>
+
+<h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Binomial expansion</h3>
+<div class="concept">
+  <strong>Core idea:</strong> The binomial expansion isn't just for whole-number powers. For any real index \(n\) we get an infinite series expansion, for example:
+  \(\displaystyle (1+x)^n = 1 + nx + \frac{n(n-1)}{2!}x^2 + \frac{n(n-1)(n-2)}{3!}x^3 + \cdots\)
+  When \(n\) is a positive integer this sum terminates and is exact for every \(x\) — it's the familiar finite binomial theorem.
+  But when \(n\) is negative or a fraction, the sum never terminates: it becomes an <em>infinite series</em>, and like any infinite series it only converges for certain values of \(x\).
+</div>
+<p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
+  Take \(n=-1\). Substituting into the general expansion above gives \((1-x)^{-1} = 1 + x + x^2 + x^3 + x^4 + \cdots\) — the familiar geometric series.
+  You can check this directly: multiply both sides by \((1-x)\) and the right-hand side telescopes back down to \(1\).
+  The partial sum of the first \(k+1\) terms, \(1 + x + x^2 + \cdots + x^k\), is a polynomial that approximates the curve \(y=(1-x)^{-1}\) — and, just as with the sine, cosine and exponential series above, taking more terms improves the approximation.
+</p>
+<div class="fdisp">\((1-x)^{-1} = 1 + x + x^2 + x^3 + \cdots = \displaystyle\sum_{r=0}^{\infty}x^r\)</div>
+<div class="slider-row"><label>Highest power \(k\) in the approximation =</label><input type="range" id="t12d" min="0" max="10" value="2" oninput="draw12d()"><span class="slider-val" id="t12d-v">2</span></div>
+<div class="big-num" style="font-size:1.3rem;" id="t12d-eq">y = 1 + x + x<sup>2</sup></div>
+<div class="cbox"><canvas id="c12d" height="220"></canvas></div>
+<div class="note">
+  <strong>Interval of convergence:</strong> The geometric series \(1+x+x^2+\cdots\) only converges when \(|x|<1\). Inside that interval, each extra term pulls the polynomial closer to the true curve \(y=(1-x)^{-1}\).
+  Outside it — for \(x\le-1\) or \(x\ge1\) — the terms \(x^r\) stop shrinking to zero, so the partial sums shoot off and never settle down, even though \(y=(1-x)^{-1}\) itself is a perfectly well-defined, finite number for every \(x\ne1\) with \(x<-1\) or \(x>1\).
+  The dashed vertical lines on the graph mark \(x=\pm1\), the boundary of the <em>interval (radius) of convergence</em>. Drag the slider: inside the dashed lines the red approximation hugs the teal curve ever more closely; outside them, adding terms only makes the approximation worse.
+</div>
+
+<h3 style="font-family:Arial;font-size:1rem;color:var(--navy);margin-bottom:.6rem;">Taylor series expansion</h3>
 <div class="concept">
   <strong>Core idea:</strong> Your calculator doesn't "know" \(\sin x\). Your calculator uses the CORDIC algorithm (<a href="https://en.wikipedia.org/wiki/CORDIC#Rotation_mode" target="_blank" style="color:var(--navy);">see here</a>). 
   However, considering more examples of infinite series, we'll look at the Taylor series expansion around x=0 of the sine, cosine and exponential functions 
@@ -2636,6 +2660,54 @@ function draw12(t){
   document.getElementById('t12'+t+'-err').innerHTML=err<1e-10?'&lt; 10<sup>&minus;10</sup> (negligible)':fmtSci(err,3);
 }
 
+/* Binomial series: (1-x)^-1 ≈ 1 + x + x^2 + ... + x^k, radius of convergence |x|<1 */
+function draw12d(){
+  const k=+document.getElementById('t12d').value;
+  document.getElementById('t12d-v').textContent=k;
+  // dynamic equation label, built with <sup> rather than KaTeX (no re-render pass available)
+  let eq='y = 1';
+  if(k>=1)eq+=' + x';
+  for(let i=2;i<=k;i++)eq+=' + x<sup>'+i+'</sup>';
+  document.getElementById('t12d-eq').innerHTML=eq;
+  const c=rz('c12d');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height,pad=40;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const xMin=-2.3,xMax=2.3,yMin=-6,yMax=6;
+  const tx=x=>pad+(x-xMin)/(xMax-xMin)*(W-2*pad);
+  const ty=y=>H-pad-(y-yMin)/(yMax-yMin)*(H-2*pad);
+  // axes
+  ctx.strokeStyle='#ddd';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad,ty(0));ctx.lineTo(W-pad,ty(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tx(0),pad);ctx.lineTo(tx(0),H-pad);ctx.stroke();
+  // radius-of-convergence markers at x=-1 and x=1
+  ctx.strokeStyle=PURP;ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+  [-1,1].forEach(xv=>{ctx.beginPath();ctx.moveTo(tx(xv),pad);ctx.lineTo(tx(xv),H-pad);ctx.stroke();});
+  ctx.setLineDash([]);
+  ctx.fillStyle=PURP;ctx.font='11px Arial';ctx.textAlign='center';
+  ctx.fillText('x = -1',tx(-1),H-pad+16);ctx.fillText('x = 1',tx(1),H-pad+16);
+  // exact curve y=(1-x)^-1, broken at the pole x=1
+  const exact=x=>1/(1-x);
+  ctx.strokeStyle=TEAL;ctx.lineWidth=2;ctx.beginPath();let first=true;
+  for(let xi=0;xi<=400;xi++){
+    const x=xMin+xi/400*(xMax-xMin),y=exact(x);
+    if(!isFinite(y)||y<yMin-1||y>yMax+1){first=true;continue;}
+    first?ctx.moveTo(tx(x),ty(y)):ctx.lineTo(tx(x),ty(y));first=false;
+  }
+  ctx.stroke();
+  // approximation: partial sum of the geometric series
+  const approx=x=>{let s=0;for(let r=0;r<=k;r++)s+=Math.pow(x,r);return s;};
+  ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.beginPath();first=true;
+  for(let xi=0;xi<=400;xi++){
+    const x=xMin+xi/400*(xMax-xMin),y=approx(x);
+    if(y<yMin-1||y>yMax+1){first=true;continue;}
+    first?ctx.moveTo(tx(x),ty(y)):ctx.lineTo(tx(x),ty(y));first=false;
+  }
+  ctx.stroke();
+  ctx.font='11px Arial';ctx.textAlign='left';
+  ctx.fillStyle=TEAL;ctx.fillText('Exact: y = (1-x)⁻¹',pad+6,pad+14);
+  ctx.fillStyle=RED;ctx.fillText('Approx (k='+k+' terms)',pad+6,pad+28);
+}
+
 /* ══════════════════════════════════════════════════
    MODULE 13: PARADOXES
 ══════════════════════════════════════════════════ */
@@ -2700,7 +2772,7 @@ function initMod(m,panel){
   else if(m===9){bbUpdate();}
   else if(m===10){drawKoch();}
   else if(m===11){fracReset();}
-  else if(m===12){draw12('a');draw12('b');draw12('c');}
+  else if(m===12){draw12('a');draw12('b');draw12('c');draw12d();}
   else if(m===13){drawZenoState();drawGrandi();}
   else if(m===15){fibReset();drawSpiral();drawCF();}
   else if(m===16){piReset('a');piReset('b');piReset('c');drawPiRace();}
