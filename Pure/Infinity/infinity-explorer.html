@@ -1429,17 +1429,18 @@ canvas{display:block;width:100%;}
   <strong>Core idea:</strong> The binomial expansion isn't just for whole-number powers. For any real index \(n\) we get an infinite series expansion, for example:
   \(\displaystyle (1+x)^n = 1 + nx + \frac{n(n-1)}{2!}x^2 + \frac{n(n-1)(n-2)}{3!}x^3 + \cdots\)
   When \(n\) is a positive integer this sum terminates and is exact for every \(x\) — it's the familiar finite binomial theorem.
-  But when \(n\) is negative or a fraction, the sum never terminates: it becomes an <em>infinite series</em>, and like any infinite series it only converges for certain values of \(x\).
+  But when \(n\) is negative or a fraction, the sum never terminates: it becomes an <em>infinite series</em>, and like any infinite series <b>it only converges for certain values of \(x\).</b>
 </div>
 <p style="font-size:.95rem;line-height:1.75;margin-bottom:1rem;">
   Take \(n=-1\). Substituting into the general expansion above gives \((1-x)^{-1} = 1 + x + x^2 + x^3 + x^4 + \cdots\) — the familiar geometric series.
   You can check this directly: multiply both sides by \((1-x)\) and the right-hand side telescopes back down to \(1\).
-  The partial sum of the first \(k+1\) terms, \(1 + x + x^2 + \cdots + x^k\), is a polynomial that approximates the curve \(y=(1-x)^{-1}\) — and, just as with the sine, cosine and exponential series above, taking more terms improves the approximation.
+  The partial sum of the first \(k+1\) terms, \(1 + x + x^2 + \cdots + x^k\), is a polynomial that approximates the curve \(y=(1-x)^{-1}\) — and, just as with the sine, cosine and exponential series considered below, taking more terms improves the approximation.
 </p>
 <div class="fdisp">\((1-x)^{-1} = 1 + x + x^2 + x^3 + \cdots = \displaystyle\sum_{r=0}^{\infty}x^r\)</div>
 <div class="slider-row"><label>Highest power \(k\) in the approximation =</label><input type="range" id="t12d" min="0" max="10" value="2" oninput="draw12d()"><span class="slider-val" id="t12d-v">2</span></div>
 <div class="big-num" style="font-size:1.3rem;" id="t12d-eq">y = 1 + x + x<sup>2</sup></div>
 <div class="cbox"><canvas id="c12d" height="220"></canvas></div>
+<p><a href="https://www.youtube.com/watch?v=V1AKAkGJlN8" target="_blank">Binomial series expansion</a></p>
 <div class="note">
   <strong>Interval of convergence:</strong> The geometric series \(1+x+x^2+\cdots\) only converges when \(|x|<1\). Inside that interval, each extra term pulls the polynomial closer to the true curve \(y=(1-x)^{-1}\).
   Outside it — for \(x\le-1\) or \(x\ge1\) — the terms \(x^r\) stop shrinking to zero, so the partial sums shoot off and never settle down, even though \(y=(1-x)^{-1}\) itself is a perfectly well-defined, finite number for every \(x\ne1\) with \(x<-1\) or \(x>1\).
@@ -1486,9 +1487,11 @@ canvas{display:block;width:100%;}
   <div class="cbox"><canvas id="c12c" height="200"></canvas></div>
 </div>
 <div class="note"><strong>Why does it work?</strong> The error after \(k\) terms of the Taylor series for \(\sin x\) is no larger than \(\frac{|x|^{2k+1}}{(2k+1)!}\), which \(\to0\) as \(k\to\infty\) for any fixed \(x\). Convergence guarantees the approximation can be made as accurate as needed.</div>
+	<p><a href="https://www.youtube.com/watch?v=LDBnS4c7YbA" target="_blank">Taylor and Maclaurin series examples</a></p>
 <div class="challenges"><h3>Think about it</h3>
   <div class="ccard"><div class="ccard-q" onclick="tog(this)">Why does a single-term approximation fail far from zero?</div>
   <div class="ccard-a">Near \(x=0\), the Taylor series converges quickly because \(x^n\to0\) fast. Far from zero (large \(x\)), the early terms \(x^n/n!\) can be large before the factorial eventually dominates — you need more terms to overcome this initial growth. This is why calculators use range reduction: they first map any \(x\) to a small interval near 0, then apply the series.</div></div>
+
 </div>
 </section>
 
