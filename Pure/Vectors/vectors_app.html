@@ -8,6 +8,12 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <style>
+        :root{
+          --navy:#1a3a6b;--navy2:#122a50;--gold:#c9a227;--goldf:#f5e9b8;
+          --bg:#f0f3fa;--card:#fff;--text:#1a1a2e;--muted:#5a6280;--border:#cdd3e0;
+          --teal:#0f6e56;--red:#a32d2d;--purple:#533bb7;--cyan:#0e6a6a;
+          --orange:#b85c00;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         /* KaTeX requires content-box sizing and unmodified line-height to
@@ -20,77 +26,100 @@
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
             line-height: 1.6;
-            color: #2c3e50;
-            background-color: #fafafa;
+            color: var(--text);
+            background-color: var(--bg);
             min-height: 100vh;
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 0 40px; }
 
+        /* ── HEADER ── */
         header {
-            text-align: center;
-            padding: 40px 0;
-            border-bottom: 2px solid #34495e;
-            margin-bottom: 40px;
+            background: linear-gradient(135deg,#0d1e3d 0%,#1a3a6b 100%);
+            color: #fff;
+            padding: 1.6rem 1.5rem 0;
+            border-bottom: 3px solid var(--gold);
+            margin-bottom: 0;
+        }
+        .hdr-top { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:.5rem; }
+        h1 { font-size: 1.55em; color:#fff; font-weight: normal; letter-spacing:.02em; margin: 0; }
+        .badge {
+            background: var(--gold); color:#000; font-family: Arial, sans-serif;
+            font-size:.72rem; font-weight:700; padding:.2rem .6rem; border-radius:3px;
+            letter-spacing:.08em; text-transform: uppercase; white-space: nowrap;
+        }
+        .subtitle {
+            font-family: Arial, sans-serif; font-size:.85rem; color:#9fb2cc;
+            font-style: normal; padding-bottom: .9rem;
         }
 
-        h1 { font-size: 2.5em; color: #2c3e50; margin-bottom: 10px; font-weight: normal; }
-        .subtitle { font-size: 1.2em; color: #7f8c8d; font-style: italic; }
-
-        .nav-breadcrumb { text-align: center; margin-bottom: 30px; }
+        /* ── PERSISTENT SECTION NAV (inside header) ── */
+        .nav-breadcrumb {
+            display:flex; gap:0; overflow-x:auto; padding:0;
+            border-top: 1px solid rgba(255,255,255,.12);
+            text-align: left; margin-bottom: 0;
+        }
+        .nav-breadcrumb::-webkit-scrollbar{height:3px;}
+        .nav-breadcrumb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);}
         .nav-breadcrumb button {
-            background: none; border: none; color: #3498db;
-            cursor: pointer; font-size: 0.95em; padding: 5px 10px;
-            text-decoration: underline; font-family: Georgia, serif;
+            background: transparent; color: rgba(255,255,255,.65); border:none;
+            padding:.55rem .85rem; font-family: Arial, sans-serif; font-size:.75rem;
+            font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+            cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent;
+            transition: color .15s, border-color .15s;
         }
-        .nav-breadcrumb button:hover { color: #2980b9; }
+        .nav-breadcrumb button:hover { color:#fff; text-decoration:none; }
+        .nav-breadcrumb button.on { color: var(--gold); border-bottom-color: var(--gold); }
 
         h2 {
-            font-size: 1.8em; color: #2c3e50; margin: 30px 0 20px;
-            font-weight: normal; border-bottom: 1px solid #bdc3c7; padding-bottom: 10px;
+            font-size: 1.6em; color: var(--navy); margin: 30px 0 20px;
+            font-weight: normal; border-bottom: 1px solid var(--border); padding-bottom: 10px;
         }
-        h3 { font-size: 1.4em; color: #34495e; margin: 20px 0 15px; font-weight: normal; }
+        h3 { font-size: 1.25em; color: var(--navy); margin: 20px 0 15px; font-weight: normal; }
 
-        .section { display: none; }
+        .section { display: none; padding: 1.5rem 1.25rem 0; }
         .section.active { display: block; }
 
         .intro-content {
-            max-width: 760px; margin: 0 auto; background: white;
-            padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            max-width: 760px; margin: 0 auto; background: var(--card);
+            padding: 40px; border-radius: 6px; border: 1.5px solid var(--border);
         }
-        .intro-content p { font-size: 1.05em; line-height: 1.8; margin-bottom: 20px; text-align: justify; }
+        .intro-content p { font-size: 1.02em; line-height: 1.8; margin-bottom: 20px; text-align: justify; }
 
         .definition-box {
-            background: #fafafa; border: 1px solid #ddd;
+            background: var(--bg); border: 1px solid var(--border);
             padding: 20px; margin: 25px 0; border-radius: 4px;
         }
-        .definition-box h3 { margin-top: 0; color: #2c3e50; font-size: 1.15em; }
+        .definition-box h3 { margin-top: 0; color: var(--navy); font-size: 1.15em; }
 
         .highlight-box {
-            background: #fff9e6; border-left: 4px solid #f39c12;
-            padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+            background: var(--goldf); border-left: 4px solid var(--gold);
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 6px 6px 0;
+            font-size: .95rem; line-height: 1.65;
         }
 
         .key-result {
-            background: #e8f6f3; border-left: 4px solid #16a085;
-            padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+            background: #e6f6f1; border-left: 4px solid var(--teal);
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 6px 6px 0;
+            font-size: .95rem; line-height: 1.65;
         }
 
         .worked-example {
-            background: #f0f7ff; border: 1px solid #c5dff8;
-            border-radius: 8px; padding: 25px; margin: 25px 0;
+            background: var(--card); border: 1.5px solid var(--border);
+            border-radius: 6px; padding: 25px; margin: 25px 0;
         }
         .worked-example h4 {
-            color: #1a5276; font-size: 1.1em; margin-bottom: 15px;
-            border-bottom: 1px solid #c5dff8; padding-bottom: 8px;
+            font-family: Arial, sans-serif; font-weight:700; letter-spacing:.06em;
+            text-transform: uppercase; color: var(--gold); font-size: .78em; margin-bottom: 15px;
+            border-bottom: 1px solid var(--border); padding-bottom: 10px;
         }
         .worked-example p { margin-bottom: 12px; line-height: 1.7; }
 
         .example-step {
             padding: 12px 15px; margin: 10px 0;
-            background: white; border-left: 3px solid #95a5a6; border-radius: 4px;
+            background: var(--bg); border-left: 3px solid var(--navy); border-radius: 0 4px 4px 0;
         }
-        .step-label { font-weight: bold; color: #3498db; margin-bottom: 6px; }
+        .step-label { font-family: Arial, sans-serif; font-weight: bold; font-size:.85em; color: var(--navy); margin-bottom: 6px; }
 
         .motivation-grid {
             display: grid;
@@ -98,18 +127,17 @@
             gap: 25px; margin: 30px 0;
         }
         .motivation-card {
-            background: white; border: 1px solid #ddd;
+            background: var(--card); border: 1.5px solid var(--border);
             border-radius: 8px; padding: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
         .motivation-card svg { display: block; margin: 0 auto 15px; }
         .motivation-card .question {
-            font-style: italic; color: #34495e;
+            font-style: italic; color: var(--muted);
             font-size: 0.97em; line-height: 1.6; text-align: center;
         }
         .motivation-card .question strong {
             display: block; font-style: normal; font-size: 1.05em;
-            color: #2c3e50; margin-bottom: 8px; text-align: center;
+            color: var(--navy); margin-bottom: 8px; text-align: center;
         }
 
         .diagram-row {
@@ -117,10 +145,10 @@
             justify-content: center; margin: 25px 0;
         }
         .diagram-box {
-            background: white; border: 1px solid #ddd; border-radius: 8px;
+            background: var(--card); border: 1.5px solid var(--border); border-radius: 8px;
             padding: 20px; text-align: center; flex: 1; min-width: 240px;
         }
-        .diagram-box p { font-size: 0.95em; color: #555; margin-top: 12px; line-height: 1.5; }
+        .diagram-box p { font-size: 0.95em; color: var(--muted); margin-top: 12px; line-height: 1.5; }
 
         .topic-grid {
             display: grid;
@@ -130,64 +158,63 @@
 
         .cta-section {
             text-align: center; margin-top: 45px; padding-top: 35px;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid var(--border);
         }
-        .cta-text { font-size: 1.05em; color: #666; margin-bottom: 22px; }
+        .cta-text { font-family: Arial, sans-serif; font-size: 1em; color: var(--muted); margin-bottom: 22px; }
 
         .btn-primary {
-            display: inline-block; background-color: #3498db; color: white;
-            padding: 13px 28px; font-size: 1em; border-radius: 6px;
-            transition: background-color 0.3s, transform 0.1s;
-            box-shadow: 0 2px 4px rgba(52,152,219,0.3);
-            cursor: pointer; border: none; margin: 6px;
-            font-family: Georgia, serif;
+            display: inline-block; background-color: var(--navy); color: #fff;
+            padding: .55rem 1.1rem; font-size: .85em; border-radius: 4px;
+            transition: background .15s, color .15s;
+            cursor: pointer; border: 2px solid var(--navy); margin: 6px;
+            font-family: Arial, sans-serif; font-weight: 700; letter-spacing:.03em;
         }
-        .btn-primary:hover {
-            background-color: #2980b9; transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(52,152,219,0.4);
-        }
-        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:hover { background-color: var(--navy2); }
+        .btn-primary:active { background-color: var(--navy2); }
 
         .definitions-section {
-            background: white; padding: 30px; margin: 25px 0;
-            border-radius: 8px; border: 1px solid #e0e0e0;
+            background: var(--card); padding: 30px; margin: 25px 0;
+            border-radius: 6px; border: 1.5px solid var(--border);
         }
         .definitions-section h3 {
-            color: #2c3e50; margin-bottom: 18px; font-size: 1.25em;
-            border-bottom: 2px solid #3498db; padding-bottom: 8px;
+            color: var(--navy); margin-bottom: 18px; font-size: 1.2em;
+            border-bottom: 2px solid var(--gold); padding-bottom: 8px;
         }
         .definitions-section p { margin-bottom: 14px; line-height: 1.7; }
 
         .vector-table {
-            width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.97em;
+            width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em;
+            font-family: Arial, sans-serif;
         }
         .vector-table th {
-            background: #34495e; color: white; padding: 10px 15px; text-align: left;
+            background: var(--navy); color: #fff; padding: 10px 15px; text-align: left;
         }
-        .vector-table td { padding: 10px 15px; border-bottom: 1px solid #eee; }
-        .vector-table tr:nth-child(even) td { background: #f8f9fa; }
+        .vector-table td { padding: 10px 15px; border-bottom: 1px solid var(--border); }
+        .vector-table tr:nth-child(even) td { background: #f7f9fc; }
 
         .reveal-link {
-            display: inline-block; margin-top: 8px; color: #3498db;
-            font-size: 0.95em; font-family: Georgia, serif; text-decoration: none;
-            cursor: pointer; background: none; border: none; padding: 0;
+            display: inline-block; margin-top: 8px; margin-bottom: .6rem; color: var(--teal);
+            font-size: 0.85em; font-family: Arial, sans-serif; font-weight: 700;
+            text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0;
         }
-        .reveal-link:hover { text-decoration: underline; color: #2980b9; }
+        .reveal-link:hover { color: #0a5442; }
 
         .notation-box {
-            background: #fdf2f8; border-left: 4px solid #8e44ad;
-            padding: 14px 18px; margin: 18px 0; border-radius: 0 4px 4px 0;
+            background: #eef2ff; border-left: 4px solid var(--purple);
+            padding: 14px 18px; margin: 18px 0; border-radius: 0 6px 6px 0;
+            font-size: .9rem; line-height: 1.6;
         }
-        .notation-box strong { color: #6c3483; }
+        .notation-box strong { color: var(--purple); }
 
         footer {
-            margin-top: 60px; padding-top: 20px;
-            border-top: 1px solid #bdc3c7;
-            text-align: center; color: #7f8c8d; font-size: 0.9em;
+            margin-top: 40px; padding: 20px 1.25rem;
+            border-top: 1px solid var(--border);
+            text-align: center; color: var(--muted); font-size: 0.85em;
+            font-family: Arial, sans-serif;
         }
 
         @media (max-width: 700px) {
-            h1 { font-size: 1.9em; }
+            h1 { font-size: 1.25em; }
             .intro-content { padding: 22px; }
             .motivation-grid { grid-template-columns: 1fr; }
             .topic-grid { grid-template-columns: 1fr; }
@@ -205,7 +232,7 @@
         });
 
         const sectionTitles = {
-            'intro':        ['Vectors: Plane Geometry', 'Year 1 Pure Mathematics — Chapter 11'],
+            'intro':        ['Vectors: Plane Geometry', ''],
             'basics':       ['Vector Basics', 'Magnitude, direction and the triangle law'],
             'operations':   ['Vector Operations', 'Addition, subtraction and scalar multiplication'],
             'components':   ['Column Vectors & i, j notation', 'Representing vectors in component form'],
@@ -249,12 +276,9 @@
 
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            const nav = document.getElementById('navigation');
-            if (id === 'intro') {
-                nav.style.display = 'none';
-            } else {
-                nav.style.display = 'block';
-            }
+            document.querySelectorAll('#navigation button').forEach(b => {
+                b.classList.toggle('on', b.dataset.sec === id);
+            });
             const [title, sub] = sectionTitles[id] || ['Vectors', ''];
             document.querySelector('header h1').textContent = title;
             document.querySelector('.subtitle').textContent = sub;
@@ -287,16 +311,24 @@
     </script>
 </head>
 <body>
-<div class="container">
     <header>
-        <h1>Vectors: Plane Geometry</h1>
-        <p class="subtitle">Year 1 Pure Mathematics — Chapter 11</p>
+        <div class="hdr-top">
+            <h1>Vectors: Plane Geometry</h1>
+            <span class="badge">AS / A-Level Pure Maths</span>
+        </div>
+        <p class="subtitle"></p>
+        <nav class="nav-breadcrumb" id="navigation">
+            <button data-sec="intro" onclick="showSection('intro')">Home</button>
+            <button data-sec="basics" onclick="showSection('basics')">Vector Basics</button>
+            <button data-sec="operations" onclick="showSection('operations')">Operations</button>
+            <button data-sec="components" onclick="showSection('components')">Column Vectors</button>
+            <button data-sec="magnitude" onclick="showSection('magnitude')">Magnitude &amp; Direction</button>
+            <button data-sec="position" onclick="showSection('position')">Position Vectors</button>
+            <button data-sec="geometry" onclick="showSection('geometry')">Geometric Problems</button>
+        </nav>
     </header>
 
-    <nav class="nav-breadcrumb" id="navigation" style="display:none;">
-        <button onclick="showSection('intro')">← Back to Introduction</button>
-    </nav>
-
+<div class="container">
     <main>
 
 <!-- ═══════════════════════════════════════════════ HOME PAGE ═══ -->
@@ -327,20 +359,20 @@
             <svg width="190" height="170" viewBox="0 0 190 170" xmlns="http://www.w3.org/2000/svg">
                 <!-- North arrow -->
                 <line x1="40" y1="140" x2="40" y2="20" stroke="#bdc3c7" stroke-width="1.5" stroke-dasharray="4,3"/>
-                <polygon points="40,16 35,28 45,28" fill="#bdc3c7"/>
+                <polygon points="40.0,20.0 47.0,32.1 33.0,32.1" fill="#bdc3c7"/>
                 <text x="45" y="27" font-size="10" fill="#aaa" font-family="Georgia">N</text>
                 <!-- Journey: O -> A -> B -->
                 <circle cx="40" cy="140" r="4" fill="#e74c3c"/>
                 <text x="46" y="152" font-size="11" fill="#c0392b" font-family="Georgia" font-weight="bold">O</text>
                 <!-- OA: east 90px -->
                 <line x1="40" y1="140" x2="130" y2="140" stroke="#3498db" stroke-width="2.5"/>
-                <polygon points="133,140 121,134 121,146" fill="#3498db"/>
+                <polygon points="130.0,140.0 117.9,147.0 117.9,133.0" fill="#3498db"/>
                 <text x="85" y="134" text-anchor="middle" font-size="10" fill="#2471a3" font-family="Georgia">2 km east</text>
                 <circle cx="130" cy="140" r="4" fill="#3498db"/>
                 <text x="136" y="152" font-size="11" fill="#2471a3" font-family="Georgia" font-weight="bold">A</text>
                 <!-- AB: south 75px -->
                 <line x1="130" y1="140" x2="130" y2="75" stroke="#27ae60" stroke-width="2.5"/>
-                <polygon points="130,72 124,84 136,84" fill="#27ae60"/>
+                <polygon points="130.0,75.0 137.0,87.1 123.0,87.1" fill="#27ae60"/>
                 <text x="140" y="107" font-size="10" fill="#1e8449" font-family="Georgia">3 km</text>
                 <text x="140" y="119" font-size="10" fill="#1e8449" font-family="Georgia">south</text>
                 <circle cx="130" cy="72" r="4" fill="#27ae60"/>
@@ -363,15 +395,15 @@
                          fill="#eaf4ff" stroke="#2c7bb5" stroke-width="1.5"/>
                 <!-- a vector: O -> B bottom -->
                 <line x1="40" y1="140" x2="123" y2="140" stroke="#e74c3c" stroke-width="2.5"/>
-                <polygon points="126,140 114,134 114,146" fill="#e74c3c"/>
+                <polygon points="123.0,140.0 110.9,147.0 110.9,133.0" fill="#e74c3c"/>
                 <text x="82" y="151" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
                 <!-- b vector: O -> D top-left -->
                 <line x1="40" y1="140" x2="82" y2="60" stroke="#27ae60" stroke-width="2.5"/>
-                <polygon points="82,57 76,70 88,68" fill="#27ae60"/>
+                <polygon points="82.0,60.0 82.6,74.0 70.2,67.5" fill="#27ae60"/>
                 <text x="45" y="102" font-size="12" fill="#1e8449" font-family="Georgia" font-style="italic">b</text>
                 <!-- resultant diagonal -->
                 <line x1="40" y1="140" x2="165" y2="60" stroke="#8e44ad" stroke-width="2"/>
-                <polygon points="167,57 156,64 162,73" fill="#8e44ad"/>
+                <polygon points="165.0,60.0 158.6,72.4 151.0,60.6" fill="#8e44ad"/>
                 <text x="113" y="92" font-size="11" fill="#6c3483" font-family="Georgia" font-style="italic">a+b</text>
                 <!-- corner labels: 10-12px from vertex in outward direction -->
                 <text x="24" y="158" font-size="11" fill="#2c3e50" font-family="Georgia" font-weight="bold">O</text>
@@ -456,9 +488,9 @@
             <circle cx="60" cy="70" r="4" fill="#e74c3c"/>
             <circle cx="200" cy="40" r="4" fill="#e74c3c"/>
             <line x1="60" y1="70" x2="197" y2="41" stroke="#e74c3c" stroke-width="2.5"/>
-            <polygon points="200,40 188,47 192,58" fill="#e74c3c"/>
+            <polygon points="197.0,41.0 186.6,50.4 183.7,36.7" fill="#e74c3c"/>
             <!-- P: 9px below-left of P(60,70) -->
-            <text x="50" y="81" font-size="12" fill="#c0392b" font-family="Georgia" font-weight="bold">P</text>
+            <text x="45" y="81" font-size="12" fill="#c0392b" font-family="Georgia" font-weight="bold">P</text>
             <!-- Q: 8px right of Q(200,40) -->
             <text x="207" y="39" font-size="12" fill="#c0392b" font-family="Georgia" font-weight="bold">Q</text>
             <!-- "a": 8px above midpoint of PQ (130,55) -->
@@ -467,9 +499,9 @@
             <circle cx="290" cy="100" r="4" fill="#3498db"/>
             <circle cx="430" cy="70" r="4" fill="#3498db"/>
             <line x1="290" y1="100" x2="427" y2="71" stroke="#3498db" stroke-width="2.5"/>
-            <polygon points="430,70 418,77 422,88" fill="#3498db"/>
+            <polygon points="427.0,71.0 416.6,80.4 413.7,66.7" fill="#3498db"/>
             <!-- R: 9px below-left of R(290,100) -->
-            <text x="279" y="111" font-size="12" fill="#2471a3" font-family="Georgia" font-weight="bold">R</text>
+            <text x="274" y="111" font-size="12" fill="#2471a3" font-family="Georgia" font-weight="bold">R</text>
             <!-- S: 8px right of S(430,70) -->
             <text x="438" y="69" font-size="12" fill="#2471a3" font-family="Georgia" font-weight="bold">S</text>
             <!-- "a": 8px above midpoint of RS (360,85) -->
@@ -516,15 +548,15 @@
             <text x="425" y="134" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
             <!-- AB: "a" label 8px above midpoint (160,90), perpendicular offset -->
             <line x1="60" y1="120" x2="257" y2="62" stroke="#e74c3c" stroke-width="2.5"/>
-            <polygon points="260,60 248,67 252,78" fill="#e74c3c"/>
+            <polygon points="257.0,62.0 247.3,72.1 243.4,58.7" fill="#e74c3c"/>
             <text x="150" y="82" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
             <!-- BC: "b" label 8px above midpoint (340,90) -->
             <line x1="260" y1="60" x2="417" y2="118" stroke="#3498db" stroke-width="2.5"/>
-            <polygon points="420,120 408,113 412,124" fill="#3498db"/>
+            <polygon points="417.0,118.0 403.2,120.4 408.1,107.2" fill="#3498db"/>
             <text x="348" y="81" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">b</text>
             <!-- AC: a+b (resultant) — label 10px below line -->
             <line x1="60" y1="120" x2="415" y2="120" stroke="#27ae60" stroke-width="2" stroke-dasharray="6,3"/>
-            <polygon points="418,120 406,114 406,126" fill="#27ae60"/>
+            <polygon points="415.0,120.0 402.9,127.0 402.9,113.0" fill="#27ae60"/>
             <text x="238" y="133" text-anchor="middle" font-size="13" fill="#1e8449" font-family="Georgia" font-style="italic">a + b</text>
         </svg>
 
@@ -641,20 +673,20 @@
         <svg width="100%" height="130" viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg">
             <!-- a: label 7px above line centre -->
             <line x1="30" y1="55" x2="100" y2="55" stroke="#e74c3c" stroke-width="2.5"/>
-            <polygon points="103,55 91,49 91,61" fill="#e74c3c"/>
+            <polygon points="100.0,55.0 87.9,62.0 87.9,48.0" fill="#e74c3c"/>
             <text x="65" y="47" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
             <!-- 3a: label 7px above line centre -->
             <line x1="130" y1="40" x2="340" y2="40" stroke="#e74c3c" stroke-width="2.5"/>
-            <polygon points="343,40 331,34 331,46" fill="#e74c3c"/>
+            <polygon points="340.0,40.0 327.9,47.0 327.9,33.0" fill="#e74c3c"/>
             <text x="235" y="32" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">3a</text>
             <!-- ½a: label 7px above line centre -->
             <line x1="130" y1="70" x2="165" y2="70" stroke="#e74c3c" stroke-width="2.5"/>
-            <polygon points="168,70 156,64 156,76" fill="#e74c3c"/>
+            <polygon points="165.0,70.0 152.9,77.0 152.9,63.0" fill="#e74c3c"/>
             <text x="148" y="62" text-anchor="middle" font-size="12" fill="#c0392b" font-family="Georgia" font-style="italic">½a</text>
             <!-- −2a: label 7px above line centre -->
-            <line x1="400" y1="55" x2="260" y2="55" stroke="#3498db" stroke-width="2.5"/>
-            <polygon points="257,55 269,49 269,61" fill="#3498db"/>
-            <text x="330" y="47" text-anchor="middle" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">−2a</text>
+            <line x1="400" y1="65" x2="260" y2="65" stroke="#3498db" stroke-width="2.5"/>
+            <polygon points="260.0,65.0 272.1,58.0 272.1,72.0" fill="#3498db"/>
+            <text x="330" y="57" text-anchor="middle" font-size="12" fill="#2471a3" font-family="Georgia" font-style="italic">−2a</text>
             <!-- caption: 12px below lowest vector (y=70), at y=90 -->
             <text x="250" y="120" text-anchor="middle" font-size="11" fill="#888" font-family="Georgia">Scaling: parallel vectors, different magnitudes</text>
         </svg>
@@ -696,11 +728,11 @@
             <text x="416" y="177" font-size="13" fill="#2c3e50" font-family="Georgia" font-weight="bold">C</text>
             <!-- AB: label at 1/4 from A, 10px left of line -->
             <line x1="260" y1="30" x2="52" y2="158" stroke="#e74c3c" stroke-width="2.5"/>
-            <polygon points="50,160 62,153 58,142" fill="#e74c3c"/>
+            <polygon points="52.0,158.0 58.7,145.7 66.0,157.6" fill="#e74c3c"/>
             <text x="197" y="55" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
             <!-- AC: label at 1/4 from A, 10px right of line -->
             <line x1="260" y1="30" x2="408" y2="158" stroke="#3498db" stroke-width="2.5"/>
-            <polygon points="410,160 398,153 402,142" fill="#3498db"/>
+            <polygon points="408.0,158.0 394.3,155.4 403.4,144.8" fill="#3498db"/>
             <text x="307" y="55" font-size="13" fill="#2471a3" font-family="Georgia" font-style="italic">b</text>
             <!-- BC -->
             <line x1="50" y1="160" x2="408" y2="160" stroke="#95a5a6" stroke-width="1.5" stroke-dasharray="5,3"/>
@@ -788,7 +820,7 @@
                 <!-- vector a from (45,100) to (165,40) -->
                 <circle cx="45" cy="100" r="3" fill="#2c3e50"/>
                 <line x1="45" y1="100" x2="163" y2="42" stroke="#e74c3c" stroke-width="2.5"/>
-                <polygon points="165,40 153,47 157,58" fill="#e74c3c"/>
+                <polygon points="163.0,42.0 155.2,53.6 149.0,41.1" fill="#e74c3c"/>
                 <text x="96" y="62" font-size="13" fill="#c0392b" font-family="Georgia" font-style="italic">a</text>
                 <!-- horizontal component (3 units) -->
                 <line x1="45" y1="100" x2="165" y2="100" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4,3"/>
