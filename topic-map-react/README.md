@@ -1,84 +1,74 @@
-# Topic Maps React App
+# A-Level Maths Topic Maps
 
-A React application that displays interactive topic dependency maps for Differentiation and Integration.
+A React application for exploring relationships and learning dependencies across A-Level Mathematics topics. It presents interactive topic maps, allowing a learner or tutor to select a topic, inspect its prerequisites, and see which topics build on it.
 
 ## Features
 
-- **Differentiation Map**: Visualizes the dependency relationships between differentiation topics
-- **Integration Map**: Visualizes the dependency relationships between integration topics
-- Interactive node selection to view topic details, prerequisites, and what topics use it
-- Cycle detection to warn about circular dependencies in the topic graph
+- Ten subject-area maps: Differentiation, Integration, Trigonometry, Sequences & Series, Coordinate Geometry, Proof, Algebra & Functions, Vectors, Hypothesis Testing, and Infinity.
+- Interactive graph visualisation using React Flow.
+- Searchable topic list and selectable topic nodes.
+- Focus and Full map views.
+- Topic detail panel showing summary, specification reference, prerequisites, and topics that depend on the selected topic.
+- Optional links from selected topics to related learning applications.
+- Circular-dependency detection and warning.
 
-## Tech Stack
+## Technology
 
 - React 19
-- TypeScript
-- Vite
-- Tailwind CSS
-- ReactFlow (for interactive graph visualization)
+- TypeScript 5.9
+- Vite 8 beta
+- React Flow 11
+- Tailwind CSS 3 and PostCSS
 
-## Getting Started
+## Getting started
 
-### Install dependencies
+Requirements: Node.js and npm.
 
 ```bash
 npm install
-```
-
-### Development
-
-```bash
 npm run dev
 ```
 
-### Build for production
+Vite prints the local development URL in the terminal (normally `http://localhost:5173`).
+
+## Useful commands
 
 ```bash
-npm run build
+npm run dev       # Start the development server
+npm run build     # Type-check and create a production build
+npm run preview   # Preview the production build locally
+npm run lint      # Run ESLint
 ```
 
-### Preview production build
+The production build is written to `dist/`.
 
-```bash
-npm run preview
-```
+## Documentation
 
-## Project Structure
+See [`docs/USER-GUIDE.md`](docs/USER-GUIDE.md) for using the maps, [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for implementation details, and [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) for development instructions.
 
-```
+Deployment details that could not be confirmed from the supplied source archive are recorded in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) and [`docs/OPEN-QUESTIONS.md`](docs/OPEN-QUESTIONS.md).
+
+## Project structure
+
+```text
 topic-map-react/
+├── public/
 ├── src/
 │   ├── components/
-│   │   └── TopicMap.tsx      # Main map visualization component
-│   ├── data/
-│   │   ├── differentiation.ts # Differentiation topic data
-│   │   └── integration.ts     # Integration topic data
+│   │   └── TopicMap.tsx
+│   ├── data/                 # One TypeScript data file per map
 │   ├── types/
-│   │   └── Topic.ts           # Topic type definition
-│   ├── App.tsx                # Main app component
-│   ├── App.css                # App styles
-│   ├── index.css              # Global styles
-│   └── main.tsx               # Entry point
+│   │   └── Topic.ts
+│   ├── App.tsx               # Map navigation and page selection
+│   ├── App.css
+│   ├── index.css
+│   └── main.tsx
 ├── index.html
 ├── package.json
-├── tsconfig.json
 ├── vite.config.ts
-└── tailwind.config.js
+└── ...
 ```
 
-## Usage
+## Current scope
 
-1. Launch the app
-2. Use the "Diff Map" and "Int Map" buttons to switch between the two topic maps
-3. Click on any node in the graph to see:
-   - Topic title and summary
-   - Specification reference (if available)
-   - Prerequisites (topics you need to know first)
-   - Used by (topics that build on this one)
-
-## Deployment
-
-The app builds to the `dist/` directory. For deployment alongside the main site:
-
-1. Build the app: `npm run build`
-2. The `dist/` folder can be served from `/topic-map-react/dist/` or deployed to a separate path
+This documentation describes the source archive supplied for review. It does not assume that the checked-in source is identical to any currently deployed version. Verify deployment settings and external integrations before making production changes.
